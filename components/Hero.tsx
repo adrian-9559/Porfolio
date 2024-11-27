@@ -1,4 +1,4 @@
-import { Button, Link } from '@nextui-org/react';
+import { Image, Link } from '@nextui-org/react';
 import { siteConfig } from "@/config/site";
 import {
   GithubIcon,
@@ -24,27 +24,27 @@ export default function Hero() {
     }
   };
 
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/documents/Adrian-Escribano-Perez.pdf';
-    link.download = 'Adrian-Escribano-Perez.pdf';
-    link.click();
-  };
-
   return (
-    <section className='flex flex-col gap-4 lg:gap-9 w-fit sm:w-4/5 lg:w-fit h-screen justify-center mx-24'>
-      <section className="flex flex-col gap-2">
-        <h1 className="text-xl lg:text-5xl flex flex-col gap-1">Hola, soy <span className="italic text-6xl">Adrián Escribano Pérez</span></h1>
+    <section className='flex md:my-20 lg:my-32 2xl:my-0 flex-col gap-4 lg:gap-9 w-auto h-screen justify-center m-auto lg:mx-24'>
+      <section className='flex justify-center items-center 2xl:hidden'>
+        <Image
+          className="rounded-full w-32 lg:w-64 shadow-lg shadow-[#9b27b073] border-2 border-black"
+          alt="User Image"
+          src="/images/userIMG.png"
+        />
       </section>
-      <section className="flex flex-col gap-4 lg:text-lg">
-        <p>
+      <section className="flex flex-col gap-2">
+        <h1 className="text-xl lg:text-5xl flex flex-col gap-1">Hola, soy <span className="italic text-2xl lg:text-6xl">Adrián Escribano Pérez</span></h1>
+      </section>
+      <section className="flex flex-col gap-4">
+        <p className='w-auto text-base lg:text-lg'>
           💻 Soy un desarrollador de software con {calculateYearsOfExperience()} de experiencia. Mi pasión es transformar ideas en soluciones digitales impactantes.
           Mi especialidad es el desarrollo Fullstack, donde combino la lógica robusta del Backend con interfaces Frontend que haga a los usuarios una experiencia intuitiva para su fácil uso.
         </p>
-        <section className='flex items-center gap-5'>
-          <Button key="DownloadCV" onClick={handleDownload} className="btn btn-primary w-fit bg-[#b700ff] bg-opacity-70 shadow-md shadow-black-50 animate-pulse text-lg">
-              Descargar CV
-          </Button>
+        <section className='flex items-center gap-4'>
+          <Link href='/documents/Adrian-Escribano-Perez.pdf' download className="text-white py-1 px-3 rounded-xl bg-[#b700ff] bg-opacity-70 shadow-md shadow-black-50 animate-pulse text-lg border-[1px] border-black">
+            Descargar CV
+          </Link>
           <section className='flex gap-2'>
             <Link isExternal href={siteConfig.links.linkedin} title="LinkedIn">
               <LinkedinIcon className="text-default-500" />

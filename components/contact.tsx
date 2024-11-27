@@ -5,9 +5,9 @@ import { GithubIcon, InstagramIcon, MailIcon, DiscordIcon, LinkedinIcon } from "
 
 export default function Contact() {
     return (
-        <section className="sticky top-20 lg:top-[15%] self-start">
+        <section className="lg:sticky top-20 lg:top-[15%] self-start">
             <section className="flex flex-col gap-10 items-center w-auto bg-default-100 p-6 rounded-xl bg-opacity-80">
-                <section className="block md:hidden lg:block">
+                <section>
                     <Image
                         className="rounded-full w-32 lg:w-64 shadow-lg shadow-[#9b27b073] border-2 border-black"
                         alt="User Image"

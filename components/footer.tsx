@@ -8,7 +8,7 @@ import {
 
 export default function Footer() {
     return (
-        <section className="flex justify-between mx-64 items-center">
+        <section className="flex flex-col md:flex-row gap-3 justify-between lg:mx-64 items-center">
             <p className="text-sm">© {new Date().getFullYear()} adrian_9559. Casi todos los derechos reservado.</p>
             <section className="flex gap-2">
                 <Link isExternal href={siteConfig.links.linkedin} title="LinkedIn">
