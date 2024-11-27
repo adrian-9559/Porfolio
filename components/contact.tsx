@@ -5,8 +5,8 @@ import { GithubIcon, InstagramIcon, MailIcon, DiscordIcon } from "@/components/i
 
 export default function Contact() {
     return (
-        <section className="sticky top-20 lg:top-32 self-start">
-            <section className="flex flex-col gap-5 items-center w-auto">
+        <section className="sticky top-20 lg:top-[20%] self-start">
+            <section className="flex flex-col gap-5 items-center w-auto bg-default-100 p-6 rounded-xl bg-opacity-80">
                 <section className="block md:hidden lg:block">
                     <Image
                         className="rounded-full w-32 lg:w-64"
@@ -33,7 +33,7 @@ export default function Contact() {
                             </ListboxItem>
                             <ListboxItem key="discord" startContent={<DiscordIcon />} description="Discord">
                                 <a href={siteConfig.links.discord} target="_blank" rel="noopener noreferrer">
-                                    adrian_9559#6590
+                                    adrian_9559
                                 </a>
                             </ListboxItem>
                             <ListboxItem key="github" startContent={<GithubIcon />} description="GitHub">

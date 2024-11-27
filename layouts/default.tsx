@@ -10,13 +10,13 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex flex-col h-screen">
+    <div className="relative flex flex-col h-screen radial-gradient font text-lg">
       <Head />
-      <main>
+      <main className="mb-12">
         <Navbar />
         {children}
       </main>
-      <footer className="w-full flex items-center justify-center py-3">
+      <footer className="w-full flex items-center justify-center py-3 sticky">
         <Link
           isExternal
           className="flex items-center gap-1 text-current"

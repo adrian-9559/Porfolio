@@ -1,4 +1,4 @@
-import { Image } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 
 export default function Hero() {
 
@@ -19,16 +19,20 @@ export default function Hero() {
   };
 
   return (
-    <section className='flex flex-col gap-4 lg:gap-9 w-fit sm:w-4/5 lg:w-fit'>
+    <section className='flex flex-col gap-4 lg:gap-9 w-fit sm:w-4/5 lg:w-fit h-screen justify-center mx-24'>
       <section className="flex flex-col gap-2">
-        <h1 className="text-xl lg:text-5xl font-bold flex flex-col gap-1">Hola, soy <span className="text-[#00b2ff] underline italic">Adrián Escribano Pérez</span></h1>
-        <p className="text-lg lg:text-xl text-default-500">(alias: <span className='text-[#d22aff]'>adrian_9559</span>)</p>
+        <h1 className="text-xl lg:text-5xl flex flex-col gap-1">Hola, soy <span className="italic text-6xl">Adrián Escribano Pérez</span></h1>
       </section>
       <section className="flex flex-col gap-4 lg:text-lg">
         <p>
-          💻 Hola, soy un desarrollador de software con {calculateYearsOfExperience()} de experiencia, transformando ideas en soluciones digitales impactantes.
-          Mi especialidad es el desarrollo Fullstack, donde combino la lógica robusta del Backend con interfaces Frontend que cautivan a los usuarios.
+          💻 Soy un desarrollador de software con {calculateYearsOfExperience()} de experiencia. Mi pasión es transformar ideas en soluciones digitales impactantes.
+          Mi especialidad es el desarrollo Fullstack, donde combino la lógica robusta del Backend con interfaces Frontend que haga a los usuarios una experiencia intuitiva para su fácil uso.
         </p>
+        <Button className="btn btn-primary w-fit bg-[#00b2ff] shadow-md shadow-black-50 animate-pulse">
+          <a href='/documents/Adrian-Escribano-Perez.pdf' download>
+            Descargar CV
+          </a>
+        </Button>
       </section>
     </section>
   );
