@@ -5,14 +5,14 @@ export default function lenguajeProgramFrontend() {
 
     return (
         <section className="w-auto h-auto">
-            <Button onPress={onOpen} className="flex flex-col gap-10 h-auto bg-default-500 bg-opacity-50 p-4 rounded-3xl">
+            <Button key="Lenguaje Programación Frontend" onPress={onOpen} className="flex flex-col gap-2 h-auto bg-default-500 bg-opacity-50 p-4 rounded-3xl">
                 <div className="flex flex-col">
                     <div className="flex justify-center">
                         <h5 className="text-2xl">Frontend</h5>
                     </div>
                 </div>
                 <div className="my-2 px-4">
-                    <section className="flex gap-4 justify-center items-center">
+                    <div className="flex gap-4 justify-center items-center">
                         <Card className="w-full bg-default-500 bg-opacity-0 shadow-none">
                             <Image alt="logo JavaScript" src="/images/JavaScript_logo.png"></Image>
                         </Card>
@@ -22,10 +22,10 @@ export default function lenguajeProgramFrontend() {
                         <Card className="w-full bg-default-500 bg-opacity-0 shadow-none">
                             <Image alt="logo HTML" src="/images/html_logo.png" className="w-auto h-auto"></Image>
                         </Card>
-                    </section>
-                    <section>
-                        <p className="text-default-500">Pulsa para más</p>
-                    </section>
+                    </div>
+                    <div>
+                        <p className="text-default-500 animate-pulse">Pulsa para más</p>
+                    </div>
                 </div>
             </Button>
             <Modal isOpen={isOpen} onClose={onOpenChange} backdrop="blur" size="lg">
@@ -33,21 +33,23 @@ export default function lenguajeProgramFrontend() {
                     {(onClose) => (
                         <section>
                             <ModalHeader className="border-b-[1px] border-default-300">
-                                <h5 className="text-2xl">Leguajes de Programación de Backend</h5>
+                                <h5 className="text-2xl">Leguajes de Programación de Frontend</h5>
                             </ModalHeader>
                             <ModalBody>
-                                <div className="flex flex-col gap-6">
+                                <section className="flex flex-col gap-6">
                                     <p>
-                                        En el caso de Java, he trabajado en la creación de aplicaciones robustas y escalables, implementando lógica compleja y utilizando frameworks como Spring Boot para optimizar la productividad y estructuración del código.
-                                        Por otro lado, con PHP he desarrollado aplicaciones, aplicando buenas prácticas de programación, como el uso del patrón MVC.
+                                        Mi experiencia en desarrollo frontend incluye un amplio uso de JavaScript, con el cual he diseñado interfaces dinámicas y funcionalidades interactivas que enriquecen la experiencia del usuario. Gracias a TypeScript, he añadido mayor robustez a mis proyectos, asegurando un código más estructurado y fiable mediante el uso de tipado estático y herramientas avanzadas de desarrollo.
                                     </p>
                                     <p>
-                                        Estos lenguajes han sido fundamentales en proyectos donde era necesario implementar servicios web, gestionar datos de forma eficiente y desarrollar aplicaciones web completas y funcionales.
+                                        Además, he trabajado intensivamente con HTML para construir estructuras semánticas y bien organizadas, complementadas con diferentes herramientas de estilado para lograr diseños responsivos y atractivos.
                                     </p>
-                                </div>
+                                    <p>
+                                        Estas tecnologías han sido esenciales en la creación de aplicaciones web enfocadas en la usabilidad, accesibilidad y rendimiento, permitiéndome desarrollar soluciones que combinan diseño visual con funcionalidad técnica de alto nivel.
+                                    </p>
+                                </section>
                             </ModalBody>
                             <ModalFooter>
-                                <Button onPress={onClose} color="danger" className="bg-opacity-45">Cerrar</Button>
+                                <Button key="Cerrar modal Lenguaje Programación Frontend" onPress={onClose} color="danger" className="bg-opacity-45">Cerrar</Button>
                             </ModalFooter>
                         </section>
                     )}

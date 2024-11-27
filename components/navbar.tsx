@@ -16,6 +16,7 @@ import {
   GithubIcon,
   InstagramIcon,
   DiscordIcon,
+  LinkedinIcon,
   Logo
 } from "@/components/icons";
 
@@ -53,6 +54,9 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="flex gap-2">
+          <Link isExternal href={siteConfig.links.linkedin} title="LinkedIn">
+            <LinkedinIcon className="text-default-500" />
+          </Link>
           <Link isExternal href={siteConfig.links.instagram} title="Instagram">
             <InstagramIcon className="text-default-500" />
           </Link>
