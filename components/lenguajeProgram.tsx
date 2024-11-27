@@ -3,7 +3,7 @@ import LenguajeProgramFrontend from "@/components/leguajeProgramFrontend";
 import LenguajeStyle from "@/components/leguajeStyle";
 import LenguajeBBDD from "@/components/lenguajeBBDD";
 
-export default function lenguajeProgram() {
+export default function LenguajeProgram() {
     return (
         <section className="flex flex-col gap-6">
             <div>

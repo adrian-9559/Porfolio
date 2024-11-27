@@ -1,4 +1,4 @@
-export default function experience() {
+export default function Experience() {
     return (
         <section className="flex flex-col gap-4">
             <h2 className="text-3xl text-center ">Conocimientos y Experiencia en Desarrollo de Aplicaciones</h2>

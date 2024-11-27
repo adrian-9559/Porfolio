@@ -1,7 +1,7 @@
 import LenguajeProgram from "@/components/lenguajeProgram";
 import Frameworks from "@/components/frameworks";
 
-export default function capabilities() {
+export default function Capabilities() {
     return (
         <section className="flex flex-col gap-4">
             <section>

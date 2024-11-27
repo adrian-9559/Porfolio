@@ -1,6 +1,6 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image, Card } from "@nextui-org/react";
 
-export default function lenguajeBBDD() {
+export default function LenguajeBBDD() {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 

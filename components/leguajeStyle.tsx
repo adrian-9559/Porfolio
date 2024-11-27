@@ -1,6 +1,6 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image, Card } from "@nextui-org/react";
 
-export default function lenguajeStyle() {
+export default function LenguajeStyle() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     return (
