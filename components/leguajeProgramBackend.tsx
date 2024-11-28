@@ -5,7 +5,7 @@ export default function LenguajeProgramBackend() {
 
     return (
         <section className="w-full h-auto">
-            <Button key="Lenguaje Programación Backend" onPress={onOpen} className="flex flex-col gap-2 m-auto h-full w-full bg-default-500 bg-opacity-50 p-4 rounded-3xl">
+            <Button key="Lenguaje Programación Backend" onPress={onOpen} className="flex flex-col gap-2 m-auto h-full w-full bg-default-500 bg-opacity-50 p-4 rounded-3xl justify-between">
                 <div className="flex flex-col">
                     <div className="flex justify-center">
                         <h5 className="text-2xl">Backend</h5>
@@ -23,9 +23,9 @@ export default function LenguajeProgramBackend() {
                             <Image alt="logo nodejs" src="/images/nodejs_logo.png"></Image>
                         </Card>
                     </div>
-                    <div>
-                        <p className="text-default-500 animate-pulse">Pulsa para más</p>
-                    </div>
+                </div>
+                <div>
+                    <p className="text-default-500 animate-pulse">Pulsa para más</p>
                 </div>
             </Button>
             <Modal isOpen={isOpen} onClose={onOpenChange} backdrop="blur" size="xl" className="overflow-y-auto max-h-screen md:mt-32 xl:mt-0">

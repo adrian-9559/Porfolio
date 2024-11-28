@@ -6,7 +6,7 @@ export default function LenguajeBBDD() {
 
     return (
         <section className="w-full h-auto">
-            <Button key="Lenguaje de Base de datos" onPress={onOpen} className="m-auto flex flex-col gap-2 h-full w-full bg-default-500 bg-opacity-50 p-4 rounded-3xl">
+            <Button key="Lenguaje de Base de datos" onPress={onOpen} className="m-auto flex flex-col gap-2 h-full w-full bg-default-500 bg-opacity-50 p-4 rounded-3xl justify-between">
                 <div className="flex flex-col">
                     <div className="flex justify-center">
                         <h5 className="text-2xl">BBDD</h5>
@@ -21,9 +21,9 @@ export default function LenguajeBBDD() {
                             <Image alt="logo MySQL" src="/images/mysql_logo.png"></Image>
                         </Card>
                     </div>
-                    <div>
-                        <p className="text-default-500 animate-pulse">Pulsa para más</p>
-                    </div>
+                </div>
+                <div>
+                    <p className="text-default-500 animate-pulse">Pulsa para más</p>
                 </div>
             </Button>
             <Modal isOpen={isOpen} onClose={onOpenChange} backdrop="blur" size="xl" className="overflow-y-auto max-h-screen md:mt-32 xl:mt-0">
