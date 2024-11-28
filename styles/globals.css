@@ -25,6 +25,6 @@
 
 .font {
   font-family: 'Coolvetica';
-  src: url('../public/fonts/coolvetica/coolvetica_rg.otf') format('opentype');
+  src: url('/fonts/coolvetica/coolvetica_rg.otf') format('opentype');
   font-weight: normal;
 }
