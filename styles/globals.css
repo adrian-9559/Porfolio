@@ -23,8 +23,12 @@
   z-index: 0;
 }
 
-.font {
+@font-face {
   font-family: 'Coolvetica';
-  src: url('/fonts/coolvetica/coolvetica_rg.otf') format('opentype');
+  src: url('../public/fonts/coolvetica/coolvetica_rg.otf') format('opentype');
   font-weight: normal;
+}
+
+.font {
+  font-family: 'Coolvetica', sans-serif;
 }
