@@ -159,7 +159,7 @@ export default function PowerFuelProject() {
                         </p>
                     </section>
                     <section className='grid xl:flex gap-6'>
-                        <section className='w-1/2'>
+                        <section className='w-full xl:w-1/2 flex justify-center'>
                             <Image src="/images/powerFuel/home.png" alt="PowerFuel Home" />
                         </section>
                         <section className='flex flex-col gap-3 '>
