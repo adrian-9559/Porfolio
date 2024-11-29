@@ -158,30 +158,32 @@ export default function PowerFuelProject() {
                             La aplicación incluye un servidor de Fronten, un servidor de Backend, un servicio externo para la gestión de pagos y una base de datos para el almacenamiento de información de productos y usuarios.
                         </p>
                     </section>
-                    <section className='flex gap-6'>
-                        <section>
+                    <section className='grid xl:flex gap-6'>
+                        <section className='w-1/2'>
                             <Image src="/images/powerFuel/home.png" alt="PowerFuel Home" />
                         </section>
-                        <section className='w-1/2 flex flex-col gap-3 items-end'>
+                        <section className='flex flex-col gap-3 '>
                             <p>
                                 En este proyecto se han utilizado diversas tecnologías clave para garantizar un desarrollo eficiente y funcional.
                             </p>
-                            <section className='w-11/12 flex flex-col gap-2'>
-                                <p>
-                                    - Para el frontend, se empleó el framework Next.js junto con React, logrando una interfaz dinámica y enfocada en la experiencia del usuario.
-                                </p>
-                                <p>
-                                    - El backend se desarrolló utilizando Express.js y Node.js, que permiten gestionar de manera óptima las peticiones del servidor.
-                                </p>
-                                <p>
-                                    - En cuanto al almacenamiento de datos, se optó por una base de datos MySQL, ideal para manejar información esencial de forma estructurada.
-                                </p>
-                                <p>
-                                    - Para la gestión de transacciones, se integró el servicio externo Stripe, que asegura procesos de pago seguros y confiables.
-                                </p>
-                                <p>
-                                    - Finalmente, el diseño de la aplicación se realizó con TailwindCSS, proporcionando una apariencia moderna y responsiva.
-                                </p>
+                            <section className='flex justify-end w-full'>
+                                <section className='w-11/12 flex flex-col gap-2'>
+                                    <p>
+                                        - Para el frontend, se empleó el framework Next.js junto con React, logrando una interfaz dinámica y enfocada en la experiencia del usuario.
+                                    </p>
+                                    <p>
+                                        - El backend se desarrolló utilizando Express.js y Node.js, que permiten gestionar de manera óptima las peticiones del servidor.
+                                    </p>
+                                    <p>
+                                        - En cuanto al almacenamiento de datos, se optó por una base de datos MySQL, ideal para manejar información esencial de forma estructurada.
+                                    </p>
+                                    <p>
+                                        - Para la gestión de transacciones, se integró el servicio externo Stripe, que asegura procesos de pago seguros y confiables.
+                                    </p>
+                                    <p>
+                                        - Finalmente, el diseño de la aplicación se realizó con TailwindCSS, proporcionando una apariencia moderna y responsiva.
+                                    </p>
+                                </section>
                             </section>
                             <p>
                                 Estas tecnologías en conjunto han permitido construir una solución sólida, escalable y adaptada a las necesidades del proyecto.
@@ -198,7 +200,7 @@ export default function PowerFuelProject() {
                                     Entre las funcionalidades principales, destaca la implementación de procesos optimizados que mejoran significativamente la experiencia del usuario, permitiendo interacciones fluidas y accesibles. Además, se ha priorizado un enfoque modular en el desarrollo, facilitando la escalabilidad y el mantenimiento del sistema. Las herramientas implementadas aseguran un alto rendimiento, mientras que las medidas de seguridad integradas refuerzan la protección de los datos y la confiabilidad general de la plataforma.
                                 </p>
                             </div>
-                            <div className='flex gap-12'>
+                            <div className='grid xl:flex gap-12'>
                                 <section className='w-3/6'>
                                     <Accordion>
                                         {FuncionalidadesPrincipales.map((funcionalidad, index) => (
