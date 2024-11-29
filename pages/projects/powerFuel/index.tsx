@@ -201,7 +201,7 @@ export default function PowerFuelProject() {
                                 </p>
                             </div>
                             <div className='grid xl:flex gap-12'>
-                                <section className='w-3/6'>
+                                <section className='w-full xl:w-3/6'>
                                     <Accordion>
                                         {FuncionalidadesPrincipales.map((funcionalidad, index) => (
                                             <AccordionItem key={index} title={funcionalidad.title} aria-label={funcionalidad.title}>
