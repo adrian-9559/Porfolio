@@ -14,7 +14,7 @@ export default function IndexPage() {
               <Hero />
               <Skills />
             </section>
-            <section className="w-auto xl:mx-10">
+            <section className="w-auto xl:mx-20">
               <Projects />
             </section>
           </section>
