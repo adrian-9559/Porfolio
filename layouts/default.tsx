@@ -8,13 +8,13 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex flex-col h-screen radial-gradient font text-lg">
+    <div className="relative flex flex-col h-screen radial-gradient font text-lg min-h-screen justify-between">
       <Head />
       <main className="mb-12 m-4">
         <Navbar />
         {children}
       </main>
-      <footer className="py-3 sticky m-2 w-auto mb-20 xl:mb-2">
+      <footer className="py-3 sticky m-2 w-auto">
         <Footer />
       </footer>
     </div>

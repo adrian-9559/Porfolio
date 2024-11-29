@@ -17,7 +17,7 @@ export default function Frameworks() {
             <div className="flex flex-col items-center w-full gap-4">
                 <h2 className="text-3xl">Frameworks</h2>
                 <p>
-                    En esta sección, presento un recorrido por todos los frameworks que he aprendido y aplicado a lo largo de mi experiencia en diversos proyectos. Cada uno de estos frameworks ha sido una pieza fundamental en la construcción de soluciones innovadoras y eficientes, adaptadas a las necesidades específicas de cada iniciativa. A través de su implementación, no solo he optimizado procesos y funcionalidades, sino que también he explorado nuevas formas de desarrollo que me han permitido llevar mis habilidades técnicas al siguiente nivel. Estos frameworks han sido aliados indispensables en mi camino profesional, ayudándome a transformar ideas en realidades funcionales y escalables.
+                    Presento un recorrido por los frameworks que he aprendido y aplicado en diversos proyectos, fundamentales para crear soluciones innovadoras y adaptadas. Su implementación ha optimizado procesos, impulsado mi desarrollo técnico y transformado ideas en realidades funcionales y escalables.
                 </p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:flex gap-5">

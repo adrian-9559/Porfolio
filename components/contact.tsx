@@ -20,31 +20,21 @@ export default function Contact() {
                             <h2 className="text-xl lg:text-3xl font-light text-center text-default-500">Contacto</h2>
                         </section>
                         <Listbox className="bg-default-100 rounded-xl">
-                            <ListboxItem key="linkedin" startContent={<LinkedinIcon />} description="Linkedin">
-                                <a href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" className="text-base">
-                                    Adrián Escribano Pérez
-                                </a>
+                            <ListboxItem href={siteConfig.links.linkedin} key="linkedin" startContent={<LinkedinIcon />} description="Linkedin">
+                                Adrián Escribano Pérez
                             </ListboxItem>
-                            <ListboxItem key="github" startContent={<GithubIcon />} description="GitHub">
-                                <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" className="text-base">
-                                    adrian-9559
-                                </a>
+                            <ListboxItem href={siteConfig.links.github}  key="github" startContent={<GithubIcon />} description="GitHub">
+                                adrian-9559
                             </ListboxItem>
-                            <ListboxItem key="mail" startContent={<MailIcon />} description="Correo electrónico">
-                                <a href={"mailto:" + siteConfig.links.mail} target="_blank" rel="noopener noreferrer" className="text-base">
-                                    <span className="block md:hidden lg:block">{siteConfig.links.mail}</span>
-                                    <span className="hidden md:block lg:hidden">Correo</span>
-                                </a>
+                            <ListboxItem href={"mailto:" + siteConfig.links.mail} key="mail" startContent={<MailIcon />} description="Correo electrónico">
+                                <span className="block md:hidden lg:block">{siteConfig.links.mail}</span>
+                                <span className="hidden md:block lg:hidden">Correo</span>
                             </ListboxItem>
-                            <ListboxItem key="discord" startContent={<DiscordIcon />} description="Discord">
-                                <a href={siteConfig.links.discord} target="_blank" rel="noopener noreferrer" className="text-base">
-                                    adrian_9559
-                                </a>
+                            <ListboxItem href={siteConfig.links.discord} key="discord" startContent={<DiscordIcon />} description="Discord">
+                                adrian_9559
                             </ListboxItem>
-                            <ListboxItem key="instagram" startContent={<InstagramIcon />} description="Instagram">
-                                <a href={siteConfig.links.instagram} target="_blank" rel="noopener noreferrer" className="text-base">
-                                    adrian_9559
-                                </a>
+                            <ListboxItem href={siteConfig.links.instagram} key="instagram" startContent={<InstagramIcon />} description="Instagram">
+                                adrian_9559
                             </ListboxItem>
                         </Listbox>
                     </section>
