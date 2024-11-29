@@ -36,7 +36,7 @@ export default function ProjectDeveloped() {
                 <section className="flex justify-center">
                     <h2 className="text-4xl">Proyectos Desarrollados</h2>
                 </section>
-                <section className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-col-5 gap-4 h-full">
+                <section className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-col-5 gap-4 h-full">
                     {projects.developed ? projects.developed.map((project, index) => (
                         <Card key={index} className="p-2 bg-default-500 bg-opacity-50 h-3/6">
                             <CardHeader className="flex justify-center">
