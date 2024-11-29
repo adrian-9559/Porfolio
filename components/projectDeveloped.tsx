@@ -34,7 +34,7 @@ export default function ProjectDeveloped() {
         <section className="w-full grid 2xl:flex justify-center gap-10 2xl:gap-20">
             <section className="w-full flex flex-col justify-center gap-8 min-h-screen">
                 <section className="flex justify-center">
-                    <h2 className="text-4xl">Proyectos Desarrollados</h2>
+                    <h2 className="text-3xl">Proyectos Desarrollados</h2>
                 </section>
                 <section className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-col-5 gap-4 h-full">
                     {projects.developed ? projects.developed.map((project, index) => (
