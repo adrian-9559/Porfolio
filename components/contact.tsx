@@ -1,6 +1,5 @@
-import { Listbox, ListboxItem } from "@nextui-org/react";
+import { Listbox, ListboxItem, Image } from "@nextui-org/react";
 import { siteConfig } from "@/config/site";
-import { Image } from "@nextui-org/react";
 import { GithubIcon, InstagramIcon, MailIcon, DiscordIcon, LinkedinIcon } from "@/components/icons";
 
 export default function Contact() {
