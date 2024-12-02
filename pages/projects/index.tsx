@@ -1,5 +1,8 @@
 import DefaultLayout from "@/layouts/default";
 import Projects from "@/components/projects";
+import { Link } from "@nextui-org/link";
+import { siteConfig } from "@/config/site";
+import { MailIcon } from "@/components/icons";
 
 export default function ProjectsPage() {
     return (
@@ -17,6 +20,10 @@ export default function ProjectsPage() {
                     </p>
                     <p>
                         ¿Tienes un proyecto en mente o quieres colaborar?.
+                        <Link href={"mailto:" + siteConfig.links.mail} key="mail" about="Correo electrónico" className="border-[1px] border-black bg-default-500 bg-opacity-50 px-2 py-1 rounded-lg text-default-900 shadow-md shadow-[#9b27b073] w-fit flex justify-between gap-2">
+                            <MailIcon />
+                            <span className="block md:hidden lg:block">{siteConfig.links.mail}</span>
+                        </Link>
                     </p>
                 </section>
                 <section className="flex justify-between">
