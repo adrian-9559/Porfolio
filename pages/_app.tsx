@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-
+import { Analytics } from "@vercel/analytics/react"
 import { NextUIProvider } from "@nextui-org/system";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useRouter } from "next/router";
@@ -15,6 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <NextUIProvider navigate={router.push}>
       <NextThemesProvider>
         <Cookies />
+        <Analytics />
         <Component {...pageProps} />
       </NextThemesProvider>
     </NextUIProvider>
