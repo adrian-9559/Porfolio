@@ -1,7 +1,7 @@
 import DefaultLayout from '@/layouts/default';
-import { Accordion, AccordionItem, Image } from "@nextui-org/react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Link, Accordion, AccordionItem, Image  } from "@nextui-org/react";
 import React from "react";
+import { GithubIcon } from "@/components/icons";
 
 export default function PowerFuelProject() {
     const FuncionalidadesPrincipales = [
@@ -148,8 +148,12 @@ export default function PowerFuelProject() {
     return (
         <DefaultLayout>
             <section className="flex flex-col gap-8 justify-between m-auto mt-16 xl:m-10 2xl:m-20 2xl:mx-64">
-                <section className="flex justify-center">
+                <section className="flex justify-between gap-2">
                     <h2 className="text-3xl">PowerFuel</h2>
+                    <Link href='https://github.com/adrian-9559/PowerFuel' className="border-[1px] border-black bg-default-500 bg-opacity-50 px-2 py-1 rounded-lg text-default-900 shadow-md shadow-[#9b27b073] w-fit flex justify-between gap-2">
+                        <GithubIcon />
+                        Proyecto
+                    </Link>
                 </section>
                 <section className='flex flex-col gap-8'>
                     <section>
