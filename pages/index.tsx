@@ -18,7 +18,7 @@ export default function IndexPage() {
               <Projects />
             </section>
           </section>
-          <section className="w-fit 2xl:mr-20">
+          <section className="w-auto 2xl:mr-20 flex justify-center">
             <Contact />
           </section>
         </section>

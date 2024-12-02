@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import { fontSans, fontMono } from "@/config/fonts";
 import "@/styles/globals.css";
+import Cookies from "@/components/modals/cookies";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <NextUIProvider navigate={router.push}>
       <NextThemesProvider>
+        <Cookies />
         <Component {...pageProps} />
       </NextThemesProvider>
     </NextUIProvider>
