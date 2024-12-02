@@ -42,7 +42,7 @@ export const Navbar = () => {
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => {
-            const isActive = router.pathname === item.href  || router.pathname.includes(item.href);
+            const isActive = router.pathname === item.href;
 
             return (
               <NavbarItem key={item.href}>
@@ -83,7 +83,7 @@ export const Navbar = () => {
       </NavbarContent>
       <NavbarMenu>
         {siteConfig.navItems.map((item, index) => {
-          const isActive = router.pathname === item.href || router.pathname.includes(item.href);
+          const isActive = router.pathname === item.href ;
 
           return (
             <NavbarMenuItem key={`${item.href}-${index}`}>
