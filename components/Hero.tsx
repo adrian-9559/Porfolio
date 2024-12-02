@@ -44,7 +44,7 @@ export default function Hero() {
         </p>
         <section className='grid md:flex gap-6'>
           <section className='flex items-center gap-4 w-full'>
-            <Link href='/documents/Adrian-Escribano-Perez.pdf' download className="text-white py-1 px-3 rounded-xl bg-[#b700ff] bg-opacity-70 shadow-md shadow-black-50 animate-pulse text-lg border-[1px] border-black">
+            <Link href='/documents/CSV-Adrian-Escribano-Perez.pdf' download className="text-white py-1 px-3 rounded-xl bg-[#b700ff] bg-opacity-70 shadow-md shadow-black-50 animate-pulse text-lg border-[1px] border-black">
               Descargar CV
             </Link>
             <section className='flex gap-2'>
