@@ -46,22 +46,15 @@ export const Navbar = () => {
 
             return (
               <NavbarItem key={item.href}>
-                <NextLink
+                <Link
                   className={clsx(
-                    "data-[active=true]:text-primary data-[active=true]:font-medium text-foreground",
+                    "text-foreground",
                     { 'font-bold text-[#e138ffc4]': isActive }
                   )}
                   href={item.href}
                 >
-                  <Link
-                    className={clsx(
-                      "text-foreground",
-                      { 'font-bold text-[#e138ffc4]': isActive }
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                </NextLink>
+                  {item.label}
+                </Link>
               </NavbarItem>
             );
           })}
@@ -90,30 +83,30 @@ export const Navbar = () => {
       </NavbarContent>
       <NavbarMenu>
         {siteConfig.navItems.map((item, index) => {
-        const isActive = router.pathname === item.href;
+          const isActive = router.pathname === item.href;
 
-        return (
-          <NavbarMenuItem key={`${item.href}-${index}`}>
-            <NextLink
-              className={clsx(
-                "w-full",
-                { 'font-bold text-[#9b27b073]': isActive }
-              )}
-              href={item.href}
-            >
-              <Link
+          return (
+            <NavbarMenuItem key={`${item.href}-${index}`}>
+              <NextLink
                 className={clsx(
-                  "text-foreground",
-                  { 'font-bold text-[#e138ffc4]': isActive }
+                  "w-full",
+                  { 'font-bold text-[#9b27b073]': isActive }
                 )}
-                size="lg"
+                href={item.href}
               >
-                {item.label}
-              </Link>
-            </NextLink>
-          </NavbarMenuItem>
-        );
-      })}
+                <Link
+                  className={clsx(
+                    "text-foreground",
+                    { 'font-bold text-[#e138ffc4]': isActive }
+                  )}
+                  size="lg"
+                >
+                  {item.label}
+                </Link>
+              </NextLink>
+            </NavbarMenuItem>
+          );
+        })}
       </NavbarMenu>
     </NextUINavbar>
   );
