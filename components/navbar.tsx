@@ -52,7 +52,6 @@ export const Navbar = () => {
                     "data-[active=true]:text-primary data-[active=true]:font-medium",
                     { 'font-bold text-[#e138ffc4]': isActive }
                   )}
-                  color="foreground"
                   href={item.href}
                 >
                   {item.label}
