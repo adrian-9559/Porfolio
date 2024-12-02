@@ -94,7 +94,7 @@ Este es un proyecto personal, pero si tienes sugerencias o encuentras errores, s
 Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](https://github.com/adrian-9559/Porfolio/blob/main/LICENSE) para más detalles.
 
 ## 📬 Contacto
-- **Email**: adrian.escribano.perez@gmail.com
+- **Email**: [adrian.escribano3@gmail.com](mailto:adrian.escribano3@gmail.com)
 - **LinkedIn**: [Mi perfil de LinkedIn](https://www.linkedin.com/in/adrián-escribano-pérez)
 
 ¡Gracias por visitar mi portafolio! ✨
