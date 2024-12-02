@@ -36,14 +36,16 @@ export default function ProjectDeveloped() {
                 <section className="flex justify-center">
                     <h2 className="text-3xl">Proyectos Desarrollados</h2>
                 </section>
-                <section className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-col-5 gap-4 h-full">
+                <section className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-col-5 gap-4">
                     {projects.developed ? projects.developed.map((project, index) => (
                         <Card key={index} className="p-2 bg-default-500 bg-opacity-50">
                             <CardHeader className="flex justify-center">
                                 <h2 className="text-2xl">{project.name}</h2>
                             </CardHeader>
                             <CardBody className="flex flex-col gap-4 justify-between">
-                                <section className="bg-cover bg-center w-full min-h-full relative rounded-xl" style={{ backgroundImage: `url(${project.image})` }}></section>
+                                <span className="bg-cover bg-center w-full rounded-xl">
+                                    <Image src={project.image} alt={project.name} className="rounded-xl" />
+                                </span>
                                 <section>
                                     <p>{project.description}</p>
                                 </section>
