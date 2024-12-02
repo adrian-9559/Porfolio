@@ -53,7 +53,14 @@ export const Navbar = () => {
                   )}
                   href={item.href}
                 >
-                  {item.label}
+                  <Link
+                    className={clsx(
+                      "text-foreground",
+                      { 'font-bold text-[#e138ffc4]': isActive }
+                    )}
+                  >
+                    {item.label}
+                  </Link>
                 </NextLink>
               </NavbarItem>
             );
