@@ -9,7 +9,7 @@ import {
 export default function Hero() {
 
   const calculateYearsOfExperience = () => {
-    const start = new Date("2024-07-01");
+    const start = new Date("2022-09-01");
     const now = new Date();
     const differenceInMilliseconds = now.getTime() - start.getTime();
     const millisecondsInYear = 1000 * 60 * 60 * 24 * 365.25;
