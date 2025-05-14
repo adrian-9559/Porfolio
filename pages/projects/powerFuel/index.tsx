@@ -1,5 +1,5 @@
 import DefaultLayout from '@/layouts/default';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Link, Accordion, AccordionItem, Image  } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Link, Accordion, AccordionItem, Image  } from "@heroui/react";
 import React from "react";
 import { GithubIcon } from "@/components/icons";
 

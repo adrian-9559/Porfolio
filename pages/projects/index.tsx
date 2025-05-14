@@ -1,6 +1,6 @@
 import DefaultLayout from "@/layouts/default";
 import Projects from "@/components/projects";
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/link";
 import { siteConfig } from "@/config/site";
 import { MailIcon } from "@/components/icons";
 

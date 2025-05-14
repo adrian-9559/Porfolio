@@ -1,4 +1,4 @@
-import { Image, Link, Chip } from '@nextui-org/react';
+import { Image, Link, Chip } from "@heroui/react";
 import { siteConfig } from "@/config/site";
 import {
   GithubIcon,

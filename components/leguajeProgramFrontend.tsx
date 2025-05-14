@@ -1,4 +1,4 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image, Card } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image, Card } from "@heroui/react";
 
 export default function LenguajeProgramFrontend() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();

@@ -1,4 +1,4 @@
-import { Link } from "@nextui-org/react";
+import { Link } from "@heroui/react";
 import { siteConfig } from "@/config/site";
 import {
     GithubIcon,

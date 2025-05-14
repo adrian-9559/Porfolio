@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, CardFooter, Link, Image, Chip } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Link, Image, Chip } from "@heroui/react";
 
 interface Project {
     name: string;

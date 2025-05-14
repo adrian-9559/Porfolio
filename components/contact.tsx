@@ -1,4 +1,4 @@
-import { Listbox, ListboxItem, Image } from "@nextui-org/react";
+import { Listbox, ListboxItem, Image } from "@heroui/react";
 import { siteConfig } from "@/config/site";
 import { GithubIcon, InstagramIcon, MailIcon, DiscordIcon, LinkedinIcon } from "@/components/icons";
 
