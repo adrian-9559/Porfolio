@@ -336,5 +336,23 @@
 				"description": "Follow me for updates"
 			}
 		}
+	},
+	"cookies": {
+		"title": "Cookie Consent",
+		"subtitle": "Privacy and data usage preferences",
+		"description": "We use cookies to improve the experience, analyze usage and provide personalized features. You can accept all cookies or choose to allow only necessary and functional ones.",
+		"necessary": "Necessary",
+		"necessary_desc": "essential for the website to function.",
+		"functional": "Functional",
+		"functional_desc": "remember user preferences.",
+		"analytics": "Analytics",
+		"analytics_desc": "collect anonymous usage statistics.",
+		"analytics_label": "Analytics",
+		"analytics_help": "Allows collecting anonymous data to improve the site",
+		"notice": "You can change these options at any time from your browser settings or from this site.",
+		"reject": "Reject",
+		"accept": "Accept",
+		"close": "Close",
+		"privacy_policy": "Privacy policy"
 	}
 }

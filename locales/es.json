@@ -336,5 +336,23 @@
 				"description": "Sígueme para updates"
 			}
 		}
+	},
+	"cookies": {
+		"title": "Consentimiento de Cookies",
+		"subtitle": "Preferencias de privacidad y uso de datos",
+		"description": "Utilizamos cookies para mejorar la experiencia, analizar el uso y ofrecer funcionalidades personalizadas. Puedes aceptar todas las cookies o elegir permitir solo las necesarias y las de funcionalidad.",
+		"necessary": "Necesarias",
+		"necessary_desc": "esenciales para el funcionamiento de la web.",
+		"functional": "Funcionales",
+		"functional_desc": "recuerdan preferencias de usuario.",
+		"analytics": "Analíticas",
+		"analytics_desc": "recogen estadísticas anónimas de uso.",
+		"analytics_label": "Analíticas",
+		"analytics_help": "Permite recopilar datos anónimos para mejorar el sitio",
+		"notice": "Puedes cambiar estas opciones en cualquier momento desde la configuración de tu navegador o desde este sitio.",
+		"reject": "Rechazar",
+		"accept": "Aceptar",
+		"close": "Cerrar",
+		"privacy_policy": "Política de privacidad"
 	}
 }
