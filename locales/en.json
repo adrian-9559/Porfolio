@@ -1,0 +1,340 @@
+{
+	"navbar": {
+		"home": "Home",
+		"about": "About Me",
+		"projects": "Projects",
+		"skills": "Skills",
+		"experience": "Experience",
+		"contact": "Contact"
+	},
+	"hero": {
+		"hello": "Hi, I'm",
+		"name": "Adrián Escribano",
+		"available": "✨ Available for work",
+		"role": "🚀 Full Stack Developer",
+		"desc1": "Full Stack Developer with {years} of experience, specialized in creating innovative digital solutions.",
+		"desc2": "My approach combines robust backend architectures with intuitive frontend interfaces, creating exceptional user experiences that drive business success.",
+		"download_cv": "📄 Download CV",
+		"completed_projects": "Completed projects"
+	},
+	"about": {
+		"title": "About Me",
+		"intro": "Hi! I'm Adrián Escribano, a Full Stack developer with a strong passion for technology, open source and innovation. I specialize in building robust, scalable and visually appealing digital products, taking care of every detail from backend architecture to frontend user experience.",
+		"stack": "I enjoy learning new technologies, solving complex challenges and collaborating in multidisciplinary teams. My main stack includes JavaScript, TypeScript, React, Next.js, Node.js, PHP, Java, C, Bash and MySQL, but I'm always open to exploring new tools and languages.",
+		"extra": "Besides coding, I'm motivated by sports, music, tech outreach and contributing to the open source community. I believe in continuous improvement, transparent communication and the positive impact of technology on society.",
+		"cta": "If you're looking for someone committed, resourceful, creative and eager to grow, don't hesitate to contact me! Always open to new challenges, projects and collaborations."
+	},
+	"footer": {
+		"rights": "All rights reserved."
+	},
+	"projects": {
+		"title": "Projects",
+		"subtitle": "A selection of projects that showcase my Full Stack experience, from modern web apps to low-level systems.",
+		"details_summary": "View more details ↓",
+		"view_details": "View Details",
+		"github": "GitHub",
+		"none": "No developed projects",
+		"list": {
+			"PowerFuel": {
+				"description": "Complete e-commerce platform with advanced product management and payment gateways.",
+				"detailed_description": "PowerFuel is an e-commerce web application built with modern technologies. It includes real-time inventory management, integration with multiple payment gateways, user authentication system, full admin panel and SEO optimization. It uses MySQL as a relational database to ensure referential integrity and optimal transactional performance.",
+				"badge": "E-commerce with MySQL • Integrated payment gateways"
+			},
+			"GymGO": {
+				"description": "Cross-platform app for comprehensive gym management with web, mobile and desktop versions.",
+				"detailed_description": "GymGO is a full ecosystem for gym management including: robust backend with RESTful API, native mobile app with React Native/Expo, and desktop application in C. It offers membership management, workout tracking, reservation system and real-time analytics."
+			},
+			"Minishell": {
+				"description": "Full implementation of a Unix-like shell in C following POSIX standards.",
+				"detailed_description": "Minishell is a reimplementation of bash written in C that handles builtin and external commands, pipes, redirections, environment variables, globbing and signals. Project developed at 42 Madrid following coding standards and best practices."
+			},
+			"Portfolio Profesional": {
+				"description": "Personal portfolio built with Next.js showcasing projects and technical skills.",
+				"detailed_description": "Modern responsive personal portfolio built with Next.js and TailwindCSS. Includes Framer Motion animations, SEO optimization, dark/light mode, dynamic projects section and working contact form. Deployed on Vercel with analytics integration."
+			},
+			"Presets UI": {
+				"description": "Reusable component library for React and Angular with interactive documentation.",
+				"detailed_description": "Collection of pre-designed and highly customizable UI components to speed up frontend development. Includes React components with TailwindCSS and Angular components with Bootstrap, interactive docs, live playground and theme system."
+			}
+		},
+		"PowerFuel": {
+			"view_github": "View on GitHub",
+			"demo": "Live Demo"
+		},
+		"status": {
+			"Completado": "Completed",
+			"Endesarrollo": "In development",
+			"Mantenimiento": "Maintenance"
+		},
+		"page_intro1": "A collection of projects I've developed throughout my professional career. Each project reflects my dedication, skills and passion for building applications.",
+		"page_intro2": "Click on any project to learn more about its development process, challenges overcome and technologies used.",
+		"contact_heading": "Have a project in mind?",
+		"contact_line": "I'm always looking for new challenges and opportunities to build innovative solutions. Let's talk about how I can help bring your next project to life.",
+		"contact_button": "Contact now",
+		"contact_note": "Typical response <strong>within 24-48h</strong>",
+		"cta_title": "Have a project in mind?",
+		"cta_desc": "I'm always looking for new challenges and opportunities to build innovative solutions. Let's talk about how I can help bring your next project to life.",
+		"cta_contact": "Contact Now"
+	},
+	"metrics": {
+		"title": "Metrics & Achievements",
+		"subtitle": "Data that reflects my dedication, professional growth and the impact of my work on real projects.",
+		"cards": [
+			{
+				"title": "Years of Experience",
+				"description": "Building innovative web solutions"
+			},
+			{
+				"title": "Completed Projects",
+				"description": "Web applications and systems developed"
+			},
+			{
+				"title": "Technologies Mastered",
+				"description": "Languages, frameworks and tools"
+			},
+			{
+				"title": "GitHub Commits",
+				"description": "Active contributions to projects"
+			},
+			{
+				"title": "Lines of Code",
+				"description": "Written across different projects"
+			},
+			{
+				"title": "Client Satisfaction",
+				"description": "Based on project feedback"
+			}
+		],
+		"areas_title": "Areas of Specialization",
+		"achievements": {
+			"list": [
+				{
+					"title": "Full Stack Development",
+					"description": "Specialization in end-to-end applications from frontend to backend"
+				},
+				{
+					"title": "Performance Optimization",
+					"description": "Average improvements of 40% in application load speeds"
+				},
+				{
+					"title": "Software Architecture",
+					"description": "Design of scalable and maintainable systems"
+				},
+				{
+					"title": "DevOps & Deployment",
+					"description": "Automation and continuous deployment in the cloud"
+				}
+			]
+		},
+		"goals_title": "Professional Goals 2024-2025",
+		"goals": [
+			{
+				"title": "Cloud Certifications",
+				"description": "AWS Solutions Architect"
+			},
+			{
+				"title": "Mobile Development",
+				"description": "Native apps with React Native"
+			},
+			{
+				"title": "AI & Machine Learning",
+				"description": "Integration of AI models"
+			}
+		]
+	},
+	"experience": {
+		"education_title": "Academic Education",
+		"experience_title": "Professional Experience",
+		"achievements": "Main achievements:",
+		"technologies": "Technologies:",
+		"knowledge_title": "Highlighted Technical Knowledge",
+		"education": {
+			"madridTelefonica": {
+				"title": "42 Madrid",
+				"subtitle": "Innovative programming campus",
+				"yearLabel": "Year attended:",
+				"years": "2025 - Present",
+				"affiliation": "Fundación Telefónica",
+				"description": "Currently enrolled in an intensive software development program focused on problem solving, team programming and autonomous learning.",
+				"website42": "🌐 Official 42 Madrid website",
+				"websiteNetwork": "🌍 Official 42 Network website"
+			},
+			"desarrolloAplicacionesWeb": {
+				"alt": "Logo de Desarrollo de Aplicaciones Web",
+				"title": "Web Application Development",
+				"subtitle": "Higher Vocational Training",
+				"yearLabel": "Year attended:",
+				"years": "2022 - 2024",
+				"schoolAlt": "Logo of IES Luis Braille",
+				"school": "IES Luis Braille - Coslada",
+				"description": "During my Higher Vocational Training in Web Application Development I acquired advanced knowledge in programming, databases and web development."
+			},
+			"sistemasMicroinformaticos": {
+				"alt": "Logo de Sistemas Microinformaticos",
+				"title": "Microcomputer Systems and Networks",
+				"subtitle": "Intermediate Vocational Training",
+				"yearLabel": "Year attended:",
+				"years": "2020 - 2022",
+				"schoolAlt": "Logo of IES Luis Braille",
+				"school": "IES Luis Braille - Coslada",
+				"description": "I completed an Intermediate Vocational Training in Microcomputer Systems and Networks, gaining essential knowledge in hardware, networks and operating systems."
+			}
+		}
+	},
+	"skills": {
+		"title": "Technical Skills",
+		"subtitle": "A comprehensive view of the technologies I master and use to build innovative and scalable solutions.",
+		"categories": [
+			{
+				"title": "Frontend Development",
+				"description": "Technologies to build modern, responsive user interfaces"
+			},
+			{
+				"title": "Backend Development",
+				"description": "Building robust APIs and scalable systems"
+			},
+			{
+				"title": "Systems & DevOps",
+				"description": "System administration, containers and deployment"
+			},
+			{
+				"title": "Programming Languages",
+				"description": "Languages for different paradigms and use cases"
+			}
+		],
+		"tech": {
+			"React": {
+				"name": "React",
+				"description": "Building complex SPAs with hooks, context and performance optimizations"
+			},
+			"Next_js": {
+				"name": "Next.js",
+				"description": "SSR, SSG, App Router, API routes and advanced optimizations"
+			},
+			"TailwindCSS": {
+				"name": "TailwindCSS",
+				"description": "Responsive design, reusable components and utility-first CSS"
+			},
+			"Angular": {
+				"name": "Angular",
+				"description": "Enterprise apps with RxJS, services and advanced routing"
+			},
+			"Node_js": {
+				"name": "Node.js",
+				"description": "RESTful APIs, microservices and real-time applications"
+			},
+			"Express_js": {
+				"name": "Express.js",
+				"description": "Custom middleware, JWT auth and MVC architecture"
+			},
+			"Java": {
+				"name": "Java",
+				"description": "Enterprise applications, Spring Framework and OOP"
+			},
+			"PHP": {
+				"name": "PHP",
+				"description": "Web backend development, Laravel and OOP"
+			},
+			"SpringBoot": {
+				"name": "SpringBoot",
+				"description": "Framework for building Java apps, microservice oriented"
+			},
+			"Oracle_SQL": {
+				"name": "Oracle SQL",
+				"description": "Relational databases, query optimization and ACID transactions"
+			},
+			"MySQL": {
+				"name": "MySQL",
+				"description": "Relational databases, query optimization and ACID transactions"
+			},
+			"Linux_Unix": {
+				"name": "Linux/Unix",
+				"description": "Server administration, bash scripting and service configuration"
+			},
+			"Windows_Server": {
+				"name": "Windows Server",
+				"description": "Windows server administration, Active Directory and PowerShell"
+			},
+			"Git": {
+				"name": "Git",
+				"description": "Advanced version control, collaboration workflows and CI/CD"
+			},
+			"Nginx": {
+				"name": "Nginx",
+				"description": "Reverse proxy configuration, load balancing and SSL"
+			},
+			"JavaScript": {
+				"name": "JavaScript",
+				"description": "ES6+, async programming, closures and design patterns"
+			},
+			"TypeScript": {
+				"name": "TypeScript",
+				"description": "Superset of JavaScript, static typing and advanced tooling"
+			},
+			"C": {
+				"name": "C",
+				"description": "Systems programming, memory management and complex algorithms"
+			},
+			"Bash": {
+				"name": "Bash",
+				"description": "Task automation, deployment scripts and administration"
+			}
+		},
+		"levels": {
+			"advanced": "Advanced",
+			"intermediate": "Intermediate",
+			"basic": "Basic"
+		},
+		"additional": {
+			"title": "Additional Competencies",
+			"uiux": {
+				"title": "UI/UX Design",
+				"desc": "Figma, responsive design, user experience"
+			},
+			"performance": {
+				"title": "Performance",
+				"desc": "Web optimization, lazy loading, code splitting"
+			},
+			"security": {
+				"title": "Security",
+				"desc": "JWT, OAuth, HTTPS, data sanitization"
+			},
+			"mobile": {
+				"title": "Mobile Dev",
+				"desc": "React Native, Expo, hybrid apps"
+			},
+			"testing": {
+				"title": "Testing",
+				"desc": "Jest, unit and integration testing"
+			},
+			"analytics": {
+				"title": "Analytics",
+				"desc": "Google Analytics, performance metrics"
+			}
+		}
+	},
+	"contact": {
+		"title": "Connect with me",
+		"subtitle": "Always open to new opportunities and collaborations",
+		"imageAlt": "Adrián Escribano Pérez - Full Stack Developer",
+		"cta_button": "📧 Send a message",
+		"cta_note": "I usually reply within 24 hours",
+		"social": {
+			"LinkedIn": {
+				"description": "Let's connect professionally"
+			},
+			"GitHub": {
+				"description": "Check my projects"
+			},
+			"Email": {
+				"description": "Let's talk about your project"
+			},
+			"Discord": {
+				"description": "Direct chat"
+			},
+			"Instagram": {
+				"description": "Follow me for updates"
+			}
+		}
+	}
+}

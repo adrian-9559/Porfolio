@@ -1,60 +1,94 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image, Card } from "@heroui/react";
-
 export default function LenguajeProgramBackend() {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-    return (
-        <section className="w-full h-auto">
-            <Button key="Lenguaje Programación Backend" onPress={onOpen} className="flex flex-col gap-2 m-auto h-full w-full bg-default-500 bg-opacity-50 p-4 rounded-3xl justify-between">
-                <div className="flex flex-col">
-                    <div className="flex justify-center">
-                        <h5 className="text-2xl">Backend</h5>
-                    </div>
-                </div>
-                <div className="w-full flex items-center flex-col">
-                    <div className="flex gap-4 justify-center items-center w-5/6">
-                        <Card className="w-full bg-default-500 bg-opacity-0 shadow-none">
-                            <Image alt="logo java" src="/images/Java_logo.png"></Image>
-                        </Card>
-                        <Card className="w-full bg-default-500 bg-opacity-0 shadow-none">
-                            <Image alt="logo php" src="/images/PHP_logo.png"></Image>
-                        </Card>
-                        <Card className="w-full bg-default-500 bg-opacity-0 shadow-none">
-                            <Image alt="logo nodejs" src="/images/nodejs_logo.png"></Image>
-                        </Card>
-                    </div>
-                </div>
-                <div>
-                    <p className="text-default-500 animate-pulse">Pulsa para más</p>
-                </div>
-            </Button>
-            <Modal isOpen={isOpen} onClose={onOpenChange} backdrop="blur" size="xl" className="overflow-y-auto max-h-screen md:mt-32 xl:mt-0">
-                <ModalContent>
-                    {(onClose) => (
-                        <section>
-                            <ModalHeader className="border-b-[1px] border-default-300">
-                                <h5 className="text-lg xl:text-2xl">Leguajes de Programación de Backend</h5>
-                            </ModalHeader>
-                            <ModalBody>
-                                <section className="flex flex-col gap-4 text-sm xl:text-base">
-                                    <p>
-                                        En el caso de Java, he trabajado en la creación de aplicaciones robustas y escalables, implementando lógica compleja y utilizando frameworks como Spring Boot para optimizar la productividad y estructuración del código.
-                                    </p>
-                                    <p>
-                                        Por otro lado, con PHP he desarrollado aplicaciones dinámicas, aplicando buenas prácticas de programación como el uso del patrón MVC para garantizar un código modular y mantenible.
-                                    </p>
-                                    <p>
-                                        Además, con Node.js he creado aplicaciones orientadas a eventos y altamente eficientes, especialmente para entornos que requieren manejo de datos en tiempo real. He utilizado frameworks como Express.js para desarrollar APIs RESTful, facilitando la integración con frontend y otras aplicaciones.
-                                    </p>
-                                </section>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button key="Cerrar modal Lenguaje Programación Backend" onPress={onClose} color="danger" className="bg-opacity-45">Cerrar</Button>
-                            </ModalFooter>
-                        </section>
-                    )}
-                </ModalContent>
-            </Modal>
-        </section>
-    )
+	return (
+		<section className="w-full h-full flex flex-col gap-6">
+			<div className="flex flex-col gap-6 w-full items-center justify-center bg-default-500 bg-opacity-50 p-3 rounded-3xl">
+				<h3 className="text-2xl">Programación Backend</h3>
+			</div>
+			<div className="flex flex-col gap-6 w-full items-center px-4">
+				<div className="flex flex-col gap-6 w-full items-start">
+					<p className="text-lg leading-relaxed">
+						Tengo experiencia trabajando con diversos lenguajes de programación y frameworks backend, lo que me ha permitido crear soluciones robustas y escalables para diferentes tipos de proyectos.
+					</p>
+				</div>
+				<div className="grid xl:flex gap-6 w-full justify-center">
+					<section className="flex flex-col gap-3 w-full">
+						<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl h-full">
+							<h5 className="text-xl underline text-center">Lenguajes de Programación</h5>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+									<li>JavaScript</li>
+									<li>TypeScript</li>
+									<li>PHP</li>
+									<li>C</li>
+								</ul>
+								<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+									<li>Java</li>
+									<li>Bash</li>
+								</ul>
+							</div>
+						</section>
+					</section>
+					<section className="flex flex-col gap-3 w-full">
+						<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl h-full">
+							<h5 className="text-xl underline text-center">Frameworks Backend</h5>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+									<li>Node.js</li>
+									<li>Express.js</li>
+								</ul>
+								<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+									<li>Laravel</li>
+									<li>SpringBoot</li>
+								</ul>
+							</div>
+						</section>
+					</section>
+					<section className="flex flex-col gap-3 w-full">
+						<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl h-full">
+							<h5 className="text-xl underline text-center">Bases de Datos</h5>
+							<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+								<li>MySQL</li>
+								<li>Oracle SQL</li>
+							</ul>
+						</section>
+					</section>
+				</div>
+				<div className="w-full">
+					<h3 className="text-2xl text-center">APIs REST</h3>
+					<div className="w-full items-center px-5 flex flex-col gap-6">
+						<section className="w-full">
+							<p>
+								He trabajado en el diseño y desarrollo de APIs RESTful, implementando autenticación y autorización, documentación, integración con bases de datos y pruebas. También he optimizado el rendimiento y la seguridad de las APIs, gestionando errores y excepciones, y aplicando buenas prácticas de desarrollo.
+							</p>
+						</section>
+						<section className="flex flex-col gap-3 w-full">
+							<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl h-full">
+								<h5 className="text-xl underline text-center">Características de APIs REST</h5>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+										<li>Diseño y desarrollo de APIs RESTful</li>
+										<li>Autenticación y autorización (JWT, OAuth)</li>
+										<li>Documentación de APIs</li>
+										<li>Integración con bases de datos</li>
+										<li>Pruebas de APIs</li>
+										<li>Implementación de controladores y servicios</li>
+										<li>Gestión de errores y excepciones</li>
+									</ul>
+									<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+										<li>Optimización de rendimiento</li>
+										<li>Seguridad en APIs</li>
+										<li>Versionado de APIs</li>
+										<li>Implementación de CORS</li>
+										<li>Implementación de paginación y filtrado</li>
+										<li>Implementación de caché</li>
+										<li>Implementación de pruebas unitarias y de integración</li>
+									</ul>
+								</div>
+							</section>
+						</section>
+					</div>
+				</div>
+			</div>
+		</section>
+	)
 }

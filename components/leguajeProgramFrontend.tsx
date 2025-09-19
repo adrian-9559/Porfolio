@@ -1,60 +1,84 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image, Card } from "@heroui/react";
-
 export default function LenguajeProgramFrontend() {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    return (
-        <section className="w-full h-auto">
-            <Button key="Lenguaje Programación Frontend" onPress={onOpen} className="m-auto flex flex-col gap-2 h-full w-full bg-default-500 bg-opacity-50 p-4 rounded-3xl justify-between">
-                <div className="flex flex-col">
-                    <div className="flex justify-center">
-                        <h5 className="text-2xl">Frontend</h5>
-                    </div>
-                </div>
-                <div className="w-full flex items-center flex-col">
-                    <div className="flex gap-4 justify-center items-center w-5/6">
-                        <Card className="w-full bg-default-500 bg-opacity-0 shadow-none">
-                            <Image alt="logo JavaScript" src="/images/JavaScript_logo.png"></Image>
-                        </Card>
-                        <Card className="w-full bg-default-500 bg-opacity-0 shadow-none">
-                            <Image alt="logo TypeScript" src="/images/Typescript_logo.png"></Image>
-                        </Card>
-                        <Card className="w-full bg-default-500 bg-opacity-0 shadow-none">
-                            <Image alt="logo HTML" src="/images/html_logo.png" className="w-auto h-auto"></Image>
-                        </Card>
-                    </div>
-                </div>
-                <div>
-                    <p className="text-default-500 animate-pulse">Pulsa para más</p>
-                </div>
-            </Button>
-            <Modal isOpen={isOpen} onClose={onOpenChange} backdrop="blur" size="xl" className="overflow-y-auto max-h-screen md:mt-32 xl:mt-0">
-                <ModalContent>
-                    {(onClose) => (
-                        <section className="h-auto">
-                            <ModalHeader className="border-b-[1px] border-default-300">
-                                <h5 className="text-lg xl:text-2xl">Leguajes de Programación de Frontend</h5>
-                            </ModalHeader>
-                            <ModalBody>
-                                <section className="flex flex-col gap-6 text-sm xl:text-base">
-                                    <p>
-                                        Mi experiencia en desarrollo frontend incluye un amplio uso de JavaScript, con el cual he diseñado interfaces dinámicas y funcionalidades interactivas que enriquecen la experiencia del usuario. Gracias a TypeScript, he añadido mayor robustez a mis proyectos, asegurando un código más estructurado y fiable mediante el uso de tipado estático y herramientas avanzadas de desarrollo.
-                                    </p>
-                                    <p>
-                                        Además, he trabajado intensivamente con HTML para construir estructuras semánticas y bien organizadas, complementadas con diferentes herramientas de estilado para lograr diseños responsivos y atractivos.
-                                    </p>
-                                    <p>
-                                        Estas tecnologías han sido esenciales en la creación de aplicaciones web enfocadas en la usabilidad, accesibilidad y rendimiento, permitiéndome desarrollar soluciones que combinan diseño visual con funcionalidad técnica de alto nivel.
-                                    </p>
-                                </section>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button key="Cerrar modal Lenguaje Programación Frontend" onPress={onClose} color="danger" className="bg-opacity-45">Cerrar</Button>
-                            </ModalFooter>
-                        </section>
-                    )}
-                </ModalContent>
-            </Modal>
-        </section>
-    )
+	return (
+		<section className="w-full h-full flex flex-col gap-6">
+			<div className="flex flex-col gap-6 w-full items-center justify-center bg-default-500 bg-opacity-50 p-3 rounded-3xl">
+				<h3 className="text-2xl">Programación Frontend</h3>
+			</div>
+			<div className="flex flex-col gap-6 w-full items-center px-4">
+				<div className="flex flex-col gap-6 w-full items-start">
+					<p className="text-lg leading-relaxed">
+						Tengo experiencia trabajando con diversos lenguajes de programación y frameworks frontend, lo que me ha permitido crear soluciones robustas y escalables para diferentes tipos de proyectos.
+					</p>
+				</div>
+				<div className="grid xl:flex gap-6 w-full justify-center">
+					<section className="flex flex-col gap-3 w-full">
+						<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl h-full">
+							<h5 className="text-xl underline text-center">Lenguajes de Programación</h5>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+									<li>JavaScript</li>
+									<li>TypeScript</li>
+									<li>HTML</li>
+								</ul>
+								<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+									<li>CSS</li>
+								</ul>
+							</div>
+						</section>
+					</section>
+					<section className="flex flex-col gap-3 w-full">
+						<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl h-full">
+							<h5 className="text-xl underline text-center">Frameworks de Desarrollo</h5>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+									<li>React</li>
+									<li>Next.js</li>
+								</ul>
+								<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+									<li>Angular</li>
+									<li>SpringBoot</li>
+								</ul>
+							</div>
+						</section>
+					</section>
+					<section className="flex flex-col gap-3 w-full">
+						<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl h-full">
+							<h5 className="text-xl underline text-center">Frameworks de Diseño</h5>
+							<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+								<li>Tailwind CSS</li>
+								<li>Bootstrap</li>
+							</ul>
+						</section>
+					</section>
+				</div>
+				<div className="w-full flex flex-col gap-6 items-center">
+					<h3 className="text-2xl text-center font-semibold">Gestión de Servicios</h3>
+					<div className="w-full flex flex-col gap-6 items-center px-5">
+						<section className="w-full">
+							<p className="text-lg leading-relaxed text-justify">
+								He trabajado en la gestión de servicios con conexiones a APIs RESTful, implementando autenticación y autorización, documentación, integración con bases de datos y pruebas. Además, he optimizado el rendimiento y la seguridad de las APIs, gestionando errores y excepciones, y aplicando buenas prácticas de desarrollo para garantizar soluciones eficientes y escalables.
+							</p>
+						</section>
+					</div>
+					<div className="w-full flex gap-6 items-center px-5">
+						<div className="w-full flex flex-col gap-6 items-center">
+							<section className="w-full flex gap-6">
+								<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl">
+									<h5 className="text-xl underline text-center">Conexión con API</h5>
+									<ul className="list-disc list-inside flex flex-col gap-1 items-start text-base">
+										<li>Axios</li>
+										<li>Fetch API</li>
+										<li>REST API</li>
+									</ul>
+								</section>
+								<section className="flex flex-col gap-3 w-full bg-default-500 bg-opacity-50 p-5 rounded-3xl">
+								</section>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	)
 }
