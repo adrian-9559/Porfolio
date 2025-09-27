@@ -1,29 +1,19 @@
-import Hero from "@/components/Hero";
-import Metrics from "@/components/Metrics";
-import Skills from "@/components/Skills";
-import Contact from "@/components/contact";
-import Projects from "@/components/projects";
+import { useAppContext } from "@/config/appContext";
 import DefaultLayout from "@/layouts/default";
 
+import dataLenguageHome from "@/locales/home/i18n.json";
+
 export default function IndexPage() {
+	const { language } = useAppContext();
 	return (
 		<DefaultLayout>
-			<section className="grid gap-16 mx-auto lg:mx-94">
-				<section className="grid 2xl:flex gap-8 justify-center">
-					<section className="grid gap-20">
-						<section className="flex flex-col w-auto xl:gap-28 2xl:gap-40 md:mx-16 lg:mx-32">
-							<Hero />
-							<Metrics />
-							<Skills />
-						</section>
-						<section className="w-auto xl:mx-20">
-							<Projects />
-						</section>
-					</section>
-					<section className="w-auto 2xl:mr-20 flex justify-center">
-						<Contact />
-					</section>
-				</section>
+			<section className="min-h-screen flex flex-col justify-center">
+				<div className="bg-violet-600/10 dark:bg-violet-800/30 p-6 rounded-lg shadow-lg dark:shadow-gray-100/20">
+					<h1 className="text-center text-4xl font-bold mb-4">{dataLenguageHome[language].welcome}</h1>
+					<p className="text-lg max-w-xl">
+						{dataLenguageHome[language].subtitle}
+					</p>
+				</div>
 			</section>
 		</DefaultLayout>
 	);

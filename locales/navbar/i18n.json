@@ -1,0 +1,14 @@
+{
+	"es": {
+		"tooltips": {
+			"selectLanguage": "Seleccionar idioma",
+			"themeSwitch": "Cambiar tema"
+		}
+	},
+	"en": {
+		"tooltips": {
+			"selectLanguage": "Select language",
+			"themeSwitch": "Switch theme"
+		}
+	}
+}

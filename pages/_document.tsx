@@ -5,14 +5,13 @@ import { fontSans } from "@/config/fonts";
 
 export default function Document() {
 	return (
-		<Html lang="es" suppressHydrationWarning>
+		<Html lang="es">
 			<Head />
 			<body
 				className={clsx(
 					"min-h-screen bg-background font-sans antialiased",
-					fontSans.variable
+					fontSans.variable,
 				)}
-				suppressHydrationWarning
 			>
 				<Main />
 				<NextScript />

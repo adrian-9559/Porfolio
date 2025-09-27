@@ -1,100 +1,55 @@
-# 📂 Mi Portafolio Personal
+# Next.js & HeroUI Template
 
-¡Bienvenido a mi portafolio personal! Este repositorio contiene el código fuente de mi portafolio, donde presento mis habilidades, proyectos y experiencia profesional.
+This is a template for creating applications using Next.js 14 (pages directory) and HeroUI (v2).
 
-## 🌐 Enlace al portafolio
+[Try it on CodeSandbox](https://githubbox.com/heroui-inc/next-pages-template)
 
-Puedes visitar mi portafolio en línea aquí: [adrian9559.site](https://adrian9559.site/).
+> Note: Since Next.js 14, the pages router is recommend migrating to the [new App Router](https://nextjs.org/docs/app) to leverage React's latest features
+>
+> Read more: [Pages Router](https://nextjs.org/docs/pages)
 
-## 📖 Contenido del repositorio
+## Technologies Used
 
-- **/page/**: Contiene las páginas de la web.
-- **/components/**: Contiene partes del código que luego se ejecutan en las páginas de la web.
-- **/config/**: Contiene la configuración de la web.
-- **/public/**: Archivos de imagenes, documentos y fuentes personalizadas.
-- **/style/**: Contiene la configuración de los estilos de TailwindCSS y estilos personalizados.
-- **/layout/**: Contiene las plantillas que se ejecutan en todas las páginas.
+- [Next.js 14](https://nextjs.org/docs/getting-started)
+- [HeroUI](https://heroui.com)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Tailwind Variants](https://tailwind-variants.org)
+- [TypeScript](https://www.typescriptlang.org)
+- [Framer Motion](https://www.framer.com/motion)
+- [next-themes](https://github.com/pacocoursey/next-themes)
 
-## 🛠️ Tecnologías utilizadas
+## How to Use
 
-Estas son las tecnologías que utiliza la aplicación:
-- Tecnologías Básicas: HTML, CSS, TypeScript.
-- Frameworks: [TailwindCSS](https://tailwindcss.com/), NextJS, [React](https://es.react.dev/).
-- Biblioteca de componentes: [NextUI](https://nextui.org/).
-- Gestión del código: [Github](https://github.com/).
-- Hosting del proyecto: [Vercel](https://vercel.com/).
-- Dominio: [Hostinger](https://www.hostinger.es/).
-
-## 🚀 Características
-
-- **Diseño Responsive**: Adaptable a dispositivos móviles, tabletas y computadoras.
-- **Proyectos destacados**: Muestra los trabajos más relevantes.
-- **Contacto directo**: Enlace a redes sociales, canales de contacto, curriculum descargable y enlaces a webs de contratación de mis servicios.
-
-## 📋 Instrucciones para clonar y ejecutar
-
-### 1. Clonar el repositorio del proyecto
+To create a new project based on this template using `create-next-app`, run the following command:
 
 ```bash
-https://github.com/adrian-9559/Porfolio
+npx create-next-app -e https://github.com/heroui-inc/next-pages-template
 ```
 
-### 2. Navegar al directorio del proyecto
+### Install dependencies
 
-```bash
-cd Porfolio
-```
-
-### 3. Instalar las dependencias
+You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
 
 ```bash
 npm install
 ```
 
-### 4. Iniciar el proyecto en modo desarrollo
+### Run the development server
 
 ```bash
 npm run dev
 ```
 
-### 5. Visitar el proyecto en el navegador
+### Setup pnpm (optional)
 
-[Porfolio](http://localhost:3000)
-
-## 📋 Instrucciones para compilar y poner en producción el proyecto
-
-### 1. Compilar los estilos de TailwindCSS
+If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
 
 ```bash
-npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+public-hoist-pattern[]=*@heroui/*
 ```
 
-### 2. Compilar el proyecto
+After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
 
-```bash
-npm run build
-```
+## License
 
-### 3. Iniciar el proyecto
-
-```
-npm run start
-```
-
-### 4. Entrar al proyecto desde el navegador
-
-[Porfolio](http://localhost:3000)
-
-
-## 🤝 Contribuciones
-Este es un proyecto personal, pero si tienes sugerencias o encuentras errores, siéntete libre de abrir un **issue** o enviar un **pull request**.
-¡Las contribuciones son bienvenidas!
-
-## ⚖️ Licencia
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](https://github.com/adrian-9559/Porfolio/blob/main/LICENSE) para más detalles.
-
-## 📬 Contacto
-- **Email**: [adrian.escribano3@gmail.com](mailto:adrian.escribano3@gmail.com)
-- **LinkedIn**: [Mi perfil de LinkedIn](https://www.linkedin.com/in/adrián-escribano-pérez)
-
-¡Gracias por visitar mi portafolio! ✨
+Licensed under the [MIT license](https://github.com/heroui-inc/next-pages-template/blob/main/LICENSE).
