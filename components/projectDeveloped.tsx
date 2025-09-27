@@ -134,11 +134,6 @@ export default function ProjectDeveloped() {
 					initial="hidden"
 					animate="visible"
 				>
-					<div className="col-span-full text-center mb-6">
-						<p className="text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-							{t('projects.subtitle', 'Una selección de proyectos que demuestran mi experiencia en desarrollo Full Stack, desde aplicaciones web modernas hasta sistemas de bajo nivel.')}
-						</p>
-					</div>
 					{projects.developed ? projects.developed.map((project, index) => (
 						<motion.div key={index} variants={cardVariants}>
 							<Card className={`h-full lg:backdrop-blur-lg border transition-perf hover:shadow-2xl hover:-translate-y-1 ${project.name === "PowerFuel"
