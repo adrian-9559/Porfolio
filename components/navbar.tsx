@@ -1,30 +1,29 @@
 import {
-	Navbar as NextUINavbar,
-	NavbarContent,
-	NavbarBrand,
-	NavbarItem,
-	NavbarMenuToggle,
-	NavbarMenu,
-	NavbarMenuItem
-} from "@heroui/navbar";
-import { Link } from "@heroui/link";
-import { link as linkStyles } from "@heroui/theme";
-import NextLink from "next/link";
-import clsx from "clsx";
-import React from "react";
-import { useRouter } from 'next/router';
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
-import dynamic from 'next/dynamic';
-
-const LanguageSwitcher = dynamic(() => import('./LanguageSwitcher'), { ssr: false });
-import {
+	DiscordIcon,
 	GithubIcon,
 	InstagramIcon,
-	DiscordIcon,
 	LinkedinIcon,
 	Logo
 } from "@/components/icons";
+import { ThemeSwitch } from "@/components/theme-switch";
+import { siteConfig } from "@/config/site";
+import { Link } from "@heroui/link";
+import {
+	NavbarBrand,
+	NavbarContent,
+	NavbarItem,
+	NavbarMenu,
+	NavbarMenuItem,
+	NavbarMenuToggle,
+	Navbar as NextUINavbar
+} from "@heroui/navbar";
+import clsx from "clsx";
+import dynamic from 'next/dynamic';
+import NextLink from "next/link";
+import { useRouter } from 'next/router';
+import React from "react";
+
+const LanguageSwitcher = dynamic(() => import('./LanguageSwitcher'), { ssr: false });
 
 import { useI18n } from "@/utils/i18n";
 
@@ -43,11 +42,12 @@ export const Navbar = () => {
 	}
 
 	return (
-		<NextUINavbar maxWidth="xl" position="sticky" className="fixed">
+		<NextUINavbar maxWidth="xl" position="sticky" className="fixed site-navbar">
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
 				<NavbarMenuToggle
 					aria-label={isMenuOpen ? "Close menu" : "Open menu"}
 					className="xl:hidden"
+					onClick={() => setIsMenuOpen(v => !v)}
 				/>
 				<NavbarBrand className="gap-3 max-w-fit">
 					<NextLink className="flex justify-start items-center gap-1" href="/">
@@ -99,33 +99,37 @@ export const Navbar = () => {
 					</div>
 				</NavbarItem>
 			</NavbarContent>
-			<NavbarMenu>
-				{siteConfig.navItems.map((item, index) => {
-					const isActive = router.pathname === item.href;
+			{/* Mobile menu: rendered only when toggled to avoid unnecessary DOM on SSR */}
+			{isMenuOpen && (
+				<NavbarMenu>
+					{siteConfig.navItems.map((item, index) => {
+						const isActive = router.pathname === item.href;
 
-					return (
-						<NavbarMenuItem key={`${item.href}-${index}`}>
-							<NextLink
-								className={clsx(
-									"w-full",
-									{ 'font-bold text-[#9b27b073]': isActive }
-								)}
-								href={item.href}
-							>
-								<Link
+						return (
+							<NavbarMenuItem key={`${item.href}-${index}`}>
+								<NextLink
 									className={clsx(
-										"text-foreground",
-										{ 'font-bold text-[#e138ffc4]': isActive }
+										"w-full",
+										{ 'font-bold text-[#9b27b073]': isActive }
 									)}
-									size="lg"
+									href={item.href}
+									onClick={() => setIsMenuOpen(false)}
 								>
-									{t(`navbar.${item.href === '/' ? 'home' : item.href.replace('/', '')}`, item.label)}
-								</Link>
-							</NextLink>
-						</NavbarMenuItem>
-					);
-				})}
-			</NavbarMenu>
+									<Link
+										className={clsx(
+											"text-foreground",
+											{ 'font-bold text-[#e138ffc4]': isActive }
+										)}
+										size="lg"
+									>
+										{t(`navbar.${item.href === '/' ? 'home' : item.href.replace('/', '')}`, item.label)}
+									</Link>
+								</NextLink>
+							</NavbarMenuItem>
+						);
+					})}
+				</NavbarMenu>
+			)}
 		</NextUINavbar>
 	);
 };
