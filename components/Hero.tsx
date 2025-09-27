@@ -67,16 +67,16 @@ export default function Hero() {
 				}}
 			>
 				<div className="relative">
-					<div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full blur-lg opacity-30 animate-pulse"></div>
+					<div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full opacity-30 lg:blur-lg lg:animate-pulse"></div>
 					<Image
-						className="relative rounded-full w-40 lg:w-72 shadow-2xl shadow-purple-500/30 border-4 border-gradient-to-r from-purple-500 to-blue-500 transition-transform duration-300"
+						className="relative rounded-full w-40 lg:w-72 shadow-2xl shadow-purple-500/30 border-4 border-gradient-to-r from-purple-500 to-blue-500 transition-perf"
 						alt="Adrián Escribano Pérez - Desarrollador Full Stack"
 						src="/images/userIMG.png"
 						style={{
 							transform: `translateY(${scrollY * 0.1}px) rotate(${scrollY * 0.05}deg)`
 						}}
 					/>
-					<div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-400 rounded-full border-4 border-white dark:border-gray-900 animate-pulse"></div>
+					<div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-400 rounded-full border-4 border-white dark:border-gray-900 lg:animate-pulse"></div>
 				</div>
 			</motion.section>
 
@@ -135,7 +135,7 @@ export default function Hero() {
 				animate={{ y: 0, opacity: 1 }}
 				transition={{ duration: 0.8, delay: 0.6 }}
 			>
-				<div className="bg-white/60 dark:bg-white/10 backdrop-blur-lg rounded-2xl p-6 lg:p-8 border border-gray-200/50 dark:border-white/20 shadow-xl">
+				<div className="bg-white/60 dark:bg-white/10 lg:backdrop-blur-lg rounded-2xl p-6 lg:p-8 border border-gray-200/50 dark:border-white/20 shadow-xl">
 					<p className='text-lg lg:text-xl leading-relaxed text-gray-800 dark:text-gray-100'>
 						{t('hero.desc1', '💻 Desarrollador Full Stack con {years} de experiencia especializado en crear soluciones digitales innovadoras.').replace('{years}', calculateYearsOfExperience())}
 					</p>
@@ -160,7 +160,7 @@ export default function Hero() {
 								as={Link}
 								href='/documents/CSV-Adrian-Escribano-Perez.pdf'
 								download
-								className="bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg border-2 border-transparent hover:border-white/20"
+								className="bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-perf text-lg border-2 border-transparent hover:border-white/20"
 								size="lg"
 							>
 								{t('hero.download_cv', '📄 Descargar CV')}
@@ -182,7 +182,7 @@ export default function Hero() {
 										isExternal
 										href={social.href}
 										title={social.title}
-										className={`text-gray-400 ${social.color} transition-all duration-300 p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20`}
+										className={`text-gray-400 ${social.color} transition-perf p-2 rounded-full bg-white/10 lg:backdrop-blur-sm hover:bg-white/20`}
 									>
 										<social.icon className="w-6 h-6" />
 									</Link>
@@ -198,7 +198,7 @@ export default function Hero() {
 						animate={{ y: 0, opacity: 1 }}
 						transition={{ duration: 0.8, delay: 1 }}
 					>
-						<div className="bg-gradient-to-r from-purple-200/60 to-blue-200/60 dark:from-purple-500/20 dark:to-blue-500/20 backdrop-blur-lg rounded-xl p-4 border border-purple-200/50 dark:border-white/10">
+						<div className="bg-gradient-to-r from-purple-200/60 to-blue-200/60 dark:from-purple-500/20 dark:to-blue-500/20 lg:backdrop-blur-lg rounded-xl p-4 border border-purple-200/50 dark:border-white/10">
 							<div className="text-2xl font-bold text-gray-900 dark:text-white">1+</div>
 							<div className="text-sm text-gray-600 dark:text-gray-300">{t('metrics.cards.0.title', 'Años de experiencia')}</div>
 						</div>
@@ -215,8 +215,8 @@ export default function Hero() {
 			</motion.section>
 
 			{/* Floating elements for visual appeal */}
-			<div className="absolute top-10 right-10 w-20 h-20 bg-purple-500/10 rounded-full blur-xl animate-pulse"></div>
-			<div className="absolute bottom-20 left-10 w-16 h-16 bg-blue-500/10 rounded-full blur-xl animate-pulse delay-300"></div>
+			<div className="absolute top-10 right-10 w-20 h-20 bg-purple-500/10 rounded-full lg:blur-xl lg:animate-pulse"></div>
+			<div className="absolute bottom-20 left-10 w-16 h-16 bg-blue-500/10 rounded-full lg:blur-xl lg:animate-pulse delay-300"></div>
 		</motion.section>
 	);
 }

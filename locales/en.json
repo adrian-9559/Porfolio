@@ -194,12 +194,16 @@
 				"description": "Building robust APIs and scalable systems"
 			},
 			{
-				"title": "Systems & DevOps",
-				"description": "System administration, containers and deployment"
+				"title": "Operating Systems",
+				"description": "System administration, containers, and application deployment"
+			},
+			{
+				"title": "Networks & Services",
+				"description": "Network configuration, web servers, and version control management"
 			},
 			{
 				"title": "Programming Languages",
-				"description": "Languages for different paradigms and use cases"
+				"description": "Programming languages for different paradigms and use cases"
 			}
 		],
 		"tech": {
@@ -247,6 +251,10 @@
 				"name": "MySQL",
 				"description": "Relational databases, query optimization and ACID transactions"
 			},
+			"SQL_Server": {
+				"name": "SQL Server",
+				"description": "SQL Server database administration and queries"
+			},
 			"Linux_Unix": {
 				"name": "Linux/Unix",
 				"description": "Server administration, bash scripting and service configuration"
@@ -255,6 +263,10 @@
 				"name": "Windows Server",
 				"description": "Windows server administration, Active Directory and PowerShell"
 			},
+			"Bash": {
+				"name": "Bash",
+				"description": "Task automation, deployment scripts and administration"
+			},
 			"Git": {
 				"name": "Git",
 				"description": "Advanced version control, collaboration workflows and CI/CD"
@@ -262,6 +274,42 @@
 			"Nginx": {
 				"name": "Nginx",
 				"description": "Reverse proxy configuration, load balancing and SSL"
+			},
+			"Apache": {
+				"name": "Apache",
+				"description": "Web server configuration, virtual hosts and security"
+			},
+			"DNS": {
+				"name": "DNS",
+				"description": "DNS zones configuration, records and troubleshooting"
+			},
+			"BIND9": {
+				"name": "BIND9",
+				"description": "DNS server with BIND9, zone and record configuration"
+			},
+			"TCP_IP": {
+				"name": "TCP/IP",
+				"description": "Network protocols, addressing, subnets and troubleshooting"
+			},
+			"DHCP": {
+				"name": "DHCP",
+				"description": "DHCP server configuration and management"
+			},
+			"HTTP_S": {
+				"name": "HTTP/S",
+				"description": "HTTP and HTTPS protocols, security and headers"
+			},
+			"FTP_SFTP": {
+				"name": "FTP/SFTP",
+				"description": "Secure file transfer and FTP/SFTP server management"
+			},
+			"SSH": {
+				"name": "SSH",
+				"description": "Secure remote access, tunnels and SSH automation"
+			},
+			"Email": {
+				"name": "Email",
+				"description": "Email service configuration and SMTP/IMAP protocols"
 			},
 			"JavaScript": {
 				"name": "JavaScript",
@@ -274,10 +322,6 @@
 			"C": {
 				"name": "C",
 				"description": "Systems programming, memory management and complex algorithms"
-			},
-			"Bash": {
-				"name": "Bash",
-				"description": "Task automation, deployment scripts and administration"
 			}
 		},
 		"levels": {

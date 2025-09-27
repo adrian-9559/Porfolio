@@ -141,7 +141,7 @@ export default function ProjectDeveloped() {
 					</div>
 					{projects.developed ? projects.developed.map((project, index) => (
 						<motion.div key={index} variants={cardVariants}>
-							<Card className={`h-full backdrop-blur-lg border transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${project.name === "PowerFuel"
+							<Card className={`h-full lg:backdrop-blur-lg border transition-perf hover:shadow-2xl hover:-translate-y-1 ${project.name === "PowerFuel"
 								? "bg-gradient-to-br from-orange-50/90 to-red-50/90 dark:from-orange-900/20 dark:to-red-900/20 border-orange-200/50 dark:border-orange-500/20 hover:border-orange-400/60 dark:hover:border-orange-500/40 hover:shadow-orange-500/25 dark:hover:shadow-orange-500/10"
 								: "bg-white/90 dark:bg-gray-900/50 border-gray-200/50 dark:border-white/10 hover:border-purple-400/60 dark:hover:border-purple-500/30 hover:shadow-purple-500/25 dark:hover:shadow-purple-500/10"
 								}`}>
@@ -194,7 +194,7 @@ export default function ProjectDeveloped() {
 										</p>
 
 										<details className="group">
-											<summary className="cursor-pointer text-purple-600 dark:text-purple-400 text-sm font-medium hover:text-purple-500 dark:hover:text-purple-300 transition-colors">
+											<summary className="cursor-pointer text-purple-600 dark:text-purple-400 text-sm font-medium hover:text-purple-500 dark:hover:text-purple-300 theme-transition">
 												{t('projects.details_summary', 'Ver más detalles ↓')}
 											</summary>
 											<p className="text-gray-600 dark:text-gray-300 text-xs mt-2 leading-relaxed group-open:animate-fade-in">

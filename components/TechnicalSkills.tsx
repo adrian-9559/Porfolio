@@ -123,13 +123,20 @@ export default function TechnicalSkills() {
 					icon: "/images/mysql_logo.png",
 					color: "text-blue-600",
 					description: "Bases de datos relacionales, optimización de consultas y transacciones ACID"
+				},
+				{
+					name: "SQL Server",
+					level: 75,
+					icon: "/images/sqlserver_logo.png",
+					color: "text-blue-800",
+					description: "Administración y consultas en bases de datos SQL Server"
 				}
 			]
 		},
 		{
-			title: "Systems & DevOps",
-			description: "Administración de sistemas, contenedores y despliegue de aplicaciones",
-			gradient: "from-orange-500 to-red-600",
+			title: "Sistemas Operativos",
+			description: "Administración y uso avanzado de sistemas operativos para servidores y desarrollo",
+			gradient: "from-gray-700 to-gray-900",
 			technologies: [
 				{
 					name: "Linux/Unix",
@@ -146,6 +153,20 @@ export default function TechnicalSkills() {
 					description: "Administración de servidores Windows, Active Directory y PowerShell"
 				},
 				{
+					name: "Bash",
+					level: 80,
+					icon: "/images/bash_logo.png",
+					color: "text-gray-700 dark:text-gray-300",
+					description: "Automatización de tareas, scripts de despliegue y administración"
+				}
+			]
+		},
+		{
+			title: "Redes y Servicios",
+			description: "Servicios de infraestructura, servidores web, control de versiones y redes",
+			gradient: "from-orange-500 to-red-600",
+			technologies: [
+				{
 					name: "Git",
 					level: 95,
 					icon: "/images/git_logo.png",
@@ -158,6 +179,69 @@ export default function TechnicalSkills() {
 					icon: "/images/nginx_logo.png",
 					color: "text-green-400",
 					description: "Configuración de proxy reverso, load balancing y SSL"
+				},
+				{
+					name: "Apache",
+					level: 75,
+					icon: "/images/apache_logo.png",
+					color: "text-red-500",
+					description: "Configuración de servidores web, virtual hosts y seguridad"
+				},
+				{
+					name: "DNS",
+					level: 70,
+					icon: "/images/dns_logo.png",
+					color: "text-blue-500",
+					description: "Configuración y administración de zonas DNS, registros y troubleshooting"
+				},
+				{
+					name: "BIND9",
+					level: 70,
+					icon: "/images/bind9_logo.png",
+					color: "text-blue-700",
+					description: "Servidor DNS con BIND9, configuración de zonas y registros"
+				},
+				{
+					name: "TCP/IP",
+					level: 80,
+					icon: "/images/tcpip_logo.png",
+					color: "text-green-700",
+					description: "Protocolos de red, direccionamiento, subredes y troubleshooting"
+				},
+				{
+					name: "DHCP",
+					level: 75,
+					icon: "/images/dhcp_logo.png",
+					color: "text-yellow-600",
+					description: "Configuración y administración de servidores DHCP"
+				},
+				{
+					name: "HTTP/S",
+					level: 85,
+					icon: "/images/https_logo.png",
+					color: "text-blue-400",
+					description: "Protocolos HTTP y HTTPS, seguridad y headers"
+				},
+				{
+					name: "FTP/SFTP",
+					level: 70,
+					icon: "/images/ftp_logo.png",
+					color: "text-blue-600",
+					description: "Transferencia de archivos segura y administración de servidores FTP/SFTP"
+				},
+				{
+					name: "SSH",
+					level: 85,
+					icon: "/images/ssh_logo.png",
+					color: "text-orange-800",
+					description: "Acceso remoto seguro, túneles y automatización con SSH"
+				},
+				{
+					name: "Email",
+					level: 70,
+					icon: "/images/email_logo.png",
+					color: "text-pink-600",
+					description: "Configuración de servicios de correo electrónico y protocolos SMTP/IMAP"
 				}
 			]
 		},
@@ -200,13 +284,6 @@ export default function TechnicalSkills() {
 					icon: "/images/php_logo.png",
 					color: "text-purple-600",
 					description: "Desarrollo web backend, Laravel y programación orientada a objetos"
-				},
-				{
-					name: "Bash",
-					level: 80,
-					icon: "/images/bash_logo.png",
-					color: "text-gray-700 dark:text-gray-300",
-					description: "Automatización de tareas, scripts de despliegue y administración"
 				}
 			]
 		}

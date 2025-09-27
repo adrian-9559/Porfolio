@@ -13,14 +13,43 @@
 	--foreground: 255 255 255;
 }
 
-/* Limit transitions to elements that need them to avoid heavy repaints on mobile */
-:root,
-body,
-.site-navbar,
+/* Limit transitions to safe properties and provide utilities for performant animations.
+   Prefer animating transform and opacity only (GPU compositable). */
 .theme-transition {
-	transition-property: background-color, border-color, color;
+	/* only theme color changes here */
+	transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+		color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Utility: transition only transform and opacity (fast, composited) */
+.transition-perf {
+	transition-property: transform, opacity;
+	transition-duration: 180ms;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-	transition-duration: 200ms;
+}
+
+/* Helper to force composite layer when necessary (use sparingly) */
+.composite {
+	transform: translateZ(0);
+	will-change: transform, opacity;
+}
+
+/* Mobile slide-in animation: uses only transform and opacity for GPU compositing */
+@keyframes mobile-slide-in {
+	from {
+		transform: translateY(-8px);
+		opacity: 0;
+	}
+
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.mobile-slide-in {
+	animation: mobile-slide-in 180ms cubic-bezier(0.4, 0, 0.2, 1) both;
+	will-change: transform, opacity;
 }
 
 /* Degradado radial */
@@ -86,6 +115,33 @@ body {
 		display: none !important;
 		animation: none !important;
 		filter: none !important;
+	}
+
+	/* Make any `transition-all`/`transition-colors` safe on small screens by
+	   limiting them to transform and opacity to avoid layout/paint transitions. */
+	.transition-all,
+	.transition-colors,
+	.transition-opacity {
+		transition-property: transform, opacity !important;
+		transition-duration: 180ms !important;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+	}
+
+	/* Disable backdrop-blur utilities on mobile to avoid expensive compositing */
+	.backdrop-blur,
+	.backdrop-blur-sm,
+	.backdrop-blur-md,
+	.backdrop-blur-lg,
+	.backdrop-blur-xl {
+		backdrop-filter: none !important;
+		-webkit-backdrop-filter: none !important;
+		filter: none !important;
+	}
+
+	/* Utility: make hover scaling/composition less aggressive on mobile */
+	[class*="hover:scale-105"],
+	[class*="hover:scale-110"] {
+		transform: none !important;
 	}
 }
 

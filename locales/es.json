@@ -89,11 +89,15 @@
 				"description": "Construcción de APIs robustas y sistemas escalables"
 			},
 			{
-				"title": "Systems & DevOps",
+				"title": "Sistemas Operativos",
 				"description": "Administración de sistemas, contenedores y despliegue de aplicaciones"
 			},
 			{
-				"title": "Programming Languages",
+				"title": "Redes y Servicios",
+				"description": "Configuración y gestión de redes, servidores web y control de versiones"
+			},
+			{
+				"title": "Lenguajes de Programación",
 				"description": "Lenguajes de programación para diferentes paradigmas y casos de uso"
 			}
 		],
@@ -142,6 +146,10 @@
 				"name": "MySQL",
 				"description": "Bases de datos relacionales, optimización de consultas y transacciones ACID"
 			},
+			"SQL_Server": {
+				"name": "SQL Server",
+				"description": "Administración y consultas en bases de datos SQL Server"
+			},
 			"Linux_Unix": {
 				"name": "Linux/Unix",
 				"description": "Administración de servidores, scripting bash y configuración de servicios"
@@ -150,6 +158,10 @@
 				"name": "Windows Server",
 				"description": "Administración de servidores Windows, Active Directory y PowerShell"
 			},
+			"Bash": {
+				"name": "Bash",
+				"description": "Automatización de tareas, scripts de despliegue y administración"
+			},
 			"Git": {
 				"name": "Git",
 				"description": "Control de versiones avanzado, workflows de colaboración y CI/CD"
@@ -157,6 +169,42 @@
 			"Nginx": {
 				"name": "Nginx",
 				"description": "Configuración de proxy reverso, load balancing y SSL"
+			},
+			"Apache": {
+				"name": "Apache",
+				"description": "Configuración de servidores web, virtual hosts y seguridad"
+			},
+			"DNS": {
+				"name": "DNS",
+				"description": "Configuración y administración de zonas DNS, registros y troubleshooting"
+			},
+			"BIND9": {
+				"name": "BIND9",
+				"description": "Servidor DNS con BIND9, configuración de zonas y registros"
+			},
+			"TCP_IP": {
+				"name": "TCP/IP",
+				"description": "Protocolos de red, direccionamiento, subredes y troubleshooting"
+			},
+			"DHCP": {
+				"name": "DHCP",
+				"description": "Configuración y administración de servidores DHCP"
+			},
+			"HTTP_S": {
+				"name": "HTTP/S",
+				"description": "Protocolos HTTP y HTTPS, seguridad y headers"
+			},
+			"FTP_SFTP": {
+				"name": "FTP/SFTP",
+				"description": "Transferencia de archivos segura y administración de servidores FTP/SFTP"
+			},
+			"SSH": {
+				"name": "SSH",
+				"description": "Acceso remoto seguro, túneles y automatización con SSH"
+			},
+			"Email": {
+				"name": "Email",
+				"description": "Configuración de servicios de correo electrónico y protocolos SMTP/IMAP"
 			},
 			"JavaScript": {
 				"name": "JavaScript",
@@ -169,10 +217,6 @@
 			"C": {
 				"name": "C",
 				"description": "Programación de sistemas, gestión de memoria y algoritmos complejos"
-			},
-			"Bash": {
-				"name": "Bash",
-				"description": "Automatización de tareas, scripts de despliegue y administración"
 			}
 		},
 		"levels": {

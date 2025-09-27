@@ -9,9 +9,9 @@ export default function DefaultLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="relative flex flex-col min-h-screen bg-gradient-to-br from-blue-50 via-purple-25 to-pink-50 dark:bg-gray-900 text-gray-900 dark:text-white overflow-x-hidden transition-all duration-300">
+		<div className="relative flex flex-col min-h-screen bg-gradient-to-br from-blue-50 via-purple-25 to-pink-50 dark:bg-gray-900 text-gray-900 dark:text-white overflow-x-hidden theme-transition">
 			{/* Background gradient overlay */}
-			<div className="fixed inset-0 bg-gradient-to-br from-blue-100/60 via-purple-50/70 to-pink-100/60 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-300"></div>
+			<div className="fixed inset-0 bg-gradient-to-br from-blue-100/60 via-purple-50/70 to-pink-100/60 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 theme-transition"></div>
 
 			{/* Background Effects */}
 			<div className="fixed inset-0 pointer-events-none z-0">
