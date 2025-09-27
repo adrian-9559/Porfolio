@@ -16,9 +16,7 @@ export default function ProjectsPage() {
 	return (
 		<DefaultLayout>
 			<section className="m-auto mt-16 xl:mx-10 2xl:mx-32 flex flex-col gap-6">
-				<section className="flex justify-between">
-					<Projects />
-				</section>
+				<Projects />
 			</section>
 		</DefaultLayout>
 	);
