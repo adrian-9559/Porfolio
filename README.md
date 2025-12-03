@@ -23,7 +23,6 @@ Estas son las tecnologías que utiliza la aplicación:
 - Biblioteca de componentes: [NextUI](https://nextui.org/).
 - Gestión del código: [Github](https://github.com/).
 - Hosting del proyecto: [Vercel](https://vercel.com/).
-- Dominio: [Hostinger](https://www.hostinger.es/).
 
 ## 🚀 Características
 
