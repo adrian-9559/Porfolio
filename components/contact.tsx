@@ -44,7 +44,6 @@ export default function Contact() {
 						return (
 							<Card
 								key={idx}
-								as="a"
 								className="p-6 hover:shadow-lg transition-all duration-300 group cursor-pointer no-underline"
 								href={method.href}
 								target={method.href.startsWith("http") ? "_blank" : undefined}
