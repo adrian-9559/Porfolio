@@ -91,7 +91,6 @@ export default function Projects() {
 								<div className="flex gap-3 pt-4">
 									{project.github && (
 										<Button
-											as="a"
 											href={project.github}
 											isIconOnly
 											target="_blank"
@@ -102,7 +101,6 @@ export default function Projects() {
 									)}
 									{project.demo && (
 										<Button
-											as="a"
 											className="flex-1"
 											color="primary"
 											href={project.demo}

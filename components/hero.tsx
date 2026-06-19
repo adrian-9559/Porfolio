@@ -1,5 +1,5 @@
-import { ArrowRight, ArrowShapeDownToLine } from "@gravity-ui/icons";
-import { Button, Chip } from "@heroui/react";
+import { ArrowShapeDownToLine } from "@gravity-ui/icons";
+import { Avatar, Button, Chip } from "@heroui/react";
 
 export default function Hero() {
 	return (
@@ -12,11 +12,13 @@ export default function Hero() {
 			<div className="space-y-8 text-center">
 				{/* Chip */}
 				<div className="flex justify-center">
+					<Avatar>
+						<Avatar.Image src="/images/avatar.jpg" />
+					</Avatar>
 					<Chip
 						className="px-4 py-2 text-sm font-medium"
 						variant="bordered"
 					>
-						<ArrowRight className="w-4 h-4 ml-2" />
 						Hola, soy Adrián Escribano
 					</Chip>
 				</div>
@@ -43,7 +45,6 @@ export default function Hero() {
 						onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
 						size="lg"
 					>
-						<ArrowRight className="w-4 h-4 ml-2" />
 						Ver mis proyectos
 					</Button>
 					<Button
