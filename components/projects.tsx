@@ -105,11 +105,11 @@ export default function Projects() {
 											as="a"
 											className="flex-1"
 											color="primary"
-											endContent={<ArrowUpRightFromSquare className="w-4 h-4" />}
 											href={project.demo}
 											target="_blank"
 										>
 											Ver demo
+											<ArrowUpRightFromSquare className="w-4 h-4" />
 										</Button>
 									)}
 								</div>

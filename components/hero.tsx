@@ -14,9 +14,9 @@ export default function Hero() {
 				<div className="flex justify-center">
 					<Chip
 						className="px-4 py-2 text-sm font-medium"
-						endContent={<ArrowRight className="w-4 h-4 ml-2" />}
 						variant="bordered"
 					>
+						<ArrowRight className="w-4 h-4 ml-2" />
 						Hola, soy Adrián Escribano
 					</Chip>
 				</div>
@@ -40,18 +40,19 @@ export default function Hero() {
 					<Button
 						className="px-8 py-6 text-base font-semibold"
 						color="primary"
-						endContent={<ArrowRight className="w-5 h-5" />}
 						onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
 						size="lg"
 					>
+						<ArrowRight className="w-4 h-4 ml-2" />
 						Ver mis proyectos
 					</Button>
 					<Button
 						className="px-8 py-6 text-base font-semibold"
 						isIconOnly
-						startContent={<ArrowShapeDownToLine className="w-5 h-5" />}
 						variant="bordered"
-					/>
+					>
+						<ArrowShapeDownToLine className="w-5 h-5" />
+					</Button>
 				</div>
 
 				{/* Stats */}
