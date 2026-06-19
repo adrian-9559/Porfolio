@@ -25,22 +25,22 @@ export default function CTA() {
 						<Button
 							className="px-8 py-6 text-base font-semibold"
 							color="default"
-							endContent={<Envelope className="w-5 h-5" />}
 							onClick={() => window.location.href = "mailto:adrian.escribano.perez@gmail.com"}
 							size="lg"
 						>
+							<Envelope className="w-5 h-5" />
 							Enviarme un email
 						</Button>
 						<Button
 							as="a"
 							className="px-8 py-6 text-base font-semibold"
 							color="default"
-							endContent={<ArrowRight className="w-5 h-5" />}
 							href="https://www.linkedin.com/in/adrián-escribano-pérez"
 							size="lg"
 							target="_blank"
 							variant="bordered"
 						>
+							<ArrowRight className="w-5 h-5" />
 							LinkedIn
 						</Button>
 					</div>
