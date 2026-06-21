@@ -1,0 +1,115 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	--font-sans: "font", sans-serif;
+	--font-mono: "monospace", monospace;
+}
+
+/* Apple-inspired styles */
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		@apply bg-white dark:bg-gray-950 transition-colors duration-300;
+		font-feature-settings: "kern";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		@apply font-semibold tracking-tight;
+	}
+
+	a {
+		@apply transition-colors duration-200;
+	}
+}
+
+@layer components {
+	/* Glassmorphism effect */
+	.glass {
+		@apply backdrop-blur-xl bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10;
+	}
+
+	/* Subtle shadow */
+	.shadow-apple {
+		@apply shadow-[0_1px_3px_rgba(0,0,0,0.1)_,_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.4)];
+	}
+
+	/* Smooth transitions */
+	.transition-smooth {
+		@apply transition-all duration-300 ease-out;
+	}
+
+	/* Text gradient */
+	.gradient-text {
+		@apply bg-gradient-to-r bg-clip-text text-transparent;
+	}
+
+	/* Fade in animation */
+	.animate-fade-in {
+		animation: fadeIn 0.6s ease-in-out;
+	}
+
+	/* Slide up animation */
+	.animate-slide-up {
+		animation: slideUp 0.6s ease-out;
+	}
+}
+
+/* Animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes float {
+	0%, 100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+.animate-float {
+	animation: float 3s ease-in-out infinite;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	@apply bg-gray-100 dark:bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-gray-300 dark:bg-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-gray-400 dark:bg-gray-600;
+}
