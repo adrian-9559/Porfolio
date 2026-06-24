@@ -1,120 +1,136 @@
-import { LogoGithub } from "@gravity-ui/icons";
-import { Button, Card } from "@heroui/react";
+"use client";
+import { LogoGithub, ArrowUpRightFromSquare } from "@gravity-ui/icons";
+import Link from "next/link";
 
 interface Project {
 	title: string;
 	description: string;
-	image: string;
 	tags: string[];
 	github?: string;
 	demo?: string;
+	gradient: string;
+	letter: string;
 }
 
 const projects: Project[] = [
 	{
 		title: "GymGO",
-		description: "Aplicación web y móvil para gestión de rutinas de entrenamiento con seguimiento de progreso",
-		image: "/images/projects/gymgo.jpg",
+		description: "Aplicación web y móvil para gestión de rutinas de entrenamiento con seguimiento de progreso personalizado.",
 		tags: ["React", "Node.js", "PostgreSQL", "React Native"],
 		github: "https://github.com/adrian-9559/GymGO",
 		demo: "https://gymgo.vercel.app",
+		gradient: "from-blue-500 to-cyan-400",
+		letter: "G",
 	},
 	{
 		title: "ft_irc",
-		description: "Servidor IRC (Internet Relay Chat) desarrollado en C++ con soporte para múltiples clientes",
-		image: "/images/projects/irc.jpg",
+		description: "Servidor IRC (Internet Relay Chat) en C++ con soporte completo para múltiples clientes y canales.",
 		tags: ["C++", "Sockets", "Linux", "Redes"],
 		github: "https://github.com/adrigar25/ft_irc",
+		gradient: "from-violet-500 to-purple-400",
+		letter: "I",
 	},
 	{
 		title: "cub3D",
-		description: "Motor gráfico 3D tipo raycasting en C con renderización en tiempo real",
-		image: "/images/projects/cub3d.jpg",
+		description: "Motor gráfico 3D tipo raycasting en C con renderización en tiempo real, inspirado en Wolfenstein 3D.",
 		tags: ["C", "Graphics", "MLX", "Algoritmos"],
 		github: "https://github.com/adrigar25/cub3D",
+		gradient: "from-orange-500 to-amber-400",
+		letter: "C",
 	},
 	{
 		title: "CodeXplore",
-		description: "Plataforma educativa para aprender programación con cursos interactivos",
-		image: "/images/projects/codexplore.jpg",
+		description: "Plataforma educativa para aprender programación con cursos interactivos y seguimiento de progreso.",
 		tags: ["Next.js", "TypeScript", "Tailwind CSS", "HeroUI"],
 		demo: "https://codexplore.vercel.app",
+		gradient: "from-emerald-500 to-teal-400",
+		letter: "X",
 	},
 ];
 
 export default function Projects() {
 	return (
-		<section id="projects" className="w-full py-20 md:py-32">
-			<div className="space-y-12">
-				{/* Header */}
-				<div className="text-center space-y-4">
-					<h2 className="text-4xl md:text-5xl font-bold">Proyectos Destacados</h2>
-					<p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-						Algunos de mis proyectos más relevantes que muestran mis habilidades y experiencia
+		<section id="projects" className="relative w-full">
+			{/* Ambient */}
+			<div className="blob absolute -bottom-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-t from-blue-400/5 to-transparent -z-10" />
+
+			<div className="space-y-10">
+				<div className="text-center space-y-2">
+					<p className="section-label">Proyectos</p>
+					<h2 className="text-3xl md:text-4xl font-bold">Proyectos destacados</h2>
+					<p className="text-[#6e6e73] dark:text-[#86868b] max-w-xl mx-auto text-sm">
+						Proyectos que demuestran mis habilidades técnicas y capacidad de resolver problemas reales.
 					</p>
 				</div>
 
-				{/* Projects Grid */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					{projects.map((project, idx) => (
-						<Card
+						<div
 							key={idx}
-							className="overflow-hidden hover:shadow-xl transition-shadow duration-300 group"
+							className="group p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/15 dark:hover:border-white/15 hover:shadow-xl hover:shadow-black/6 dark:hover:shadow-black/25 transition-all duration-300 flex flex-col"
 						>
-							{/* Image */}
-							<div className="relative w-full h-48 md:h-56 overflow-hidden bg-gray-200 dark:bg-gray-800">
-								<div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
-									<span className="text-4xl">📸</span>
-								</div>
+							{/* Project icon */}
+							<div
+								className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.gradient} flex items-center justify-center text-white font-bold text-lg mb-5 shadow-sm group-hover:scale-110 group-hover:shadow-md transition-all duration-300`}
+							>
+								{project.letter}
 							</div>
 
-							{/* Content */}
-							<div className="p-6 md:p-8 space-y-4">
-								<div>
-									<h3 className="text-2xl font-bold">{project.title}</h3>
-									<p className="text-gray-600 dark:text-gray-400 mt-2">{project.description}</p>
-								</div>
-
-								{/* Tags */}
-								<div className="flex flex-wrap gap-2">
-									{project.tags.map((tag, i) => (
-										<span
-											key={i}
-											className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium"
-										>
-											{tag}
-										</span>
-									))}
-								</div>
-
-								{/* Links */}
-								<div className="flex gap-3 pt-4">
-									{project.github && (
-										<Button
-											onClick={() => window.open(project.github, "_blank")}
-											isIconOnly
-											variant="primary"
-											size="sm"
-										>
-											<LogoGithub className="w-5 h-5" />
-										</Button>
-									)}
-								</div>
+							<div className="flex-1 space-y-2">
+								<h3 className="text-xl font-bold text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+									{project.title}
+								</h3>
+								<p className="text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+									{project.description}
+								</p>
 							</div>
-						</Card>
+
+							{/* Tags */}
+							<div className="flex flex-wrap gap-1.5 mt-5">
+								{project.tags.map((tag, i) => (
+									<span key={i} className="tag-chip">{tag}</span>
+								))}
+							</div>
+
+							{/* Links */}
+							<div className="flex gap-4 mt-5 pt-4 border-t border-black/6 dark:border-white/6">
+								{project.github && (
+									<Link
+										href={project.github}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="inline-flex items-center gap-1.5 text-xs font-medium text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
+									>
+										<LogoGithub className="w-3.5 h-3.5" />
+										GitHub
+									</Link>
+								)}
+								{project.demo && (
+									<Link
+										href={project.demo}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors no-underline"
+									>
+										<ArrowUpRightFromSquare className="w-3.5 h-3.5" />
+										Demo
+									</Link>
+								)}
+							</div>
+						</div>
 					))}
 				</div>
 
-				{/* View All Button */}
-				<div className="flex justify-center pt-8">
-					<Button
-						className="px-8 py-6 text-base font-semibold"
-						variant="primary"
-						onClick={() => window.open("https://github.com/adrian-9559", "_blank")}
-						size="lg"
+				<div className="flex justify-center">
+					<Link
+						href="https://github.com/adrian-9559"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="inline-flex items-center gap-2 apple-btn-secondary no-underline"
 					>
+						<LogoGithub className="w-4 h-4" />
 						Ver todos mis proyectos en GitHub
-					</Button>
+					</Link>
 				</div>
 			</div>
 		</section>

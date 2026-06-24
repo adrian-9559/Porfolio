@@ -1,5 +1,4 @@
 import { Head } from "./head";
-
 import { Navbar } from "@/components/navbar";
 import { siteConfig } from "@/config/site";
 
@@ -9,48 +8,56 @@ export default function DefaultLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="relative flex flex-col min-h-screen bg-white dark:bg-gray-950">
+		<div className="relative flex flex-col min-h-screen bg-white dark:bg-[#0a0a0f] overflow-x-hidden">
 			<Head />
 			<Navbar />
 			<main className="flex-grow">
-				<div className="max-w-7xl mx-auto px-6 py-8">
+				<div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 md:py-12">
 					{children}
 				</div>
 			</main>
-			<footer className="w-full border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-				<div className="max-w-7xl mx-auto px-6 py-12">
-					<div className="flex flex-col md:flex-row items-center justify-between gap-8">
-						{/* Left */}
-						<div className="text-center md:text-left">
-							<p className="text-sm text-gray-600 dark:text-gray-400">
-								© {new Date().getFullYear()} Adrián Escribano. Todos los derechos reservados.
-							</p>
-						</div>
+			<footer className="mt-auto">
+				<div className="border-t border-black/8 dark:border-white/8">
+					<div className="max-w-7xl mx-auto px-5 sm:px-6 py-10">
+						<div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+							{/* Brand */}
+							<div className="flex items-center gap-2.5">
+								<div className="w-6 h-6 rounded-md bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-xs">
+									A
+								</div>
+								<span className="text-sm font-medium text-[#1d1d1f] dark:text-white">Adrián Escribano</span>
+							</div>
 
-						{/* Links */}
-						<div className="flex gap-6 text-sm">
-							<a
-								className="text-gray-600 dark:text-gray-400 hover:text-foreground transition-colors"
-								href={siteConfig.links.github}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								GitHub
-							</a>
-							<a
-								className="text-gray-600 dark:text-gray-400 hover:text-foreground transition-colors"
-								href={siteConfig.links.linkedin}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								LinkedIn
-							</a>
-							<a
-								className="text-gray-600 dark:text-gray-400 hover:text-foreground transition-colors"
-								href={`mailto:${siteConfig.contact.email}`}
-							>
-								Email
-							</a>
+							{/* Links */}
+							<div className="flex items-center gap-6">
+								<a
+									className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+									href={siteConfig.links.github}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									GitHub
+								</a>
+								<a
+									className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+									href={siteConfig.links.linkedin}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									LinkedIn
+								</a>
+								<a
+									className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+									href={`mailto:${siteConfig.contact.email}`}
+								>
+									Email
+								</a>
+							</div>
+
+							{/* Copyright */}
+							<p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+								© {new Date().getFullYear()} Adrián Escribano
+							</p>
 						</div>
 					</div>
 				</div>

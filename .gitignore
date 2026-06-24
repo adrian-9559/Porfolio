@@ -37,6 +37,8 @@ next-env.d.ts
 
 .env
 
+.next
+
 pnpm-lock.yaml
 pnpm-workspace.yaml
 yarn.lock

@@ -1,129 +1,152 @@
-import { Card } from "@heroui/react";
-
-interface Technology {
-	name: string;
-	icon: string;
-	category: "Frontend" | "Backend" | "Database" | "DevOps" | "Tools";
-	proficiency: number; // 1-5
-}
-
-const technologies: Technology[] = [
-	// Frontend
-	{ name: "React", icon: "⚛️", category: "Frontend", proficiency: 5 },
-	{ name: "Next.js", icon: "▲", category: "Frontend", proficiency: 5 },
-	{ name: "TypeScript", icon: "TS", category: "Frontend", proficiency: 5 },
-	{ name: "Tailwind CSS", icon: "🎨", category: "Frontend", proficiency: 5 },
-	{ name: "Framer Motion", icon: "✨", category: "Frontend", proficiency: 4 },
-
-	// Backend
-	{ name: "Node.js", icon: "🟢", category: "Backend", proficiency: 5 },
-	{ name: "Express", icon: "🚀", category: "Backend", proficiency: 5 },
-	{ name: "GraphQL", icon: "📊", category: "Backend", proficiency: 4 },
-	{ name: "REST APIs", icon: "🔌", category: "Backend", proficiency: 5 },
-
-	// Database
-	{ name: "PostgreSQL", icon: "🐘", category: "Database", proficiency: 5 },
-	{ name: "MongoDB", icon: "🍃", category: "Database", proficiency: 4 },
-	{ name: "Redis", icon: "🔴", category: "Database", proficiency: 3 },
-
-	// DevOps
-	{ name: "Docker", icon: "🐳", category: "DevOps", proficiency: 4 },
-	{ name: "Git", icon: "🔀", category: "DevOps", proficiency: 5 },
-	{ name: "Vercel", icon: "⬛", category: "DevOps", proficiency: 5 },
-	{ name: "AWS", icon: "☁️", category: "DevOps", proficiency: 3 },
-
-	// Tools
-	{ name: "VS Code", icon: "💻", category: "Tools", proficiency: 5 },
-	{ name: "Figma", icon: "🎭", category: "Tools", proficiency: 4 },
-	{ name: "npm/pnpm", icon: "📦", category: "Tools", proficiency: 5 },
+const categories = [
+	{
+		name: "Frontend",
+		gradient: "from-blue-500 to-cyan-500",
+		items: [
+			{ name: "React", level: 5 },
+			{ name: "Next.js", level: 5 },
+			{ name: "TypeScript", level: 5 },
+			{ name: "Tailwind CSS", level: 5 },
+			{ name: "Framer Motion", level: 4 },
+		],
+	},
+	{
+		name: "Backend",
+		gradient: "from-emerald-500 to-teal-500",
+		items: [
+			{ name: "Node.js", level: 5 },
+			{ name: "Express", level: 5 },
+			{ name: "REST APIs", level: 5 },
+			{ name: "Spring Boot", level: 3 },
+		],
+	},
+	{
+		name: "Base de datos",
+		gradient: "from-orange-500 to-red-500",
+		items: [
+			{ name: "PostgreSQL", level: 4 },
+			{ name: "MongoDB", level: 4 },
+			{ name: "MySQL", level: 4 },
+			{ name: "SQL Server", level: 4 },
+		],
+	},
+	{
+		name: "DevOps",
+		gradient: "from-violet-500 to-purple-500",
+		items: [
+			{ name: "Docker", level: 2 },
+			{ name: "Git", level: 5 },
+			{ name: "Vercel", level: 5 },
+			{ name: "AWS", level: 1 },
+		],
+	},
+	{
+		name: "Frameworks y librerías",
+		gradient: "from-pink-500 to-rose-500",
+		items: [
+			{ name: "React", level: 4 },
+			{ name: "Tailwind CSS", level: 4 },
+			{ name: "Spring Boot", level: 3 },
+			{ name: "Bootstrap", level: 4 },
+		],
+	},
+	{
+		name: "Lenguajes de programación",
+		gradient: "from-yellow-500 to-amber-500",
+		items: [
+			{ name: "JavaScript", level: 5 },
+			{ name: "TypeScript", level: 5 },
+			{ name: "Java", level: 4 },
+			{ name: "C++", level: 4 },
+			{ name: "C", level: 4 },
+		],
+	},
+	{
+		name: "Sistemas Operativos",
+		gradient: "from-green-500 to-lime-500",
+		items: [
+			{ name: "Linux", level: 4 },
+			{ name: "Windows", level: 5 },
+			{ name: "macOS", level: 3 },
+		],
+	},
+	{
+		name: "Servicios de Servidores y Hosting",
+		gradient: "from-indigo-500 to-blue-500",
+		items: [
+			{ name: "DNS", level: 5 },
+			{ name: "NGINX", level: 4 },
+			{ name: "Docker", level: 1 },
+		],
+	}
 ];
 
-const categoryColors = {
-	Frontend: "from-blue-500 to-cyan-500",
-	Backend: "from-green-500 to-emerald-500",
-	Database: "from-orange-500 to-red-500",
-	DevOps: "from-purple-500 to-pink-500",
-	Tools: "from-yellow-500 to-orange-500",
-};
+const LevelDots = ({ level }: { level: number }) => (
+	<div className="flex gap-1 mt-2">
+		{Array.from({ length: 5 }).map((_, i) => (
+			<div
+				key={i}
+				className={`h-1 w-5 rounded-full transition-colors ${
+					i < level ? "bg-blue-500 dark:bg-blue-400" : "bg-black/10 dark:bg-white/15"
+				}`}
+			/>
+		))}
+	</div>
+);
 
 export default function TechStack() {
-	const groupedTechs = technologies.reduce(
-		(acc, tech) => {
-			if (!acc[tech.category]) acc[tech.category] = [];
-			acc[tech.category].push(tech);
-			return acc;
-		},
-		{} as Record<string, Technology[]>,
-	);
-
 	return (
-		<section className="w-full py-20 md:py-32">
-			<div className="space-y-12">
+		<section className="w-full">
+			<div className="space-y-10">
 				{/* Header */}
-				<div className="text-center space-y-4">
-					<h2 className="text-4xl md:text-5xl font-bold">Mi Stack Tecnológico</h2>
-					<p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-						Tecnologías con las que trabajo y mi nivel de proficiencia en cada una
+				<div className="text-center space-y-3">
+					<p className="section-label">Stack tecnológico</p>
+					<h2 className="text-3xl md:text-4xl font-bold">Mi stack completo</h2>
+					<p className="text-[#6e6e73] dark:text-[#86868b] max-w-xl mx-auto">
+						Las herramientas y tecnologías con las que trabajo día a día, con niveles de dominio.
 					</p>
 				</div>
 
-				{/* Tech Categories */}
-				<div className="space-y-12">
-					{Object.entries(groupedTechs).map(([category, techs]) => (
-						<div key={category} className="space-y-4">
-							<h3 className="text-2xl font-bold">{category}</h3>
-							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-								{techs.map((tech, idx) => (
-									<Card
-										key={idx}
-										className="p-4 hover:shadow-lg transition-all duration-300 hover:scale-105"
-									>
-										<div className="flex flex-col items-center text-center space-y-3">
-											<div className="text-4xl">{tech.icon}</div>
-											<div>
-												<p className="font-semibold text-sm">{tech.name}</p>
-												{/* Proficiency indicator */}
-												<div className="flex gap-1 justify-center mt-2">
-													{Array.from({ length: 5 }).map((_, i) => (
-														<div
-															key={i}
-															className={`h-1.5 w-1.5 rounded-full ${
-																i < tech.proficiency
-																	? "bg-blue-500"
-																	: "bg-gray-300 dark:bg-gray-700"
-															}`}
-														/>
-													))}
-												</div>
-											</div>
-										</div>
-									</Card>
+				{/* Categories */}
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+					{categories.map((cat, idx) => (
+						<div
+							key={idx}
+							className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8"
+						>
+							{/* Header */}
+							<div className="flex items-center gap-3 mb-5">
+								<div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${cat.gradient}`} />
+								<h3 className="font-semibold text-[#1d1d1f] dark:text-white">{cat.name}</h3>
+							</div>
+
+							{/* Items */}
+							<div className="space-y-4">
+								{cat.items.map((item, i) => (
+									<div key={i} className="flex items-center justify-between">
+										<span className="text-sm font-medium text-[#3d3d3d] dark:text-[#c0c0c5]">
+											{item.name}
+										</span>
+										<LevelDots level={item.level} />
+									</div>
 								))}
 							</div>
 						</div>
 					))}
 				</div>
 
-				{/* Stats */}
-				<div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-6 pt-12 border-t border-gray-200 dark:border-gray-800">
-					<div className="text-center">
-						<p className="text-3xl md:text-4xl font-bold">
-							{Object.values(groupedTechs).flat().length}+
-						</p>
-						<p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Tecnologías</p>
-					</div>
-					<div className="text-center">
-						<p className="text-3xl md:text-4xl font-bold">
-							{Object.keys(groupedTechs).length}
-						</p>
-						<p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Categorías</p>
-					</div>
-					<div className="text-center">
-						<p className="text-3xl md:text-4xl font-bold">
-							{technologies.filter((t) => t.proficiency >= 4).length}
-						</p>
-						<p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Experto</p>
-					</div>
+				{/* Summary */}
+				<div className="flex justify-center gap-8 sm:gap-16 pt-4 border-t border-black/8 dark:border-white/8">
+					{[
+						{ value: "19+", label: "Tecnologías" },
+						{ value: "4", label: "Categorías" },
+						{ value: "12", label: "A nivel experto" },
+					].map((s, i) => (
+						<div key={i} className="text-center">
+							<p className="text-2xl font-bold text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.02em" }}>{s.value}</p>
+							<p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1">{s.label}</p>
+						</div>
+					))}
 				</div>
 			</div>
 		</section>

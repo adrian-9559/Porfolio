@@ -39,7 +39,7 @@ export const AppProvider = ({
 
 	return (
 		<AppContext.Provider
-			value={{ isLoggedIn, setIsLoggedIn }}
+			value={{ isLoggedIn, setIsLoggedIn, navRoutes: [], setNavRoutes: () => {} }}
 		>
 			{children}
 		</AppContext.Provider>

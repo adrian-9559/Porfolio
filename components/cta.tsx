@@ -1,48 +1,51 @@
-import { ArrowRight, Envelope } from "@gravity-ui/icons";
-import { Button } from "@heroui/react";
+import { Envelope, LogoLinkedin } from "@gravity-ui/icons";
+import Link from "next/link";
+import { siteConfig } from "@/config/site";
 
 export default function CTA() {
 	return (
-		<section className="w-full py-20 md:py-32">
-			<div className="relative rounded-3xl overflow-hidden">
-				{/* Background gradient */}
-				<div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-700 dark:to-cyan-700" />
-				<div className="absolute inset-0 opacity-10 bg-pattern" />
+		<section className="w-full">
+			<div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-blue-600 via-blue-600 to-cyan-500">
+				{/* Noise texture overlay */}
+				<div className="absolute inset-0 opacity-[0.03]" style={{
+					backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")"
+				}} />
+
+				{/* Glow circles */}
+				<div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+				<div className="absolute -bottom-24 -left-24 w-64 h-64 bg-cyan-400/20 rounded-full blur-3xl" />
 
 				{/* Content */}
-				<div className="relative px-6 md:px-12 py-16 md:py-24 text-center space-y-8">
+				<div className="relative px-8 md:px-16 py-16 md:py-24 text-center space-y-8">
 					<div className="space-y-4">
-						<h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
+						<p className="text-blue-200 text-sm font-semibold uppercase tracking-widest">
+							Trabajemos juntos
+						</p>
+						<h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white" style={{ letterSpacing: "-0.03em" }}>
 							¿Listo para empezar?
 						</h2>
-						<p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto">
-							Déjame saber si tienes un proyecto interesante o si quieres colaborar
+						<p className="text-blue-100/80 text-lg max-w-lg mx-auto leading-relaxed">
+							Cuéntame tu idea y la convertiremos en una solución digital excepcional.
 						</p>
 					</div>
 
-					{/* Buttons */}
-					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-						<Button
-							className="px-8 py-6 text-base font-semibold"
-							color="default"
-							onClick={() => window.location.href = "mailto:adrian.escribano.perez@gmail.com"}
-							size="lg"
+					<div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+						<a
+							href={`mailto:${siteConfig.contact.email}`}
+							className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-white text-blue-600 font-semibold text-sm hover:bg-blue-50 transition-colors duration-200 shadow-lg"
 						>
-							<Envelope className="w-5 h-5" />
+							<Envelope className="w-4 h-4" />
 							Enviarme un email
-						</Button>
-						<Button
-							as="a"
-							className="px-8 py-6 text-base font-semibold"
-							color="default"
-							href="https://www.linkedin.com/in/adrián-escribano-pérez"
-							size="lg"
+						</a>
+						<Link
+							href={siteConfig.links.linkedin}
 							target="_blank"
-							variant="bordered"
+							rel="noopener noreferrer"
+							className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold text-sm transition-colors duration-200 border border-white/25 no-underline"
 						>
-							<ArrowRight className="w-5 h-5" />
+							<LogoLinkedin className="w-4 h-4" />
 							LinkedIn
-						</Button>
+						</Link>
 					</div>
 				</div>
 			</div>

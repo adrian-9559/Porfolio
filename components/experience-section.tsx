@@ -1,74 +1,38 @@
 "use client";
-
-import { ArrowRight } from "@gravity-ui/icons";
-import { Button, Card, Chip } from "@heroui/react";
 import { useState } from "react";
 
-interface Experience {
-	company: string;
-	role: string;
-	period: string;
-	hours: string;
-	description: string;
-	responsibilities: string[];
-	technologies: string[];
-	icon: string;
-}
-
-const experiences: Experience[] = [
+const experiences = [
 	{
 		company: "Empresa de Sistemas e Infraestructura",
-		role: "Técnico de Prácticas - Grado Medio",
+		role: "Técnico de Prácticas — Grado Medio",
 		period: "2022",
-		hours: "400 horas",
-		description:
-			"Prácticas profesionales de grado medio donde realicé tareas de mantenimiento preventivo y correctivo de equipos informáticos y gestión de la infraestructura de redes de la empresa.",
+		hours: "400h",
+		description: "Prácticas en mantenimiento preventivo y correctivo de equipos informáticos y gestión de infraestructura de redes corporativas.",
 		responsibilities: [
 			"Mantenimiento preventivo y correctivo de equipos",
 			"Instalación y configuración de sistemas operativos",
 			"Gestión de redes corporativas",
 			"Soporte técnico a usuarios",
-			"Documentación de incidencias",
 			"Backup y recuperación de datos",
 		],
-		technologies: [
-			"Windows Server",
-			"Linux",
-			"Redes TCP/IP",
-			"Active Directory",
-			"Exchange",
-			"Virtualización",
-		],
-		icon: "🖧",
+		technologies: ["Windows Server", "Linux", "Redes TCP/IP", "Active Directory", "Virtualización"],
+		color: "from-violet-500 to-purple-400",
 	},
 	{
 		company: "Consultora de Programación",
-		role: "Desarrollador Web Júnior - Grado Superior",
+		role: "Desarrollador Web Júnior — Grado Superior",
 		period: "2024",
-		hours: "400 horas",
-		description:
-			"Prácticas profesionales de grado superior en una consultora especializada donde participé en el desarrollo de múltiples plataformas web completas con arquitectura moderna, tanto frontend como backend.",
+		hours: "400h",
+		description: "Desarrollo de plataformas web completas en una consultora especializada, participando en todo el ciclo de vida del software.",
 		responsibilities: [
-			"Desarrollo de plataformas web completas",
+			"Desarrollo de plataformas web full-stack",
 			"Diseño de arquitectura de aplicaciones",
 			"Desarrollo de APIs RESTful",
-			"Diseño de bases de datos",
-			"Implementación de autenticación y autorización",
-			"Testing y debugging",
-			"Documentación técnica",
+			"Diseño e implementación de bases de datos",
+			"Testing, debugging y documentación técnica",
 		],
-		technologies: [
-			"React",
-			"Next.js",
-			"Node.js",
-			"Express",
-			"PostgreSQL",
-			"MongoDB",
-			"REST APIs",
-			"Git",
-			"Docker",
-		],
-		icon: "💻",
+		technologies: ["React", "Next.js", "Node.js", "Express", "PostgreSQL", "MongoDB", "Docker", "Git"],
+		color: "from-blue-500 to-cyan-400",
 	},
 ];
 
@@ -78,94 +42,92 @@ export function ExperienceSection() {
 	return (
 		<div className="space-y-6">
 			<div>
-				<h3 className="text-2xl font-bold">Experiencia Profesional</h3>
-				<p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-					Haz clic para expandir y ver responsabilidades y tecnologías
+				<h3 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Experiencia profesional</h3>
+				<p className="text-sm text-[#aeaeb2] dark:text-[#636366] mt-1.5">
+					Haz clic en una tarjeta para ver responsabilidades y tecnologías.
 				</p>
 			</div>
 
-			<div className="space-y-4">
-				{experiences.map((exp, idx) => (
-					<Card
-						key={idx}
-						className="overflow-hidden hover:shadow-lg transition-all duration-300 p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-						onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
-					>
-						{/* Header - Always visible */}
-							<div className="flex items-start justify-between gap-4">
-								<div className="flex-1">
-									<div className="flex items-center gap-3 mb-2">
-										<span className="text-3xl">{exp.icon}</span>
-										<div>
-											<h4 className="text-lg font-bold">{exp.role}</h4>
-											<p className="text-blue-600 dark:text-blue-400 font-semibold text-sm">
-												{exp.company}
-											</p>
+			<div className="space-y-3">
+				{experiences.map((exp, idx) => {
+					const isOpen = expandedIndex === idx;
+					return (
+						<div
+							key={idx}
+							className={`rounded-2xl border transition-all duration-300 overflow-hidden cursor-pointer ${
+								isOpen
+									? "border-blue-200 dark:border-blue-800/60 bg-blue-50/50 dark:bg-blue-950/20"
+									: "border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] hover:border-black/15 dark:hover:border-white/15"
+							}`}
+							onClick={() => setExpandedIndex(isOpen ? null : idx)}
+						>
+							{/* Header */}
+							<div className="p-6">
+								<div className="flex items-start gap-4">
+									{/* Color dot */}
+									<div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${exp.color} flex-shrink-0 mt-0.5`} />
+
+									{/* Info */}
+									<div className="flex-1 min-w-0">
+										<div className="flex items-start justify-between gap-4">
+											<div>
+												<h4 className="font-semibold text-[#1d1d1f] dark:text-white">{exp.role}</h4>
+												<p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-0.5">{exp.company}</p>
+											</div>
+											<div className="flex items-center gap-2 flex-shrink-0 text-right">
+												<span className="text-xs text-[#aeaeb2] dark:text-[#636366]">{exp.period}</span>
+												<span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">
+													{exp.hours}
+												</span>
+											</div>
+										</div>
+										<p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-3 leading-relaxed">
+											{exp.description}
+										</p>
+									</div>
+
+									{/* Chevron */}
+									<svg
+										className={`w-4 h-4 text-[#aeaeb2] flex-shrink-0 mt-1 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+										fill="none" viewBox="0 0 24 24" stroke="currentColor"
+									>
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+									</svg>
+								</div>
+							</div>
+
+							{/* Expanded */}
+							{isOpen && (
+								<div className="px-6 pb-6 pt-0 border-t border-blue-100 dark:border-blue-900/40 space-y-5">
+									<div className="pt-5">
+										<p className="text-xs font-semibold uppercase tracking-widest text-[#aeaeb2] dark:text-[#636366] mb-3">
+											Responsabilidades
+										</p>
+										<ul className="space-y-2">
+											{exp.responsibilities.map((r, i) => (
+												<li key={i} className="flex items-start gap-2.5 text-sm text-[#3d3d3d] dark:text-[#c0c0c5]">
+													<span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0 mt-2" />
+													{r}
+												</li>
+											))}
+										</ul>
+									</div>
+
+									<div>
+										<p className="text-xs font-semibold uppercase tracking-widest text-[#aeaeb2] dark:text-[#636366] mb-3">
+											Tecnologías
+										</p>
+										<div className="flex flex-wrap gap-1.5">
+											{exp.technologies.map((tech, i) => (
+												<span key={i} className="tag-chip">{tech}</span>
+											))}
 										</div>
 									</div>
-									<div className="flex items-center gap-4 mt-3">
-										<span className="text-sm text-gray-600 dark:text-gray-400">{exp.period}</span>
-										<Chip
-											className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-											size="sm"
-										>
-											{exp.hours}
-										</Chip>
-									</div>
 								</div>
-								<Button
-									isIconOnly
-									className={`transition-transform ${expandedIndex === idx ? "rotate-90" : ""}`}
-									color="primary"
-									size="sm"
-									variant="light"
-								>
-									<ArrowRight className="w-5 h-5" />
-								</Button>
-							</div>
-							<p className="text-gray-700 dark:text-gray-300 text-sm mt-4 leading-relaxed">
-								{exp.description}
-							</p>
-
-						{/* Expanded Content */}
-						{expandedIndex === idx && (
-							<div className="border-t border-gray-200 dark:border-gray-800 px-6 py-6 space-y-6 bg-gray-50 dark:bg-gray-800/30">
-								{/* Responsibilities */}
-								<div>
-									<h5 className="font-bold text-sm text-gray-600 dark:text-gray-400 mb-3">
-										RESPONSABILIDADES
-									</h5>
-									<ul className="space-y-2">
-										{exp.responsibilities.map((resp, i) => (
-											<li key={i} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
-												<span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">•</span>
-												<span>{resp}</span>
-											</li>
-										))}
-									</ul>
-								</div>
-
-								{/* Technologies */}
-								<div>
-									<h5 className="font-bold text-sm text-gray-600 dark:text-gray-400 mb-3">
-										TECNOLOGÍAS Y HERRAMIENTAS
-									</h5>
-									<div className="flex flex-wrap gap-2">
-										{exp.technologies.map((tech, i) => (
-											<Chip
-												key={i}
-												className="bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50"
-												size="sm"
-											>
-												{tech}
-											</Chip>
-										))}
-									</div>
-								</div>
-							</div>
-						)}
-					</Card>
-				))}
+							)}
+						</div>
+					);
+				})}
 			</div>
 		</div>
 	);
