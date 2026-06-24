@@ -1,36 +1,55 @@
 const metrics = [
-	{ value: "15+", label: "Proyectos completados", description: "Aplicaciones web y sistemas en producción" },
-	{ value: "3+",  label: "Años de experiencia",   description: "Desarrollando soluciones innovadoras" },
-	{ value: "20+", label: "Tecnologías dominadas",  description: "Lenguajes, frameworks y herramientas" },
-	{ value: "1K+", label: "Commits en GitHub",      description: "Contribuciones activas a proyectos" },
+	{
+		value: "15+", label: "Proyectos completados", description: "Apps web y sistemas en producción",
+		gradient: "from-violet-500 to-purple-600", bg: "from-violet-500/10 to-purple-500/5",
+		border: "border-violet-200/60 dark:border-violet-800/40", icon: "🚀",
+	},
+	{
+		value: "3+",  label: "Años de experiencia",   description: "Desarrollando soluciones innovadoras",
+		gradient: "from-pink-500 to-rose-600", bg: "from-pink-500/10 to-rose-500/5",
+		border: "border-pink-200/60 dark:border-pink-800/40", icon: "⚡",
+	},
+	{
+		value: "20+", label: "Tecnologías dominadas",  description: "Lenguajes, frameworks y herramientas",
+		gradient: "from-cyan-500 to-blue-600", bg: "from-cyan-500/10 to-blue-500/5",
+		border: "border-cyan-200/60 dark:border-cyan-800/40", icon: "🛠️",
+	},
+	{
+		value: "1K+", label: "Commits en GitHub",      description: "Contribuciones activas a proyectos",
+		gradient: "from-orange-500 to-amber-600", bg: "from-orange-500/10 to-amber-500/5",
+		border: "border-orange-200/60 dark:border-orange-800/40", icon: "💡",
+	},
 ];
 
 export default function Stats() {
 	return (
 		<section className="relative w-full overflow-hidden">
-			{/* Ambient */}
-			<div className="blob absolute -top-16 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-blue-400/6 to-transparent -z-10" />
-
 			<div className="space-y-10">
 				<div className="text-center space-y-2">
 					<p className="section-label">Trayectoria</p>
-					<h2 className="text-3xl md:text-4xl font-bold">Por los números</h2>
+					<h2 className="text-3xl md:text-4xl font-black" style={{ letterSpacing: "-0.03em" }}>
+						Por los números
+					</h2>
 				</div>
 
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-black/6 dark:bg-white/6 rounded-2xl overflow-hidden ring-1 ring-black/6 dark:ring-white/6">
+				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
 					{metrics.map((m, idx) => (
 						<div
 							key={idx}
-							className="bg-white dark:bg-[#0a0a0f] p-7 md:p-8 text-center hover:bg-[#f5f5f7] dark:hover:bg-[#111116] transition-colors duration-200 group"
+							className={`group relative p-6 md:p-8 rounded-2xl bg-gradient-to-br ${m.bg} border ${m.border} hover:scale-[1.03] transition-all duration-300 overflow-hidden`}
 						>
-							<p
-								className="text-4xl md:text-5xl font-bold gradient-text mb-2 group-hover:scale-105 transition-transform duration-300"
-								style={{ letterSpacing: "-0.03em" }}
-							>
-								{m.value}
-							</p>
-							<p className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">{m.label}</p>
-							<p className="text-xs text-[#aeaeb2] dark:text-[#636366] leading-relaxed">{m.description}</p>
+							<div className={`absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-br ${m.gradient} opacity-20 blur-2xl group-hover:opacity-35 transition-opacity`} />
+							<div className="relative text-center space-y-2">
+								<span className="text-2xl">{m.icon}</span>
+								<p
+									className={`text-4xl md:text-5xl font-black bg-gradient-to-br ${m.gradient} bg-clip-text text-transparent`}
+									style={{ letterSpacing: "-0.03em" }}
+								>
+									{m.value}
+								</p>
+								<p className="text-sm font-bold text-[#1d1d1f] dark:text-white">{m.label}</p>
+								<p className="text-xs text-[#aeaeb2] dark:text-[#636366] leading-relaxed">{m.description}</p>
+							</div>
 						</div>
 					))}
 				</div>

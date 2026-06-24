@@ -150,12 +150,64 @@ function useCollapseState(key: string, defaultOpen: boolean) {
 	return [open, toggle] as const;
 }
 
+// ── Group accent config ───────────────────────────────────────────────────────
+
+const groupAccent: Record<string, {
+	pill: string;
+	activeBg: string;
+	activeText: string;
+	border: string;
+	subBorder: string;
+	emoji: string;
+}> = {
+	articulos: {
+		emoji: "📖",
+		pill: "bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300",
+		activeBg: "bg-amber-50 dark:bg-amber-950/30",
+		activeText: "text-amber-700 dark:text-amber-300",
+		border: "border-amber-200 dark:border-amber-800/50",
+		subBorder: "border-amber-200/60 dark:border-amber-800/30",
+	},
+	tutoriales: {
+		emoji: "🎓",
+		pill: "bg-blue-100 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300",
+		activeBg: "bg-blue-50 dark:bg-blue-950/30",
+		activeText: "text-blue-700 dark:text-blue-300",
+		border: "border-blue-200 dark:border-blue-800/50",
+		subBorder: "border-blue-200/60 dark:border-blue-800/30",
+	},
+	"tutoriales-lenguajes": {
+		emoji: "💻",
+		pill: "bg-sky-100 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300",
+		activeBg: "bg-sky-50 dark:bg-sky-950/30",
+		activeText: "text-sky-700 dark:text-sky-300",
+		border: "border-sky-200 dark:border-sky-800/50",
+		subBorder: "border-sky-200/60 dark:border-sky-800/30",
+	},
+	"tutoriales-frameworks": {
+		emoji: "🧩",
+		pill: "bg-indigo-100 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300",
+		activeBg: "bg-indigo-50 dark:bg-indigo-950/30",
+		activeText: "text-indigo-700 dark:text-indigo-300",
+		border: "border-indigo-200 dark:border-indigo-800/50",
+		subBorder: "border-indigo-200/60 dark:border-indigo-800/30",
+	},
+	herramientas: {
+		emoji: "🔧",
+		pill: "bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300",
+		activeBg: "bg-violet-50 dark:bg-violet-950/30",
+		activeText: "text-violet-700 dark:text-violet-300",
+		border: "border-violet-200 dark:border-violet-800/50",
+		subBorder: "border-violet-200/60 dark:border-violet-800/30",
+	},
+};
+
 // ── Chevron icon ──────────────────────────────────────────────────────────────
 
 function Chevron({ open }: { open: boolean }) {
 	return (
 		<svg
-			className={`w-3 h-3 text-[#aeaeb2] transition-transform duration-200 ${open ? "rotate-90" : ""}`}
+			className={`w-3 h-3 text-[#aeaeb2] transition-transform duration-200 flex-shrink-0 ${open ? "rotate-90" : ""}`}
 			fill="none" viewBox="0 0 24 24" stroke="currentColor"
 		>
 			<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -165,13 +217,14 @@ function Chevron({ open }: { open: boolean }) {
 
 // ── Sidebar item ──────────────────────────────────────────────────────────────
 
-function SidebarItem({ item, active }: { item: NavItem; active: boolean }) {
+function SidebarItem({ item, active, groupId }: { item: NavItem; active: boolean; groupId?: string }) {
+	const accent = groupId ? groupAccent[groupId] : null;
 	return (
 		<Link
 			href={item.href}
-			className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all duration-150 no-underline group ${
+			className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all duration-150 no-underline group ${
 				active
-					? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-semibold"
+					? `${accent?.activeBg ?? "bg-blue-50 dark:bg-blue-950/30"} ${accent?.activeText ?? "text-blue-600 dark:text-blue-400"} font-semibold`
 					: "text-[#3a3a3c] dark:text-[#aeaeb2] hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-[#1d1d1f] dark:hover:text-white"
 			}`}
 		>
@@ -179,6 +232,9 @@ function SidebarItem({ item, active }: { item: NavItem; active: boolean }) {
 				<span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.color}`} />
 			)}
 			<span className="flex-1 min-w-0 truncate leading-snug">{item.label}</span>
+			{active && (
+				<span className="flex-shrink-0 w-1 h-1 rounded-full bg-current opacity-60" />
+			)}
 		</Link>
 	);
 }
@@ -187,28 +243,31 @@ function SidebarItem({ item, active }: { item: NavItem; active: boolean }) {
 
 function SubGroup({ group, currentPath }: { group: NavGroup; currentPath: string }) {
 	const [open, toggle] = useCollapseState(group.id, group.defaultOpen ?? true);
+	const accent = groupAccent[group.id] ?? groupAccent["tutoriales-lenguajes"];
 
 	return (
-		<div className="mt-1">
+		<div className="mt-2">
 			<button
 				onClick={toggle}
-				className="flex items-center gap-1.5 w-full px-3 py-1 rounded-lg hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-colors group"
+				className="flex items-center gap-2 w-full px-2.5 py-1.5 rounded-lg hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-colors group"
 			>
 				<Chevron open={open} />
-				<span className={`${group.color} flex-shrink-0`}>{group.icon}</span>
-				<span className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] group-hover:text-[#6e6e73] dark:group-hover:text-[#86868b] transition-colors">
+				<span className="text-sm flex-shrink-0">{accent.emoji}</span>
+				<span className="text-[10px] font-bold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] group-hover:text-[#6e6e73] dark:group-hover:text-[#86868b] transition-colors flex-1 text-left">
 					{group.label}
 				</span>
-				<span className="ml-auto text-[9px] text-[#aeaeb2] dark:text-[#636366]">{group.items?.length}</span>
+				<span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${accent.pill}`}>
+					{group.items?.length}
+				</span>
 			</button>
 
 			<div
 				className="overflow-hidden transition-all duration-200"
 				style={{ maxHeight: open ? `${(group.items?.length ?? 0) * 36 + 8}px` : "0px" }}
 			>
-				<div className="ml-4 pl-2 border-l border-black/8 dark:border-white/8 mt-0.5 space-y-0.5 pb-1">
+				<div className={`ml-4 pl-2 border-l ${accent.subBorder} mt-0.5 space-y-0.5 pb-1`}>
 					{group.items?.map((item) => (
-						<SidebarItem key={item.id} item={item} active={currentPath === item.href} />
+						<SidebarItem key={item.id} item={item} active={currentPath === item.href} groupId={group.id} />
 					))}
 				</div>
 			</div>
@@ -229,36 +288,44 @@ function TopGroup({ group, currentPath }: { group: NavGroup; currentPath: string
 		(group.href && currentPath === group.href);
 
 	const [open, toggle] = useCollapseState(group.id, group.defaultOpen ?? false);
+	const accent = groupAccent[group.id] ?? { emoji: "📄", pill: "bg-gray-100 text-gray-600", activeBg: "bg-gray-50", activeText: "text-gray-700", border: "border-gray-200", subBorder: "border-gray-200/60" };
 
 	return (
-		<div className="mt-4">
-			{/* Group header */}
+		<div className="mt-1">
+			{/* Group header pill-style */}
 			<button
 				onClick={toggle}
-				className={`flex items-center gap-2 w-full px-3 py-1.5 rounded-lg transition-colors group ${
-					isGroupActive ? "opacity-100" : ""
+				className={`flex items-center gap-2 w-full px-2.5 py-2 rounded-xl transition-all duration-150 group ${
+					isGroupActive
+						? `${accent.activeBg} border ${accent.border}`
+						: "hover:bg-black/[0.03] dark:hover:bg-white/[0.03]"
 				}`}
 			>
 				<Chevron open={open} />
-				<span className={group.color}>{group.icon}</span>
+				<span className="text-base flex-shrink-0">{accent.emoji}</span>
 				<span
-					className={`text-[10px] font-semibold uppercase tracking-wider transition-colors ${
+					className={`text-xs font-bold transition-colors flex-1 text-left ${
 						isGroupActive
-							? "text-[#1d1d1f] dark:text-white"
-							: "text-[#aeaeb2] dark:text-[#636366] group-hover:text-[#6e6e73] dark:group-hover:text-[#86868b]"
+							? accent.activeText
+							: "text-[#3a3a3c] dark:text-[#aeaeb2] group-hover:text-[#1d1d1f] dark:group-hover:text-white"
 					}`}
 				>
 					{group.label}
 				</span>
-				{group.href && (
-					<Link
-						href={group.href}
-						onClick={(e) => e.stopPropagation()}
-						className="ml-auto text-[9px] text-[#aeaeb2] dark:text-[#636366] hover:text-blue-500 no-underline"
-					>
-						ver todos
-					</Link>
-				)}
+				<div className="flex items-center gap-1.5">
+					<span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${accent.pill}`}>
+						{allItems.length}
+					</span>
+					{group.href && (
+						<Link
+							href={group.href}
+							onClick={(e) => e.stopPropagation()}
+							className={`text-[9px] font-semibold no-underline opacity-0 group-hover:opacity-100 transition-opacity ${accent.activeText}`}
+						>
+							ver →
+						</Link>
+					)}
+				</div>
 			</button>
 
 			{/* Content */}
@@ -266,22 +333,22 @@ function TopGroup({ group, currentPath }: { group: NavGroup; currentPath: string
 				className="overflow-hidden transition-all duration-200"
 				style={{
 					maxHeight: open
-						? `${allItems.length * 36 + (hasChildren ? (group.children?.length ?? 0) * 40 : 0) + 40}px`
+						? `${allItems.length * 36 + (hasChildren ? (group.children?.length ?? 0) * 48 : 0) + 60}px`
 						: "0px",
 				}}
 			>
 				{/* Direct items */}
 				{hasItems && (
-					<div className="ml-4 pl-2 border-l border-black/8 dark:border-white/8 mt-0.5 space-y-0.5 pb-1">
+					<div className={`ml-3 pl-2 border-l ${accent.subBorder} mt-1 space-y-0.5 pb-1`}>
 						{group.items!.map((item) => (
-							<SidebarItem key={item.id} item={item} active={currentPath === item.href} />
+							<SidebarItem key={item.id} item={item} active={currentPath === item.href} groupId={group.id} />
 						))}
 					</div>
 				)}
 
 				{/* Nested sub-groups */}
 				{hasChildren && (
-					<div className="ml-4 pl-2 border-l border-black/8 dark:border-white/8 mt-0.5 pb-1">
+					<div className={`ml-3 pl-2 border-l ${accent.subBorder} mt-1 pb-1`}>
 						{group.children!.map((child) => (
 							<SubGroup key={child.id} group={child} currentPath={currentPath} />
 						))}
@@ -304,17 +371,17 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
 		: [];
 
 	return (
-		<div className="relative px-1 mb-4">
+		<div className="relative px-1 mb-3">
 			<div className="relative">
 				<svg className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-[#aeaeb2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 				</svg>
 				<input
 					type="text"
-					placeholder="Buscar..."
+					placeholder="Buscar contenido..."
 					value={q}
 					onChange={(e) => setQ(e.target.value)}
-					className="w-full pl-7 pr-3 py-1.5 rounded-lg bg-black/[0.04] dark:bg-white/[0.04] border border-black/8 dark:border-white/8 text-xs text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:ring-1 focus:ring-blue-400/40"
+					className="w-full pl-7 pr-3 py-2 rounded-xl bg-black/[0.04] dark:bg-white/[0.04] border border-black/8 dark:border-white/8 text-xs text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:ring-2 focus:ring-violet-400/30 focus:border-violet-300 dark:focus:border-violet-600 transition-all"
 				/>
 				{q && (
 					<button onClick={() => setQ("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#aeaeb2] hover:text-[#6e6e73]">
@@ -329,13 +396,15 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
 				<div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 rounded-xl shadow-xl overflow-hidden">
 					{results.map((item) => {
 						const href = `/blog/${typeSlug(item.type)}/${item.slug}`;
+						const typeEmoji = item.type === "article" ? "📖" : item.type === "tutorial" ? "🎓" : "🔧";
 						return (
 							<Link
 								key={item.id}
 								href={href}
 								onClick={() => setQ("")}
-								className={`flex items-center gap-2 px-3 py-2 hover:bg-black/[0.03] dark:hover:bg-white/[0.03] no-underline ${currentPath === href ? "bg-blue-50 dark:bg-blue-950/20" : ""}`}
+								className={`flex items-center gap-2 px-3 py-2 hover:bg-black/[0.03] dark:hover:bg-white/[0.03] no-underline ${currentPath === href ? "bg-violet-50 dark:bg-violet-950/20" : ""}`}
 							>
+								<span className="text-sm flex-shrink-0">{typeEmoji}</span>
 								<span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.categoryColor}`} />
 								<span className="text-xs text-[#1d1d1f] dark:text-white truncate">{item.title}</span>
 							</Link>
@@ -374,11 +443,27 @@ export default function BlogLayout({ children }: BlogLayoutProps) {
 				{/* ── Sidebar (desktop) ── */}
 				<aside className="hidden md:flex flex-col w-64 lg:w-72 flex-shrink-0 border-r border-black/8 dark:border-white/8 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto sidebar-scroll px-3 py-6">
 					{/* Header */}
-					<div className="px-3 mb-4">
-						<p className="text-[10px] font-semibold uppercase tracking-widest text-[#aeaeb2] dark:text-[#636366]">Blog</p>
-						<Link href="/blog" className="block text-base font-bold text-[#1d1d1f] dark:text-white mt-0.5 no-underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-							Contenido
-						</Link>
+					<div className="px-2 mb-5">
+						<div className="flex items-center gap-2.5 mb-3">
+							<div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white text-sm font-black shadow-md shadow-violet-500/30">
+								✍️
+							</div>
+							<div>
+								<p className="text-[9px] font-bold uppercase tracking-widest text-[#aeaeb2] dark:text-[#636366]">Adrián Escribano</p>
+								<p className="text-sm font-black text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.02em" }}>Blog</p>
+							</div>
+						</div>
+
+						{/* Stat pills */}
+						<div className="flex items-center gap-1.5 flex-wrap">
+							{[
+								{ label: `${allContent.filter(c => c.type === "article").length} art.`, color: "bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300" },
+								{ label: `${allContent.filter(c => c.type === "tutorial").length} tut.`, color: "bg-blue-100 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300" },
+								{ label: `${allContent.filter(c => c.type === "tool").length} her.`, color: "bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300" },
+							].map((s) => (
+								<span key={s.label} className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.color}`}>{s.label}</span>
+							))}
+						</div>
 					</div>
 
 					{/* Search */}
@@ -387,22 +472,25 @@ export default function BlogLayout({ children }: BlogLayoutProps) {
 					{/* Home link */}
 					<Link
 						href="/blog"
-						className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all no-underline mb-1 ${
+						className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all no-underline mb-3 ${
 							currentPath === "/blog"
-								? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-semibold"
-								: "text-[#3a3a3c] dark:text-[#aeaeb2] hover:bg-black/[0.04] dark:hover:bg-white/[0.04]"
+								? "bg-gradient-to-r from-violet-50 to-pink-50 dark:from-violet-950/30 dark:to-pink-950/20 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800/40"
+								: "text-[#3a3a3c] dark:text-[#aeaeb2] hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-[#1d1d1f] dark:hover:text-white"
 						}`}
 					>
-						<svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-						</svg>
+						<span className="text-base flex-shrink-0">🏠</span>
 						Inicio del blog
 					</Link>
 
+					{/* Divider */}
+					<div className="border-t border-black/6 dark:border-white/6 mb-3" />
+
 					{/* Nav groups */}
-					{nav.map((group) => (
-						<TopGroup key={group.id} group={group} currentPath={currentPath} />
-					))}
+					<div className="space-y-1">
+						{nav.map((group) => (
+							<TopGroup key={group.id} group={group} currentPath={currentPath} />
+						))}
+					</div>
 				</aside>
 
 				{/* ── Main ── */}
@@ -433,12 +521,17 @@ export default function BlogLayout({ children }: BlogLayoutProps) {
 										className="absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-[#0a0a0f] border-r border-black/8 dark:border-white/8 overflow-y-auto px-3 py-6 shadow-2xl"
 										onClick={(e) => e.stopPropagation()}
 									>
-										<div className="flex items-center justify-between px-3 mb-4">
-											<div>
-												<p className="text-[10px] font-semibold uppercase tracking-widest text-[#aeaeb2]">Blog</p>
-												<p className="text-base font-bold text-[#1d1d1f] dark:text-white mt-0.5">Contenido</p>
+										<div className="flex items-center justify-between px-2 mb-5">
+											<div className="flex items-center gap-2.5">
+												<div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white text-sm font-black shadow-md shadow-violet-500/30">
+													✍️
+												</div>
+												<div>
+													<p className="text-[9px] font-bold uppercase tracking-widest text-[#aeaeb2]">Adrián Escribano</p>
+													<p className="text-sm font-black text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.02em" }}>Blog</p>
+												</div>
 											</div>
-											<button onClick={() => setMobileOpen(false)} className="p-1 text-[#aeaeb2] hover:text-[#6e6e73]">
+											<button onClick={() => setMobileOpen(false)} className="p-1.5 rounded-lg text-[#aeaeb2] hover:bg-black/5 dark:hover:bg-white/5 hover:text-[#6e6e73]">
 												<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
 												</svg>
@@ -450,17 +543,19 @@ export default function BlogLayout({ children }: BlogLayoutProps) {
 										<Link
 											href="/blog"
 											onClick={() => setMobileOpen(false)}
-											className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs no-underline mb-1 ${currentPath === "/blog" ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-semibold" : "text-[#3a3a3c] dark:text-[#aeaeb2]"}`}
+											className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold no-underline mb-3 ${currentPath === "/blog" ? "bg-gradient-to-r from-violet-50 to-pink-50 dark:from-violet-950/30 dark:to-pink-950/20 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800/40" : "text-[#3a3a3c] dark:text-[#aeaeb2] hover:bg-black/[0.04] dark:hover:bg-white/[0.04]"}`}
 										>
-											<svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-											</svg>
+											<span className="text-base">🏠</span>
 											Inicio del blog
 										</Link>
 
-										{nav.map((group) => (
-											<TopGroup key={group.id} group={group} currentPath={currentPath} />
-										))}
+										<div className="border-t border-black/6 dark:border-white/6 mb-3" />
+
+										<div className="space-y-1">
+											{nav.map((group) => (
+												<TopGroup key={group.id} group={group} currentPath={currentPath} />
+											))}
+										</div>
 									</div>
 								</div>
 							)}
@@ -474,7 +569,7 @@ export default function BlogLayout({ children }: BlogLayoutProps) {
 						<div className="px-5 sm:px-8 md:px-10 lg:px-14 py-8">
 							<div className="flex flex-col sm:flex-row items-center justify-between gap-4">
 								<div className="flex items-center gap-2.5">
-									<div className="w-6 h-6 rounded-md bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-xs">A</div>
+									<div className="w-6 h-6 rounded-md bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-bold text-xs">A</div>
 									<span className="text-sm font-medium text-[#1d1d1f] dark:text-white">Adrián Escribano</span>
 								</div>
 								<div className="flex items-center gap-5">

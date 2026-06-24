@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type SectionId =
   | "intro" | "fundamentos" | "funciones" | "arrays-objetos"
-  | "dom" | "async" | "es6plus" | "proyecto-final";
+  | "dom" | "async" | "es6plus" | "proyecto-final" | "ejercicios";
 
 interface SectionDef { id: SectionId; label: string; }
 const SECTIONS: SectionDef[] = [
@@ -15,6 +15,7 @@ const SECTIONS: SectionDef[] = [
   { id: "async",          label: "6. Asincronía" },
   { id: "es6plus",        label: "7. ES6+" },
   { id: "proyecto-final", label: "Proyecto Final" },
+  { id: "ejercicios",     label: "Ejercicios" },
 ];
 
 function Code({ children }: { children: string }) {
@@ -44,6 +45,150 @@ function Callout({ type, children }: { type: "tip" | "warn" | "danger"; children
     <div className={`border rounded-xl px-4 py-3 my-4 text-sm ${styles[type]}`}>
       <span className="mr-1.5">{icons[type]}</span>{children}
     </div>
+  );
+}
+
+// ── Exercise Card ──────────────────────────────────────────────────────────────
+function ExerciseCard({ num, title, level, description, hint, solution }: {
+  num: number; title: string; level: "Básico" | "Intermedio" | "Avanzado";
+  description: string; hint?: string; solution?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const levelColor = { Básico: "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400", Intermedio: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400", Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400" }[level];
+  return (
+    <div className="border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden">
+      <button onClick={() => setOpen(!open)} className="w-full px-4 py-3 flex items-center justify-between gap-3 hover:bg-black/3 dark:hover:bg-white/3 transition-colors text-left">
+        <div className="flex items-center gap-3">
+          <span className="w-6 h-6 rounded-full bg-yellow-500 text-white text-xs font-bold flex items-center justify-center shrink-0">{num}</span>
+          <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">{title}</span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${levelColor}`}>{level}</span>
+          <span className="text-[#aeaeb2] text-xs">{open ? "▲" : "▼"}</span>
+        </div>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 border-t border-black/8 dark:border-white/8 pt-3 space-y-3">
+          <p className="text-sm text-[#3a3a3c] dark:text-[#aeaeb2]">{description}</p>
+          {hint && <div className="bg-yellow-50 dark:bg-yellow-950/20 rounded-xl px-3 py-2 text-xs text-yellow-800 dark:text-yellow-300"><strong>Pista:</strong> {hint}</div>}
+          {solution && <Code>{solution}</Code>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SEjercicios() {
+  return (
+    <>
+      <H2>Ejercicios de JavaScript</H2>
+      <P>Practica lo aprendido con estos ejercicios progresivos. Intenta resolverlos por tu cuenta antes de mirar la solución.</P>
+      <div className="space-y-3 mt-6">
+        <ExerciseCard num={1} title="Calculadora básica" level="Básico"
+          description="Crea una función calculadora que acepte dos números y un operador (+, -, *, /) y devuelva el resultado. Maneja la división por cero."
+          hint="Usa un switch/case para el operador y devuelve null si el operador no es válido."
+          solution={`function calculadora(a, b, operador) {
+  switch (operador) {
+    case "+": return a + b;
+    case "-": return a - b;
+    case "*": return a * b;
+    case "/": return b === 0 ? null : a / b;
+    default:  return null;
+  }
+}
+
+console.log(calculadora(10, 2, "/"));  // 5
+console.log(calculadora(5, 0, "/"));   // null`} />
+
+        <ExerciseCard num={2} title="Filtrar y transformar arrays" level="Básico"
+          description="Dado un array de números, devuelve un nuevo array con solo los pares multiplicados por 2. Usa filter() y map()."
+          hint="Encadena .filter(n => n % 2 === 0).map(n => n * 2)"
+          solution={`const numeros = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const resultado = numeros
+  .filter(n => n % 2 === 0)
+  .map(n => n * 2);
+
+console.log(resultado); // [4, 8, 12, 16]`} />
+
+        <ExerciseCard num={3} title="Contador de palabras" level="Básico"
+          description="Crea una función que reciba un string y devuelva un objeto con el conteo de cada palabra. Ignora mayúsculas/minúsculas."
+          hint="Usa split(' '), reduce() y toLowerCase() para construir el objeto."
+          solution={`function contarPalabras(texto) {
+  return texto.toLowerCase().split(/\\s+/).reduce((acc, palabra) => {
+    acc[palabra] = (acc[palabra] || 0) + 1;
+    return acc;
+  }, {});
+}
+
+console.log(contarPalabras("hola mundo hola JS"));
+// { hola: 2, mundo: 1, js: 1 }`} />
+
+        <ExerciseCard num={4} title="Promesas encadenadas" level="Intermedio"
+          description="Simula una llamada a API que obtiene un usuario por ID y luego sus posts. Usa async/await y maneja errores con try/catch."
+          hint="Crea dos funciones que devuelvan Promises y encadénalas con await."
+          solution={`async function getUsuario(id) {
+  // Simula llamada API
+  return new Promise(resolve => {
+    setTimeout(() => resolve({ id, nombre: "Ana" }), 100);
+  });
+}
+
+async function getPosts(userId) {
+  return new Promise(resolve => {
+    setTimeout(() => resolve([{ id: 1, titulo: "Post de Ana" }]), 100);
+  });
+}
+
+async function cargarDatos(userId) {
+  try {
+    const usuario = await getUsuario(userId);
+    const posts = await getPosts(usuario.id);
+    console.log(usuario.nombre, posts.length + " posts");
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+}
+
+cargarDatos(1);`} />
+
+        <ExerciseCard num={5} title="Observer pattern con clases ES6" level="Avanzado"
+          description="Implementa un EventEmitter básico usando clases ES6 con métodos on(evento, callback), emit(evento, datos) y off(evento, callback)."
+          hint="Usa un Map donde la clave es el nombre del evento y el valor es un array de callbacks."
+          solution={`class EventEmitter {
+  constructor() {
+    this.eventos = new Map();
+  }
+
+  on(evento, callback) {
+    if (!this.eventos.has(evento)) {
+      this.eventos.set(evento, []);
+    }
+    this.eventos.get(evento).push(callback);
+    return this;
+  }
+
+  off(evento, callback) {
+    if (!this.eventos.has(evento)) return;
+    const cbs = this.eventos.get(evento).filter(cb => cb !== callback);
+    this.eventos.set(evento, cbs);
+  }
+
+  emit(evento, datos) {
+    if (!this.eventos.has(evento)) return;
+    this.eventos.get(evento).forEach(cb => cb(datos));
+  }
+}
+
+const emitter = new EventEmitter();
+const handler = (d) => console.log("Recibido:", d);
+
+emitter.on("mensaje", handler);
+emitter.emit("mensaje", { texto: "Hola!" }); // Recibido: {texto: 'Hola!'}
+emitter.off("mensaje", handler);
+emitter.emit("mensaje", { texto: "Ya no llega" }); // (nada)`} />
+      </div>
+    </>
   );
 }
 
@@ -482,6 +627,7 @@ export default function JavaScriptContent() {
       case "async":          return <SectionAsync />;
       case "es6plus":        return <SectionEs6Plus />;
       case "proyecto-final": return <SectionProyecto />;
+      case "ejercicios":     return <SEjercicios />;
     }
   };
 

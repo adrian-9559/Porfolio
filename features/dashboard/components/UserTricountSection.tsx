@@ -6,6 +6,7 @@ import {
   type TricountMember,
   type TricountExpense,
 } from "../../../services/tricountService";
+import { mobileService, type MobileLatest } from "../../../services/mobileService";
 
 // ─── Local view types ──────────────────────────────────────────────────────────
 // The balance/debt logic works with member names, so we keep a denormalised
@@ -888,6 +889,145 @@ function GroupDetail({
   );
 }
 
+// ─── App Download Card ────────────────────────────────────────────────────────
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function AppDownloadCard() {
+  const [latest, setLatest] = useState<MobileLatest | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    mobileService.getLatest()
+      .then(setLatest)
+      .catch(() => setLatest(null))
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function handleDownload(buildType: "apk" | "aab" | "ipa") {
+    setDownloading(buildType);
+    setError(null);
+    try {
+      await mobileService.download(buildType);
+    } catch {
+      setError("No se pudo descargar. Inténtalo de nuevo.");
+    } finally {
+      setDownloading(null);
+    }
+  }
+
+  const apk = latest?.android;
+  const ipa = latest?.ios;
+  const hasAny = apk != null || ipa != null;
+  const latestVersion = apk?.version ?? ipa?.version ?? "";
+
+  return (
+    <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5 flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">App móvil de Tricount</p>
+          <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+            {loading
+              ? "Comprobando versión…"
+              : hasAny
+              ? `v${latestVersion} disponible`
+              : "Sin versiones publicadas"}
+          </p>
+        </div>
+      </div>
+
+      {error && (
+        <p className="text-xs text-rose-500 -mt-1">{error}</p>
+      )}
+
+      {!loading && hasAny && (
+        <div className="flex flex-wrap gap-2">
+          {/* Android APK */}
+          {latest?.android && (
+            <button
+              onClick={() => handleDownload("apk")}
+              disabled={downloading === "apk"}
+              className="flex items-center gap-2 bg-[#34c759] hover:bg-[#30b350] disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            >
+              {downloading === "apk" ? (
+                <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+              ) : (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              )}
+              Android APK
+              {latest.android.file_size && (
+                <span className="text-white/70 text-[11px]">({formatBytes(latest.android.file_size)})</span>
+              )}
+            </button>
+          )}
+          {/* Android AAB */}
+          {latest?.android_aab && (
+            <button
+              onClick={() => handleDownload("aab")}
+              disabled={downloading === "aab"}
+              className="flex items-center gap-2 border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-60 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            >
+              {downloading === "aab" ? (
+                <span className="w-4 h-4 rounded-full border-2 border-current/30 border-t-current animate-spin" />
+              ) : (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              )}
+              Android AAB
+            </button>
+          )}
+          {/* iOS IPA */}
+          {latest?.ios && (
+            <button
+              onClick={() => handleDownload("ipa")}
+              disabled={downloading === "ipa"}
+              className="flex items-center gap-2 bg-[#007aff] hover:bg-[#006de0] disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            >
+              {downloading === "ipa" ? (
+                <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+              ) : (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+              )}
+              iOS IPA
+              {latest.ios.file_size && (
+                <span className="text-white/70 text-[11px]">({formatBytes(latest.ios.file_size)})</span>
+              )}
+            </button>
+          )}
+        </div>
+      )}
+
+      {!loading && !hasAny && (
+        <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+          Próximamente. Construye la app con <code className="font-mono text-blue-500">pnpm build:local</code> en la carpeta del proyecto.
+        </p>
+      )}
+
+      {apk && (
+        <p className="text-[11px] text-[#aeaeb2] dark:text-[#636366] -mt-1">
+          Publicado el {new Date(apk.created_at).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" })}
+          {apk.release_notes && ` · ${apk.release_notes}`}
+        </p>
+      )}
+    </div>
+  );
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function UserTricountSection() {
@@ -1042,6 +1182,9 @@ export function UserTricountSection() {
           ))}
         </div>
       )}
+
+      {/* App download */}
+      {!selectedGroupId && <AppDownloadCard />}
 
       {/* New group modal */}
       {showNewGroup && (

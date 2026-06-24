@@ -63,6 +63,27 @@
 		@apply bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent;
 	}
 
+	/* Hero multicolor gradient text */
+	.hero-gradient-text {
+		background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 40%, #f97316 80%, #06b6d4 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	/* Rainbow animated button */
+	.rainbow-btn {
+		@apply relative inline-flex items-center justify-center text-white font-bold rounded-full transition-all duration-300 active:scale-95;
+		background: linear-gradient(135deg, #8b5cf6, #ec4899, #f97316);
+		background-size: 200% 200%;
+		animation: gradientShift 3s ease infinite;
+		box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+	}
+	.rainbow-btn:hover {
+		box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+		transform: translateY(-1px);
+	}
+
 	/* Apple-style buttons */
 	.apple-btn-primary {
 		@apply inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white font-semibold rounded-full px-6 py-2.5 text-sm transition-all duration-200 active:scale-95;
@@ -97,6 +118,12 @@
 @keyframes fadeIn {
 	from { opacity: 0; transform: translateY(8px); }
 	to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradientShift {
+	0%   { background-position: 0% 50%; }
+	50%  { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
 
 @keyframes slideInLeft {

@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type SectionId =
   | "intro" | "express-basico" | "rest-api" | "seguridad"
-  | "arquitectura" | "proyecto-final";
+  | "arquitectura" | "proyecto-final" | "ejercicios";
 
 interface SectionDef { id: SectionId; label: string; }
 const SECTIONS: SectionDef[] = [
@@ -13,6 +13,7 @@ const SECTIONS: SectionDef[] = [
   { id: "seguridad",      label: "4. Seguridad" },
   { id: "arquitectura",   label: "5. Arquitectura" },
   { id: "proyecto-final", label: "Proyecto Final" },
+  { id: "ejercicios",     label: "Ejercicios" },
 ];
 
 function Code({ children }: { children: string }) {
@@ -453,6 +454,225 @@ curl http://localhost:3000/api/tareas \\
   );
 }
 
+function ExerciseCard({ num, title, level, description, hint, solution }: {
+  num: number; title: string; level: "Básico" | "Intermedio" | "Avanzado";
+  description: string; hint?: string; solution?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const levelColor = { Básico: "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400", Intermedio: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400", Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400" }[level];
+  return (
+    <div className="border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden">
+      <button onClick={() => setOpen(!open)} className="w-full px-4 py-3 flex items-center justify-between gap-3 hover:bg-black/3 dark:hover:bg-white/3 transition-colors text-left">
+        <div className="flex items-center gap-3">
+          <span className="w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold flex items-center justify-center shrink-0">{num}</span>
+          <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">{title}</span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${levelColor}`}>{level}</span>
+          <span className="text-[#aeaeb2] text-xs">{open ? "▲" : "▼"}</span>
+        </div>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 border-t border-black/8 dark:border-white/8 pt-3 space-y-3">
+          <p className="text-sm text-[#3a3a3c] dark:text-[#aeaeb2]">{description}</p>
+          {hint && <div className="bg-green-50 dark:bg-green-950/20 rounded-xl px-3 py-2 text-xs text-green-800 dark:text-green-300"><strong>Pista:</strong> {hint}</div>}
+          {solution && <Code>{solution}</Code>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SEjercicios() {
+  return (
+    <>
+      <H2>Ejercicios de Node.js + Express</H2>
+      <P>Practica construyendo APIs reales con estos ejercicios. Asegúrate de tener Node.js instalado antes de comenzar.</P>
+      <div className="space-y-3 mt-6">
+        <ExerciseCard num={1} title="Servidor con rutas básicas" level="Básico"
+          description="Crea un servidor Express con tres rutas: GET / (bienvenida), GET /salud (status 200 con JSON) y una ruta 404 para rutas no encontradas."
+          hint="Usa express(), app.get() y app.use() para el 404. El middleware de 404 va al final de todas las rutas."
+          solution={`const express = require("express");
+const app = express();
+const PORT = 3000;
+
+app.get("/", (req, res) => {
+  res.json({ mensaje: "¡Bienvenido a la API!" });
+});
+
+app.get("/salud", (req, res) => {
+  res.status(200).json({ estado: "ok", timestamp: new Date().toISOString() });
+});
+
+// Middleware 404 — siempre al final
+app.use((req, res) => {
+  res.status(404).json({ error: "Ruta no encontrada", path: req.path });
+});
+
+app.listen(PORT, () => console.log(\`Servidor en http://localhost:\${PORT}\`));`} />
+
+        <ExerciseCard num={2} title="CRUD en memoria" level="Básico"
+          description="Implementa un CRUD completo para una colección de productos (id, nombre, precio) almacenada en un array en memoria. Rutas: GET /productos, GET /productos/:id, POST /productos, PUT /productos/:id, DELETE /productos/:id."
+          hint="Usa let productos = [] y un contador de id. express.json() como middleware para parsear el body."
+          solution={`const express = require("express");
+const app = express();
+app.use(express.json());
+
+let productos = [];
+let nextId = 1;
+
+app.get("/productos", (req, res) => res.json(productos));
+
+app.get("/productos/:id", (req, res) => {
+  const p = productos.find(p => p.id === +req.params.id);
+  if (!p) return res.status(404).json({ error: "No encontrado" });
+  res.json(p);
+});
+
+app.post("/productos", (req, res) => {
+  const { nombre, precio } = req.body;
+  if (!nombre || precio == null) return res.status(400).json({ error: "nombre y precio son requeridos" });
+  const nuevo = { id: nextId++, nombre, precio };
+  productos.push(nuevo);
+  res.status(201).json(nuevo);
+});
+
+app.put("/productos/:id", (req, res) => {
+  const idx = productos.findIndex(p => p.id === +req.params.id);
+  if (idx === -1) return res.status(404).json({ error: "No encontrado" });
+  productos[idx] = { ...productos[idx], ...req.body };
+  res.json(productos[idx]);
+});
+
+app.delete("/productos/:id", (req, res) => {
+  const idx = productos.findIndex(p => p.id === +req.params.id);
+  if (idx === -1) return res.status(404).json({ error: "No encontrado" });
+  productos.splice(idx, 1);
+  res.status(204).send();
+});
+
+app.listen(3000);`} />
+
+        <ExerciseCard num={3} title="Middleware de autenticación JWT" level="Intermedio"
+          description="Crea un middleware que valide un Bearer token JWT en las rutas protegidas. Si el token es inválido o no existe, responde con 401. Añade una ruta POST /login que genere el token."
+          hint="Usa la librería jsonwebtoken. El middleware lee req.headers.authorization, extrae el token y llama jwt.verify()."
+          solution={`const express = require("express");
+const jwt = require("jsonwebtoken");
+const app = express();
+app.use(express.json());
+
+const SECRET = "mi_secreto_superseguro";
+
+function autenticar(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth?.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Token no proporcionado" });
+  }
+  try {
+    req.usuario = jwt.verify(auth.slice(7), SECRET);
+    next();
+  } catch {
+    res.status(401).json({ error: "Token inválido o expirado" });
+  }
+}
+
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  // Aquí iría la validación real contra la BD
+  if (email === "admin@test.com" && password === "1234") {
+    const token = jwt.sign({ email, rol: "admin" }, SECRET, { expiresIn: "1h" });
+    res.json({ token });
+  } else {
+    res.status(401).json({ error: "Credenciales inválidas" });
+  }
+});
+
+app.get("/perfil", autenticar, (req, res) => {
+  res.json({ mensaje: "Ruta protegida", usuario: req.usuario });
+});
+
+app.listen(3000);`} />
+
+        <ExerciseCard num={4} title="Rate limiting personalizado" level="Intermedio"
+          description="Implementa un middleware de rate limiting que permita máximo 10 peticiones por IP en una ventana de 60 segundos. Devuelve 429 cuando se excede el límite."
+          hint="Usa un Map donde la clave es la IP y el valor es { count, resetTime }. Comprueba si resetTime ya pasó para reiniciar el contador."
+          solution={`function rateLimiter(maxPeticiones, ventanaMs) {
+  const peticionesIP = new Map();
+
+  return (req, res, next) => {
+    const ip = req.ip;
+    const ahora = Date.now();
+    const registro = peticionesIP.get(ip);
+
+    if (!registro || ahora > registro.resetTime) {
+      peticionesIP.set(ip, { count: 1, resetTime: ahora + ventanaMs });
+      return next();
+    }
+
+    if (registro.count >= maxPeticiones) {
+      const retryMs = Math.ceil((registro.resetTime - ahora) / 1000);
+      res.setHeader("Retry-After", retryMs);
+      return res.status(429).json({
+        error: "Demasiadas peticiones",
+        reintentarEn: \`\${retryMs} segundos\`
+      });
+    }
+
+    registro.count++;
+    next();
+  };
+}
+
+// Uso: máx 10 peticiones por IP en 60 segundos
+app.use("/api", rateLimiter(10, 60 * 1000));`} />
+
+        <ExerciseCard num={5} title="API con validación Zod y manejo de errores global" level="Avanzado"
+          description="Crea una API con validación de body usando Zod y un middleware global de manejo de errores que diferencie entre errores de validación (400), errores de negocio personalizados (4xx) y errores inesperados (500)."
+          hint="Lanza clases de error personalizadas (AppError) desde los controllers. El middleware global (4 params) los captura y responde adecuadamente."
+          solution={`const { z } = require("zod");
+
+// Error personalizado
+class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+// Schema Zod
+const crearUsuarioSchema = z.object({
+  nombre: z.string().min(2).max(50),
+  email: z.string().email(),
+  edad:  z.number().int().min(18).max(120),
+});
+
+// Controller
+app.post("/usuarios", (req, res, next) => {
+  try {
+    const datos = crearUsuarioSchema.parse(req.body);
+    // ... guardar en BD
+    res.status(201).json({ success: true, data: datos });
+  } catch (err) {
+    next(err); // pasa al middleware global
+  }
+});
+
+// Middleware global de errores (4 parámetros)
+app.use((err, req, res, next) => {
+  if (err instanceof z.ZodError) {
+    return res.status(400).json({ error: "Validación fallida", detalles: err.errors });
+  }
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({ error: err.message });
+  }
+  console.error(err);
+  res.status(500).json({ error: "Error interno del servidor" });
+});`} />
+      </div>
+    </>
+  );
+}
+
 export default function NodeExpressContent() {
   const [active, setActive] = useState<SectionId>(SECTIONS[0].id);
 
@@ -464,6 +684,7 @@ export default function NodeExpressContent() {
       case "seguridad":      return <SectionSeguridad />;
       case "arquitectura":   return <SectionArquitectura />;
       case "proyecto-final": return <SectionProyecto />;
+      case "ejercicios":     return <SEjercicios />;
     }
   };
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type SectionId =
   | "intro" | "fundamentos" | "flujo" | "funciones"
-  | "estructuras" | "poo" | "modulos" | "automatizacion" | "proyecto-final";
+  | "estructuras" | "poo" | "modulos" | "automatizacion" | "proyecto-final" | "ejercicios";
 
 interface SectionDef { id: SectionId; label: string; }
 const SECTIONS: SectionDef[] = [
@@ -16,6 +16,7 @@ const SECTIONS: SectionDef[] = [
   { id: "modulos",        label: "7. Módulos" },
   { id: "automatizacion", label: "8. Automatización" },
   { id: "proyecto-final", label: "Proyecto Final" },
+  { id: "ejercicios",     label: "Ejercicios" },
 ];
 
 function Code({ children }: { children: string }) {
@@ -570,6 +571,149 @@ Croissant,panadería,1.20,25
   );
 }
 
+function ExerciseCard({ num, title, level, description, hint, solution }: {
+  num: number; title: string; level: "Básico" | "Intermedio" | "Avanzado";
+  description: string; hint?: string; solution?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const levelColor = { Básico: "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400", Intermedio: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400", Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400" }[level];
+  return (
+    <div className="border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden">
+      <button onClick={() => setOpen(!open)} className="w-full px-4 py-3 flex items-center justify-between gap-3 hover:bg-black/3 dark:hover:bg-white/3 transition-colors text-left">
+        <div className="flex items-center gap-3">
+          <span className="w-6 h-6 rounded-full bg-sky-500 text-white text-xs font-bold flex items-center justify-center shrink-0">{num}</span>
+          <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">{title}</span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${levelColor}`}>{level}</span>
+          <span className="text-[#aeaeb2] text-xs">{open ? "▲" : "▼"}</span>
+        </div>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 border-t border-black/8 dark:border-white/8 pt-3 space-y-3">
+          <p className="text-sm text-[#3a3a3c] dark:text-[#aeaeb2]">{description}</p>
+          {hint && <div className="bg-sky-50 dark:bg-sky-950/20 rounded-xl px-3 py-2 text-xs text-sky-800 dark:text-sky-300"><strong>Pista:</strong> {hint}</div>}
+          {solution && <Code>{solution}</Code>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SEjercicios() {
+  return (
+    <>
+      <H2>Ejercicios de Python</H2>
+      <P>Pon en práctica lo aprendido con estos ejercicios progresivos. Intenta resolverlos antes de ver la solución.</P>
+      <div className="space-y-3 mt-6">
+        <ExerciseCard num={1} title="FizzBuzz mejorado" level="Básico"
+          description="Escribe una función fizzbuzz(n) que imprima los números del 1 al n. Para múltiplos de 3 imprime 'Fizz', de 5 'Buzz', y de ambos 'FizzBuzz'."
+          hint="Comprueba primero el caso divisible por 15 (o por 3 y 5 simultáneamente)."
+          solution={`def fizzbuzz(n):
+    for i in range(1, n + 1):
+        if i % 15 == 0:
+            print("FizzBuzz")
+        elif i % 3 == 0:
+            print("Fizz")
+        elif i % 5 == 0:
+            print("Buzz")
+        else:
+            print(i)
+
+fizzbuzz(20)`} />
+
+        <ExerciseCard num={2} title="Aplanar lista anidada" level="Básico"
+          description="Crea una función que reciba una lista que puede contener otras listas (anidadas) y devuelva una lista plana con todos los elementos."
+          hint="Usa recursión: si el elemento es una lista, llama a la función de nuevo sobre él."
+          solution={`def aplanar(lista):
+    resultado = []
+    for elemento in lista:
+        if isinstance(elemento, list):
+            resultado.extend(aplanar(elemento))
+        else:
+            resultado.append(elemento)
+    return resultado
+
+print(aplanar([1, [2, 3], [4, [5, 6]], 7]))
+# [1, 2, 3, 4, 5, 6, 7]`} />
+
+        <ExerciseCard num={3} title="Clase Pila (Stack)" level="Intermedio"
+          description="Implementa una clase Pila con métodos apilar(item), desapilar(), ver_tope() y esta_vacia(). Lanza ValueError si se desapila de una pila vacía."
+          hint="Usa una lista interna y append/pop para las operaciones."
+          solution={`class Pila:
+    def __init__(self):
+        self._datos = []
+
+    def apilar(self, item):
+        self._datos.append(item)
+
+    def desapilar(self):
+        if self.esta_vacia():
+            raise ValueError("La pila está vacía")
+        return self._datos.pop()
+
+    def ver_tope(self):
+        if self.esta_vacia():
+            return None
+        return self._datos[-1]
+
+    def esta_vacia(self):
+        return len(self._datos) == 0
+
+p = Pila()
+p.apilar(1)
+p.apilar(2)
+p.apilar(3)
+print(p.desapilar())  # 3
+print(p.ver_tope())   # 2`} />
+
+        <ExerciseCard num={4} title="Decorador de caché" level="Intermedio"
+          description="Implementa un decorador @cache_simple que almacene en memoria los resultados de una función para evitar cálculos repetidos (memoization)."
+          hint="Usa un diccionario como caché. La clave pueden ser los args de la función."
+          solution={`def cache_simple(func):
+    memoria = {}
+    def wrapper(*args):
+        if args not in memoria:
+            memoria[args] = func(*args)
+        return memoria[args]
+    return wrapper
+
+@cache_simple
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+print(fibonacci(35))  # 9227465 (instantáneo con caché)`} />
+
+        <ExerciseCard num={5} title="Analizador de CSV" level="Avanzado"
+          description="Crea una función que lea un string CSV (con cabecera), lo convierta a una lista de dicts y permita filtrar por columna. Usa solo la librería estándar."
+          hint="Usa csv.DictReader con io.StringIO para parsear el string sin leer archivos."
+          solution={`import csv
+import io
+
+def analizar_csv(texto_csv, filtro=None):
+    reader = csv.DictReader(io.StringIO(texto_csv))
+    filas = list(reader)
+    if filtro:
+        columna, valor = filtro
+        filas = [f for f in filas if f.get(columna) == valor]
+    return filas
+
+csv_data = """nombre,edad,ciudad
+Ana,28,Madrid
+Luis,34,Barcelona
+Sara,28,Madrid"""
+
+todos = analizar_csv(csv_data)
+madrid = analizar_csv(csv_data, filtro=("ciudad", "Madrid"))
+print(len(todos))   # 3
+print(len(madrid))  # 2`} />
+      </div>
+    </>
+  );
+}
+
 export default function PythonContent() {
   const [active, setActive] = useState<SectionId>(SECTIONS[0].id);
 
@@ -584,6 +728,7 @@ export default function PythonContent() {
       case "modulos":        return <SectionModulos />;
       case "automatizacion": return <SectionAutomatizacion />;
       case "proyecto-final": return <SectionProyecto />;
+      case "ejercicios":     return <SEjercicios />;
     }
   };
 

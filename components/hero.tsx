@@ -1,6 +1,6 @@
 "use client";
 import { ArrowShapeDownToLine } from "@gravity-ui/icons";
-import { Avatar, Badge, Button, Chip, Tooltip } from "@heroui/react";
+import { Avatar, Button, Tooltip } from "@heroui/react";
 import Link from "next/link";
 
 export default function Hero() {
@@ -12,52 +12,74 @@ export default function Hero() {
 	};
 
 	return (
-		<section className="relative w-full pt-12 pb-16 md:pt-20 md:pb-28 overflow-clip">
-			{/* Ambient blobs */}
+		<section className="relative w-full pt-10 pb-20 md:pt-16 md:pb-32 overflow-clip">
+			{/* Mesh gradient background */}
 			<div className="absolute inset-0 -z-10 overflow-hidden">
-				<div className="blob absolute top-[-80px] left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-radial from-blue-400/10 via-violet-400/6 to-transparent" />
-				<div className="blob absolute top-[60px] right-[-100px] w-[350px] h-[350px] bg-gradient-to-bl from-cyan-400/8 to-transparent" />
-				<div className="blob absolute bottom-0 left-[-80px] w-[300px] h-[300px] bg-gradient-to-tr from-violet-400/6 to-transparent" />
+				<div className="blob absolute top-[-120px] left-[10%] w-[500px] h-[500px] bg-gradient-radial from-violet-500/20 via-purple-400/10 to-transparent" />
+				<div className="blob absolute top-[-60px] right-[5%] w-[400px] h-[400px] bg-gradient-to-bl from-pink-500/15 via-rose-400/8 to-transparent" />
+				<div className="blob absolute bottom-[-40px] left-[20%] w-[450px] h-[350px] bg-gradient-to-tr from-cyan-400/15 via-blue-400/8 to-transparent" />
+				<div className="blob absolute top-[30%] right-[-50px] w-[300px] h-[300px] bg-gradient-to-l from-orange-400/12 to-transparent" />
+				{/* Grid lines */}
+				<div
+					className="absolute inset-0 opacity-[0.025] dark:opacity-[0.04]"
+					style={{
+						backgroundImage: "linear-gradient(rgba(99,102,241,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.8) 1px, transparent 1px)",
+						backgroundSize: "60px 60px",
+					}}
+				/>
 			</div>
 
-			<div className="flex flex-col items-center text-center space-y-10">
-				{/* Avatar */}
+			<div className="flex flex-col items-center text-center space-y-8">
+				{/* Availability badge */}
 				<div className="animate-fade-in">
-					<Badge.Anchor>
-						<Avatar className="w-28 h-28 ring-4 ring-white/80 dark:ring-[#1c1c22]/80 shadow-2xl shadow-blue-500/10">
-							<Avatar.Image src="/images/profile.png" alt="Adrián Escribano" />
-							<Avatar.Fallback className="text-2xl font-bold text-blue-600 bg-blue-50">A</Avatar.Fallback>
-						</Avatar>
-						<Badge color="success" placement="bottom-right" size="sm" className="ring-2 ring-white dark:ring-[#0a0a0f]" />
-					</Badge.Anchor>
+					<span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-wide bg-gradient-to-r from-violet-500/10 to-pink-500/10 border border-violet-300/40 dark:border-violet-700/40 text-violet-700 dark:text-violet-300 backdrop-blur-sm">
+						<span className="relative flex h-2 w-2">
+							<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+							<span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+						</span>
+						Disponible para nuevos proyectos
+					</span>
 				</div>
 
-				{/* Greeting chip */}
-				<div className="animate-fade-in delay-75">
-					<Chip className="px-4 py-1.5 text-xs font-semibold tracking-wide border border-blue-100 dark:border-blue-900/60 bg-blue-50/80 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 backdrop-blur-sm">
-						Hola, soy Adrián Escribano 👋
-					</Chip>
+				{/* Avatar */}
+				<div className="animate-fade-in delay-75 relative w-32 h-32 mx-auto">
+					{/* Soft glow behind */}
+					<div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-400/40 via-pink-400/30 to-cyan-400/30 blur-2xl scale-110" />
+					{/* Floating decoration dots */}
+					<div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/40" />
+					<div className="absolute -bottom-1 -left-3 w-4 h-4 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 shadow-lg shadow-pink-500/40" />
+					<div className="absolute top-1/2 -right-4 w-3 h-3 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 shadow-md shadow-cyan-400/40" />
+					{/* Photo */}
+					<div className="relative w-32 h-32 rounded-2xl overflow-hidden shadow-2xl shadow-black/20 rotate-1 hover:rotate-0 transition-transform duration-500">
+						<Avatar className="w-full h-full rounded-none">
+							<Avatar.Image src="/images/profile.png" alt="Adrián Escribano" className="object-cover" />
+							<Avatar.Fallback className="text-3xl font-black text-white bg-gradient-to-br from-violet-500 to-pink-500 w-full h-full rounded-none">A</Avatar.Fallback>
+						</Avatar>
+					</div>
 				</div>
 
 				{/* Heading */}
-				<div className="space-y-5 animate-fade-in delay-150 max-w-2xl">
+				<div className="space-y-4 animate-fade-in delay-150 max-w-3xl">
+					<p className="text-sm font-semibold text-[#86868b] dark:text-[#636366] tracking-widest uppercase">
+						Hola, soy Adrián Escribano 👋
+					</p>
 					<h1
-						className="text-5xl sm:text-6xl md:text-7xl font-bold"
-						style={{ letterSpacing: "-0.035em", lineHeight: 1.08 }}
+						className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black"
+						style={{ letterSpacing: "-0.04em", lineHeight: 1.04 }}
 					>
 						Full Stack
-						<span className="block gradient-text">Developer</span>
+						<span className="block hero-gradient-text">Developer</span>
 					</h1>
-					<p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed max-w-md mx-auto">
-						Creo soluciones digitales combinando arquitecturas robustas con interfaces intuitivas y experiencias que importan.
+					<p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed max-w-lg mx-auto">
+						Construyo productos digitales con arquitecturas sólidas e interfaces que enamoran. Del backend al frontend, del código al resultado.
 					</p>
 				</div>
 
 				{/* CTA buttons */}
 				<div className="flex flex-col sm:flex-row gap-3 items-center animate-fade-in delay-225">
 					<Link href="#projects">
-						<button className="apple-btn-primary px-8 py-3 text-sm shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 hover:shadow-lg transition-shadow">
-							Ver mis proyectos
+						<button className="rainbow-btn px-8 py-3.5 text-sm font-semibold">
+							Ver mis proyectos →
 						</button>
 					</Link>
 					<Tooltip>
@@ -77,22 +99,34 @@ export default function Hero() {
 					</Tooltip>
 				</div>
 
-				{/* Micro-stats */}
-				<div className="animate-fade-in delay-300 flex items-center gap-8 md:gap-16 pt-2">
+				{/* Micro-stats with color */}
+				<div className="animate-fade-in delay-300 flex items-center gap-10 md:gap-20 pt-4">
 					{[
-						{ value: "3+", label: "Años exp." },
-						{ value: "15+", label: "Proyectos" },
-						{ value: "20+", label: "Tecnologías" },
+						{ value: "3+", label: "Años exp.", color: "from-violet-500 to-purple-600" },
+						{ value: "15+", label: "Proyectos", color: "from-pink-500 to-rose-600" },
+						{ value: "20+", label: "Tecnologías", color: "from-cyan-500 to-blue-600" },
 					].map((stat, i) => (
 						<div key={i} className="text-center">
 							<p
-								className="text-3xl md:text-4xl font-bold text-[#1d1d1f] dark:text-white"
-								style={{ letterSpacing: "-0.02em" }}
+								className={`text-3xl md:text-4xl font-black bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`}
+								style={{ letterSpacing: "-0.03em" }}
 							>
 								{stat.value}
 							</p>
-							<p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1 font-medium">{stat.label}</p>
+							<p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1 font-semibold uppercase tracking-wide">{stat.label}</p>
 						</div>
+					))}
+				</div>
+
+				{/* Tech floating pills */}
+				<div className="animate-fade-in delay-300 flex flex-wrap justify-center gap-2 max-w-md pt-2">
+					{["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Docker"].map((tech, i) => (
+						<span
+							key={i}
+							className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-[#3d3d3d] dark:text-[#c0c0c5] shadow-sm"
+						>
+							{tech}
+						</span>
 					))}
 				</div>
 			</div>

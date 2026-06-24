@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type SectionId =
   | "intro" | "routing" | "api-routes" | "renderizado"
-  | "optimizacion" | "proyecto-final";
+  | "optimizacion" | "proyecto-final" | "ejercicios";
 
 interface SectionDef { id: SectionId; label: string; }
 const SECTIONS: SectionDef[] = [
@@ -13,6 +13,7 @@ const SECTIONS: SectionDef[] = [
   { id: "renderizado",    label: "4. Renderizado" },
   { id: "optimizacion",   label: "5. Optimización" },
   { id: "proyecto-final", label: "Proyecto Final" },
+  { id: "ejercicios",     label: "Ejercicios" },
 ];
 
 function Code({ children }: { children: string }) {
@@ -519,6 +520,203 @@ export default function NuevoPostPage() {
   );
 }
 
+function ExerciseCard({ num, title, level, description, hint, solution }: {
+  num: number; title: string; level: "Básico" | "Intermedio" | "Avanzado";
+  description: string; hint?: string; solution?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const levelColor = { Básico: "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400", Intermedio: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400", Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400" }[level];
+  return (
+    <div className="border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden">
+      <button onClick={() => setOpen(!open)} className="w-full px-4 py-3 flex items-center justify-between gap-3 hover:bg-black/3 dark:hover:bg-white/3 transition-colors text-left">
+        <div className="flex items-center gap-3">
+          <span className="w-6 h-6 rounded-full bg-slate-800 text-white text-xs font-bold flex items-center justify-center shrink-0">{num}</span>
+          <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">{title}</span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${levelColor}`}>{level}</span>
+          <span className="text-[#aeaeb2] text-xs">{open ? "▲" : "▼"}</span>
+        </div>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 border-t border-black/8 dark:border-white/8 pt-3 space-y-3">
+          <p className="text-sm text-[#3a3a3c] dark:text-[#aeaeb2]">{description}</p>
+          {hint && <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl px-3 py-2 text-xs text-slate-700 dark:text-slate-300"><strong>Pista:</strong> {hint}</div>}
+          {solution && <Code>{solution}</Code>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SEjercicios() {
+  return (
+    <>
+      <H2>Ejercicios de Next.js</H2>
+      <P>Ejercicios prácticos para dominar las características avanzadas de Next.js con App Router.</P>
+      <div className="space-y-3 mt-6">
+        <ExerciseCard num={1} title="Página con datos estáticos" level="Básico"
+          description="Crea una página /productos que muestre una lista de productos generada en tiempo de build usando generateStaticParams y fetch estático (cache: 'force-cache')."
+          hint="En App Router los Server Components son async por defecto. Usa fetch() directamente en el componente."
+          solution={`// app/productos/page.tsx
+async function getProductos() {
+  const res = await fetch("https://fakestoreapi.com/products", {
+    cache: "force-cache", // SSG - se genera en build
+  });
+  return res.json();
+}
+
+export default async function ProductosPage() {
+  const productos = await getProductos();
+
+  return (
+    <div>
+      <h1>Catálogo</h1>
+      <div className="grid grid-cols-3 gap-4">
+        {productos.map((p: any) => (
+          <div key={p.id} className="border p-4 rounded-xl">
+            <h2>{p.title}</h2>
+            <p>\${p.price}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}`} />
+
+        <ExerciseCard num={2} title="API Route con validación" level="Básico"
+          description="Crea una API Route en /api/contacto que solo acepte POST, valide que el body contenga nombre y email (formato válido), y devuelva el mensaje guardado con un id generado."
+          hint="En App Router usa route.ts con export async function POST(request: Request). Parsea con request.json()."
+          solution={`// app/api/contacto/route.ts
+export async function POST(request: Request) {
+  const body = await request.json();
+  const { nombre, email } = body;
+
+  if (!nombre || nombre.length < 2) {
+    return Response.json({ error: "Nombre inválido" }, { status: 400 });
+  }
+  if (!email?.includes("@")) {
+    return Response.json({ error: "Email inválido" }, { status: 400 });
+  }
+
+  const mensaje = {
+    id: crypto.randomUUID(),
+    nombre,
+    email,
+    creadoEn: new Date().toISOString(),
+  };
+
+  // Aquí guardarías en BD
+  return Response.json({ success: true, data: mensaje }, { status: 201 });
+}
+
+export async function GET() {
+  return Response.json({ error: "Método no permitido" }, { status: 405 });
+}`} />
+
+        <ExerciseCard num={3} title="Página dinámica con ISR" level="Intermedio"
+          description="Crea una página /blog/[slug] que genere las rutas estáticamente para los posts más populares y regenere el contenido cada 60 segundos (ISR) para los demás."
+          hint="Usa generateStaticParams para las rutas conocidas y export const revalidate = 60 para la regeneración."
+          solution={`// app/blog/[slug]/page.tsx
+import { notFound } from "next/navigation";
+
+export const revalidate = 60; // Regenerar cada 60 segundos
+
+export async function generateStaticParams() {
+  const posts = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=10")
+    .then(r => r.json());
+  return posts.map((post: any) => ({ slug: String(post.id) }));
+}
+
+async function getPost(slug: string) {
+  const res = await fetch(\`https://jsonplaceholder.typicode.com/posts/\${slug}\`);
+  if (!res.ok) return null;
+  return res.json();
+}
+
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug);
+  if (!post) notFound();
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </article>
+  );
+}`} />
+
+        <ExerciseCard num={4} title="Middleware de autenticación" level="Intermedio"
+          description="Crea un middleware de Next.js que proteja todas las rutas bajo /dashboard. Si el usuario no tiene una cookie 'session', redirige a /login. Permite el acceso si tiene la cookie."
+          hint="El archivo middleware.ts va en la raíz del proyecto. Usa el matcher config para especificar las rutas a proteger."
+          solution={`// middleware.ts (raíz del proyecto)
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(request: NextRequest) {
+  const session = request.cookies.get("session");
+
+  if (!session) {
+    const loginUrl = new URL("/login", request.url);
+    // Guarda la URL original para redirigir después del login
+    loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/dashboard/:path*"],
+};`} />
+
+        <ExerciseCard num={5} title="Server Action con revalidación" level="Avanzado"
+          description="Crea un formulario que use un Server Action para guardar un comentario, revalide la caché de la página y muestre el resultado sin recargar. Usa useFormState y useFormStatus."
+          hint="Define el Server Action en un archivo separado con 'use server'. Usa revalidatePath() para refrescar los datos después de guardar."
+          solution={`// actions/comentarios.ts
+"use server";
+import { revalidatePath } from "next/cache";
+
+export async function guardarComentario(prevState: any, formData: FormData) {
+  const texto = formData.get("texto") as string;
+
+  if (!texto || texto.length < 5) {
+    return { error: "El comentario debe tener al menos 5 caracteres" };
+  }
+
+  // Guardar en BD...
+  await new Promise(resolve => setTimeout(resolve, 500)); // simula BD
+
+  revalidatePath("/comentarios"); // refresca los datos en la página
+  return { success: true, mensaje: "Comentario guardado" };
+}
+
+// components/FormularioComentario.tsx
+"use client";
+import { useFormState, useFormStatus } from "react-dom";
+import { guardarComentario } from "@/actions/comentarios";
+
+function BotonEnviar() {
+  const { pending } = useFormStatus();
+  return <button disabled={pending}>{pending ? "Guardando..." : "Enviar"}</button>;
+}
+
+export function FormularioComentario() {
+  const [state, action] = useFormState(guardarComentario, null);
+  return (
+    <form action={action}>
+      <textarea name="texto" placeholder="Tu comentario..." />
+      {state?.error && <p className="text-red-500">{state.error}</p>}
+      {state?.success && <p className="text-green-500">{state.mensaje}</p>}
+      <BotonEnviar />
+    </form>
+  );
+}`} />
+      </div>
+    </>
+  );
+}
+
 export default function NextJsContent() {
   const [active, setActive] = useState<SectionId>(SECTIONS[0].id);
 
@@ -530,6 +728,7 @@ export default function NextJsContent() {
       case "renderizado":    return <SectionRenderizado />;
       case "optimizacion":   return <SectionOptimizacion />;
       case "proyecto-final": return <SectionProyecto />;
+      case "ejercicios":     return <SEjercicios />;
     }
   };
 

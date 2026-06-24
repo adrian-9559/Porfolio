@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SectionHeader, Card } from "./AdminShared";
+import { DatabaseDiagram } from "@/components/docs/DatabaseDiagram";
 
 // ── Endpoint Explorer data ────────────────────────────────────────────────────
 
@@ -249,7 +250,7 @@ const docs: DocSection[] = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-type View = "endpoints" | "architecture";
+type View = "endpoints" | "architecture" | "database";
 
 export function AdminDocsSection() {
   const [view, setView] = useState<View>("endpoints");
@@ -278,6 +279,7 @@ export function AdminDocsSection() {
       <div className="flex gap-1 bg-black/[0.04] dark:bg-white/[0.04] p-1 rounded-2xl w-fit">
         <button onClick={() => setView("endpoints")} className={tabCls("endpoints")}>Endpoint Explorer</button>
         <button onClick={() => setView("architecture")} className={tabCls("architecture")}>Arquitectura</button>
+        <button onClick={() => setView("database")} className={tabCls("database")}>Base de datos</button>
       </div>
 
       {/* Endpoint Explorer */}
@@ -342,6 +344,13 @@ export function AdminDocsSection() {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Database diagram */}
+      {view === "database" && (
+        <div className="flex flex-col gap-4">
+          <DatabaseDiagram />
         </div>
       )}
 

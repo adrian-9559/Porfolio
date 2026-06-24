@@ -36,7 +36,8 @@ export function UserButton() {
           </div>
           <div className="p-1.5 flex flex-col gap-0.5">
             <MenuItem label="Mi panel" icon={<IconDashboard />} onClick={() => router.push("/dashboard")} />
-            <MenuItem label="Mi perfil" icon={<IconUser />} onClick={() => router.push("/dashboard?s=settings-profile")} />
+            <MenuItem label="Mi perfil" icon={<IconUser />} onClick={() => router.push("/perfil")} />
+            <MenuItem label="Configuración" icon={<IconGear />} onClick={() => router.push("/configuracion")} />
             {isAdmin && (
               <MenuItem label="Panel de administración" icon={<IconShield />} onClick={() => router.push("/admin")} accent />
             )}

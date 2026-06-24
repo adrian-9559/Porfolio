@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type SectionId =
   | "intro" | "componentes" | "hooks" | "routing"
-  | "estado" | "optimizacion" | "proyecto-final";
+  | "estado" | "optimizacion" | "proyecto-final" | "ejercicios";
 
 interface SectionDef { id: SectionId; label: string; }
 const SECTIONS: SectionDef[] = [
@@ -14,6 +14,7 @@ const SECTIONS: SectionDef[] = [
   { id: "estado",         label: "5. Estado global" },
   { id: "optimizacion",   label: "6. Optimización" },
   { id: "proyecto-final", label: "Proyecto Final" },
+  { id: "ejercicios",     label: "Ejercicios" },
 ];
 
 function Code({ children }: { children: string }) {
@@ -520,6 +521,204 @@ export function Dashboard() {
   );
 }
 
+function ExerciseCard({ num, title, level, description, hint, solution }: {
+  num: number; title: string; level: "Básico" | "Intermedio" | "Avanzado";
+  description: string; hint?: string; solution?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const levelColor = { Básico: "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400", Intermedio: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400", Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400" }[level];
+  return (
+    <div className="border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden">
+      <button onClick={() => setOpen(!open)} className="w-full px-4 py-3 flex items-center justify-between gap-3 hover:bg-black/3 dark:hover:bg-white/3 transition-colors text-left">
+        <div className="flex items-center gap-3">
+          <span className="w-6 h-6 rounded-full bg-cyan-500 text-white text-xs font-bold flex items-center justify-center shrink-0">{num}</span>
+          <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">{title}</span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${levelColor}`}>{level}</span>
+          <span className="text-[#aeaeb2] text-xs">{open ? "▲" : "▼"}</span>
+        </div>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 border-t border-black/8 dark:border-white/8 pt-3 space-y-3">
+          <p className="text-sm text-[#3a3a3c] dark:text-[#aeaeb2]">{description}</p>
+          {hint && <div className="bg-cyan-50 dark:bg-cyan-950/20 rounded-xl px-3 py-2 text-xs text-cyan-800 dark:text-cyan-300"><strong>Pista:</strong> {hint}</div>}
+          {solution && <pre className="bg-[#0d1117] rounded-xl p-4 overflow-x-auto text-xs leading-relaxed my-2"><code className="text-[#e6edf3]">{solution.trim()}</code></pre>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SEjercicios() {
+  return (
+    <>
+      <H2>Ejercicios de React</H2>
+      <P>Practica los conceptos de React con estos ejercicios. Cada uno construye sobre el anterior para consolidar tu aprendizaje.</P>
+      <div className="space-y-3 mt-6">
+        <ExerciseCard num={1} title="Contador con useState" level="Básico"
+          description="Crea un componente Contador que muestre un número y tenga tres botones: Incrementar, Decrementar y Resetear. El número no debe bajar de 0."
+          hint="Usa useState para el valor y Math.max(0, count - 1) para evitar negativos."
+          solution={`function Contador() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div className="p-6 text-center">
+      <p className="text-5xl font-bold mb-6">{count}</p>
+      <div className="flex gap-3 justify-center">
+        <button onClick={() => setCount(c => c + 1)}>
+          Incrementar
+        </button>
+        <button onClick={() => setCount(c => Math.max(0, c - 1))}>
+          Decrementar
+        </button>
+        <button onClick={() => setCount(0)}>
+          Resetear
+        </button>
+      </div>
+    </div>
+  );
+}`} />
+
+        <ExerciseCard num={2} title="Lista de tareas" level="Básico"
+          description="Crea una app de tareas con: input para añadir, botón para marcar como completada (tachada) y botón para eliminar cada tarea. Las tareas se guardan en estado."
+          hint="El estado es un array de objetos { id, texto, completada }. Usa map() para renderizar y filter() para eliminar."
+          solution={`function ListaTareas() {
+  const [tareas, setTareas] = useState([]);
+  const [input, setInput] = useState("");
+
+  const agregar = () => {
+    if (!input.trim()) return;
+    setTareas(t => [...t, { id: Date.now(), texto: input, completada: false }]);
+    setInput("");
+  };
+
+  const toggle = (id) =>
+    setTareas(t => t.map(t => t.id === id ? {...t, completada: !t.completada} : t));
+
+  const eliminar = (id) =>
+    setTareas(t => t.filter(t => t.id !== id));
+
+  return (
+    <div>
+      <div>
+        <input value={input} onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && agregar()} />
+        <button onClick={agregar}>Añadir</button>
+      </div>
+      <ul>
+        {tareas.map(t => (
+          <li key={t.id} style={{ textDecoration: t.completada ? "line-through" : "none" }}>
+            <span onClick={() => toggle(t.id)}>{t.texto}</span>
+            <button onClick={() => eliminar(t.id)}>✕</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}`} />
+
+        <ExerciseCard num={3} title="Fetch de datos con useEffect" level="Intermedio"
+          description="Crea un componente que obtenga una lista de usuarios de jsonplaceholder.typicode.com/users y los muestre con nombre, email y teléfono. Muestra un spinner mientras carga y maneja errores."
+          hint="useEffect con array vacío [] ejecuta el fetch solo al montar. Guarda { datos, cargando, error } en el estado."
+          solution={`function ListaUsuarios() {
+  const [state, setState] = useState({ datos: [], cargando: true, error: null });
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(r => r.json())
+      .then(datos => setState({ datos, cargando: false, error: null }))
+      .catch(err => setState({ datos: [], cargando: false, error: err.message }));
+  }, []);
+
+  if (state.cargando) return <p>Cargando...</p>;
+  if (state.error) return <p>Error: {state.error}</p>;
+
+  return (
+    <ul>
+      {state.datos.map(u => (
+        <li key={u.id}>
+          <strong>{u.name}</strong> — {u.email} — {u.phone}
+        </li>
+      ))}
+    </ul>
+  );
+}`} />
+
+        <ExerciseCard num={4} title="Custom hook useLocalStorage" level="Intermedio"
+          description="Implementa un hook personalizado useLocalStorage(key, defaultValue) que sincronice el estado con localStorage. Debe leer el valor inicial de localStorage y actualizarlo en cada cambio."
+          hint="Usa useState con función inicializadora para leer localStorage al montar, y useEffect para escribir en cada cambio de value."
+          solution={`function useLocalStorage(key, defaultValue) {
+  const [value, setValue] = useState(() => {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored !== null ? JSON.parse(stored) : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch {}
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+// Uso:
+function Preferencias() {
+  const [tema, setTema] = useLocalStorage("tema", "light");
+  return (
+    <button onClick={() => setTema(t => t === "light" ? "dark" : "light")}>
+      Tema actual: {tema}
+    </button>
+  );
+}`} />
+
+        <ExerciseCard num={5} title="Context para carrito de compras" level="Avanzado"
+          description="Implementa un CarritoContext con operaciones agregar(producto), quitar(id), vaciar() y total (precio calculado). Usa useReducer para manejar el estado del carrito."
+          hint="El reducer maneja acciones AGREGAR, QUITAR y VACIAR. El total se calcula con reduce() en el contexto."
+          solution={`const CarritoContext = createContext(null);
+
+function carritoReducer(estado, accion) {
+  switch (accion.type) {
+    case "AGREGAR": {
+      const existe = estado.find(p => p.id === accion.producto.id);
+      if (existe) return estado.map(p =>
+        p.id === accion.producto.id ? {...p, cantidad: p.cantidad + 1} : p
+      );
+      return [...estado, { ...accion.producto, cantidad: 1 }];
+    }
+    case "QUITAR":
+      return estado.filter(p => p.id !== accion.id);
+    case "VACIAR":
+      return [];
+    default:
+      return estado;
+  }
+}
+
+function CarritoProvider({ children }) {
+  const [items, dispatch] = useReducer(carritoReducer, []);
+  const total = items.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
+
+  return (
+    <CarritoContext.Provider value={{ items, total, dispatch }}>
+      {children}
+    </CarritoContext.Provider>
+  );
+}
+
+function useCarrito() {
+  return useContext(CarritoContext);
+}`} />
+      </div>
+    </>
+  );
+}
+
 export default function ReactContent() {
   const [active, setActive] = useState<SectionId>(SECTIONS[0].id);
 
@@ -532,6 +731,7 @@ export default function ReactContent() {
       case "estado":         return <SectionEstado />;
       case "optimizacion":   return <SectionOptimizacion />;
       case "proyecto-final": return <SectionProyecto />;
+      case "ejercicios":     return <SEjercicios />;
     }
   };
 
