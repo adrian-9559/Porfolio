@@ -111,6 +111,22 @@ export function AdminApiKeysSection() {
   const [filter, setFilter] = useState<"all" | "active" | "revoked">("all");
   const [showCreate, setShowCreate] = useState(false);
   const [rawKey, setRawKey] = useState<string | null>(null);
+  const [revealed, setRevealed] = useState<Set<string>>(new Set());
+  const [copied, setCopied] = useState<string | null>(null);
+
+  function toggleReveal(id: string) {
+    setRevealed(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  function copyPrefix(id: string, prefix: string) {
+    navigator.clipboard.writeText(prefix).catch(() => {});
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
+  }
 
   const load = async () => {
     setLoading(true);
@@ -197,7 +213,15 @@ export function AdminApiKeysSection() {
                     <Badge label={k.is_active ? "Activa" : "Revocada"} color={k.is_active ? "green" : "red"} />
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <code className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b] bg-black/5 dark:bg-white/5 px-1.5 py-0.5 rounded">{k.key_prefix}••••••••</code>
+                    <code className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b] bg-black/5 dark:bg-white/5 px-1.5 py-0.5 rounded">
+                      {revealed.has(k.id) ? k.key_prefix : `${k.key_prefix.slice(0, 6)}••••••••`}
+                    </code>
+                    {revealed.has(k.id) && (
+                      <button onClick={() => copyPrefix(k.id, k.key_prefix)}
+                        className={`text-[10px] font-medium px-1.5 py-0.5 rounded transition-colors ${copied === k.id ? "text-emerald-600 dark:text-emerald-400" : "text-[#aeaeb2] hover:text-[#6e6e73] dark:hover:text-[#86868b]"}`}>
+                        {copied === k.id ? "✓ copiado" : "copiar"}
+                      </button>
+                    )}
                     <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">{k.profiles?.full_name ?? "Tú (admin)"}</span>
                   </div>
                 </div>
@@ -210,6 +234,14 @@ export function AdminApiKeysSection() {
                   )}
                 </div>
                 <div className="flex gap-1">
+                  <IconBtn
+                    onClick={() => toggleReveal(k.id)}
+                    title={revealed.has(k.id) ? "Ocultar" : "Mostrar prefijo"}
+                    icon={revealed.has(k.id)
+                      ? <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="w-3.5 h-3.5"><path d="M1 7s2-4 6-4 6 4 6 4-2 4-6 4-6-4-6-4z"/><circle cx="7" cy="7" r="1.5"/><path d="M1 1l12 12"/></svg>
+                      : <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="w-3.5 h-3.5"><path d="M1 7s2-4 6-4 6 4 6 4-2 4-6 4-6-4-6-4z"/><circle cx="7" cy="7" r="1.5"/></svg>
+                    }
+                  />
                   {k.is_active && (
                     <IconBtn onClick={() => handleRevoke(k.id)} title="Revocar" icon={Icons.ban} />
                   )}

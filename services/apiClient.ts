@@ -45,7 +45,7 @@ async function attemptRefresh(): Promise<string | null> {
     try {
       const res = await fetch(`${env.apiUrl}/auth/refresh`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(env.apiKey ? { "X-API-Key": env.apiKey } : {}) },
         body: JSON.stringify({ refresh_token: rt }),
       });
 
@@ -92,6 +92,7 @@ export async function apiFetch<T>(
   };
 
   if (token) headers["Authorization"] = `Bearer ${token}`;
+  if (env.apiKey) headers["X-API-Key"] = env.apiKey;
 
   const res = await fetch(`${env.apiUrl}${path}`, { ...options, headers });
 
