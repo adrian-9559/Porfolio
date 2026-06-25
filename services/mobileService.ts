@@ -1,5 +1,4 @@
-import { apiFetch, tokenStore } from "./apiClient";
-import { env } from "@/config/env";
+import { apiFetch } from "./apiClient";
 
 export interface MobileAppVersion {
   id: string;
@@ -30,39 +29,17 @@ export const mobileService = {
 
   /** Download the active build for a given type. */
   async download(buildType: "apk" | "aab" | "ipa"): Promise<void> {
-    const base = env.apiUrl;
-    const token = tokenStore.get();
-    const res = await fetch(`${base}/api/mobile-app/download/${buildType}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    const data = await apiFetch<{ url: string }>(`/api/mobile-app/download/${buildType}`, {
+      headers: { Accept: "application/json" },
     });
-    if (!res.ok) throw new Error(`Download failed: ${res.status}`);
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `saldos-latest.${buildType}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    window.open(data.url, "_blank");
   },
 
   /** Download a specific version by ID. */
   async downloadById(version: MobileAppVersion): Promise<void> {
-    const base = env.apiUrl;
-    const token = tokenStore.get();
-    const res = await fetch(`${base}/api/mobile-app/download/version/${version.id}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    const data = await apiFetch<{ url: string }>(`/api/mobile-app/download/version/${version.id}`, {
+      headers: { Accept: "application/json" },
     });
-    if (!res.ok) throw new Error(`Download failed: ${res.status}`);
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = version.file_name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    window.open(data.url, "_blank");
   },
 };
