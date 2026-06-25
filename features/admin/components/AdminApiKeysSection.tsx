@@ -15,7 +15,7 @@ function CreateModal({ onClose, onCreated }: { onClose: () => void; onCreated: (
     if (!name.trim()) { setError("El nombre es obligatorio."); return; }
     setLoading(true); setError(null);
     try {
-      const result = await apiFetch<AdminApiKey & { raw_key?: string }>("/api/api-keys", {
+      const result = await apiFetch<AdminApiKey & { raw_key?: string }>("/api-keys", {
         method: "POST",
         body: JSON.stringify({ name: name.trim() }),
       });
