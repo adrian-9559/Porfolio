@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/apiClient";
-import { SectionHeader, Card, Spinner, EmptyState, IconBtn, Badge, Icons } from "./AdminShared";
 import type { Provider } from "@/services/repositoryService";
+import { useEffect, useState } from "react";
+import { Badge, Card, EmptyState, IconBtn, Icons, SectionHeader, Spinner } from "./AdminShared";
 
 interface AdminRepo {
   id: string;
@@ -126,7 +126,7 @@ export function AdminRepositoriesSection() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium text-[#1d1d1f] dark:text-white truncate">{r.name}</p>
-                    <Badge>{r.provider}</Badge>
+                    <Badge label={r.provider} />
                   </div>
                   <p className="text-xs text-[#6e6e73] dark:text-[#86868b] truncate">{r.repository_url}</p>
                 </div>

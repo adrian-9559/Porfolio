@@ -1,18 +1,16 @@
 "use client";
-import { useState } from "react";
-import {
-	CATEGORY_GROUPS,
-	CATEGORIES,
-	LEVELS,
-	LEARNING_PATHS,
-	STANDARD_TAGS,
-	CONTENT_RELATIONSHIPS,
-	type DifficultyLevel,
-	type LearningPathId,
-	type RelationType,
-} from "@/lib/blog/taxonomy";
 import { allContent, typeSlug } from "@/lib/blog/registry";
+import {
+	CATEGORIES,
+	CATEGORY_GROUPS,
+	CONTENT_RELATIONSHIPS,
+	LEARNING_PATHS,
+	LEVELS,
+	STANDARD_TAGS,
+	type RelationType
+} from "@/lib/blog/taxonomy";
 import Link from "next/link";
+import { useState } from "react";
 
 type Tab = "categories" | "levels" | "paths" | "relationships" | "tags";
 
@@ -331,7 +329,7 @@ function TagsView() {
 			<div className="flex flex-wrap gap-2">
 				{filtered.map((tag) => {
 					const count = tagCounts[tag] ?? 0;
-					const isStandard = STANDARD_TAGS.includes(tag);
+					const isStandard = STANDARD_TAGS.includes(tag as (typeof STANDARD_TAGS)[number]);
 					return (
 						<div
 							key={tag}
@@ -350,7 +348,7 @@ function TagsView() {
 				})}
 			</div>
 			<p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-				{filtered.length} tags · <span className="text-blue-600 dark:text-blue-400">{STANDARD_TAGS.filter((t) => filtered.includes(t)).length} estándar</span> · {filtered.filter((t) => !STANDARD_TAGS.includes(t) && tagCounts[t] > 0).length} personalizados
+				{filtered.length} tags · <span className="text-blue-600 dark:text-blue-400">{STANDARD_TAGS.filter((t) => filtered.includes(t)).length} estándar</span> · {filtered.filter((t) => !(STANDARD_TAGS as readonly string[]).includes(t) && tagCounts[t] > 0).length} personalizados
 			</p>
 		</div>
 	);

@@ -1,10 +1,10 @@
-import { create } from "zustand";
-import { authService } from "@/services/authService";
-import { tokenStore, ApiError } from "@/services/apiClient";
 import { env } from "@/config/env";
+import { tokenStore } from "@/services/apiClient";
+import { authService } from "@/services/authService";
 import type { AuthUser } from "@/types/auth";
+import { create } from "zustand";
 
-interface AuthState {
+export interface AuthState {
   user: AuthUser | null;
   loadingAuth: boolean;
   isAuthenticated: boolean;

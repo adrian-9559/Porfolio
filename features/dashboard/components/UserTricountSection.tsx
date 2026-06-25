@@ -1,12 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { friendsService, type Friend } from "../../../services/friendsService";
-import {
-  tricountService,
-  type TricountGroup,
-  type TricountMember,
-  type TricountExpense,
-} from "../../../services/tricountService";
 import { mobileService, type MobileLatest } from "../../../services/mobileService";
+import {
+	tricountService,
+	type TricountExpense,
+	type TricountGroup,
+	type TricountMember,
+} from "../../../services/tricountService";
 
 // ─── Local view types ──────────────────────────────────────────────────────────
 // The balance/debt logic works with member names, so we keep a denormalised
@@ -575,7 +575,7 @@ function AddMemberModal({
     setAdding(friend.id);
     try {
       const name = friend.full_name || friend.email;
-      const member = await tricountService.addMember(group.id, name, friend.id);
+      const member = await tricountService.addMember(group.id, name);
       onAdded(member);
     } catch {
       // silent
@@ -1092,7 +1092,7 @@ export function UserTricountSection() {
     // Add each selected friend as a member
     const memberObjects: TricountMember[] = [];
     for (const friend of friends) {
-      const member = await tricountService.addMember(group.id, friend.name, friend.id);
+      const member = await tricountService.addMember(group.id, friend.name);
       memberObjects.push(member);
     }
     const localGroup = mapApiGroup(group, memberObjects, []);

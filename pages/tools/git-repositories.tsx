@@ -1,16 +1,16 @@
-import { useState, useEffect, useCallback } from "react";
-import Head from "next/head";
-import { useAuth } from "@/store/authStore";
 import {
-  repositoryService,
-  type GitRepository,
-  type Branch,
-  type Commit,
-  type GraphData,
-  type Analytics,
-  type Provider,
-  type CreateRepoInput,
+	repositoryService,
+	type Analytics,
+	type Branch,
+	type Commit,
+	type CreateRepoInput,
+	type GitRepository,
+	type GraphData,
+	type Provider,
 } from "@/services/repositoryService";
+import { useAuthStore } from "@/store/authStore";
+import Head from "next/head";
+import { useCallback, useEffect, useState } from "react";
 
 // ── colour palette per provider ───────────────────────────────────────────────
 const PROVIDER_COLOR: Record<Provider, string> = {
@@ -539,7 +539,7 @@ function RepoCard({ repo, onSelect, onDelete }: { repo: GitRepository; onSelect:
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function GitRepositoriesPage() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, loadingAuth } = useAuthStore();
   const [repos, setRepos] = useState<GitRepository[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<GitRepository | null>(null);
@@ -565,7 +565,7 @@ export default function GitRepositoriesPage() {
     } catch {}
   };
 
-  if (!isAuthenticated && !isLoading) {
+  if (!isAuthenticated && !loadingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">Sign in to manage your repositories.</p>
