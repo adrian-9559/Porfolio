@@ -98,13 +98,16 @@ export async function apiFetch<T>(
 
   // ── Auto-refresh on 401 ────────────────────────────────────────────────────
   if (res.status === 401 && _retry) {
+    // Only attempt refresh + fire auth:expired if the user had an actual session
+    const hadSession = !!tokenStore.get() || !!tokenStore.getRefresh();
     const newToken = await attemptRefresh();
     if (newToken) {
       // Retry original request once with the new token
       return apiFetch<T>(path, options, false);
     }
-    // Refresh failed — dispatch event so UI can react (redirect to login)
-    if (typeof window !== "undefined") {
+    // Only fire auth:expired when the user genuinely had a session that expired.
+    // Avoids false positives when an unauthenticated background call gets 401.
+    if (hadSession && typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("auth:expired"));
     }
     throw new ApiError("Sesión expirada. Por favor, inicia sesión de nuevo.", 401);
