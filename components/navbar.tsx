@@ -1,165 +1,149 @@
-import {
-	DiscordIcon,
-	GithubIcon,
-	InstagramIcon,
-	LinkedinIcon,
-	Logo
-} from "@/components/icons";
+"use client";
+import { Link } from "@heroui/react";
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+
 import { ThemeSwitch } from "@/components/theme-switch";
+import { UserButton } from "@/features/auth/components/UserButton";
+import { AuthModal } from "@/features/auth/components/AuthModal";
+import { NotificationBell } from "@/features/notifications/components/NotificationBell";
+import { useAuth } from "@/hooks/useAuth";
 import { siteConfig } from "@/config/site";
-import { Link } from "@heroui/link";
-import {
-	NavbarBrand,
-	NavbarContent,
-	NavbarItem,
-	NavbarMenuToggle,
-	Navbar as NextUINavbar
-} from "@heroui/navbar";
-import clsx from "clsx";
-import dynamic from 'next/dynamic';
-import NextLink from "next/link";
-import { useRouter } from 'next/router';
-import React, { useEffect, useRef } from "react";
-
-const LanguageSwitcher = dynamic(() => import('./LanguageSwitcher'), { ssr: false });
-
-import { useI18n } from "@/utils/i18n";
 
 export const Navbar = () => {
-	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-	const router = useRouter();
-	const { messages } = useI18n();
-	const t = (path: string, fallback?: string) => {
-		const parts = path.split('.');
-		let cur: any = messages;
-		for (const p of parts) {
-			if (!cur) return fallback ?? '';
-			cur = cur[p];
-		}
-		return cur ?? fallback ?? '';
-	}
+	const pathname = usePathname();
+	const [menuOpen, setMenuOpen] = useState(false);
+	const [scrolled, setScrolled] = useState(false);
+	const [authOpen, setAuthOpen] = useState(false);
+	const { isAuthenticated: isLoggedIn, loadingAuth: loading } = useAuth();
 
-	// Lock body scroll when menu is open and add escape key handler
 	useEffect(() => {
-		if (isMenuOpen) {
-			document.body.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = '';
-		}
+		const handleScroll = () => setScrolled(window.scrollY > 8);
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
 
-		const onKey = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') setIsMenuOpen(false);
-		};
-		window.addEventListener('keydown', onKey);
-		return () => window.removeEventListener('keydown', onKey);
-	}, [isMenuOpen]);
+	useEffect(() => {
+		setMenuOpen(false);
+	}, [pathname]);
 
-	const overlayRef = useRef<HTMLDivElement | null>(null);
+	useEffect(() => {
+		document.body.style.overflow = menuOpen ? "hidden" : "";
+		return () => { document.body.style.overflow = ""; };
+	}, [menuOpen]);
 
 	return (
-		<NextUINavbar maxWidth="xl" position="sticky" className="fixed site-navbar transition-perf">
-			<NavbarContent className="basis-1/5 sm:basis-full transition-perf" justify="start">
-				<NavbarMenuToggle
-					aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-					aria-expanded={isMenuOpen}
-					className="xl:hidden p-2 -mr-2 transition-perf z-50"
-					style={{ touchAction: 'manipulation' }}
-					onClick={() => setIsMenuOpen(v => !v)}
-					onPointerUp={(e) => {
-						// use pointerup to avoid preventing native behaviors and ensure reliable firing on touch
-						e.stopPropagation();
-						setIsMenuOpen(v => !v);
-					}}
-					onKeyDown={(e) => {
-						if (e.key === 'Enter' || e.key === ' ') {
-							e.preventDefault();
-							setIsMenuOpen(v => !v);
-						}
-					}}
-				/>
-				<NavbarBrand className="gap-3 max-w-fit">
-					<NextLink className="flex justify-start items-center gap-1" href="/">
-						<Logo />
-						<p className="text-2xl text-inherit">Adrián</p>
-					</NextLink>
-				</NavbarBrand>
-				<div className="hidden lg:flex gap-4 justify-start ml-2 transition-perf">
-					{siteConfig.navItems.map((item) => {
-						const isActive = router.pathname === item.href;
-
-						return (
-							<NavbarItem key={item.href}>
-								<Link
-									className={clsx(
-										"text-foreground",
-										{ 'font-bold text-[#e138ffc4]': isActive }
-									)}
-									href={item.href}
-								>
-									{t(`navbar.${item.href === '/' ? 'home' : item.href.replace('/', '')}`, item.label)}
-								</Link>
-							</NavbarItem>
-						);
-					})}
-				</div>
-			</NavbarContent>
-
-			<NavbarContent
-				className="flex"
-				justify="end"
+		<>
+			<nav
+				className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+					scrolled
+						? "bg-white/90 dark:bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-black/8 dark:border-white/8"
+						: "bg-white/60 dark:bg-[#0a0a0f]/60 backdrop-blur-md"
+				}`}
 			>
-				<NavbarItem className="flex gap-2">
-					<Link isExternal href={siteConfig.links.linkedin} title="LinkedIn">
-						<LinkedinIcon className="text-default-500" />
+				<div className="max-w-7xl mx-auto px-5 sm:px-6 h-14 flex items-center justify-between">
+					{/* Logo */}
+					<Link href="/" className="flex items-center gap-2.5 no-underline group">
+						<div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:shadow-blue-500/30 group-hover:shadow-md transition-shadow duration-300">
+							A
+						</div>
+						<span className="hidden sm:inline font-semibold text-[0.9rem] text-[#1d1d1f] dark:text-white tracking-tight">
+							Adrián
+						</span>
 					</Link>
-					<Link isExternal href={siteConfig.links.instagram} title="Instagram">
-						<InstagramIcon className="text-default-500" />
-					</Link>
-					<Link isExternal href={siteConfig.links.discord} title="Discord">
-						<DiscordIcon className="text-default-500" />
-					</Link>
-					<Link isExternal href={siteConfig.links.github} title="GitHub">
-						<GithubIcon className="text-default-500" />
-					</Link>
-					<ThemeSwitch />
-					<div className="ml-2 hidden sm:block">
-						<LanguageSwitcher />
-					</div>
-				</NavbarItem>
-			</NavbarContent>
-			{/* Mobile menu: overlay + fixed menu for small screens */}
-			{isMenuOpen && (
-				<>
-					{/* overlay */}
-					<div
-						ref={overlayRef}
-						onPointerUp={(e) => { e.stopPropagation(); setIsMenuOpen(false); }}
-						aria-hidden
-						className="fixed inset-0 bg-black/30 z-40"
-					/>
-					<nav
-						className="fixed top-14 right-0 left-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4 transition-perf lg:hidden mobile-slide-in"
-						role="dialog"
-						aria-modal="true"
-					>
-						{siteConfig.navItems.map((item, index) => {
-							const isActive = router.pathname === item.href;
 
-							return (
-								<div key={`${item.href}-${index}`} className="py-2">
-									<NextLink
-										href={item.href}
-										className={clsx("w-full block text-foreground py-2 px-3 rounded-md", { 'font-bold text-[#9b27b073]': isActive })}
-										onClick={() => setIsMenuOpen(false)}
+					{/* Desktop Navigation */}
+					<div className="hidden md:flex items-center gap-1">
+						{siteConfig.navItems.map((item) => (
+							<Link
+								key={item.href}
+								href={item.href}
+								className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 no-underline ${
+									pathname === item.href
+										? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50"
+										: "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/8"
+								}`}
+							>
+								{item.label}
+							</Link>
+						))}
+					</div>
+
+					{/* Right actions */}
+					<div className="flex items-center gap-2">
+						{!isLoggedIn && <ThemeSwitch />}
+
+						{!loading && isLoggedIn && <NotificationBell />}
+
+						{!loading && (
+							isLoggedIn
+								? <UserButton />
+								: (
+									<button
+										onClick={() => setAuthOpen(true)}
+										className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
 									>
-										{t(`navbar.${item.href === '/' ? 'home' : item.href.replace('/', '')}`, item.label)}
-									</NextLink>
-								</div>
-							);
-						})}
-					</nav>
-				</>
+										Iniciar sesión
+									</button>
+								)
+						)}
+
+						{/* Mobile hamburger */}
+						<button
+							className="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/8 transition-colors"
+							onClick={() => setMenuOpen(!menuOpen)}
+							aria-label="Toggle menu"
+						>
+							<span className={`block w-4.5 h-px bg-current rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
+							<span className={`block h-px bg-current rounded-full transition-all duration-300 ${menuOpen ? "w-0 opacity-0" : "w-3.5"}`} />
+							<span className={`block w-4.5 h-px bg-current rounded-full transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+						</button>
+					</div>
+				</div>
+			</nav>
+
+			{/* Mobile menu overlay */}
+			{menuOpen && (
+				<div
+					className="fixed inset-0 z-40 bg-black/20 dark:bg-black/50 backdrop-blur-sm md:hidden"
+					onClick={() => setMenuOpen(false)}
+				/>
 			)}
-		</NextUINavbar>
+
+			{/* Mobile menu panel */}
+			<div
+				className={`fixed top-14 left-0 right-0 z-40 md:hidden transition-all duration-300 ${
+					menuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+				}`}
+			>
+				<div className="mx-4 mt-2 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 shadow-xl overflow-hidden">
+					<div className="p-3 flex flex-col gap-1">
+						{siteConfig.navItems.map((item) => (
+							<Link
+								key={item.href}
+								href={item.href}
+								className={`px-4 py-3 rounded-xl text-sm font-medium no-underline transition-all duration-200 ${
+									pathname === item.href
+										? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50"
+										: "text-[#1d1d1f] dark:text-white hover:bg-black/5 dark:hover:bg-white/5"
+								}`}
+							>
+								{item.label}
+							</Link>
+						))}
+						{!loading && !isLoggedIn && (
+							<button
+								onClick={() => { setMenuOpen(false); setAuthOpen(true); }}
+								className="mt-1 mx-1 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium"
+							>
+								Iniciar sesión
+							</button>
+						)}
+					</div>
+				</div>
+			</div>
+
+			<AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
+		</>
 	);
 };

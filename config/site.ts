@@ -1,83 +1,119 @@
+
+import type { PostCollection } from "@/types/postType";
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-	name: "Adrián Escribano | Full Stack Developer",
-	description: "Portfolio profesional de Adrián Escribano Pérez (adrian_9559) - Desarrollador Full Stack especializado en React, Next.js, Node.js y soluciones web modernas. Creando experiencias digitales innovadoras desde Madrid.",
-	author: "Adrián Escribano Pérez",
-	keywords: [
-		"Desarrollador Full Stack",
-		"React",
-		"Next.js",
-		"Node.js",
-		"TypeScript",
-		"JavaScript",
-		"Portfolio",
-		"Madrid",
-		"Programador",
-		"Web Developer"
-	],
+	name: "Porfolio",
+	description: "Porfolio personal de Adrián Escribano",
 	navItems: [
 		{
-			label: "Inicio",
+			label: "Home",
 			href: "/",
 		},
 		{
-			label: "Proyectos",
-			href: "/projects",
+			label: "About",
+			href: "/about",
 		},
 		{
-			label: "Sobre mí",
-			href: "/about",
+			label: "CV",
+			href: "/CV",
+		},
+		{
+			label: "Blog",
+			href: "/blog",
+		},
+		{
+			label: "Contact",
+			href: "/contact",
 		},
 	],
 	navMenuItems: [
 		{
-			label: "Inicio",
+			label: "Home",
 			href: "/",
 		},
 		{
-			label: "Proyectos",
-			href: "/projects",
+			label: "About",
+			href: "/about",
 		},
 		{
-			label: "Experiencia",
-			href: "/#experience",
+			label: "CV",
+			href: "/CV",
 		},
 		{
-			label: "Habilidades",
-			href: "/#skills",
+			label: "Blog",
+			href: "/blog",
 		},
 		{
-			label: "Contacto",
-			href: "/#contact",
+			label: "Contact",
+			href: "/contact",
 		},
 	],
+	navBlogItems: {
+		articles: {
+			svg: [
+				{
+					label: "SVG Pages",
+					title: "Mejores páginas para encontrar SVG",
+					describe: "Páginas web donde puedes encontrar SVG gratuitos y de alta calidad para tus proyectos.",
+					href: "/blog/articles/svg/pageSvg",
+					create: "21/06/2026/14:30",
+					update: "21/06/2026/14:30",
+					category: "SVG",
+					slug: [
+						"svg",
+						"pageSvg"
+					],
+					readTime: "5 min",
+					color: "#FFB13B",
+				}
+			],
+			databse: [
+				{
+					label: "Database",
+					title: "Mejores páginas para encontrar bases de datos",
+					describe: "Páginas web donde puedes encontrar bases de datos gratuitas y de alta calidad para tus proyectos.",
+					href: "/blog/articles/database/pageDatabase",
+					create: "21/06/2026/22:47",
+					update: "21/06/2026/22:47",
+					category: "Database",
+					slug: [
+						"database",
+						"pageDatabase"
+					],
+					readTime: "5 min",
+					color: "#4DB33D",
+				}
+			],
+		},
+		tutorials: {
+			typesScript: [
+				{
+					label: "TypeScript",
+					title: "Introducción a TypeScript",
+					describe: "Aprende los conceptos básicos de TypeScript y cómo integrarlo en tus proyectos.",
+					href: "/blog/tutorials/typescript",
+					create: "21/06/2026/14:39",
+					update: "21/06/2026/14:39",
+					category: "TypeScript",
+					slug: [
+						"typescript",
+						"introduction"
+					],
+					readTime: "10 min",
+					color: "#3178C6",
+				}
+			],
+		},
+	} satisfies PostCollection,
 	links: {
-		github: "https://github.com/adrian-9559",
-		instagram: "https://instagram.com/adrian_9559",
-		mail: "adrian.escribano.perez@gmail.com",
-		discord: "https://discord.gg/Az35cdhM",
+		github: "https://github.com/adrian-9559/",
 		linkedin: "https://www.linkedin.com/in/adrián-escribano-pérez",
-		twitter: "https://twitter.com/adrian_9559",
-		website: "https://adrian-escribano.vercel.app",
+		instagram: "https://instagram.com/adrian_9559",
+		maps: "https://maps.app.goo.gl/hgc8t5ktpxL6onhX6",
 	},
-	openGraph: {
-		type: "website",
-		locale: "es_ES",
-		url: "https://adrian-escribano.vercel.app",
-		siteName: "Adrián Escribano | Full Stack Developer",
-		images: [
-			{
-				url: "/images/og-image.png",
-				width: 1200,
-				height: 630,
-				alt: "Adrián Escribano - Full Stack Developer",
-			},
-		],
-	},
-	twitter: {
-		handle: "@adrian_9559",
-		site: "@adrian_9559",
-		cardType: "summary_large_image",
+	contact: {
+		email: "adrian.escribano3@gmail.com",
 	},
 };

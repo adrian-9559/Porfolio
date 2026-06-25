@@ -1,99 +1,193 @@
-# 📂 Mi Portafolio Personal
+# 🎨 Portafolio Personal - Adrián Escribano
 
-¡Bienvenido a mi portafolio personal! Este repositorio contiene el código fuente de mi portafolio, donde presento mis habilidades, proyectos y experiencia profesional.
+Un portafolio profesional moderno y minimalista diseñado al estilo Apple, construido con **Next.js**, **React**, **TypeScript**, **Tailwind CSS** y **HeroUI 3.1.0**.
 
-## 🌐 Enlace al portafolio
+**[Ver en línea →](https://porfolio.adrianescribano.com)**
 
-Puedes visitar mi portafolio en línea aquí: [Porfolio](https://porfolio-adrianescribano3-gmailcoms-projects.vercel.app/).
+## ✨ Características
 
-## 📖 Contenido del repositorio
+- 🎯 **Diseño Minimalista**: Estilo Apple con espacios en blanco y tipografía clara
+- 🌓 **Tema Claro/Oscuro**: Toggle entre temas con persistencia
+- 📱 **Completamente Responsivo**: Mobile-first design
+- ⚡ **Rendimiento**: Optimizado para velocidad y SEO
+- 🎬 **Animaciones Suaves**: Transiciones elegantes
+- 🔧 **Componentes Reutilizables**: Código limpio y mantenible
+- 📝 **TypeScript**: Type-safe development
+- 🎨 **HeroUI 3.1.0**: Componentes UI profesionales
 
-- **/page/**: Contiene las páginas de la web.
-- **/components/**: Contiene partes del código que luego se ejecutan en las páginas de la web.
-- **/config/**: Contiene la configuración de la web.
-- **/public/**: Archivos de imagenes, documentos y fuentes personalizadas.
-- **/style/**: Contiene la configuración de los estilos de TailwindCSS y estilos personalizados.
-- **/layout/**: Contiene las plantillas que se ejecutan en todas las páginas.
+## 🛠️ Tecnologías
 
-## 🛠️ Tecnologías utilizadas
+| Tecnología | Versión | Propósito |
+|-----------|---------|----------|
+| Next.js | 16.2.6 | Framework React |
+| React | 19.2.6 | UI Library |
+| TypeScript | 5.6.3 | Type Safety |
+| Tailwind CSS | 4.1.11 | Utility-first CSS |
+| HeroUI | 3.1.0 | Componentes UI |
+| next-themes | 0.4.6 | Dark Mode |
 
-Estas son las tecnologías que utiliza la aplicación:
-- Tecnologías Básicas: HTML, CSS, TypeScript.
-- Frameworks: [TailwindCSS](https://tailwindcss.com/), NextJS, [React](https://es.react.dev/).
-- Biblioteca de componentes: [NextUI](https://nextui.org/).
-- Gestión del código: [Github](https://github.com/).
-- Hosting del proyecto: [Vercel](https://vercel.com/).
+## 📂 Estructura del Proyecto
 
-## 🚀 Características
-
-- **Diseño Responsive**: Adaptable a dispositivos móviles, tabletas y computadoras.
-- **Proyectos destacados**: Muestra los trabajos más relevantes.
-- **Contacto directo**: Enlace a redes sociales, canales de contacto, curriculum descargable y enlaces a webs de contratación de mis servicios.
-
-## 📋 Instrucciones para clonar y ejecutar
-
-### 1. Clonar el repositorio del proyecto
-
-```bash
-https://github.com/adrian-9559/Porfolio
+```
+Porfolio/
+├── components/          # Componentes reutilizables
+│   ├── hero.tsx        # Sección principal
+│   ├── skills.tsx      # Habilidades
+│   ├── projects.tsx    # Proyectos destacados
+│   ├── testimonials.tsx # Testimonios
+│   └── ...
+├── pages/              # Páginas del sitio
+│   ├── index.tsx       # Home
+│   ├── about/          # Sobre mí
+│   ├── blog/           # Blog
+│   └── contact/        # Contacto
+├── layouts/            # Layouts
+├── styles/             # Estilos globales
+├── config/             # Configuración
+└── public/             # Assets estáticos
 ```
 
-### 2. Navegar al directorio del proyecto
+## 🚀 Instalación y Desarrollo
 
+### Requisitos
+- Node.js 18+
+- npm, yarn, pnpm o bun
+
+### Pasos
+
+1. **Clonar el repositorio**
 ```bash
+git clone https://github.com/adrian-9559/Porfolio.git
 cd Porfolio
 ```
 
-### 3. Instalar las dependencias
+2. **Instalar dependencias**
+```bash
+npm install
+# O con pnpm
+pnpm install
+```
+
+3. **Ejecutar en desarrollo**
+```bash
+npm run dev
+```
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+4. **Build producción**
+```bash
+npm run build
+npm run start
+```
+
+## 📖 Páginas
+
+### Home `/`
+- Hero section con CTA
+- Estadísticas y métricas
+- Habilidades por categoría
+- Tech stack visual
+- Proyectos destacados
+- Testimoniales
+- Call to action
+
+### About `/about`
+- Historia personal
+- Metodología de trabajo
+- Timeline de carrera
+- Estadísticas destacadas
+
+### CV `/pricing`
+- Experiencia profesional
+- Educación
+- Descarga de CV
+- Logros
+
+### Blog `/blog`
+- Posts destacados
+- Grid de artículos
+- Metadatos (fecha, categoría)
+
+### Contacto `/contact`
+- Formulario de contacto
+- Métodos de contacto directo
+- Links a redes sociales
+
+## 🎨 Personalización
+
+### Cambiar Colores
+Edita los gradientes en los componentes:
+```tsx
+from-blue-600 to-cyan-600  // Cambiar a tus colores
+```
+
+### Actualizar Contenido
+1. **Hero**: `components/hero.tsx`
+2. **Skills**: `components/skills.tsx`
+3. **Projects**: `components/projects.tsx`
+4. **About**: `pages/about/index.tsx`
+5. **Contact**: `components/contact.tsx`
+
+### Agregar Nuevas Páginas
+1. Crea: `pages/nombre/index.tsx`
+2. Importa: `DefaultLayout`
+3. Actualiza: `config/site.ts`
+
+## 📚 Documentación
+
+- [Guía Completa](./PORTFOLIO_GUIDE.md)
+- [Next.js Docs](https://nextjs.org/docs)
+- [HeroUI Docs](https://heroui.com/docs)
+- [Tailwind CSS Docs](https://tailwindcss.com/docs)
+
+## 🔍 Scripts Disponibles
+
+```bash
+npm run dev      # Desarrollo local
+npm run build    # Build producción
+npm run start    # Iniciar servidor de producción
+npm run lint     # Ejecutar linter
+```
+
+## ✅ Checklist de Características
+
+- ✅ Diseño estilo Apple
+- ✅ Tema claro/oscuro
+- ✅ Responsivo
+- ✅ Animaciones
+- ✅ TypeScript
+- ✅ SEO optimizado
+- ✅ Formulario de contacto
+- ✅ Blog integrado
+- ✅ Tech stack visual
+- ✅ Testimonials
+
+## 🔐 Licencia
+
+Este proyecto está bajo la licencia MIT.
+
+## 👤 Autor
+
+**Adrián Escribano Pérez**
+- 💼 [LinkedIn](https://www.linkedin.com/in/adrián-escribano-pérez)
+- 🐙 [GitHub](https://github.com/adrian-9559)
+- 📧 [Email](mailto:adrian.escribano.perez@gmail.com)
+- 📍 Madrid, España
+
+---
+
+**Construido con ❤️ usando Next.js y Tailwind CSS**
 
 ```bash
 npm install
 ```
 
-### 4. Iniciar el proyecto en modo desarrollo
+### Run the development server
 
 ```bash
 npm run dev
 ```
 
-### 5. Visitar el proyecto en el navegador
+## License
 
-[Porfolio](http://localhost:3000)
-
-## 📋 Instrucciones para compilar y poner en producción el proyecto
-
-### 1. Compilar los estilos de TailwindCSS
-
-```bash
-npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
-```
-
-### 2. Compilar el proyecto
-
-```bash
-npm run build
-```
-
-### 3. Iniciar el proyecto
-
-```
-npm run start
-```
-
-### 4. Entrar al proyecto desde el navegador
-
-[Porfolio](http://localhost:3000)
-
-
-## 🤝 Contribuciones
-Este es un proyecto personal, pero si tienes sugerencias o encuentras errores, siéntete libre de abrir un **issue** o enviar un **pull request**.
-¡Las contribuciones son bienvenidas!
-
-## ⚖️ Licencia
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](https://github.com/adrian-9559/Porfolio/blob/main/LICENSE) para más detalles.
-
-## 📬 Contacto
-- **Email**: [adrian.escribano3@gmail.com](mailto:adrian.escribano3@gmail.com)
-- **LinkedIn**: [Mi perfil de LinkedIn](https://www.linkedin.com/in/adrián-escribano-pérez)
-
-¡Gracias por visitar mi portafolio! ✨
+Licensed under the [MIT license](https://github.com/heroui-inc/next-pages-template/blob/main/LICENSE).

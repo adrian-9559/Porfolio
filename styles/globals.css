@@ -1,156 +1,160 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "@heroui/styles";
 
-/* Theme configuration */
-:root {
-	--background: 255 255 255;
-	--foreground: 0 0 0;
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	--font-sans: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	--font-mono: "Fira Code", "SF Mono", "JetBrains Mono", monospace;
 }
 
-.dark {
-	--background: 0 0 0;
-	--foreground: 255 255 255;
-}
-
-/* Limit transitions to safe properties and provide utilities for performant animations.
-   Prefer animating transform and opacity only (GPU compositable). */
-.theme-transition {
-	/* only theme color changes here */
-	transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
-		color 200ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Utility: transition only transform and opacity (fast, composited) */
-.transition-perf {
-	transition-property: transform, opacity;
-	transition-duration: 180ms;
-	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Helper to force composite layer when necessary (use sparingly) */
-.composite {
-	transform: translateZ(0);
-	will-change: transform, opacity;
-}
-
-/* Mobile slide-in animation: uses only transform and opacity for GPU compositing */
-@keyframes mobile-slide-in {
-	from {
-		transform: translateY(-8px);
-		opacity: 0;
+@layer base {
+	html, body {
+		overflow-x: hidden;
 	}
 
-	to {
-		transform: translateY(0);
-		opacity: 1;
+	html {
+		scroll-behavior: smooth;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		@apply bg-white dark:bg-[#0a0a0f] transition-colors duration-300;
+		font-feature-settings: "kern", "liga", "calt";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		@apply font-semibold tracking-tight;
+		letter-spacing: -0.02em;
+	}
+
+	a {
+		@apply transition-colors duration-200;
+	}
+
+	::selection {
+		@apply bg-blue-500/20 text-blue-700 dark:text-blue-300;
 	}
 }
 
-.mobile-slide-in {
-	animation: mobile-slide-in 180ms cubic-bezier(0.4, 0, 0.2, 1) both;
-	will-change: transform, opacity;
-}
+@layer components {
+	/* Apple-style glass card */
+	.glass-card {
+		@apply bg-white/80 dark:bg-white/5 backdrop-blur-xl;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+	}
 
-/* Degradado radial */
-/* Lightweight radial accent for desktops; removed heavy transparency and large height for mobile perf */
-.radial-gradient {
-	position: absolute;
-	top: -30%;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 120%;
-	height: 60%;
-	background: radial-gradient(ellipse at center,
-			rgba(155, 39, 176, 0.28) 0%,
-			rgba(123, 31, 162, 0.18) 50%,
-			rgba(59, 7, 109, 0) 100%);
-	pointer-events: none;
-	z-index: 0;
-}
+	.dark .glass-card {
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+	}
 
-/* Hide heavy accent on small screens */
-@media (max-width: 640px) {
-	.radial-gradient {
-		display: none;
+	/* Section label */
+	.section-label {
+		@apply text-xs font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400;
+	}
+
+	/* Gradient text */
+	.gradient-text {
+		@apply bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent;
+	}
+
+	/* Hero multicolor gradient text */
+	.hero-gradient-text {
+		background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 40%, #f97316 80%, #06b6d4 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	/* Rainbow animated button */
+	.rainbow-btn {
+		@apply relative inline-flex items-center justify-center text-white font-bold rounded-full transition-all duration-300 active:scale-95;
+		background: linear-gradient(135deg, #8b5cf6, #ec4899, #f97316);
+		background-size: 200% 200%;
+		animation: gradientShift 3s ease infinite;
+		box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+	}
+	.rainbow-btn:hover {
+		box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+		transform: translateY(-1px);
+	}
+
+	/* Apple-style buttons */
+	.apple-btn-primary {
+		@apply inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white font-semibold rounded-full px-6 py-2.5 text-sm transition-all duration-200 active:scale-95;
+	}
+
+	.apple-btn-secondary {
+		@apply inline-flex items-center justify-center bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/15 text-[#1d1d1f] dark:text-white font-semibold rounded-full px-6 py-2.5 text-sm transition-all duration-200 active:scale-95;
+	}
+
+	/* Tag chip */
+	.tag-chip {
+		@apply px-3 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-900/50;
+	}
+
+	/* Sidebar nav items */
+	.sidebar-item {
+		@apply flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5 hover:text-[#1d1d1f] dark:hover:text-white transition-all duration-150 cursor-pointer;
+	}
+
+	.sidebar-item-active {
+		@apply flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 font-medium;
+	}
+
+	/* Ambient gradient blobs – used as decorative backgrounds */
+	.blob {
+		@apply absolute rounded-full pointer-events-none select-none;
+		filter: blur(80px);
 	}
 }
 
-/* Navbar isolation to avoid repaints affecting the whole page */
-.site-navbar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 1000;
-	background: rgba(var(--background), 0.95);
-	backdrop-filter: none;
-	/* avoid expensive filters on mobile */
-	/* keep simple to avoid rasterization artifacts on mobile */
-	transform: none;
-	will-change: auto;
+/* ── Animations ── */
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(8px); }
+	to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Apply global fixes to avoid compositing artifacts on mobile scroll */
-html,
-body,
-#__next {
-	background-color: rgb(var(--background));
+@keyframes gradientShift {
+	0%   { background-position: 0% 50%; }
+	50%  { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
 }
 
-html,
-body {
-	overscroll-behavior: contain;
+@keyframes slideInLeft {
+	from { opacity: 0; transform: translateX(-12px); }
+	to   { opacity: 1; transform: translateX(0); }
 }
 
-@media (max-width: 640px) {
-
-	/* Disable heavy animated/background layers on mobile permanently */
-	.radial-gradient,
-	.blur-3xl,
-	.blur-xl,
-	.blur-lg,
-	.animate-pulse,
-	.animate-bounce {
-		display: none !important;
-		animation: none !important;
-		filter: none !important;
-	}
-
-	/* Make any `transition-all`/`transition-colors` safe on small screens by
-	   limiting them to transform and opacity to avoid layout/paint transitions. */
-	.transition-all,
-	.transition-colors,
-	.transition-opacity {
-		transition-property: transform, opacity !important;
-		transition-duration: 180ms !important;
-		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-	}
-
-	/* Disable backdrop-blur utilities on mobile to avoid expensive compositing */
-	.backdrop-blur,
-	.backdrop-blur-sm,
-	.backdrop-blur-md,
-	.backdrop-blur-lg,
-	.backdrop-blur-xl {
-		backdrop-filter: none !important;
-		-webkit-backdrop-filter: none !important;
-		filter: none !important;
-	}
-
-	/* Utility: make hover scaling/composition less aggressive on mobile */
-	[class*="hover:scale-105"],
-	[class*="hover:scale-110"] {
-		transform: none !important;
-	}
+@keyframes scaleIn {
+	from { opacity: 0; transform: scale(0.97); }
+	to   { opacity: 1; transform: scale(1); }
 }
 
-@font-face {
-	font-family: 'Coolvetica';
-	src: url('../public/fonts/coolvetica/coolvetica_rg.otf') format('opentype');
-	font-weight: normal;
+@keyframes float {
+	0%, 100% { transform: translateY(0); }
+	50%       { transform: translateY(-6px); }
 }
 
-.font {
-	font-family: 'Coolvetica', sans-serif;
-}
+.animate-fade-in      { animation: fadeIn      0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-slide-in-left { animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-scale-in     { animation: scaleIn     0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-float        { animation: float       4s  ease-in-out infinite; }
+
+/* Stagger delays */
+.delay-75  { animation-delay:  75ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-225 { animation-delay: 225ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-375 { animation-delay: 375ms; }
+
+/* Sidebar-only subtle scrollbar */
+.sidebar-scroll::-webkit-scrollbar       { width: 3px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 99px; }
+.dark .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
