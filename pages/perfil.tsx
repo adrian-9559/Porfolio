@@ -8,7 +8,7 @@ import { allContent } from "@/lib/blog/registry";
 const SERVICES = [
 	{ id: "repositories", label: "Repositorios Git", icon: "📂", desc: "Visualiza y explora tus repos de GitHub", href: "/dashboard?s=repositories", color: "from-sky-400 to-blue-500" },
 	{ id: "agents", label: "Agentes IA", icon: "🤖", desc: "Orquesta agentes de inteligencia artificial", href: "/dashboard?s=agents", color: "from-violet-400 to-purple-500" },
-	{ id: "tricount", label: "Tricount", icon: "💸", desc: "Gestión de gastos compartidos", href: "/dashboard?s=tricount", color: "from-emerald-400 to-green-500" },
+	{ id: "tricount", label: "Escote", icon: "💸", desc: "Gestión de gastos compartidos", href: "/dashboard?s=tricount", color: "from-emerald-400 to-green-500" },
 	{ id: "friends", label: "Amigos", icon: "👥", desc: "Sistema de amigos y contactos", href: "/dashboard?s=friends", color: "from-pink-400 to-rose-500" },
 	{ id: "notifications", label: "Notificaciones", icon: "🔔", desc: "Centro de notificaciones", href: "/dashboard?s=notifications", color: "from-amber-400 to-orange-500" },
 ];

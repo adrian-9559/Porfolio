@@ -26,7 +26,7 @@ const NAV: { id: Section; label: string; icon: React.ReactNode; group: string }[
 	{ id: "agents",            label: "Agentes IA",      icon: <IcoBot />,     group: "herramientas" },
 	{ id: "notifications",     label: "Notificaciones",  icon: <IcoBell />,    group: "herramientas" },
 	{ id: "friends",           label: "Amigos",          icon: <IcoFriends />, group: "herramientas" },
-	{ id: "tricount",          label: "Tricount",        icon: <IcoMoney />,   group: "finanzas" },
+	{ id: "tricount",          label: "Escote",          icon: <IcoMoney />,   group: "finanzas" },
 	{ id: "settings-profile",  label: "Perfil",          icon: <IcoUser />,    group: "configuracion" },
 	{ id: "settings-security", label: "Seguridad",       icon: <IcoLock />,    group: "configuracion" },
 	{ id: "settings-session",  label: "Sesión",          icon: <IcoSession />, group: "configuracion" },

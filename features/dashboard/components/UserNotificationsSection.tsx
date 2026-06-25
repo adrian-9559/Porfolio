@@ -25,7 +25,7 @@ const TYPE_CONFIG: Record<NotifType, { label: string; color: string; dot: string
 	agente:      { label: "Agente IA",    color: "bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400", dot: "bg-violet-500" },
 	repositorio: { label: "Repositorio",  color: "bg-slate-50 dark:bg-slate-950/30 text-slate-600 dark:text-slate-400",  dot: "bg-slate-500" },
 	admin:       { label: "Admin",        color: "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400",  dot: "bg-amber-500" },
-	tricount:    { label: "Tricount",     color: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400", dot: "bg-emerald-500" },
+	tricount:    { label: "Escote",       color: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400", dot: "bg-emerald-500" },
 };
 
 function relTime(iso: string) {
@@ -90,7 +90,7 @@ export function UserNotificationsSection() {
 		{ id: "sistema", label: "Sistema" },
 		{ id: "agente", label: "Agentes" },
 		{ id: "repositorio", label: "Repositorios" },
-		{ id: "tricount", label: "Tricount" },
+		{ id: "tricount", label: "Escote" },
 		{ id: "admin", label: "Admin" },
 	];
 

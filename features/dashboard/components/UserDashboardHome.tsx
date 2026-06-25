@@ -45,7 +45,7 @@ const QUICK_ACCESS: { id: Section; label: string; desc: string; color: string; i
 		icon: <svg className="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="6" width="20" height="13" rx="2" strokeWidth={1.5} /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14h.01M16 14h.01M12 3v3M9 11h6" /></svg>,
 	},
 	{
-		id: "tricount", label: "Tricount", desc: "Gastos compartidos",
+		id: "tricount", label: "Escote", desc: "Gastos compartidos",
 		color: "from-emerald-50 to-emerald-100 dark:from-emerald-950/20 dark:to-emerald-900/20 border-emerald-200 dark:border-emerald-800/40",
 		icon: <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="1" y="6" width="22" height="14" rx="2" strokeWidth={1.5} /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M1 10h22M7 15h.01M12 15h3" /></svg>,
 	},
@@ -108,7 +108,7 @@ export function UserDashboardHome({ onNavigate }: Props) {
 	const statCards = [
 		{ label: "Repositorios",     value: stats.repos,  sub: "conectados",   color: "text-blue-600 dark:text-blue-400" },
 		{ label: "Agentes IA",       value: stats.agents, sub: "configurados", color: "text-violet-600 dark:text-violet-400" },
-		{ label: "Grupos Tricount",  value: stats.groups, sub: "activos",      color: "text-emerald-600 dark:text-emerald-400" },
+		{ label: "Grupos Escote",    value: stats.groups, sub: "activos",      color: "text-emerald-600 dark:text-emerald-400" },
 		{ label: "Notificaciones",   value: stats.unread, sub: "sin leer",     color: "text-amber-600 dark:text-amber-400" },
 	];
 

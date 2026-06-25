@@ -35,7 +35,7 @@ const GROUPS: Record<string, { label: string; bg: string; border: string; text: 
 	auth:     { label: "Auth & Usuarios",  bg: "bg-blue-100 dark:bg-blue-950/40",    border: "border-blue-300 dark:border-blue-700/60",     text: "text-blue-700 dark:text-blue-400",     dot: "bg-blue-500" },
 	ai:       { label: "IA & Agentes",      bg: "bg-violet-100 dark:bg-violet-950/40", border: "border-violet-300 dark:border-violet-700/60", text: "text-violet-700 dark:text-violet-400", dot: "bg-violet-500" },
 	blog:     { label: "Blog & Taxonomía",  bg: "bg-amber-100 dark:bg-amber-950/40",   border: "border-amber-300 dark:border-amber-700/60",   text: "text-amber-700 dark:text-amber-400",   dot: "bg-amber-500" },
-	tricount: { label: "Tricount",          bg: "bg-emerald-100 dark:bg-emerald-950/40", border: "border-emerald-300 dark:border-emerald-700/60", text: "text-emerald-700 dark:text-emerald-400", dot: "bg-emerald-500" },
+	tricount: { label: "Escote",            bg: "bg-emerald-100 dark:bg-emerald-950/40", border: "border-emerald-300 dark:border-emerald-700/60", text: "text-emerald-700 dark:text-emerald-400", dot: "bg-emerald-500" },
 	social:   { label: "Social & Amigos",   bg: "bg-pink-100 dark:bg-pink-950/40",     border: "border-pink-300 dark:border-pink-700/60",     text: "text-pink-700 dark:text-pink-400",     dot: "bg-pink-500" },
 	mobile:   { label: "Mobile App",        bg: "bg-orange-100 dark:bg-orange-950/40", border: "border-orange-300 dark:border-orange-700/60", text: "text-orange-700 dark:text-orange-400", dot: "bg-orange-500" },
 	api:      { label: "API & Repos",       bg: "bg-sky-100 dark:bg-sky-950/40",       border: "border-sky-300 dark:border-sky-700/60",       text: "text-sky-700 dark:text-sky-400",       dot: "bg-sky-500" },
@@ -65,7 +65,7 @@ const TABLES: TableDef[] = [
 		{ name: "created_at", type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Fecha de creación" },
 		{ name: "updated_at", type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Última modificación" },
 	  ] },
-	{ id: "roles", name: "roles", schema: "public", group: "auth", x: 200, y: 220,
+	{ id: "roles", name: "roles", schema: "public", group: "auth", x: 200, y: 200,
 	  description: "Catálogo de roles (p.ej. 'admin', 'user'). Junto con user_roles implementa el RBAC del sistema.",
 	  columns: [
 		{ name: "id",          type: "integer",     nullable: false, isPK: true,  isFK: false, description: "ID autoincremental" },
@@ -73,7 +73,7 @@ const TABLES: TableDef[] = [
 		{ name: "description", type: "text",        nullable: true,  isPK: false, isFK: false, description: "Descripción y permisos" },
 		{ name: "created_at",  type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Fecha de creación" },
 	  ] },
-	{ id: "user_roles", name: "user_roles", schema: "public", group: "auth", x: 200, y: 330,
+	{ id: "user_roles", name: "user_roles", schema: "public", group: "auth", x: 200, y: 280,
 	  description: "Tabla de unión que asigna roles a usuarios. Un usuario puede tener múltiples roles.",
 	  columns: [
 		{ name: "id",         type: "integer",     nullable: false, isPK: true,  isFK: false, description: "ID autoincremental" },
@@ -289,7 +289,7 @@ const TABLES: TableDef[] = [
 		{ name: "type",       type: "text",        nullable: false, isPK: false, isFK: false, description: "Tipo de relación", constraint: "prerequisite | related | next | deepdive" },
 		{ name: "created_at", type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Fecha de creación" },
 	  ] },
-	{ id: "tricount_groups", name: "tricount_groups", schema: "public", group: "tricount", x: 200, y: 570,
+	{ id: "tricount_groups", name: "tricount_groups", schema: "public", group: "tricount", x: 200, y: 560,
 	  description: "Grupos de gasto compartido (vacaciones, piso…). Tiene propietario y moneda.",
 	  columns: [
 		{ name: "id",         type: "uuid",        nullable: false, isPK: true,  isFK: false, description: "UUID único" },
@@ -299,7 +299,7 @@ const TABLES: TableDef[] = [
 		{ name: "created_at", type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Fecha de creación" },
 		{ name: "updated_at", type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Última modificación" },
 	  ] },
-	{ id: "tricount_members", name: "tricount_members", schema: "public", group: "tricount", x: 200, y: 680,
+	{ id: "tricount_members", name: "tricount_members", schema: "public", group: "tricount", x: 200, y: 660,
 	  description: "Miembros de un grupo. Puede ser un usuario registrado (user_id) o persona externa (solo nombre).",
 	  columns: [
 		{ name: "id",         type: "uuid",        nullable: false, isPK: true,  isFK: false, description: "UUID único" },
@@ -308,7 +308,7 @@ const TABLES: TableDef[] = [
 		{ name: "name",       type: "text",        nullable: false, isPK: false, isFK: false, description: "Nombre visible en el grupo" },
 		{ name: "created_at", type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Fecha de unión" },
 	  ] },
-	{ id: "tricount_expenses", name: "tricount_expenses", schema: "public", group: "tricount", x: 200, y: 790,
+	{ id: "tricount_expenses", name: "tricount_expenses", schema: "public", group: "tricount", x: 200, y: 760,
 	  description: "Gastos del grupo. Quién pagó, cuánto y cuándo. Los splits detallan el reparto.",
 	  columns: [
 		{ name: "id",          type: "uuid",        nullable: false, isPK: true,  isFK: false, description: "UUID único" },
@@ -327,7 +327,7 @@ const TABLES: TableDef[] = [
 		{ name: "member_id",  type: "uuid",    nullable: false, isPK: false, isFK: true,  fkRef: "tricount_members.id", description: "FK hacia el miembro" },
 		{ name: "share",      type: "numeric", nullable: false, isPK: false, isFK: false, description: "Importe que debe pagar" },
 	  ] },
-	{ id: "friend_requests", name: "friend_requests", schema: "public", group: "social", x: 200, y: 450,
+	{ id: "friend_requests", name: "friend_requests", schema: "public", group: "social", x: 200, y: 460,
 	  description: "Solicitudes de amistad. Registra emisor, receptor y estado de la solicitud.",
 	  columns: [
 		{ name: "id",               type: "uuid",        nullable: false, isPK: true,  isFK: false, description: "UUID único" },
@@ -337,7 +337,7 @@ const TABLES: TableDef[] = [
 		{ name: "created_at",       type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Fecha de envío" },
 		{ name: "updated_at",       type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Última actualización" },
 	  ] },
-	{ id: "friendships", name: "friendships", schema: "public", group: "social", x: 200, y: 340,
+	{ id: "friendships", name: "friendships", schema: "public", group: "social", x: 200, y: 370,
 	  description: "Amistades confirmadas. Al aceptar una solicitud se crean dos filas (A→B y B→A) para queries bidireccionales.",
 	  columns: [
 		{ name: "id",             type: "uuid",        nullable: false, isPK: true,  isFK: false, description: "UUID único" },
@@ -346,7 +346,7 @@ const TABLES: TableDef[] = [
 		{ name: "created_at",     type: "timestamptz", nullable: false, isPK: false, isFK: false, description: "Fecha de amistad" },
 	  ] },
 	{ id: "mobile_app_versions", name: "mobile_app_versions", schema: "public", group: "mobile", x: 1200, y: 550,
-	  description: "Versiones publicadas de la app móvil Tricount (APK/AAB). Metadatos de cada build.",
+	  description: "Versiones publicadas de la app móvil Saldos (APK/AAB). Metadatos de cada build.",
 	  columns: [
 		{ name: "id",            type: "uuid",        nullable: false, isPK: true,  isFK: false, description: "UUID único" },
 		{ name: "version",       type: "text",        nullable: false, isPK: false, isFK: false, description: "Versión semántica (p.ej. '1.0.0')" },

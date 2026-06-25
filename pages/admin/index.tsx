@@ -16,12 +16,13 @@ import { AdminRepositoriesSection } from "@/features/admin/components/AdminRepos
 import AdminTaxonomySection from "@/features/admin/components/AdminTaxonomySection";
 import { AdminOrchestratorSection } from "@/features/admin/components/AdminOrchestratorSection";
 import { AdminFriendshipsSection } from "@/features/admin/components/AdminFriendshipsSection";
+import { AdminMobileAppsSection } from "@/features/admin/components/AdminMobileAppsSection";
 
 type Section =
   | "dashboard" | "users" | "roles" | "api-keys"
   | "blog" | "agents" | "workflows" | "orchestrator"
   | "notifications" | "contact"
-  | "repositories" | "taxonomy" | "friendships" | "logs" | "docs";
+  | "repositories" | "taxonomy" | "friendships" | "mobile-apps" | "logs" | "docs";
 
 const NAV: { id: Section; label: string; icon: React.ReactNode; group?: string }[] = [
   { id: "dashboard",     label: "Dashboard",     icon: <IcoDashboard />, group: "general" },
@@ -37,6 +38,7 @@ const NAV: { id: Section; label: string; icon: React.ReactNode; group?: string }
   { id: "contact",        label: "Mensajes",       icon: <IcoMail />,        group: "comunicacion" },
   { id: "repositories",   label: "Repositorios",   icon: <IcoGit />,         group: "herramientas" },
   { id: "friendships",    label: "Amistades",      icon: <IcoFriendships />, group: "herramientas" },
+  { id: "mobile-apps",   label: "Apps móviles",   icon: <IcoPhone />,       group: "herramientas" },
   { id: "logs",           label: "Logs",           icon: <IcoLogs />,        group: "sistema" },
   { id: "docs",           label: "Docs",           icon: <IcoDocs />,        group: "sistema" },
 ];
@@ -129,6 +131,7 @@ export default function AdminPage() {
             {section === "repositories"   && <AdminRepositoriesSection />}
             {section === "taxonomy"       && <AdminTaxonomySection />}
             {section === "friendships"    && <AdminFriendshipsSection />}
+            {section === "mobile-apps"    && <AdminMobileAppsSection />}
             {section === "logs"          && <AdminLogsSection />}
             {section === "docs"          && <AdminDocsSection />}
           </div>
@@ -184,4 +187,7 @@ function IcoTaxonomy() {
 }
 function IcoFriendships() {
   return <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="5" cy="5" r="2" /><circle cx="11" cy="5" r="2" /><path d="M1 14c0-2 1.5-3.5 4-3.5s4 1.5 4 3.5" /><path d="M9 12c.5-1.5 1.5-2.5 2-2.5s1.5 1 2 2.5" /></svg>;
+}
+function IcoPhone() {
+  return <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="4.5" y="1" width="7" height="14" rx="1.5" /><path d="M8 12h.01" /></svg>;
 }
