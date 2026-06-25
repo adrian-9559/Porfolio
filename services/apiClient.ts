@@ -109,8 +109,11 @@ export async function apiFetch<T>(
     // Avoids false positives when an unauthenticated background call gets 401.
     if (hadSession && typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("auth:expired"));
+      throw new ApiError("Sesión expirada. Por favor, inicia sesión de nuevo.", 401);
     }
-    throw new ApiError("Sesión expirada. Por favor, inicia sesión de nuevo.", 401);
+    // No prior session — show the actual backend error (e.g., "Credenciales incorrectas")
+    const errBody = await res.json().catch(() => ({}));
+    throw new ApiError(errBody?.error ?? "No autorizado", 401);
   }
 
   if (!res.ok) {
