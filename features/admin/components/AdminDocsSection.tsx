@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SectionHeader, Card } from "./AdminShared";
 import { DatabaseDiagram } from "@/components/docs/DatabaseDiagram";
+import { AppFlowDiagram } from "@/components/docs/AppFlowDiagram";
 
 // ── Endpoint Explorer data ────────────────────────────────────────────────────
 
@@ -250,7 +251,7 @@ const docs: DocSection[] = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-type View = "endpoints" | "architecture" | "database";
+type View = "endpoints" | "architecture" | "database" | "flowchart";
 
 export function AdminDocsSection() {
   const [view, setView] = useState<View>("endpoints");
@@ -280,6 +281,7 @@ export function AdminDocsSection() {
         <button onClick={() => setView("endpoints")} className={tabCls("endpoints")}>Endpoint Explorer</button>
         <button onClick={() => setView("architecture")} className={tabCls("architecture")}>Arquitectura</button>
         <button onClick={() => setView("database")} className={tabCls("database")}>Base de datos</button>
+        <button onClick={() => setView("flowchart")} className={tabCls("flowchart")}>Flujo de aplicación</button>
       </div>
 
       {/* Endpoint Explorer */}
@@ -351,6 +353,13 @@ export function AdminDocsSection() {
       {view === "database" && (
         <div className="flex flex-col gap-4">
           <DatabaseDiagram />
+        </div>
+      )}
+
+      {/* Flow diagram */}
+      {view === "flowchart" && (
+        <div className="flex flex-col gap-4">
+          <AppFlowDiagram />
         </div>
       )}
 
