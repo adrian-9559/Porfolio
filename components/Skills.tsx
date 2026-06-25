@@ -3,25 +3,25 @@ const skills = [
 		category: "Frontend",
 		gradient: "from-violet-500 to-purple-600",
 		chipBg: "bg-violet-50 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300 border-violet-200/60 dark:border-violet-800/40",
-		items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux", "Framer Motion"],
+		items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
 	},
 	{
 		category: "Backend",
 		gradient: "from-emerald-500 to-teal-600",
 		chipBg: "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-200/60 dark:border-emerald-800/40",
-		items: ["Node.js", "Express", "PostgreSQL", "MongoDB", "REST APIs", "GraphQL"],
+		items: ["Node.js", "Express", "PostgreSQL", "MongoDB", "REST APIs"],
 	},
 	{
 		category: "DevOps & Tools",
 		gradient: "from-pink-500 to-rose-600",
 		chipBg: "bg-pink-50 dark:bg-pink-950/50 text-pink-700 dark:text-pink-300 border-pink-200/60 dark:border-pink-800/40",
-		items: ["Git", "Docker", "Linux", "Vercel", "AWS", "GitHub Actions"],
+		items: ["Git", "Docker", "Linux", "Vercel", "AWS", "NGINX"],
 	},
 	{
 		category: "Lenguajes",
 		gradient: "from-orange-500 to-amber-600",
 		chipBg: "bg-orange-50 dark:bg-orange-950/50 text-orange-700 dark:text-orange-300 border-orange-200/60 dark:border-orange-800/40",
-		items: ["JavaScript", "TypeScript", "C", "C++", "Python", "SQL"],
+		items: ["JavaScript", "TypeScript", "C", "C++", "Java", "SQL"],
 	},
 ];
 

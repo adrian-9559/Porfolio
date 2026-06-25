@@ -48,6 +48,7 @@ const categories = [
 			{ name: "Tailwind CSS", level: 4 },
 			{ name: "Spring Boot", level: 3 },
 			{ name: "Bootstrap", level: 4 },
+			{ name: "nodejs", level: 5 },
 		],
 	},
 	{

@@ -104,9 +104,9 @@ export default function AboutPage() {
 							<h2 className="text-2xl font-bold">Especialización</h2>
 							{[
 								{ label: "Frontend", items: "React, Next.js, TypeScript, Tailwind CSS", color: "bg-blue-500", gradient: "from-blue-50 dark:from-blue-950/30" },
-								{ label: "Backend", items: "Node.js, Express, REST APIs, GraphQL", color: "bg-emerald-500", gradient: "from-emerald-50 dark:from-emerald-950/30" },
-								{ label: "Base de datos", items: "PostgreSQL, MongoDB, Redis", color: "bg-orange-500", gradient: "from-orange-50 dark:from-orange-950/30" },
-								{ label: "DevOps", items: "Docker, Git, Vercel, GitHub Actions", color: "bg-violet-500", gradient: "from-violet-50 dark:from-violet-950/30" },
+								{ label: "Backend", items: "Node.js, Express, REST APIs", color: "bg-emerald-500", gradient: "from-emerald-50 dark:from-emerald-950/30" },
+								{ label: "Base de datos", items: "PostgreSQL, MongoDB, MySQL, SQL Server", color: "bg-orange-500", gradient: "from-orange-50 dark:from-orange-950/30" },
+								{ label: "DevOps", items: "Docker, Git, Vercel, NGINX", color: "bg-violet-500", gradient: "from-violet-50 dark:from-violet-950/30" },
 							].map((s, i) => (
 								<div key={i} className="p-4 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
 									<div className="flex items-center gap-2.5 mb-1.5">

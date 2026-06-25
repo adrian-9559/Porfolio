@@ -22,6 +22,8 @@ import JavaContent from "@/components/blog/JavaContent";
 import ReactContent from "@/components/blog/ReactContent";
 import NodeExpressContent from "@/components/blog/NodeExpressContent";
 import NextJsContent from "@/components/blog/NextJsContent";
+import GitContent from "@/components/blog/GitContent";
+import PaletteGeneratorContent from "@/components/blog/PaletteGeneratorContent";
 
 export const componentMap: Record<string, React.ComponentType> = {
 	"json-formatter": JsonFormatterContent,
@@ -47,4 +49,6 @@ export const componentMap: Record<string, React.ComponentType> = {
 	"react-framework": ReactContent,
 	"node-express": NodeExpressContent,
 	"nextjs-framework": NextJsContent,
+	git: GitContent,
+	"palette-generator": PaletteGeneratorContent,
 };

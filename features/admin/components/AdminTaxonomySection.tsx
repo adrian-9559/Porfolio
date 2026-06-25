@@ -10,7 +10,7 @@ import {
 	type RelationType
 } from "@/lib/blog/taxonomy";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 
 type Tab = "categories" | "levels" | "paths" | "relationships" | "tags";
 
@@ -28,17 +28,29 @@ const RELATION_COLOR: Record<RelationType, string> = {
 	deepdive: "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30",
 };
 
-function TabBtn({ id, label, active, onClick }: { id: Tab; label: string; active: boolean; onClick: () => void }) {
+const TAB_ICONS: Record<Tab, React.ReactElement> = {
+	categories: <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="w-3.5 h-3.5"><rect x="1" y="1" width="5" height="5" rx="1.5"/><rect x="8" y="1" width="5" height="5" rx="1.5"/><rect x="1" y="8" width="5" height="5" rx="1.5"/><rect x="8" y="8" width="5" height="5" rx="1.5"/></svg>,
+	levels: <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="w-3.5 h-3.5"><path d="M2 11h2V7H2zM6 11h2V4H6zM10 11h2V1h-2z"/></svg>,
+	paths: <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="w-3.5 h-3.5"><path d="M1 13L5 7l3 3 5-7"/></svg>,
+	relationships: <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="w-3.5 h-3.5"><circle cx="3" cy="7" r="1.5"/><circle cx="11" cy="3" r="1.5"/><circle cx="11" cy="11" r="1.5"/><path d="M4.5 7l4-3.5M4.5 7l4 3.5"/></svg>,
+	tags: <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="w-3.5 h-3.5"><path d="M1 8.5L5.5 13l7-7-4.5-4.5H2v3.5L1 8.5z"/><circle cx="4.5" cy="4.5" r="1" fill="currentColor" stroke="none"/></svg>,
+};
+
+function TabBtn({ id, label, count, active, onClick }: { id: Tab; label: string; count?: number; active: boolean; onClick: () => void }) {
 	return (
 		<button
 			onClick={onClick}
-			className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+			className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
 				active
 					? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]"
 					: "text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"
 			}`}
 		>
-			{label}
+			{TAB_ICONS[id]}
+			<span className="hidden sm:inline">{label}</span>
+			{count !== undefined && (
+				<span className={`px-1.5 py-0.5 rounded-full tabular-nums text-[10px] ${active ? "bg-white/20 dark:bg-black/20" : "bg-black/8 dark:bg-white/8"}`}>{count}</span>
+			)}
 		</button>
 	);
 }
@@ -354,36 +366,52 @@ function TagsView() {
 	);
 }
 
+const allTagsCount = Array.from(new Set([...STANDARD_TAGS, ...allContent.flatMap(c => c.tags ?? [])])).length;
+
 export default function AdminTaxonomySection() {
 	const [tab, setTab] = useState<Tab>("categories");
 
-	const tabs: { id: Tab; label: string }[] = [
-		{ id: "categories", label: "Categorías" },
-		{ id: "levels", label: "Niveles" },
-		{ id: "paths", label: "Rutas de aprendizaje" },
-		{ id: "relationships", label: "Relaciones" },
-		{ id: "tags", label: "Tags" },
+	const tabs: { id: Tab; label: string; count: number }[] = [
+		{ id: "categories", label: "Categorías", count: CATEGORIES.length },
+		{ id: "levels", label: "Niveles", count: LEVELS.length },
+		{ id: "paths", label: "Rutas", count: LEARNING_PATHS.length },
+		{ id: "relationships", label: "Relaciones", count: CONTENT_RELATIONSHIPS.length },
+		{ id: "tags", label: "Tags", count: allTagsCount },
+	];
+
+	const stats = [
+		{ label: "Contenidos", value: allContent.length, icon: "📄", color: "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400" },
+		{ label: "Categorías", value: CATEGORIES.length, icon: "🏷️", color: "bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400" },
+		{ label: "Rutas", value: LEARNING_PATHS.length, icon: "🗺️", color: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400" },
+		{ label: "Relaciones", value: CONTENT_RELATIONSHIPS.length, icon: "🔗", color: "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400" },
+		{ label: "Tags", value: allTagsCount, icon: "🔖", color: "bg-pink-50 dark:bg-pink-950/30 text-pink-600 dark:text-pink-400" },
 	];
 
 	return (
 		<div className="space-y-6">
-			<div className="flex items-center justify-between flex-wrap gap-3">
-				<div>
-					<h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">Taxonomía educativa</h2>
-					<p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
-						Categorías, niveles, rutas de aprendizaje, relaciones y tags del blog.
-					</p>
-				</div>
-				<div className="flex items-center gap-3 text-xs text-[#aeaeb2] dark:text-[#636366]">
-					<span className="font-mono bg-black/5 dark:bg-white/5 px-2 py-1 rounded-lg">{CATEGORIES.length} categorías</span>
-					<span className="font-mono bg-black/5 dark:bg-white/5 px-2 py-1 rounded-lg">{LEARNING_PATHS.length} rutas</span>
-					<span className="font-mono bg-black/5 dark:bg-white/5 px-2 py-1 rounded-lg">{allContent.length} contenidos</span>
-				</div>
+			<div>
+				<h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">Taxonomía educativa</h2>
+				<p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+					Categorías, niveles, rutas de aprendizaje, relaciones y tags del blog.
+				</p>
 			</div>
 
-			<div className="flex items-center gap-1 p-1 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] w-fit">
+			{/* Stats */}
+			<div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+				{stats.map(s => (
+					<div key={s.label} className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 flex items-center gap-3">
+						<div className={`w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0 ${s.color}`}>{s.icon}</div>
+						<div>
+							<p className="text-xl font-bold text-[#1d1d1f] dark:text-white leading-tight">{s.value}</p>
+							<p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">{s.label}</p>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<div className="flex items-center gap-1 p-1.5 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/5 dark:border-white/5 w-fit">
 				{tabs.map((t) => (
-					<TabBtn key={t.id} id={t.id} label={t.label} active={tab === t.id} onClick={() => setTab(t.id)} />
+					<TabBtn key={t.id} id={t.id} label={t.label} count={t.count} active={tab === t.id} onClick={() => setTab(t.id)} />
 				))}
 			</div>
 
