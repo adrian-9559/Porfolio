@@ -32,4 +32,34 @@ export const authService = {
       method: "POST",
       body: JSON.stringify({ refresh_token }),
     }),
+
+  forgotPassword: (email: string) =>
+    apiFetch<{ message: string }>("/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    }),
+
+  resetPassword: (email: string, code: string, newPassword: string) =>
+    apiFetch<{ message: string }>("/auth/reset-password", {
+      method: "POST",
+      body: JSON.stringify({ email, code, new_password: newPassword }),
+    }),
+
+  adminChangePassword: (userId: string, newPassword: string) =>
+    apiFetch<{ message: string }>("/auth/admin-change-password", {
+      method: "POST",
+      body: JSON.stringify({ user_id: userId, new_password: newPassword }),
+    }),
+
+  resendConfirmation: (userId: string) =>
+    apiFetch<{ message: string }>("/auth/resend-confirmation", {
+      method: "POST",
+      body: JSON.stringify({ user_id: userId }),
+    }),
+
+  adminConfirmEmail: (userId: string) =>
+    apiFetch<{ message: string }>("/auth/confirm-email", {
+      method: "POST",
+      body: JSON.stringify({ user_id: userId }),
+    }),
 };

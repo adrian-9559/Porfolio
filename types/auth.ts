@@ -26,6 +26,7 @@ export interface UserWithProfile {
   email: string;
   roles: Role[];
   profile?: Profile;
+  email_confirmed?: boolean;
 }
 
 export type RoleName = "admin" | "editor" | "author" | "user";

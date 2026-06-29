@@ -4,6 +4,7 @@ import { roleService } from "@/services/roleService";
 import type { UserWithProfile, Role } from "@/types/auth";
 import { SectionHeader, Card, Spinner, EmptyState, IconBtn, SearchInput, Badge, Icons, relativeTime } from "./AdminShared";
 import { Avatar } from "./AdminDashboard";
+import { AdminUserModal } from "./AdminUserModal";
 
 export function AdminUsers() {
   const [users, setUsers] = useState<UserWithProfile[]>([]);
@@ -12,6 +13,7 @@ export function AdminUsers() {
   const [search, setSearch] = useState("");
   const [editId, setEditId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
+  const [selectedUser, setSelectedUser] = useState<UserWithProfile | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -99,6 +101,12 @@ export function AdminUsers() {
                   <span className="text-xs text-[#aeaeb2] dark:text-[#636366] shrink-0 hidden sm:block">{relativeTime(u.profile.created_at)}</span>
                 )}
 
+                <IconBtn onClick={() => setSelectedUser(u)} title="Ver usuario" icon={
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/>
+                    <circle cx="8" cy="8" r="2"/>
+                  </svg>
+                } />
                 <IconBtn onClick={() => handleDelete(u.id)} title="Eliminar usuario" icon={Icons.trash} danger />
               </div>
             ))}
@@ -109,6 +117,14 @@ export function AdminUsers() {
       <div className="text-xs text-[#aeaeb2] dark:text-[#636366] text-center">
         Mostrando {filtered.length} de {users.length} usuarios
       </div>
+
+      {selectedUser && (
+        <AdminUserModal
+          user={selectedUser}
+          open={!!selectedUser}
+          onClose={() => { setSelectedUser(null); load(); }}
+        />
+      )}
     </div>
   );
 }
