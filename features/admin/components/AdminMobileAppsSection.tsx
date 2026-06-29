@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { SectionHeader, Card, EmptyState, Spinner } from "./AdminShared";
 import { apiFetch, tokenStore } from "@/services/apiClient";
 import { env } from "@/config/env";
+import { GoogleDriveConnectCard } from "./GoogleDriveConnectCard";
+import { googleDriveService, type DriveStatus } from "@/services/googleDriveService";
 
 
 interface MobileAppVersion {
@@ -12,11 +14,15 @@ interface MobileAppVersion {
   file_name: string;
   file_path: string | null;
   external_url: string | null;
+  drive_file_id: string | null;
+  storage_source: "supabase" | "gdrive" | "external_url";
   file_size: number | null;
   is_active: boolean;
   release_notes: string | null;
   created_at: string;
 }
+
+type UploadDestination = "drive" | "supabase" | "external_url";
 
 const API = "/api/mobile-app";
 
@@ -31,12 +37,16 @@ async function listVersions(): Promise<MobileAppVersion[]> {
   return apiFetch<MobileAppVersion[]>(`${API}/versions`);
 }
 
-async function uploadVersion(formData: FormData): Promise<MobileAppVersion> {
+async function uploadVersion(
+  formData: FormData,
+  destination: UploadDestination
+): Promise<MobileAppVersion> {
   // Use raw fetch to avoid apiFetch overriding Content-Type for multipart
   const token = tokenStore.get();
   const headers: Record<string, string> = {};
   if (token) headers["Authorization"] = `Bearer ${token}`;
   if (env.apiKey) headers["X-API-Key"] = env.apiKey;
+  formData.set("upload_destination", destination);
   const res = await fetch(`${env.apiUrl}${API}/upload`, {
     method: "POST",
     body: formData,
@@ -69,24 +79,56 @@ function formatSize(bytes: number | null) {
   return `${(bytes / 1024).toFixed(0)} KB`;
 }
 
+function SourceBadge({ source }: { source: "supabase" | "gdrive" | "external_url" }) {
+  if (source === "gdrive") {
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
+        <svg viewBox="0 0 24 24" className="w-3 h-3"><path d="M9.5 2L4 12l2.5 4.5h2.5l1.5-2.5L9.5 2z" fill="#FBBC04"/><path d="M14.5 2L9.5 11h5l2.5-4.5L14.5 2z" fill="#34A853"/><path d="M19.5 7L17 12l-2.5 4.5h2.5L19.5 12 22 7h-2.5z" fill="#EA4335"/></svg>
+        Drive
+      </span>
+    );
+  }
+  if (source === "external_url") {
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] text-xs font-medium">
+        URL
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] text-xs font-medium">
+      Supabase
+    </span>
+  );
+}
+
 // ── Upload Modal ───────────────────────────────────────────────────────────────
 
 interface UploadModalProps {
   onClose: () => void;
   onUploaded: (v: MobileAppVersion) => void;
+  driveStatus: DriveStatus | null;
 }
 
-function UploadModal({ onClose, onUploaded }: UploadModalProps) {
+function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
   const [platform, setPlatform] = useState<"android" | "ios">("android");
   const [buildType, setBuildType] = useState("apk");
   const [version, setVersion] = useState("");
   const [releaseNotes, setReleaseNotes] = useState("");
-  const [sourceType, setSourceType] = useState<"file" | "url">("url");
+  const [sourceType, setSourceType] = useState<"file" | "url">(
+    driveStatus?.connected ? "file" : "url"
+  );
   const [externalUrl, setExternalUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [destination, setDestination] = useState<UploadDestination>(
+    driveStatus?.connected ? "drive" : "external_url"
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const driveConnected = Boolean(driveStatus?.connected);
+  const canUpload = sourceType === "file";
 
   function handlePlatformChange(p: "android" | "ios") {
     setPlatform(p);
@@ -107,10 +149,15 @@ function UploadModal({ onClose, onUploaded }: UploadModalProps) {
       fd.append("platform", platform);
       fd.append("build_type", buildType);
       if (releaseNotes.trim()) fd.append("release_notes", releaseNotes.trim());
-      if (sourceType === "url") fd.append("external_url", toRawGithubUrl(externalUrl));
-      else if (file) fd.append("file", file);
+      if (sourceType === "url") {
+        fd.append("external_url", toRawGithubUrl(externalUrl));
+        fd.append("upload_destination", "external_url");
+      } else if (file) {
+        fd.append("file", file);
+        fd.append("upload_destination", destination);
+      }
 
-      const v = await uploadVersion(fd);
+      const v = await uploadVersion(fd, sourceType === "url" ? "external_url" : destination);
       onUploaded(v);
       onClose();
     } catch (e: unknown) {
@@ -207,6 +254,44 @@ function UploadModal({ onClose, onUploaded }: UploadModalProps) {
               </div>
               <input ref={fileRef} type="file" accept=".apk,.aab,.ipa" className="hidden"
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+
+              {/* Destination selector when uploading a file */}
+              <div className="mt-3">
+                <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+                  Destino
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setDestination("drive")}
+                    disabled={!driveConnected}
+                    title={!driveConnected ? "Conecta Google Drive arriba" : ""}
+                    className={`flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium border transition-colors ${
+                      destination === "drive"
+                        ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
+                        : "border-black/12 dark:border-white/12 text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"
+                    } ${!driveConnected ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    Google Drive
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDestination("supabase")}
+                    className={`flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium border transition-colors ${
+                      destination === "supabase"
+                        ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
+                        : "border-black/12 dark:border-white/12 text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"
+                    }`}
+                  >
+                    Supabase Storage
+                  </button>
+                </div>
+                {destination === "drive" && driveConnected && (
+                  <p className="mt-1.5 text-xs text-[#aeaeb2]">
+                    Se subirá a tu Drive y se hará público para descarga.
+                  </p>
+                )}
+              </div>
             </div>
           )}
 
@@ -244,10 +329,24 @@ export function AdminMobileAppsSection() {
   const [deleting, setDeleting] = useState<string | null>(null);
   const [activating, setActivating] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [driveStatus, setDriveStatus] = useState<DriveStatus | null>(null);
+
+  async function refreshAll() {
+    setLoading(true);
+    try {
+      const [v, d] = await Promise.all([
+        listVersions(),
+        googleDriveService.getStatus().catch(() => null),
+      ]);
+      setVersions(v);
+      setDriveStatus(d);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    setLoading(true);
-    listVersions().then(setVersions).catch(() => {}).finally(() => setLoading(false));
+    refreshAll();
   }, []);
 
   async function handleActivate(id: string) {
@@ -309,6 +408,8 @@ export function AdminMobileAppsSection() {
         </div>
       )}
 
+      <GoogleDriveConnectCard onChange={refreshAll} />
+
       <Card>
         {loading ? (
           <Spinner />
@@ -319,7 +420,7 @@ export function AdminMobileAppsSection() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-black/8 dark:border-white/8">
-                  {["Versión", "Plataforma", "Tipo", "Tamaño", "Estado", "Fecha", "Acciones"].map((h) => (
+                  {["Versión", "Plataforma", "Tipo", "Origen", "Tamaño", "Estado", "Fecha", "Acciones"].map((h) => (
                     <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-[#aeaeb2] dark:text-[#636366] whitespace-nowrap">{h}</th>
                   ))}
                 </tr>
@@ -333,6 +434,9 @@ export function AdminMobileAppsSection() {
                       <span className="px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-xs font-medium text-[#6e6e73] dark:text-[#86868b] uppercase">
                         {BUILD_LABELS[v.build_type]}
                       </span>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <SourceBadge source={v.storage_source} />
                     </td>
                     <td className="px-4 py-3 text-[#6e6e73] dark:text-[#86868b] whitespace-nowrap text-xs">{formatSize(v.file_size)}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
@@ -358,7 +462,7 @@ export function AdminMobileAppsSection() {
                         {v.external_url && (
                           <a href={v.external_url} target="_blank" rel="noreferrer"
                             className="px-2.5 py-1 rounded-lg text-xs font-medium bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors">
-                            URL
+                            {v.storage_source === "gdrive" ? "Ver en Drive" : "URL"}
                           </a>
                         )}
                         <button onClick={() => handleDelete(v.id)} disabled={deleting === v.id}
@@ -375,7 +479,13 @@ export function AdminMobileAppsSection() {
         )}
       </Card>
 
-      {showModal && <UploadModal onClose={() => setShowModal(false)} onUploaded={handleUploaded} />}
+      {showModal && (
+        <UploadModal
+          onClose={() => setShowModal(false)}
+          onUploaded={handleUploaded}
+          driveStatus={driveStatus}
+        />
+      )}
     </div>
   );
 }

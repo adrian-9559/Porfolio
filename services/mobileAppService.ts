@@ -23,6 +23,9 @@ export interface MobileAppVersion {
   file_size: number | null;
   is_active: boolean;
   release_notes: string | null;
+  storage_source: "supabase" | "gdrive" | "external_url";
+  external_url: string | null;
+  drive_file_id: string | null;
   created_at: string;
 }
 
@@ -74,11 +77,16 @@ export const mobileAppService = {
   deleteApp: (id: string) =>
     apiFetch<void>(`${API}/apps/${id}`, { method: "DELETE" }),
 
-  async uploadVersion(appId: string, formData: FormData): Promise<MobileAppVersion> {
+  async uploadVersion(
+    appId: string,
+    formData: FormData,
+    uploadDestination?: "drive" | "supabase" | "external_url"
+  ): Promise<MobileAppVersion> {
     const token = tokenStore.get();
     const headers: Record<string, string> = {};
     if (token) headers["Authorization"] = `Bearer ${token}`;
     if (env.apiKey) headers["X-API-Key"] = env.apiKey;
+    if (uploadDestination) formData.set("upload_destination", uploadDestination);
     const res = await fetch(`${env.apiUrl}${API}/upload`, {
       method: "POST",
       body: formData,
