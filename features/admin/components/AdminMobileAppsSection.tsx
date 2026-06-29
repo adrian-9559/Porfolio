@@ -20,6 +20,13 @@ interface MobileAppVersion {
 
 const API = "/api/mobile-app";
 
+function toRawGithubUrl(url: string): string {
+  const trimmed = url.trim();
+  const blobMatch = trimmed.match(/^https?:\/\/github\.com\/([^/]+\/[^/]+)\/blob\/(.+)$/);
+  if (blobMatch) return `https://raw.githubusercontent.com/${blobMatch[1]}/${blobMatch[2]}`;
+  return trimmed;
+}
+
 async function listVersions(): Promise<MobileAppVersion[]> {
   return apiFetch<MobileAppVersion[]>(`${API}/versions`);
 }
@@ -100,7 +107,7 @@ function UploadModal({ onClose, onUploaded }: UploadModalProps) {
       fd.append("platform", platform);
       fd.append("build_type", buildType);
       if (releaseNotes.trim()) fd.append("release_notes", releaseNotes.trim());
-      if (sourceType === "url") fd.append("external_url", externalUrl.trim());
+      if (sourceType === "url") fd.append("external_url", toRawGithubUrl(externalUrl));
       else if (file) fd.append("file", file);
 
       const v = await uploadVersion(fd);
@@ -175,17 +182,17 @@ function UploadModal({ onClose, onUploaded }: UploadModalProps) {
           {sourceType === "url" ? (
             <div>
               <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">URL <span className="text-red-500">*</span></label>
-              <input value={externalUrl} onChange={(e) => setExternalUrl(e.target.value)} placeholder="https://raw.githubusercontent.com/user/repo/main/android/app.apk"
+              <input value={externalUrl} onChange={(e) => setExternalUrl(e.target.value)}
+                placeholder="https://github.com/user/repo/blob/main/android/app.apk"
                 className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              <div className="mt-2 rounded-xl border border-amber-200 dark:border-amber-800/40 bg-amber-50 dark:bg-amber-950/20 px-3 py-2.5 space-y-1">
-                <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">⚠️ Usa la URL raw de GitHub, no la del visor</p>
-                <p className="text-xs text-amber-600 dark:text-amber-500">
-                  ❌ <code className="font-mono">github.com/.../blob/main/app.apk</code>
+              {externalUrl.trim() && (
+                <p className="mt-1.5 text-xs text-[#6e6e73] truncate">
+                  → <span className="font-mono">{toRawGithubUrl(externalUrl)}</span>
                 </p>
-                <p className="text-xs text-amber-600 dark:text-amber-500">
-                  ✅ <code className="font-mono">raw.githubusercontent.com/.../main/app.apk</code>
-                </p>
-              </div>
+              )}
+              <p className="mt-1.5 text-xs text-[#aeaeb2]">
+                Acepta URLs de GitHub (<code className="font-mono">blob/</code> se convierte a raw automáticamente) o cualquier URL directa.
+              </p>
             </div>
           ) : (
             <div>
