@@ -117,7 +117,7 @@ function AppCard({ app, latest }: AppCardProps) {
         <button
           onClick={() => handleDownload("ipa")}
           disabled={!!downloading || !hasiOS}
-          className="flex items-center gap-2 bg-[#007aff]/40 hover:bg-[#0062cc] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+          className="flex items-center gap-2 bg-[#007aff] hover:bg-[#0062cc] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
         >
           {downloading === "ipa" ? (
             <span className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
