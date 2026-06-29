@@ -8,6 +8,7 @@ import { UserNotificationsSection } from "@/features/dashboard/components/UserNo
 import { UserTricountSection } from "@/features/dashboard/components/UserTricountSection";
 import { UserFriendsSection } from "@/features/dashboard/components/UserFriendsSection";
 import { UserSettingsSection } from "@/features/dashboard/components/UserSettingsSection";
+import { UserAppsSection } from "@/features/dashboard/components/UserAppsSection";
 
 type Section =
 	| "home"
@@ -16,6 +17,7 @@ type Section =
 	| "notifications"
 	| "tricount"
 	| "friends"
+	| "apps"
 	| "settings-profile"
 	| "settings-security"
 	| "settings-session";
@@ -26,6 +28,7 @@ const NAV: { id: Section; label: string; icon: React.ReactNode; group: string }[
 	{ id: "agents",            label: "Agentes IA",      icon: <IcoBot />,     group: "herramientas" },
 	{ id: "notifications",     label: "Notificaciones",  icon: <IcoBell />,    group: "herramientas" },
 	{ id: "friends",           label: "Amigos",          icon: <IcoFriends />, group: "herramientas" },
+	{ id: "apps",              label: "Apps",            icon: <IcoApps />,    group: "herramientas" },
 	{ id: "tricount",          label: "Escote",          icon: <IcoMoney />,   group: "finanzas" },
 	{ id: "settings-profile",  label: "Perfil",          icon: <IcoUser />,    group: "configuracion" },
 	{ id: "settings-security", label: "Seguridad",       icon: <IcoLock />,    group: "configuracion" },
@@ -121,6 +124,7 @@ export default function DashboardPage() {
 						{section === "notifications"     && <UserNotificationsSection />}
 						{section === "tricount"          && <UserTricountSection />}
 						{section === "friends"           && <UserFriendsSection />}
+						{section === "apps"              && <UserAppsSection />}
 						{(section === "settings-profile" || section === "settings-security" || section === "settings-session") && (
 							<UserSettingsSection tab={section} onTabChange={setSection} />
 						)}
@@ -159,4 +163,7 @@ function IcoSession() {
 }
 function IcoFriends() {
 	return <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="6" cy="5" r="2.5" /><path d="M1 14c0-2.5 2-4 5-4s5 1.5 5 4" /><path d="M13 8a2.5 2.5 0 000-5M15 14c0-2-1-3.5-2-4" /></svg>;
+}
+function IcoApps() {
+	return <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="1.5" y="1.5" width="5" height="5" rx="1" /><rect x="9.5" y="1.5" width="5" height="5" rx="1" /><rect x="1.5" y="9.5" width="5" height="5" rx="1" /><rect x="9.5" y="9.5" width="5" height="5" rx="1" /></svg>;
 }
