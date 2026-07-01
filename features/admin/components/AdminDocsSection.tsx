@@ -1104,9 +1104,9 @@ const docs: DocSection[] = [
         ],
       },
       {
-        heading: "16 secciones del panel",
+        heading: "17 secciones del panel",
         items: [
-          "Dashboard — métricas globales (10 queries: usuarios, roles, API keys, agents, notifs, contact, descargas)",
+          "Dashboard — métricas globales (usuarios, roles, API keys, notifs, contact, descargas)",
           "Usuarios — tabla con búsqueda, edición de nombre, roles, eliminación",
           "Roles — CRUD completo, protección de roles sistema (admin no borrable)",
           "API Keys — todas las claves del sistema, revocar, eliminar",
@@ -1118,6 +1118,7 @@ const docs: DocSection[] = [
           "Amistades — gestión del sistema social con emails",
           "Apps — distribución de app móvil con versiones y upload",
           "Logs — aggregación client-side de endpoints (pendiente endpoint dedicado)",
+          "Skills — inventario completo de skills del agente + plugins/MCPs",
           "Docs — esta sección + explorador de ~140 endpoints",
         ],
       },
@@ -1199,6 +1200,44 @@ const docs: DocSection[] = [
           "API keys: solo SHA-256 hash, nunca en claro",
           "Access tokens cifrados con crypto.subtle o similar",
           "Migraciones versionadas con nombres descriptivos",
+        ],
+      },
+    ],
+  },
+  {
+    id: "skills",
+    title: "Skills & Plugins",
+    content: [
+      {
+        heading: "Skills del agente",
+        items: [
+          "33 skills únicos instalados en el proyecto (55 archivos SKILL.md con duplicados entre directorios)",
+          "7 categorías: Diseño (7), Frontend (8), Mobile (10), Backend (6), Base de Datos (1), Herramientas (2)",
+          "Distribuidos en .opencode/skills/, .claude/skills/, .agents/skills/, y subdirectorios de cada app",
+          "Cada skill contiene un SKILL.md con name, description, triggers y workflow de uso",
+          "El panel Admin > Skills permite explorarlos con búsqueda, filtro por categoría y ver ubicaciones en el filesystem",
+        ],
+      },
+      {
+        heading: "Plugins y MCP Servers",
+        items: [
+          "@opencode-ai/plugin v1.17.11 — runtime de plugins OpenCode instalado en .opencode/node_modules/",
+          "codegraph — SQLite knowledge graph que indexa todos los símbolos del código (MCP activo)",
+          "context7 — fetch de documentación actualizada de librerías (MCP activo)",
+          "heroui-react — documentación de componentes HeroUI v3 React (MCP activo)",
+          "heroui-native — documentación de componentes HeroUI Native Beta (MCP activo)",
+          "Claude Preview — preview_start MCP configurado en .claude/settings.local.json",
+          "Supabase MCP — apply_migration para migraciones de base de datos",
+          "PreToolUse Hook — intercepta grep/Read para redirigir a graphify query primero",
+        ],
+      },
+      {
+        heading: "Arquitectura de skills",
+        items: [
+          "Los skills son archivos SKILL.md que el agente (Claude/OpenCode) carga bajo demanda según la skill activada",
+          "Se organizan por ámbito: global (.opencode/, .claude/), backend, frontend web y app móvil",
+          "No hay registro centralizado — cada skill se identifica por la existencia de su carpeta con SKILL.md",
+          "El panel Admin > Skills es el primer inventario visual completo de todos los skills del proyecto",
         ],
       },
     ],
