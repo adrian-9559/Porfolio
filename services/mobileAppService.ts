@@ -1,4 +1,5 @@
-import { apiFetch, tokenStore } from "./apiClient";
+import { apiFetch } from "./apiClient";
+
 import { env } from "@/config/env";
 
 export interface App {
@@ -44,35 +45,46 @@ export const mobileAppService = {
 
   getLatest: (appSlug?: string): Promise<Record<string, MobileLatest>> =>
     apiFetch<Record<string, MobileLatest>>(
-      `${API}/latest${appSlug ? `?app=${appSlug}` : ""}`
+      `${API}/latest${appSlug ? `?app=${appSlug}` : ""}`,
     ),
 
   listVersions: (appSlug: string, platform?: "android" | "ios") =>
     apiFetch<MobileAppVersion[]>(
-      `${API}/versions?app=${appSlug}${platform ? `&platform=${platform}` : ""}`
+      `${API}/versions?app=${appSlug}${platform ? `&platform=${platform}` : ""}`,
     ),
 
-  async download(appSlug: string, buildType: "apk" | "aab" | "ipa"): Promise<void> {
+  async download(
+    appSlug: string,
+    buildType: "apk" | "aab" | "ipa",
+  ): Promise<void> {
     const data = await apiFetch<{ url: string }>(
       `${API}/download/${buildType}?app=${appSlug}`,
-      { headers: { Accept: "application/json" } }
+      { headers: { Accept: "application/json" } },
     );
+
     window.open(data.url, "_blank");
   },
 
   async downloadById(version: MobileAppVersion): Promise<void> {
     const data = await apiFetch<{ url: string }>(
       `${API}/download/version/${version.id}`,
-      { headers: { Accept: "application/json" } }
+      { headers: { Accept: "application/json" } },
     );
+
     window.open(data.url, "_blank");
   },
 
   createApp: (input: Partial<App>) =>
-    apiFetch<App>(`${API}/apps`, { method: "POST", body: JSON.stringify(input) }),
+    apiFetch<App>(`${API}/apps`, {
+      method: "POST",
+      body: JSON.stringify(input),
+    }),
 
   updateApp: (id: string, input: Partial<App>) =>
-    apiFetch<App>(`${API}/apps/${id}`, { method: "PATCH", body: JSON.stringify(input) }),
+    apiFetch<App>(`${API}/apps/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    }),
 
   deleteApp: (id: string) =>
     apiFetch<void>(`${API}/apps/${id}`, { method: "DELETE" }),
@@ -80,20 +92,23 @@ export const mobileAppService = {
   async uploadVersion(
     appId: string,
     formData: FormData,
-    uploadDestination?: "drive" | "supabase" | "external_url"
+    uploadDestination?: "drive" | "supabase" | "external_url",
   ): Promise<MobileAppVersion> {
-    const token = tokenStore.get();
     const headers: Record<string, string> = {};
-    if (token) headers["Authorization"] = `Bearer ${token}`;
+
     if (env.apiKey) headers["X-API-Key"] = env.apiKey;
-    if (uploadDestination) formData.set("upload_destination", uploadDestination);
+    if (uploadDestination)
+      formData.set("upload_destination", uploadDestination);
     const res = await fetch(`${env.apiUrl}${API}/upload`, {
       method: "POST",
       body: formData,
       headers,
+      credentials: "include",
     });
     const json = await res.json();
+
     if (!json.success) throw new Error(json.error ?? "Upload failed");
+
     return json.data as MobileAppVersion;
   },
 

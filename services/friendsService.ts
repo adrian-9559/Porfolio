@@ -23,13 +23,23 @@ export interface FriendRequest {
   receiver_user_id: string;
   status: string;
   created_at: string;
-  sender?: { email: string; full_name: string | null; avatar_url: string | null };
-  receiver?: { email: string; full_name: string | null; avatar_url: string | null };
+  sender?: {
+    email: string;
+    full_name: string | null;
+    avatar_url: string | null;
+  };
+  receiver?: {
+    email: string;
+    full_name: string | null;
+    avatar_url: string | null;
+  };
 }
 
 export const friendsService = {
   search: (email: string) =>
-    apiFetch<FriendSearchResult>(`/api/friends/search?email=${encodeURIComponent(email)}`),
+    apiFetch<FriendSearchResult>(
+      `/api/friends/search?email=${encodeURIComponent(email)}`,
+    ),
 
   sendRequest: (receiverId: string) =>
     apiFetch<FriendRequest>(`/api/friends/request`, {
@@ -54,7 +64,9 @@ export const friendsService = {
   deleteFriend: (friendUserId: string) =>
     apiFetch<void>(`/api/friends/${friendUserId}`, { method: "DELETE" }),
 
-  getReceivedRequests: () => apiFetch<FriendRequest[]>(`/api/friends/requests/received`),
+  getReceivedRequests: () =>
+    apiFetch<FriendRequest[]>(`/api/friends/requests/received`),
 
-  getSentRequests: () => apiFetch<FriendRequest[]>(`/api/friends/requests/sent`),
+  getSentRequests: () =>
+    apiFetch<FriendRequest[]>(`/api/friends/requests/sent`),
 };

@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { notificationService, type AppNotification } from "@/services/notificationService";
+
 import { useAuth } from "./useAuth";
+
+import {
+  notificationService,
+  type AppNotification,
+} from "@/services/notificationService";
 
 interface UseNotificationsReturn {
   notifications: AppNotification[];
@@ -24,6 +29,7 @@ export function useNotifications(): UseNotificationsReturn {
     setLoading(true);
     try {
       const res = await notificationService.getAll();
+
       setNotifications(res.notifications);
       setUnread(res.unread);
     } catch {
@@ -40,7 +46,7 @@ export function useNotifications(): UseNotificationsReturn {
   const markRead = useCallback(async (id: string) => {
     await notificationService.markRead(id);
     setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
     );
     setUnread((prev) => Math.max(0, prev - 1));
   }, []);
@@ -51,12 +57,16 @@ export function useNotifications(): UseNotificationsReturn {
     setUnread(0);
   }, []);
 
-  const deleteOne = useCallback(async (id: string) => {
-    const target = notifications.find((n) => n.id === id);
-    await notificationService.deleteOne(id);
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
-    if (target && !target.read) setUnread((prev) => Math.max(0, prev - 1));
-  }, [notifications]);
+  const deleteOne = useCallback(
+    async (id: string) => {
+      const target = notifications.find((n) => n.id === id);
+
+      await notificationService.deleteOne(id);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+      if (target && !target.read) setUnread((prev) => Math.max(0, prev - 1));
+    },
+    [notifications],
+  );
 
   const deleteAll = useCallback(async () => {
     await notificationService.deleteAll();
@@ -64,5 +74,14 @@ export function useNotifications(): UseNotificationsReturn {
     setUnread(0);
   }, []);
 
-  return { notifications, unread, loading, refresh, markRead, markAllRead, deleteOne, deleteAll };
+  return {
+    notifications,
+    unread,
+    loading,
+    refresh,
+    markRead,
+    markAllRead,
+    deleteOne,
+    deleteAll,
+  };
 }

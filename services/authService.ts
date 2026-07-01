@@ -1,5 +1,6 @@
-import { apiFetch } from "./apiClient";
 import type { AuthUser } from "@/types/auth";
+
+import { apiFetch } from "./apiClient";
 
 interface TokenPair {
   accessToken: string;

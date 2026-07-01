@@ -1,5 +1,6 @@
-import { apiFetch } from "./apiClient";
 import type { Role } from "@/types/auth";
+
+import { apiFetch } from "./apiClient";
 
 export const roleService = {
   list: () => apiFetch<Role[]>("/roles"),

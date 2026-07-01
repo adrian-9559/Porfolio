@@ -1,4 +1,5 @@
 import { useShallow } from "zustand/react/shallow";
+
 import { useAuthStore } from "@/store/authStore";
 
 /** Thin selector hook — use this everywhere instead of importing the store directly. */
@@ -13,6 +14,6 @@ export function useAuth() {
       register: s.register,
       logout: s.logout,
       hydrate: s.hydrate,
-    }))
+    })),
   );
 }

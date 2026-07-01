@@ -38,7 +38,11 @@ export const notificationService = {
 };
 
 export const contactService = {
-  async submit(payload: { name: string; email: string; message: string }): Promise<void> {
+  async submit(payload: {
+    name: string;
+    email: string;
+    message: string;
+  }): Promise<void> {
     await apiFetch("/contact", {
       method: "POST",
       body: JSON.stringify(payload),

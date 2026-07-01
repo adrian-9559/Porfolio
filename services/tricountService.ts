@@ -34,7 +34,10 @@ export interface TricountExpense {
   splits?: TricountExpenseSplit[];
 }
 
-export type CreateExpenseInput = Omit<TricountExpense, "id" | "group_id" | "created_at" | "splits"> & {
+export type CreateExpenseInput = Omit<
+  TricountExpense,
+  "id" | "group_id" | "created_at" | "splits"
+> & {
   splits?: TricountExpenseSplit[];
 };
 
@@ -43,8 +46,7 @@ export type CreateExpenseInput = Omit<TricountExpense, "id" | "group_id" | "crea
 const BASE = "/api/tricount";
 
 export const tricountService = {
-  listGroups: () =>
-    apiFetch<TricountGroup[]>(`${BASE}/groups`),
+  listGroups: () => apiFetch<TricountGroup[]>(`${BASE}/groups`),
 
   createGroup: (name: string, currency = "EUR") =>
     apiFetch<TricountGroup>(`${BASE}/groups`, {
@@ -74,7 +76,10 @@ export const tricountService = {
     }),
 
   deleteExpense: (groupId: string, expenseId: string) =>
-    apiFetch<{ message: string }>(`${BASE}/groups/${groupId}/expenses/${expenseId}`, {
-      method: "DELETE",
-    }),
+    apiFetch<{ message: string }>(
+      `${BASE}/groups/${groupId}/expenses/${expenseId}`,
+      {
+        method: "DELETE",
+      },
+    ),
 };

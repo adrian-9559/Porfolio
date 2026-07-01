@@ -7,12 +7,24 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     ...options,
   });
   const json = await res.json();
+
   if (!json.ok) throw new Error(json.error ?? "Request failed");
+
   return json.data as T;
 }
 
-export type TaskType = "single" | "pipeline" | "parallel" | "conditional" | "autogpt";
-export type TaskStatus = "pending" | "running" | "completed" | "failed" | "cancelled";
+export type TaskType =
+  | "single"
+  | "pipeline"
+  | "parallel"
+  | "conditional"
+  | "autogpt";
+export type TaskStatus =
+  | "pending"
+  | "running"
+  | "completed"
+  | "failed"
+  | "cancelled";
 
 export interface OrchestratorTask {
   id: string;
@@ -62,16 +74,26 @@ export interface CreateTaskInput {
 
 export const orchestratorService = {
   createAndRun: (input: CreateTaskInput) =>
-    request<OrchestratorTask>("/api/orchestrator/run", { method: "POST", body: JSON.stringify(input) }),
+    request<OrchestratorTask>("/api/orchestrator/run", {
+      method: "POST",
+      body: JSON.stringify(input),
+    }),
 
   createTask: (input: CreateTaskInput) =>
-    request<OrchestratorTask>("/api/orchestrator/tasks", { method: "POST", body: JSON.stringify(input) }),
+    request<OrchestratorTask>("/api/orchestrator/tasks", {
+      method: "POST",
+      body: JSON.stringify(input),
+    }),
 
   runTask: (id: string) =>
-    request<OrchestratorTask>(`/api/orchestrator/tasks/${id}/run`, { method: "POST" }),
+    request<OrchestratorTask>(`/api/orchestrator/tasks/${id}/run`, {
+      method: "POST",
+    }),
 
   cancelTask: (id: string) =>
-    request<{ cancelled: boolean }>(`/api/orchestrator/tasks/${id}/cancel`, { method: "POST" }),
+    request<{ cancelled: boolean }>(`/api/orchestrator/tasks/${id}/cancel`, {
+      method: "POST",
+    }),
 
   listTasks: (limit = 50) =>
     request<OrchestratorTask[]>(`/api/orchestrator/tasks?limit=${limit}`),
@@ -83,7 +105,11 @@ export const orchestratorService = {
     request<OrchestratorLog[]>(`/api/orchestrator/tasks/${id}/logs`),
 
   getStats: () =>
-    request<{ total: number; active: number; completed: number; failed: number; avgExecutionSec: number }>(
-      "/api/orchestrator/stats"
-    ),
+    request<{
+      total: number;
+      active: number;
+      completed: number;
+      failed: number;
+      avgExecutionSec: number;
+    }>("/api/orchestrator/stats"),
 };

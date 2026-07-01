@@ -70,19 +70,25 @@ export const repositoryService = {
   list: () => apiFetch<GitRepository[]>(BASE),
 
   create: (input: CreateRepoInput) =>
-    apiFetch<GitRepository>(BASE, { method: "POST", body: JSON.stringify(input) }),
+    apiFetch<GitRepository>(BASE, {
+      method: "POST",
+      body: JSON.stringify(input),
+    }),
 
   getById: (id: string) => apiFetch<GitRepository>(`${BASE}/${id}`),
 
-  delete: (id: string) => apiFetch<{ message: string }>(`${BASE}/${id}`, { method: "DELETE" }),
+  delete: (id: string) =>
+    apiFetch<{ message: string }>(`${BASE}/${id}`, { method: "DELETE" }),
 
   getBranches: (id: string) => apiFetch<Branch[]>(`${BASE}/${id}/branches`),
 
   getCommits: (id: string, branch?: string, per_page = 30, page = 1) => {
     const q = new URLSearchParams();
+
     if (branch) q.set("branch", branch);
     q.set("per_page", String(per_page));
     q.set("page", String(page));
+
     return apiFetch<Commit[]>(`${BASE}/${id}/commits?${q}`);
   },
 

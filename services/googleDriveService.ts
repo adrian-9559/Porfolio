@@ -15,7 +15,7 @@ export const googleDriveService = {
 
   getAuthUrl: (successRedirect?: string) =>
     apiFetch<{ enabled: boolean; url: string | null }>(
-      `${API}/auth-url${successRedirect ? `?successRedirect=${encodeURIComponent(successRedirect)}` : ""}`
+      `${API}/auth-url${successRedirect ? `?successRedirect=${encodeURIComponent(successRedirect)}` : ""}`,
     ),
 
   setFolder: (folderId: string) =>
