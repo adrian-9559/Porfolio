@@ -1,4 +1,5 @@
 import { apiFetch } from "./apiClient";
+import { tokenStore } from "./tokenStore";
 
 import { env } from "@/config/env";
 
@@ -97,6 +98,8 @@ export const mobileAppService = {
     const headers: Record<string, string> = {};
 
     if (env.apiKey) headers["X-API-Key"] = env.apiKey;
+    const token = tokenStore.get();
+    if (token) headers["Authorization"] = `Bearer ${token}`;
     if (uploadDestination)
       formData.set("upload_destination", uploadDestination);
     const res = await fetch(`${env.apiUrl}${API}/upload`, {

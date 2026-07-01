@@ -5,6 +5,7 @@ import { SectionHeader, Card, EmptyState, Spinner } from "./AdminShared";
 import { GoogleDriveConnectCard } from "./GoogleDriveConnectCard";
 
 import { apiFetch } from "@/services/apiClient";
+import { tokenStore } from "@/services/tokenStore";
 import { env } from "@/config/env";
 import {
   googleDriveService,
@@ -55,6 +56,8 @@ async function uploadVersion(
   const headers: Record<string, string> = {};
 
   if (env.apiKey) headers["X-API-Key"] = env.apiKey;
+  const token = tokenStore.get();
+  if (token) headers["Authorization"] = `Bearer ${token}`;
   formData.set("upload_destination", destination);
   const res = await fetch(`${env.apiUrl}${API}/upload`, {
     method: "POST",
