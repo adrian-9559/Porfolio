@@ -98,9 +98,6 @@ export async function apiFetch<T>(
       const newToken = await _refreshing;
 
       if (!newToken) {
-        // Only wipe the session if refreshTokens() actually invalidated it
-        // (401/403 from the server). A transient failure (429, network, 5xx)
-        // leaves the refresh token in place — surface the error, keep session.
         if (!tokenStore.getRefresh()) dispatchAuthExpired();
         throw new ApiError("Sesión expirada", 401);
       }
@@ -110,7 +107,11 @@ export async function apiFetch<T>(
       continue;
     }
 
-    if (res.status === 401 && token) {
+    // Only destroy the session on the FIRST 401-with-token (attempt === 0
+    // handled above). If we reach here after refresh succeeded (attempt > 0)
+    // but the endpoint still returns 401, it's not a token problem — don't
+    // clear a valid session.
+    if (res.status === 401 && attempt === 0) {
       tokenStore.clear();
       dispatchAuthExpired();
     }
