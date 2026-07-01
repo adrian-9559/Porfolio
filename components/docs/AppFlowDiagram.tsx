@@ -262,16 +262,12 @@ const NODES: FlowNode[] = [
       "Visualización de repositorios Git conectados vía GitHub API. Incluye commits por rama y grafo SVG del historial.",
     routes: [{ path: "/dashboard/repositories" }],
     endpoints: [
-      {
-        method: "GET",
-        path: "/repositories",
-        desc: "Todos los repos del sistema",
-      },
-      {
-        method: "GET",
-        path: "/repositories/:id/commits",
-        desc: "Commits — acepta ?branch= para filtrar",
-      },
+      { method: "GET", path: "/api/repositories", desc: "Repos del usuario" },
+      { method: "POST", path: "/api/repositories", desc: "Conectar nuevo repo" },
+      { method: "GET", path: "/api/repositories/:id/branches", desc: "Ramas del repo" },
+      { method: "GET", path: "/api/repositories/:id/commits", desc: "Commits (?branch=)" },
+      { method: "GET", path: "/api/repositories/:id/graph", desc: "Grafo SVG de commits" },
+      { method: "GET", path: "/api/repositories/:id/analytics", desc: "Analytics de actividad" },
     ],
     tech: ["GitHub REST API v3", "SVG commit graph", "React state"],
     features: [
@@ -290,6 +286,21 @@ const NODES: FlowNode[] = [
       "Módulo completo de inteligencia artificial. Crea agentes personalizados, encadénalos en workflows y visualízalos en un grafo interactivo.",
     routes: [{ path: "/dashboard/ai-agents" }],
     endpoints: [
+      {
+        method: "GET",
+        path: "/api/tools/ai-agents/presets",
+        desc: "Obtener presets disponibles",
+      },
+      {
+        method: "POST",
+        path: "/api/tools/ai-agents/create",
+        desc: "Crear agente personalizado",
+      },
+      {
+        method: "GET",
+        path: "/api/tools/ai-agents",
+        desc: "Listar agentes del usuario",
+      },
       {
         method: "POST",
         path: "/api/tools/ai-agents/run",
@@ -325,14 +336,22 @@ const NODES: FlowNode[] = [
     subtitle: "Gastos compartidos",
     icon: "💸",
     description:
-      "Gestión de gastos compartidos estilo Tricount. Grupos, gastos, splits y cálculo automático de quién le debe qué a quién.",
+      "Gestión de gastos compartidos estilo Tricount. Grupos, gastos, splits, liquidaciones, categorías, gastos recurrentes, recibos, export CSV e insights de gasto.",
     routes: [{ path: "/dashboard/escote" }],
+    endpoints: [
+      { method: "GET", path: "/api/tricount/groups", desc: "Listar grupos" },
+      { method: "POST", path: "/api/tricount/groups/:id/expenses", desc: "Crear gasto" },
+      { method: "GET", path: "/api/tricount/groups/:id/balances", desc: "Balances del grupo" },
+      { method: "GET", path: "/api/tricount/insights", desc: "Insights globales de gasto" },
+    ],
     tech: ["React + HeroUI", "Supabase RLS", "Algoritmo de liquidación"],
     features: [
-      "Crear/gestionar grupos",
-      "Picker de amigos al crear grupo",
-      "Añadir gastos con splits",
-      "Vista de deudas pendientes",
+      "Crear/gestionar grupos con moneda",
+      "Picker de amigos + QR al crear grupo",
+      "Gastos con splits equitativos o personalizados",
+      "Categorías, liquidaciones, gastos recurrentes",
+      "Subida de recibos (foto), export CSV",
+      "Insights: gráficos de gasto por categoría",
     ],
   },
   {
@@ -342,25 +361,85 @@ const NODES: FlowNode[] = [
     subtitle: "Sistema social",
     icon: "👥",
     description:
-      "Sistema de amistades bidireccional. Envía solicitudes, acepta amigos y úsalos en módulos como Escote.",
+      "Sistema de amistades bidireccional. Envía solicitudes, acepta/rechaza, busca usuarios, intercambio QR y notificaciones automáticas.",
     routes: [{ path: "/dashboard/friends" }],
     endpoints: [
-      {
-        method: "POST",
-        path: "/friends/request",
-        desc: "Enviar solicitud de amistad",
-      },
-      {
-        method: "PATCH",
-        path: "/friends/accept/:id",
-        desc: "Aceptar solicitud",
-      },
-      { method: "GET", path: "/friends", desc: "Lista de amigos aceptados" },
+      { method: "GET", path: "/api/friends", desc: "Lista de amigos" },
+      { method: "GET", path: "/api/friends/search", desc: "Buscar usuarios" },
+      { method: "POST", path: "/api/friends/request", desc: "Enviar solicitud" },
+      { method: "POST", path: "/api/friends/accept", desc: "Aceptar solicitud" },
+      { method: "POST", path: "/api/friends/reject", desc: "Rechazar solicitud" },
+      { method: "GET", path: "/api/friends/requests/received", desc: "Solicitudes recibidas" },
+      { method: "GET", path: "/api/friends/requests/sent", desc: "Solicitudes enviadas" },
     ],
     tech: [
       "Supabase RLS",
-      "Notificaciones automáticas en solicitud/aceptación",
+      "QR exchange",
+      "Notificaciones automáticas",
     ],
+  },
+  {
+    id: "mod-orchestrator",
+    zone: "modules",
+    title: "Orquestador IA",
+    subtitle: "Tareas multi-agente",
+    icon: "🧠",
+    description:
+      "Orquestación de agentes IA. Soporta modos single, pipeline, parallel, conditional y autogpt. Tareas con logs detallados, reintentos y cancelación.",
+    routes: [{ path: "/dashboard/orchestrator" }],
+    endpoints: [
+      { method: "POST", path: "/api/orchestrator/tasks", desc: "Crear tarea de orquestación" },
+      { method: "GET", path: "/api/orchestrator/tasks", desc: "Listar tareas" },
+      { method: "POST", path: "/api/orchestrator/tasks/:id/run", desc: "Ejecutar tarea" },
+      { method: "GET", path: "/api/orchestrator/stats", desc: "Estadísticas del orquestador" },
+    ],
+    tech: ["Anthropic + OpenAI", "Memoria persistente", "Pipeline multi-paso"],
+  },
+  {
+    id: "mod-qr",
+    zone: "modules",
+    title: "QR Amigos",
+    subtitle: "Intercambio rápido",
+    icon: "📱",
+    description:
+      "Intercambio de amistad mediante código QR. Genera un token único que otro usuario puede escanear para enviar solicitud.",
+    routes: [{ path: "/dashboard/friends" }],
+    endpoints: [
+      { method: "GET", path: "/api/qr/friend-token", desc: "Obtener token QR del usuario" },
+      { method: "POST", path: "/api/qr/friend-token/revoke", desc: "Revocar y regenerar token" },
+      { method: "POST", path: "/api/qr/friend-exchange", desc: "Intercambiar token → solicitud" },
+    ],
+  },
+  {
+    id: "mod-markets",
+    zone: "modules",
+    title: "Markets",
+    subtitle: "Datos financieros",
+    icon: "📈",
+    description:
+      "Datos de mercado en tiempo real: forex, cripto (BTC, ETH), materias primas (oro) e índices (S&P 500, AAPL). Público, sin auth.",
+    routes: [{ path: "API pública" }],
+    endpoints: [
+      { method: "GET", path: "/api/markets/latest", desc: "Últimos precios (cache 30s)" },
+    ],
+    tech: ["API pública", "Cache 30s", "Sin autenticación"],
+  },
+  {
+    id: "admin-gdrive",
+    zone: "admin",
+    title: "Google Drive",
+    subtitle: "Storage builds",
+    icon: "☁️",
+    description:
+      "Integración con Google Drive para almacenamiento de builds APK/AAB. OAuth con refresh token, carpeta configurable.",
+    routes: [{ path: "/admin" }],
+    endpoints: [
+      { method: "GET", path: "/api/admin/google-drive/auth-url", desc: "URL de autorización OAuth" },
+      { method: "GET", path: "/api/admin/google-drive/status", desc: "Estado de la conexión" },
+      { method: "POST", path: "/api/admin/google-drive/folder", desc: "Configurar carpeta destino" },
+      { method: "DELETE", path: "/api/admin/google-drive/disconnect", desc: "Desconectar cuenta" },
+    ],
+    tech: ["Google Drive API v3", "OAuth 2.0", "Refresh token automático"],
   },
   {
     id: "mod-notifs",
@@ -398,19 +477,27 @@ const NODES: FlowNode[] = [
     subtitle: "/admin — rol requerido",
     icon: "👑",
     description:
-      "Panel de administración completo, accesible solo para usuarios con rol 'admin'. Cubre toda la plataforma desde una interfaz unificada con ~15 secciones.",
+      "Panel de administración completo, accesible solo para usuarios con rol 'admin'. Cubre toda la plataforma desde una interfaz unificada con 16 secciones agrupadas en 6 categorías.",
     routes: [
       { path: "/admin", desc: "Panel completo con sidebar de navegación" },
     ],
     guards: ["useRequireAdmin() — verifica rol 'admin' vía /auth/me"],
     features: [
-      "Dashboard con métricas globales (usuarios, roles, agentes, API keys, notifs, mensajes)",
-      "Usuarios + Roles + API Keys + Logs",
-      "Blog + Taxonomía + Documentación técnica",
-      "Agentes IA + Workflows + Orquestador",
-      "Notificaciones + Mensajes de contacto",
-      "Repositorios + Apps Móviles (distribución APK)",
-      "Amistades — gestión del sistema social",
+      "Dashboard — métricas globales (10 queries simultáneas)",
+      "Usuarios — CRUD + roles + búsqueda",
+      "Roles — CRUD completo + protección roles sistema",
+      "API Keys — todas las claves, revocar, eliminar",
+      "Blog + Taxonomía — contenido del sistema de registry",
+      "Agentes IA + Workflows — todos los del sistema",
+      "Orquestador — panel de control (mock actual)",
+      "Notificaciones — bandeja global + envío a usuarios",
+      "Mensajes — formularios de contacto + estados",
+      "Repositorios — todos los conectados por usuarios",
+      "Amistades — gestión social con emails",
+      "Apps Móviles — distribución APK + upload + logs",
+      "Logs — aggregación client-side (pendiente endpoint)",
+      "Docs — explorador de ~140 endpoints + diagramas",
+      "Google Drive — conexión OAuth para storage",
     ],
   },
 
@@ -1015,7 +1102,7 @@ function ComingSoon({ label, icon }: { label: string; icon: string }) {
 
 const APPS: { id: App; label: string; icon: string; ready: boolean }[] = [
   { id: "web", label: "Web App", icon: "🌐", ready: true },
-  { id: "mobile", label: "App Móvil", icon: "📱", ready: false },
+  { id: "mobile", label: "App Móvil", icon: "📱", ready: true },
   { id: "api", label: "API / CLI", icon: "⚡", ready: false },
 ];
 
@@ -1068,7 +1155,76 @@ export function AppFlowDiagram() {
         </p>
       </div>
 
-      {activeApp !== "web" ? (
+      {activeApp === "mobile" ? (
+        <div className="flex flex-col gap-3">
+          <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-[#f9fafb] dark:bg-[#0d0d10] p-4">
+            <div className="flex gap-1 items-start min-w-max">
+              {(["public", "auth", "private"] as ZoneId[]).map((zid, i) => (
+                <div key={zid} className="flex items-start gap-1">
+                  <ZoneColumn
+                    nodes={nodesFor(zid)}
+                    zoneId={zid}
+                    onSelect={setSelected}
+                  />
+                  {i < 2 && <Arrow />}
+                </div>
+              ))}
+            </div>
+          </div>
+          <InfraRow
+            label="Backend API — Render"
+            nodes={nodesFor("backend")}
+            zoneId="backend"
+            onSelect={setSelected}
+          />
+          <InfraRow
+            label="Servicios Externos"
+            nodes={nodesFor("external")}
+            zoneId="external"
+            onSelect={setSelected}
+          />
+          <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6 flex flex-col gap-4">
+            <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+              📱 App Móvil — Partimos
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {[
+                { icon: "🏠", label: "Inicio", desc: "Resumen + accesos rápidos" },
+                { icon: "👥", label: "Grupos", desc: "Gestión Tricount móvil" },
+                { icon: "📊", label: "Insights", desc: "Estadísticas de gasto (mock)" },
+                { icon: "🤝", label: "Amigos", desc: "Social + QR exchange" },
+                { icon: "🔔", label: "Avisos", desc: "Notificaciones push" },
+                { icon: "⚙️", label: "Perfil", desc: "Preferencias + tema" },
+              ].map((tab) => (
+                <div
+                  key={tab.label}
+                  className="rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#18181b] p-3.5 flex items-start gap-3"
+                >
+                  <span className="text-xl shrink-0">{tab.icon}</span>
+                  <div>
+                    <p className="text-xs font-semibold text-[#1d1d1f] dark:text-white">
+                      {tab.label}
+                    </p>
+                    <p className="text-[10px] text-[#9ca3af] mt-0.5">
+                      {tab.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {["Expo SDK 54", "Expo Router 4", "Zustand", "React Query", "SecureStore", "Reanimated"].map((t) => (
+                <span
+                  key={t}
+                  className="text-[11px] px-2 py-1 rounded-full border border-sky-200 dark:border-sky-800/40 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-400 font-medium"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : activeApp === "api" ? (
         <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116]">
           <ComingSoon
             icon={APPS.find((a) => a.id === activeApp)!.icon}
