@@ -277,59 +277,6 @@ const NODES: FlowNode[] = [
     ],
   },
   {
-    id: "mod-agents",
-    zone: "modules",
-    title: "Agentes IA",
-    subtitle: "Anthropic + OpenAI",
-    icon: "🤖",
-    description:
-      "Módulo completo de inteligencia artificial. Crea agentes personalizados, encadénalos en workflows y visualízalos en un grafo interactivo.",
-    routes: [{ path: "/dashboard/ai-agents" }],
-    endpoints: [
-      {
-        method: "GET",
-        path: "/api/tools/ai-agents/presets",
-        desc: "Obtener presets disponibles",
-      },
-      {
-        method: "POST",
-        path: "/api/tools/ai-agents/create",
-        desc: "Crear agente personalizado",
-      },
-      {
-        method: "GET",
-        path: "/api/tools/ai-agents",
-        desc: "Listar agentes del usuario",
-      },
-      {
-        method: "POST",
-        path: "/api/tools/ai-agents/run",
-        desc: "Ejecutar agente (20 req/min)",
-      },
-      {
-        method: "POST",
-        path: "/api/tools/ai-agents/orchestrate",
-        desc: "Orquestar múltiples agentes",
-      },
-      {
-        method: "GET",
-        path: "/api/tools/ai-agents/:id/memory",
-        desc: "Leer memoria del agente",
-      },
-      {
-        method: "DELETE",
-        path: "/api/tools/ai-agents/:id/memory",
-        desc: "Limpiar memoria",
-      },
-    ],
-    tech: [
-      "Anthropic claude-3-5-sonnet (principal)",
-      "OpenAI GPT-4o (fallback)",
-      "Memoria persistente en Supabase",
-    ],
-    env: ["ANTHROPIC_API_KEY", "OPENAI_API_KEY"],
-  },
-  {
     id: "mod-escote",
     zone: "modules",
     title: "Escote (Tricount)",
@@ -377,23 +324,6 @@ const NODES: FlowNode[] = [
       "QR exchange",
       "Notificaciones automáticas",
     ],
-  },
-  {
-    id: "mod-orchestrator",
-    zone: "modules",
-    title: "Orquestador IA",
-    subtitle: "Tareas multi-agente",
-    icon: "🧠",
-    description:
-      "Orquestación de agentes IA. Soporta modos single, pipeline, parallel, conditional y autogpt. Tareas con logs detallados, reintentos y cancelación.",
-    routes: [{ path: "/dashboard/orchestrator" }],
-    endpoints: [
-      { method: "POST", path: "/api/orchestrator/tasks", desc: "Crear tarea de orquestación" },
-      { method: "GET", path: "/api/orchestrator/tasks", desc: "Listar tareas" },
-      { method: "POST", path: "/api/orchestrator/tasks/:id/run", desc: "Ejecutar tarea" },
-      { method: "GET", path: "/api/orchestrator/stats", desc: "Estadísticas del orquestador" },
-    ],
-    tech: ["Anthropic + OpenAI", "Memoria persistente", "Pipeline multi-paso"],
   },
   {
     id: "mod-qr",
@@ -488,8 +418,6 @@ const NODES: FlowNode[] = [
       "Roles — CRUD completo + protección roles sistema",
       "API Keys — todas las claves, revocar, eliminar",
       "Blog + Taxonomía — contenido del sistema de registry",
-      "Agentes IA + Workflows — todos los del sistema",
-      "Orquestador — panel de control (mock actual)",
       "Notificaciones — bandeja global + envío a usuarios",
       "Mensajes — formularios de contacto + estados",
       "Repositorios — todos los conectados por usuarios",
@@ -604,33 +532,6 @@ const NODES: FlowNode[] = [
       "Commits por rama (paginados)",
       "Branches con commits individuales",
     ],
-  },
-  {
-    id: "ext-claude",
-    zone: "external",
-    title: "Anthropic Claude",
-    subtitle: "claude-3-5-sonnet",
-    icon: "🧠",
-    description:
-      "Proveedor principal de IA para los agentes. Capacidades de razonamiento, tool use y memoria larga.",
-    tech: [
-      "@anthropic-ai/sdk",
-      "claude-3-5-sonnet-20241022",
-      "Tool use / function calling",
-    ],
-    env: ["ANTHROPIC_API_KEY"],
-  },
-  {
-    id: "ext-openai",
-    zone: "external",
-    title: "OpenAI",
-    subtitle: "GPT-4o (fallback)",
-    icon: "🤖",
-    description:
-      "Proveedor secundario de IA. Fallback automático cuando Anthropic no está disponible.",
-    tech: ["openai SDK", "GPT-4o"],
-    env: ["OPENAI_API_KEY"],
-    notes: ["Se activa automáticamente si ANTHROPIC_API_KEY está vacía"],
   },
   {
     id: "ext-smtp",

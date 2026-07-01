@@ -8,19 +8,15 @@ import { AdminUsers } from "@/features/admin/components/AdminUsersSection";
 import { AdminRoles } from "@/features/admin/components/AdminRolesSection";
 import { AdminNotificationsSection } from "@/features/admin/components/AdminNotificationsSection";
 import { AdminContactSection } from "@/features/admin/components/AdminContactSection";
-import {
-  AdminAgentsSection,
-  AdminWorkflowsSection,
-} from "@/features/admin/components/AdminAgentsSection";
 import { AdminApiKeysSection } from "@/features/admin/components/AdminApiKeysSection";
 import { AdminBlogSection } from "@/features/admin/components/AdminBlogSection";
 import { AdminLogsSection } from "@/features/admin/components/AdminLogsSection";
 import { AdminDocsSection } from "@/features/admin/components/AdminDocsSection";
 import { AdminRepositoriesSection } from "@/features/admin/components/AdminRepositoriesSection";
 import AdminTaxonomySection from "@/features/admin/components/AdminTaxonomySection";
-import { AdminOrchestratorSection } from "@/features/admin/components/AdminOrchestratorSection";
 import { AdminFriendshipsSection } from "@/features/admin/components/AdminFriendshipsSection";
 import { AdminAppsSection } from "@/features/admin/components/AdminAppsSection";
+import { AdminSkillsSection } from "@/features/admin/components/AdminSkillsSection";
 
 type Section =
   | "dashboard"
@@ -28,15 +24,13 @@ type Section =
   | "roles"
   | "api-keys"
   | "blog"
-  | "agents"
-  | "workflows"
-  | "orchestrator"
   | "notifications"
   | "contact"
   | "repositories"
   | "taxonomy"
   | "friendships"
   | "apps"
+  | "skills"
   | "logs"
   | "docs";
 
@@ -47,14 +41,12 @@ const NAV_LABELS: Record<string, string> = {
   "api-keys": "admin.apiKeys",
   blog: "admin.blog",
   taxonomy: "admin.taxonomy",
-  agents: "admin.agents",
-  workflows: "admin.workflows",
-  orchestrator: "admin.orchestrator",
   notifications: "admin.notifications",
   contact: "admin.messages",
   repositories: "admin.repositories",
   friendships: "admin.friendships",
   apps: "admin.apps",
+  skills: "admin.skills",
   logs: "admin.logs",
   docs: "admin.docs",
 };
@@ -62,7 +54,6 @@ const NAV_LABELS: Record<string, string> = {
 const GROUP_LABELS: Record<string, string> = {
   general: "admin.groupGeneral",
   contenido: "admin.groupContent",
-  ia: "admin.groupAI",
   comunicacion: "admin.groupComms",
   herramientas: "admin.groupTools",
   sistema: "admin.groupSystem",
@@ -89,14 +80,6 @@ const NAV: {
     labelKey: "taxonomy",
     icon: <IcoTaxonomy />,
     group: "contenido",
-  },
-  { id: "agents", labelKey: "agents", icon: <IcoBot />, group: "ia" },
-  { id: "workflows", labelKey: "workflows", icon: <IcoFlow />, group: "ia" },
-  {
-    id: "orchestrator",
-    labelKey: "orchestrator",
-    icon: <IcoOrchestrator />,
-    group: "ia",
   },
   {
     id: "notifications",
@@ -128,6 +111,7 @@ const NAV: {
     icon: <IcoApps />,
     group: "herramientas",
   },
+  { id: "skills", labelKey: "skills", icon: <IcoSkills />, group: "sistema" },
   { id: "logs", labelKey: "logs", icon: <IcoLogs />, group: "sistema" },
   { id: "docs", labelKey: "docs", icon: <IcoDocs />, group: "sistema" },
 ];
@@ -135,7 +119,6 @@ const NAV: {
 const GROUPS = [
   { id: "general", labelKey: "general" },
   { id: "contenido", labelKey: "contenido" },
-  { id: "ia", labelKey: "ia" },
   { id: "comunicacion", labelKey: "comunicacion" },
   { id: "herramientas", labelKey: "herramientas" },
   { id: "sistema", labelKey: "sistema" },
@@ -240,15 +223,13 @@ export default function AdminPage() {
             {section === "roles" && <AdminRoles />}
             {section === "api-keys" && <AdminApiKeysSection />}
             {section === "blog" && <AdminBlogSection />}
-            {section === "agents" && <AdminAgentsSection />}
-            {section === "workflows" && <AdminWorkflowsSection />}
-            {section === "orchestrator" && <AdminOrchestratorSection />}
             {section === "notifications" && <AdminNotificationsSection />}
             {section === "contact" && <AdminContactSection />}
             {section === "repositories" && <AdminRepositoriesSection />}
             {section === "taxonomy" && <AdminTaxonomySection />}
             {section === "friendships" && <AdminFriendshipsSection />}
             {section === "apps" && <AdminAppsSection />}
+            {section === "skills" && <AdminSkillsSection />}
             {section === "logs" && <AdminLogsSection />}
             {section === "docs" && <AdminDocsSection />}
           </div>
@@ -333,37 +314,6 @@ function IcoBlog() {
     </svg>
   );
 }
-function IcoBot() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <rect height="9" rx="2" width="13" x="1.5" y="4.5" />
-      <path d="M6 9.5h.01M10 9.5h.01M8 2v2.5" />
-      <path d="M5.5 13.5v1M10.5 13.5v1" />
-    </svg>
-  );
-}
-function IcoFlow() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <circle cx="3.5" cy="8" r="2" />
-      <circle cx="12.5" cy="3.5" r="2" />
-      <circle cx="12.5" cy="12.5" r="2" />
-      <path d="M5.5 8h3l2.5-4M11 8H8.5l2.5 4.5" />
-    </svg>
-  );
-}
 function IcoBell() {
   return (
     <svg
@@ -404,6 +354,19 @@ function IcoLogs() {
     </svg>
   );
 }
+function IcoSkills() {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <path d="M4 3l2 3-2 3M12 3l-2 3 2 3M7 1.5l2 13M3 12l4 2 4-2" />
+    </svg>
+  );
+}
 function IcoDocs() {
   return (
     <svg
@@ -415,23 +378,6 @@ function IcoDocs() {
     >
       <rect height="13" rx="1.5" width="11" x="2.5" y="1.5" />
       <path d="M5.5 5.5h5M5.5 8.5h5M5.5 11.5h3" />
-    </svg>
-  );
-}
-function IcoOrchestrator() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <circle cx="8" cy="3" r="1.5" />
-      <circle cx="3" cy="13" r="1.5" />
-      <circle cx="13" cy="13" r="1.5" />
-      <path d="M8 4.5v3L4.5 11.5M8 7.5l3.5 4" />
-      <path d="M8 7.5H4.5M8 7.5h3.5" />
     </svg>
   );
 }

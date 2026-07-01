@@ -52,13 +52,6 @@ export function AdminDashboard() {
           color: "text-purple-600 dark:text-purple-400",
         },
         {
-          labelKey: "admin.agents",
-          value: stats.agents,
-          subKey: "admin.subWorkflows",
-          subVal: stats.workflows,
-          color: "text-emerald-600 dark:text-emerald-400",
-        },
-        {
           labelKey: "admin.notifications",
           value: stats.notifications,
           subKey: "admin.subUnread",
