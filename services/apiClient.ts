@@ -36,10 +36,15 @@ async function refreshTokens(): Promise<string | null> {
       credentials: "include",
     });
 
-    if (!res.ok) {
+    // Only a real auth rejection (401/403) means the refresh token is dead.
+    // Anything else (429 rate limit, 5xx) is transient — keep the tokens so
+    // the next attempt can still use them instead of forcing a re-login.
+    if (res.status === 401 || res.status === 403) {
       tokenStore.clear();
       return null;
     }
+
+    if (!res.ok) return null;
 
     const body = await res.json();
 
@@ -93,7 +98,10 @@ export async function apiFetch<T>(
       const newToken = await _refreshing;
 
       if (!newToken) {
-        dispatchAuthExpired();
+        // Only wipe the session if refreshTokens() actually invalidated it
+        // (401/403 from the server). A transient failure (429, network, 5xx)
+        // leaves the refresh token in place — surface the error, keep session.
+        if (!tokenStore.getRefresh()) dispatchAuthExpired();
         throw new ApiError("Sesión expirada", 401);
       }
 
