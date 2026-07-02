@@ -1,4 +1,12 @@
 import { ReactNode } from "react";
+import {
+  Card as HeroCard,
+  Chip as HeroChip,
+  Spinner as HeroSpinner,
+  Button as HeroButton,
+  Input as HeroInput,
+  TextArea as HeroTextArea,
+} from "@heroui/react";
 
 // ── Layout primitives ─────────────────────────────────────────────────────────
 
@@ -34,11 +42,12 @@ export function Card({
   className?: string;
 }) {
   return (
-    <div
-      className={`rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden ${className}`}
+    <HeroCard
+      variant="transparent"
+      className={`rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden p-0 gap-0 ${className}`}
     >
       {children}
-    </div>
+    </HeroCard>
   );
 }
 
@@ -56,7 +65,7 @@ export function EmptyState({ text, sub }: { text: string; sub?: string }) {
 export function Spinner() {
   return (
     <div className="px-5 py-10 flex justify-center">
-      <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+      <HeroSpinner className="text-blue-600" size="sm" />
     </div>
   );
 }
@@ -68,24 +77,31 @@ export function Badge({
   label: string;
   color?: "blue" | "green" | "red" | "amber" | "gray" | "purple";
 }) {
-  const colors = {
-    blue: "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400",
-    green:
-      "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400",
-    red: "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400",
-    amber:
-      "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400",
-    gray: "bg-black/5 dark:bg-white/8 text-[#6e6e73] dark:text-[#86868b]",
-    purple:
-      "bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400",
-  };
+  // Chip only ships 5 semantic colors (default/accent/success/warning/danger).
+  // "purple" has no built-in equivalent, so it's overridden via className.
+  const chipColor = {
+    blue: "accent",
+    green: "success",
+    red: "danger",
+    amber: "warning",
+    gray: "default",
+    purple: "default",
+  } as const;
+
+  const purpleOverride =
+    color === "purple"
+      ? "!bg-purple-50 dark:!bg-purple-950/30 !text-purple-600 dark:!text-purple-400 !border-transparent"
+      : "";
 
   return (
-    <span
-      className={`px-2 py-0.5 rounded-full text-xs font-medium ${colors[color]}`}
+    <HeroChip
+      className={`rounded-full ${purpleOverride}`}
+      color={chipColor[color]}
+      size="sm"
+      variant="soft"
     >
       {label}
-    </span>
+    </HeroChip>
   );
 }
 
@@ -101,17 +117,21 @@ export function IconBtn({
   danger?: boolean;
 }) {
   return (
-    <button
-      className={`p-1.5 rounded-lg transition-colors ${
-        danger
-          ? "text-[#aeaeb2] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20"
-          : "text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
-      }`}
-      title={title}
-      onClick={onClick}
-    >
-      {icon}
-    </button>
+    <span title={title}>
+      <HeroButton
+        isIconOnly
+        aria-label={title}
+        className={`p-1.5 h-auto w-auto min-w-0 bg-transparent rounded-lg transition-colors ${
+          danger
+            ? "text-[#aeaeb2] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20"
+            : "text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
+        }`}
+        variant="ghost"
+        onPress={onClick}
+      >
+        {icon}
+      </HeroButton>
+    </span>
   );
 }
 
@@ -127,7 +147,7 @@ export function SearchInput({
   return (
     <div className="relative">
       <svg
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#aeaeb2]"
+        className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#aeaeb2] z-10"
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
@@ -137,8 +157,8 @@ export function SearchInput({
         <circle cx="6" cy="6" r="4" />
         <path d="M10 10l2.5 2.5" />
       </svg>
-      <input
-        className="w-full pl-8 pr-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+      <HeroInput
+        className="w-full pl-8 pr-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:border-blue-500 transition-all shadow-none"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -159,8 +179,8 @@ export function Input({
   type?: string;
 }) {
   return (
-    <input
-      className="flex-1 px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+    <HeroInput
+      className="flex-1 px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:border-blue-500 transition-all shadow-none"
       placeholder={placeholder}
       type={type}
       value={value}
@@ -181,8 +201,8 @@ export function Textarea({
   rows?: number;
 }) {
   return (
-    <textarea
-      className="flex-1 px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all resize-none"
+    <HeroTextArea
+      className="flex-1 px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:border-blue-500 transition-all resize-none shadow-none"
       placeholder={placeholder}
       rows={rows}
       value={value}
@@ -206,25 +226,23 @@ export function Btn({
   type?: "button" | "submit";
   size?: "sm" | "md";
 }) {
-  const base =
-    "font-medium rounded-xl transition-colors whitespace-nowrap inline-flex items-center gap-1.5 disabled:opacity-50";
-  const sizes = { sm: "px-3 py-1.5 text-xs", md: "px-4 py-2 text-sm" };
+  const sizes = { sm: "px-3 py-1.5 text-xs h-auto", md: "px-4 py-2 text-sm h-auto" };
   const variants = {
     primary: "bg-blue-600 hover:bg-blue-700 text-white",
     ghost:
-      "border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white",
+      "bg-transparent border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white",
     danger: "bg-red-500 hover:bg-red-600 text-white",
   };
 
   return (
-    <button
-      className={`${base} ${sizes[size]} ${variants[variant]}`}
-      disabled={disabled}
+    <HeroButton
+      className={`font-medium rounded-xl transition-colors whitespace-nowrap ${sizes[size]} ${variants[variant]}`}
+      isDisabled={disabled}
       type={type}
-      onClick={onClick}
+      onPress={onClick}
     >
       {children}
-    </button>
+    </HeroButton>
   );
 }
 

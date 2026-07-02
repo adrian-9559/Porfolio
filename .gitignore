@@ -38,6 +38,8 @@ next-env.d.ts
 .env
 
 .next
+.claude/
+.agents/
 
 pnpm-lock.yaml
 pnpm-workspace.yaml
