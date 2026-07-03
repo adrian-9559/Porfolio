@@ -73,18 +73,23 @@ function fmtDate(dateStr: string | null): string {
 export function UserTasksSection() {
   const [groups, setGroups] = useState<TricountGroup[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const [personalMode, setPersonalMode] = useState(false);
   const [lists, setLists] = useState<TaskList[]>([]);
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
   const [members, setMembers] = useState<TricountMember[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [personalTasks, setPersonalTasks] = useState<Task[]>([]);
 
   const [loadingGroups, setLoadingGroups] = useState(true);
   const [loadingLists, setLoadingLists] = useState(false);
   const [loadingTasks, setLoadingTasks] = useState(false);
+  const [loadingPersonal, setLoadingPersonal] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [showNewList, setShowNewList] = useState(false);
   const [newListName, setNewListName] = useState("");
+  const [showNewGroup, setShowNewGroup] = useState(false);
+  const [newGroupName, setNewGroupName] = useState("");
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
@@ -177,6 +182,51 @@ export function UserTasksSection() {
       fetchTasks(selectedListId);
     }
   }, [selectedListId, fetchTasks]);
+
+  const fetchPersonalTasks = useCallback(async () => {
+    setLoadingPersonal(true);
+    try {
+      const data = await taskService.listPersonalTasks();
+      setPersonalTasks(data);
+    } catch {
+      // ignore
+    } finally {
+      setLoadingPersonal(false);
+    }
+  }, []);
+
+  // ── Create group ─────────────────────────────────────────────────────────
+
+  const handleCreateGroup = async () => {
+    if (!newGroupName.trim()) return;
+    setSubmitting(true);
+    try {
+      const group = await tricountService.createGroup(newGroupName.trim());
+      setNewGroupName("");
+      setShowNewGroup(false);
+      const data = await tricountService.listGroups();
+      setGroups(data);
+      setSelectedGroupId(group.id);
+    } catch (err: any) {
+      setError(err?.message ?? "Error al crear grupo");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const enterPersonalMode = () => {
+    setPersonalMode(true);
+    setSelectedGroupId(null);
+    setSelectedListId(null);
+    setTasks([]);
+    setExpandedTaskId(null);
+    fetchPersonalTasks();
+  };
+
+  const enterGroupMode = (groupId: string) => {
+    setPersonalMode(false);
+    setSelectedGroupId(groupId);
+  };
 
   // ── Drag & drop ───────────────────────────────────────────────────────────
 
@@ -273,7 +323,8 @@ export function UserTasksSection() {
   };
 
   const handleSaveTask = async () => {
-    if (!formTitle.trim() || !selectedListId) return;
+    if (!formTitle.trim()) return;
+    if (!selectedListId && !personalMode) return;
     setSubmitting(true);
     try {
       const payload = {
@@ -286,13 +337,24 @@ export function UserTasksSection() {
 
       if (editingTask) {
         await taskService.updateTask(editingTask.id, payload);
+      } else if (personalMode) {
+        await taskService.createPersonalTask({
+          title: formTitle.trim(),
+          description: formDescription,
+          priority: formPriority as "low" | "medium" | "high" | "urgent",
+          due_date: formDueDate || null,
+        });
       } else {
-        await taskService.createTask(selectedListId, payload);
+        await taskService.createTask(selectedListId!, payload);
       }
 
       setShowTaskModal(false);
       resetForm();
-      await fetchTasks(selectedListId);
+      if (personalMode) {
+        await fetchPersonalTasks();
+      } else {
+        await fetchTasks(selectedListId!);
+      }
     } catch (err: any) {
       setError(err?.message ?? "Error al guardar tarea");
     } finally {
@@ -323,7 +385,11 @@ export function UserTasksSection() {
       try {
         await taskService.deleteTask(id);
         setExpandedTaskId((prev) => (prev === id ? null : prev));
-        await fetchTasks(selectedListId!);
+        if (personalMode) {
+          await fetchPersonalTasks();
+        } else {
+          await fetchTasks(selectedListId!);
+        }
       } catch {
         // ignore
       }
@@ -378,12 +444,71 @@ export function UserTasksSection() {
   return (
     <div>
       {/* ── Group selector ──────────────────────────────────────────────── */}
-      {!selectedGroupId && (
+      {!selectedGroupId && !personalMode && (
         <>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">
               Tareas
             </h2>
+            <button
+              onClick={() => setShowNewGroup(true)}
+              className="apple-btn-primary text-sm py-1.5 px-3"
+            >
+              + Grupo
+            </button>
+          </div>
+
+          {/* Create group form */}
+          {showNewGroup && (
+            <div className="mb-4 flex gap-2 items-center">
+              <Input
+                placeholder="Nombre del grupo"
+                value={newGroupName}
+                onChange={(e) => setNewGroupName(e.target.value)}
+                className="max-w-xs"
+                disabled={submitting}
+              />
+              <button
+                onClick={handleCreateGroup}
+                disabled={submitting || !newGroupName.trim()}
+                className="apple-btn-primary text-sm py-1.5 px-3"
+              >
+                Crear
+              </button>
+              <button
+                onClick={() => {
+                  setShowNewGroup(false);
+                  setNewGroupName("");
+                }}
+                className="apple-btn-secondary text-sm py-1.5 px-3"
+              >
+                Cancelar
+              </button>
+            </div>
+          )}
+
+          {/* Personal tasks card */}
+          <div className="mb-4">
+            <button
+              onClick={enterPersonalMode}
+              className="w-full p-5 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-left hover:border-purple-400 dark:hover:border-purple-600 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                  <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 20 20" width="20">
+                    <path d="M10 3v14M3 10h14" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-semibold text-[#1d1d1f] dark:text-white">
+                    Tareas personales
+                  </div>
+                  <div className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                    Tareas solo para ti, sin grupo
+                  </div>
+                </div>
+              </div>
+            </button>
           </div>
 
           {loadingGroups ? (
@@ -425,6 +550,114 @@ export function UserTasksSection() {
                   </div>
                   <div className="text-xs text-[#6e6e73] dark:text-[#86868b]">
                     {g.member_count ?? 0} miembros
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* ── Personal tasks view ────────────────────────────────────────────── */}
+      {personalMode && (
+        <>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  setPersonalMode(false);
+                  setExpandedTaskId(null);
+                }}
+                className="text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
+                  <path d="M19 12H5m7-7l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">
+                Tareas personales
+              </h2>
+            </div>
+            <button
+              onClick={() => {
+                resetForm();
+                setShowTaskModal(true);
+              }}
+              className="apple-btn-primary text-sm py-1.5 px-3"
+            >
+              + Tarea
+            </button>
+          </div>
+
+          {loadingPersonal ? (
+            <div className="space-y-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-16 rounded-xl bg-gray-100 dark:bg-[#1a1a1f] animate-pulse" />
+              ))}
+            </div>
+          ) : personalTasks.length === 0 ? (
+            <div className="p-12 text-center">
+              <p className="text-[#6e6e73] dark:text-[#86868b] mb-3">
+                No tienes tareas personales.
+              </p>
+              <button
+                onClick={() => {
+                  resetForm();
+                  setShowTaskModal(true);
+                }}
+                className="apple-btn-primary text-sm py-2 px-4"
+              >
+                Crear primera tarea
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {personalTasks.map((task) => (
+                <button
+                  key={task.id}
+                  onClick={() => {
+                    if (expandedTaskId === task.id) {
+                      setExpandedTaskId(null);
+                    } else {
+                      openTaskDetail(task.id);
+                    }
+                  }}
+                  className="w-full p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-left hover:border-blue-400 dark:hover:border-blue-600 transition-colors"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-[#1d1d1f] dark:text-white">
+                        {task.title}
+                      </div>
+                      <div className="flex gap-2 mt-1">
+                        <span className={`text-[11px] font-semibold px-1.5 py-0.5 rounded ${PRIORITY_BADGE[task.priority]}`}>
+                          {PRIORITY_LABEL[task.priority]}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <select
+                        value={task.status}
+                        onChange={(e) => handleStatusChange(task.id, e.target.value as TaskStatus)}
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-[11px] rounded border border-black/10 dark:border-white/10 bg-transparent px-1.5 py-0.5 text-[#1d1d1f] dark:text-white"
+                      >
+                        {VALID_STATUSES.map((s) => (
+                          <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteTask(task.id);
+                        }}
+                        className="text-[#6e6e73] hover:text-red-500 text-sm px-1.5 py-1"
+                      >
+                        <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14" width="14">
+                          <path d="M2 3.5h10M5 3.5V2a1 1 0 011-1h2a1 1 0 011 1v1.5M11 3.5v8a1.5 1.5 0 01-1.5 1.5h-5A1.5 1.5 0 013 11.5v-8" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </button>
               ))}

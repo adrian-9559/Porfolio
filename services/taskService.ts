@@ -113,6 +113,21 @@ export const taskService = {
       body: JSON.stringify({ listId, taskIds }),
     }),
 
+  // ── Personal tasks ──────────────────────────────────────────────────────────
+
+  listPersonalTasks: () => apiFetch<Task[]>(`${BASE}/personal-tasks`),
+
+  createPersonalTask: (data: {
+    title: string;
+    description?: string;
+    priority?: "low" | "medium" | "high" | "urgent";
+    due_date?: string | null;
+  }) =>
+    apiFetch<Task>(`${BASE}/personal-tasks`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
   // ── Comments ───────────────────────────────────────────────────────────────
 
   addComment: (taskId: string, content: string) =>
