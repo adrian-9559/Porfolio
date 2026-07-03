@@ -97,6 +97,7 @@ export default function Hero() {
             <Tooltip.Trigger>
               <Button
                 isIconOnly
+                aria-label={t("hero.downloadCV")}
                 className="w-11 h-11 rounded-full bg-white dark:bg-[#111116] hover:bg-[#f5f5f7] dark:hover:bg-[#1c1c22] border border-black/10 dark:border-white/10 shadow-sm"
                 variant="ghost"
                 onPress={handleDownloadCV}

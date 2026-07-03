@@ -3,7 +3,6 @@ import Head from "next/head";
 import CTA from "@/components/cta";
 import Hero from "@/components/Hero";
 import Projects from "@/components/projects";
-import Skills from "@/components/Skills";
 import Stats from "@/components/stats";
 import TechStack from "@/components/tech-stack";
 import DefaultLayout from "@/layouts/default";
@@ -52,7 +51,6 @@ export default function IndexPage() {
       <div className="space-y-24 md:space-y-32">
         <Hero />
         <Stats />
-        <Skills />
         <TechStack />
         <Projects />
         <CTA />

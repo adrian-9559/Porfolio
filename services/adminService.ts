@@ -69,6 +69,39 @@ export interface AdminWorkflow {
   profiles?: { full_name: string | null } | null;
 }
 
+export interface AdminRepository {
+  id: string;
+  user_id: string;
+  name: string;
+  provider: "github" | "gitlab" | "bitbucket";
+  repository_url: string;
+  default_branch: string;
+  active: boolean;
+  created_at: string;
+}
+
+export interface AdminFriendship {
+  id: string;
+  user_a_email: string;
+  user_b_email: string;
+  created_at: string;
+}
+
+export interface AdminFriendRequest {
+  id: string;
+  sender_email: string;
+  receiver_email: string;
+  status: string;
+  created_at: string;
+}
+
+export interface SystemHealth {
+  status: string;
+  env: string;
+  ts: string;
+  db: { ok: boolean; tables: Record<string, boolean>; checkedAt: string; error?: string } | null;
+}
+
 // ── Service ────────────────────────────────────────────────────────────────────
 
 export const adminService = {
@@ -118,4 +151,17 @@ export const adminService = {
   listWorkflows: () => apiFetch<AdminWorkflow[]>("/admin/workflows"),
   deleteWorkflow: (id: string) =>
     apiFetch<void>(`/admin/workflows/${id}`, { method: "DELETE" }),
+
+  // Repositories
+  listRepositories: () => apiFetch<AdminRepository[]>("/admin/repositories"),
+  deleteRepository: (id: string) =>
+    apiFetch<void>(`/admin/repositories/${id}`, { method: "DELETE" }),
+
+  // Friendships
+  listFriendships: () => apiFetch<AdminFriendship[]>("/admin/friendships"),
+  listFriendRequests: () =>
+    apiFetch<AdminFriendRequest[]>("/admin/friendships/requests"),
+
+  // System health — public route, no auth required
+  getHealth: () => apiFetch<SystemHealth>("/health"),
 };

@@ -16,6 +16,7 @@ type Section =
   | "agents"
   | "notifications"
   | "tricount"
+  | "finances"
   | "settings-profile"
   | "settings-security"
   | "settings-session";
@@ -90,6 +91,19 @@ function quickAccessItems(t: (k: string) => string): {
         <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <rect height="14" rx="2" strokeWidth={1.5} width="22" x="1" y="6" />
           <path d="M1 10h22M7 15h.01M12 15h3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+        </svg>
+      ),
+    },
+    {
+      id: "finances",
+      label: "Panel financiero",
+      desc: "Presupuestos, metas y suscripciones",
+      color: "from-cyan-50 to-cyan-100 dark:from-cyan-950/20 dark:to-cyan-900/20 border-cyan-200 dark:border-cyan-800/40",
+      icon: (
+        <svg className="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M3 17l4-4 3 3 6-6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+          <path d="M14 10h7v7" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+          <path d="M21 3L3 21" strokeLinecap="round" strokeWidth={1.5} />
         </svg>
       ),
     },

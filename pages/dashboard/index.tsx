@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import DefaultLayout from "@/layouts/default";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
@@ -11,6 +12,9 @@ import { UserTricountSection } from "@/features/dashboard/components/UserTricoun
 import { UserFriendsSection } from "@/features/dashboard/components/UserFriendsSection";
 import { UserSettingsSection } from "@/features/dashboard/components/UserSettingsSection";
 import { UserAppsSection } from "@/features/dashboard/components/UserAppsSection";
+import { UserTasksSection } from "@/features/dashboard/components/UserTasksSection";
+import { UserFinancesSection } from "@/features/dashboard/components/UserFinancesSection";
+import { UserCalendarSection } from "@/features/dashboard/components/UserCalendarSection";
 
 type Section =
   | "home"
@@ -20,6 +24,9 @@ type Section =
   | "tricount"
   | "friends"
   | "apps"
+  | "tasks"
+  | "finances"
+  | "calendar"
   | "settings-profile"
   | "settings-security"
   | "settings-session";
@@ -32,7 +39,10 @@ function navItems(t: (k: string) => string): { id: Section; label: string; icon:
     { id: "notifications", label: t("dashboard.sidebarNotifications"), icon: <IcoBell />, group: "herramientas" },
     { id: "friends", label: t("dashboard.sidebarFriends"), icon: <IcoFriends />, group: "herramientas" },
     { id: "apps", label: t("dashboard.sidebarApps"), icon: <IcoApps />, group: "herramientas" },
+    { id: "tasks", label: t("dashboard.sidebarTasks"), icon: <IcoTasks />, group: "herramientas" },
+    { id: "calendar", label: t("dashboard.sidebarCalendar"), icon: <IcoCalendar />, group: "herramientas" },
     { id: "tricount", label: t("dashboard.sidebarTricount"), icon: <IcoMoney />, group: "finanzas" },
+    { id: "finances", label: t("dashboard.sidebarFinancesPanel"), icon: <IcoChart />, group: "finanzas" },
     { id: "settings-profile", label: t("dashboard.sidebarProfile"), icon: <IcoUser />, group: "configuracion" },
     { id: "settings-security", label: t("dashboard.sidebarSecurity"), icon: <IcoLock />, group: "configuracion" },
     { id: "settings-session", label: t("dashboard.sidebarSession"), icon: <IcoSession />, group: "configuracion" },
@@ -50,11 +60,22 @@ function groups(t: (k: string) => string) {
 
 export default function DashboardPage() {
   const { t } = useT();
+  const router = useRouter();
   const { isAuthenticated, loadingAuth } = useRequireAuth();
   const [section, setSection] = useState<Section>("home");
   const [mobileOpen, setMobileOpen] = useState(false);
   const NAV = navItems(t);
   const GROUPS = groups(t);
+
+  // Deep-link support: /dashboard?section=repositories (used by GlobalSearch)
+  useEffect(() => {
+    const q = router.query.section;
+
+    if (typeof q === "string" && NAV.some((n) => n.id === q)) {
+      setSection(q as Section);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.section]);
 
   if (loadingAuth || !isAuthenticated) {
     return (
@@ -150,6 +171,9 @@ export default function DashboardPage() {
             {section === "tricount" && <UserTricountSection />}
             {section === "friends" && <UserFriendsSection />}
             {section === "apps" && <UserAppsSection />}
+            {section === "tasks" && <UserTasksSection />}
+            {section === "finances" && <UserFinancesSection />}
+            {section === "calendar" && <UserCalendarSection />}
             {(section === "settings-profile" ||
               section === "settings-security" ||
               section === "settings-session") && (
@@ -289,6 +313,54 @@ function IcoFriends() {
       <circle cx="6" cy="5" r="2.5" />
       <path d="M1 14c0-2.5 2-4 5-4s5 1.5 5 4" />
       <path d="M13 8a2.5 2.5 0 000-5M15 14c0-2-1-3.5-2-4" />
+    </svg>
+  );
+}
+function IcoCalendar() {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <rect height="11" rx="1.5" width="13" x="1.5" y="3" />
+      <path d="M1.5 6.5h13M5 1.5v3M11 1.5v3" />
+      <path d="M5 9h.01M8 9h.01M11 9h.01M5 11.5h.01M8 11.5h.01" />
+    </svg>
+  );
+}
+function IcoChart() {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <path d="M1 14h14M3 11l3-4 3 2 5-6" />
+      <circle cx="3" cy="11" r="1" />
+      <circle cx="6" cy="7" r="1" />
+      <circle cx="9" cy="9" r="1" />
+      <circle cx="14" cy="5" r="1" />
+    </svg>
+  );
+}
+function IcoTasks() {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <rect x="1.5" y="1.5" width="13" height="3.5" rx="1" />
+      <rect x="1.5" y="6.5" width="13" height="3.5" rx="1" />
+      <rect x="1.5" y="11.5" width="13" height="3.5" rx="1" />
+      <path d="M4 3.5h8M4 8.5h8M4 13.5h8" />
     </svg>
   );
 }

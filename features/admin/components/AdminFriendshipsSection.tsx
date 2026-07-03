@@ -1,3 +1,8 @@
+import type {
+  AdminFriendship,
+  AdminFriendRequest,
+} from "@/services/adminService";
+
 import { useEffect, useState } from "react";
 import { useT } from "@/hooks/useT";
 
@@ -10,22 +15,7 @@ import {
   relativeTime,
 } from "./AdminShared";
 
-import { apiFetch } from "@/services/apiClient";
-
-interface AdminFriendship {
-  id: string;
-  user_a_email: string;
-  user_b_email: string;
-  created_at: string;
-}
-
-interface AdminFriendRequest {
-  id: string;
-  sender_email: string;
-  receiver_email: string;
-  status: string;
-  created_at: string;
-}
+import { adminService } from "@/services/adminService";
 
 function MetricCard({
   label,
@@ -60,13 +50,15 @@ export function AdminFriendshipsSection() {
 
   useEffect(() => {
     setFriendshipsLoading(true);
-    apiFetch<AdminFriendship[]>("/admin/friendships")
+    adminService
+      .listFriendships()
       .then(setFriendships)
       .catch(() => setFriendshipsAvailable(false))
       .finally(() => setFriendshipsLoading(false));
 
     setRequestsLoading(true);
-    apiFetch<AdminFriendRequest[]>("/admin/friendships/requests")
+    adminService
+      .listFriendRequests()
       .then(setRequests)
       .catch(() => setRequestsAvailable(false))
       .finally(() => setRequestsLoading(false));

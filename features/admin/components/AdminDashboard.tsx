@@ -3,9 +3,9 @@ import type { UserWithProfile } from "@/types/auth";
 import { useEffect, useState } from "react";
 import { useT } from "@/hooks/useT";
 
-import { SectionHeader, Card, Spinner, relativeTime } from "./AdminShared";
+import { SectionHeader, Card, Spinner, relativeTime, Badge } from "./AdminShared";
 
-import { adminService, AdminStats } from "@/services/adminService";
+import { adminService, AdminStats, SystemHealth } from "@/services/adminService";
 import { userService } from "@/services/userService";
 
 export { SectionHeader };
@@ -22,6 +22,8 @@ export function AdminDashboard() {
   const { t } = useT();
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [recentUsers, setRecentUsers] = useState<UserWithProfile[]>([]);
+  const [health, setHealth] = useState<SystemHealth | null>(null);
+  const [healthError, setHealthError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,6 +36,10 @@ export function AdminDashboard() {
         .list()
         .then((u) => setRecentUsers(u.slice(0, 6)))
         .catch(() => {}),
+      adminService
+        .getHealth()
+        .then(setHealth)
+        .catch(() => setHealthError(true)),
     ]).finally(() => setLoading(false));
   }, []);
 
@@ -100,6 +106,55 @@ export function AdminDashboard() {
               </Card>
             ))}
           </div>
+
+          <Card>
+            <div className="px-5 py-3.5 border-b border-black/6 dark:border-white/6 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                {t("admin.systemHealth")}
+              </h3>
+              {health && (
+                <Badge
+                  color={health.status === "ok" && health.db?.ok !== false ? "green" : "red"}
+                  label={health.status === "ok" && health.db?.ok !== false ? t("admin.healthOk") : t("admin.healthDegraded")}
+                />
+              )}
+            </div>
+            <div className="px-5 py-3.5 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              {healthError ? (
+                <p className="text-[#6e6e73] dark:text-[#86868b]">{t("admin.healthUnavailable")}</p>
+              ) : health ? (
+                <>
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+                      {t("admin.healthEnv")}
+                    </p>
+                    <p className="text-[#1d1d1f] dark:text-white">{health.env}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+                      {t("admin.healthDbChecked")}
+                    </p>
+                    <p className="text-[#1d1d1f] dark:text-white">
+                      {health.db ? relativeTime(health.db.checkedAt) : "—"}
+                    </p>
+                  </div>
+                  {health.db && (
+                    <div className="flex gap-1.5 items-center">
+                      {Object.entries(health.db.tables).map(([table, ok]) => (
+                        <span
+                          key={table}
+                          className={`w-2 h-2 rounded-full ${ok ? "bg-emerald-500" : "bg-red-500"}`}
+                          title={table}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Spinner />
+              )}
+            </div>
+          </Card>
 
           <Card>
             <div className="px-5 py-3.5 border-b border-black/6 dark:border-white/6 flex items-center justify-between">

@@ -1,4 +1,5 @@
 import type { Provider } from "@/services/repositoryService";
+import type { AdminRepository } from "@/services/adminService";
 
 import { useEffect, useState } from "react";
 import { useT } from "@/hooks/useT";
@@ -13,18 +14,9 @@ import {
   Spinner,
 } from "./AdminShared";
 
-import { apiFetch } from "@/services/apiClient";
+import { adminService } from "@/services/adminService";
 
-interface AdminRepo {
-  id: string;
-  user_id: string;
-  name: string;
-  provider: Provider;
-  repository_url: string;
-  default_branch: string;
-  active: boolean;
-  created_at: string;
-}
+type AdminRepo = AdminRepository;
 
 const PROVIDER_COLOR: Record<Provider, string> = {
   github: "#24292e",
@@ -58,7 +50,7 @@ export function AdminRepositoriesSection() {
   const load = async () => {
     setLoading(true);
     try {
-      const data = await apiFetch<AdminRepo[]>("/admin/repositories");
+      const data = await adminService.listRepositories();
 
       setRepos(data);
     } catch {}
@@ -72,7 +64,7 @@ export function AdminRepositoriesSection() {
   const handleDelete = async (id: string) => {
     setConfirmDeleteId(null);
     try {
-      await apiFetch(`/admin/repositories/${id}`, { method: "DELETE" });
+      await adminService.deleteRepository(id);
       setRepos((prev) => prev.filter((r) => r.id !== id));
     } catch {}
   };

@@ -19,6 +19,7 @@ import {
 } from "@/components/blog/TaxonomyMeta";
 import { siteConfig } from "@/config/site";
 import { IconChevronLeft } from "@/components/blog/shared";
+import { ReadingProgress } from "@/components/blog/ReadingProgress";
 import { useT } from "@/hooks/useT";
 import { useLocaleStore } from "@/store/localeStore";
 
@@ -66,6 +67,7 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
           type="application/ld+json"
         />
       </Head>
+      <ReadingProgress />
       <div className="max-w-5xl mx-auto py-4">
         {/* Breadcrumb */}
         <nav

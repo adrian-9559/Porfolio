@@ -1,3 +1,6 @@
+import { Bulb, Rocket, Thunderbolt, Wrench } from "@gravity-ui/icons";
+import { ComponentType } from "react";
+
 import { useT } from "@/hooks/useT";
 
 interface Metric {
@@ -7,7 +10,7 @@ interface Metric {
   gradient: string;
   bg: string;
   border: string;
-  icon: string;
+  Icon: ComponentType<{ className?: string }>;
 }
 
 const metrics: Metric[] = [
@@ -18,7 +21,7 @@ const metrics: Metric[] = [
     gradient: "from-violet-500 to-purple-600",
     bg: "from-violet-500/10 to-purple-500/5",
     border: "border-violet-200/60 dark:border-violet-800/40",
-    icon: "🚀",
+    Icon: Rocket,
   },
   {
     value: "3+",
@@ -27,7 +30,7 @@ const metrics: Metric[] = [
     gradient: "from-pink-500 to-rose-600",
     bg: "from-pink-500/10 to-rose-500/5",
     border: "border-pink-200/60 dark:border-pink-800/40",
-    icon: "⚡",
+    Icon: Thunderbolt,
   },
   {
     value: "20+",
@@ -36,7 +39,7 @@ const metrics: Metric[] = [
     gradient: "from-cyan-500 to-blue-600",
     bg: "from-cyan-500/10 to-blue-500/5",
     border: "border-cyan-200/60 dark:border-cyan-800/40",
-    icon: "🛠️",
+    Icon: Wrench,
   },
   {
     value: "1K+",
@@ -45,7 +48,7 @@ const metrics: Metric[] = [
     gradient: "from-orange-500 to-amber-600",
     bg: "from-orange-500/10 to-amber-500/5",
     border: "border-orange-200/60 dark:border-orange-800/40",
-    icon: "💡",
+    Icon: Bulb,
   },
 ];
 
@@ -74,7 +77,9 @@ export default function Stats() {
                 className={`absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-br ${m.gradient} opacity-20 blur-2xl group-hover:opacity-35 transition-opacity`}
               />
               <div className="relative text-center space-y-2">
-                <span className="text-2xl">{m.icon}</span>
+                <m.Icon
+                  className={`w-6 h-6 mx-auto bg-gradient-to-br ${m.gradient} rounded-md p-1 text-white`}
+                />
                 <p
                   className={`text-4xl md:text-5xl font-black bg-gradient-to-br ${m.gradient} bg-clip-text text-transparent`}
                   style={{ letterSpacing: "-0.03em" }}
