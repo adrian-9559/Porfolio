@@ -17,6 +17,7 @@ import AdminTaxonomySection from "@/features/admin/components/AdminTaxonomySecti
 import { AdminFriendshipsSection } from "@/features/admin/components/AdminFriendshipsSection";
 import { AdminAppsSection } from "@/features/admin/components/AdminAppsSection";
 import { AdminSkillsSection } from "@/features/admin/components/AdminSkillsSection";
+import { AdminToolsHealthSection } from "@/features/admin/components/AdminToolsHealthSection";
 
 type Section =
   | "dashboard"
@@ -31,6 +32,7 @@ type Section =
   | "friendships"
   | "apps"
   | "skills"
+  | "services"
   | "logs"
   | "docs";
 
@@ -47,6 +49,7 @@ const NAV_LABELS: Record<string, string> = {
   friendships: "admin.friendships",
   apps: "admin.apps",
   skills: "admin.skills",
+  services: "admin.services",
   logs: "admin.logs",
   docs: "admin.docs",
 };
@@ -112,6 +115,7 @@ const NAV: {
     group: "herramientas",
   },
   { id: "skills", labelKey: "skills", icon: <IcoSkills />, group: "sistema" },
+  { id: "services", labelKey: "services", icon: <IcoServices />, group: "sistema" },
   { id: "logs", labelKey: "logs", icon: <IcoLogs />, group: "sistema" },
   { id: "docs", labelKey: "docs", icon: <IcoDocs />, group: "sistema" },
 ];
@@ -230,6 +234,7 @@ export default function AdminPage() {
             {section === "friendships" && <AdminFriendshipsSection />}
             {section === "apps" && <AdminAppsSection />}
             {section === "skills" && <AdminSkillsSection />}
+            {section === "services" && <AdminToolsHealthSection />}
             {section === "logs" && <AdminLogsSection />}
             {section === "docs" && <AdminDocsSection />}
           </div>
@@ -338,6 +343,15 @@ function IcoMail() {
     >
       <rect height="9" rx="1.5" width="14" x="1" y="3.5" />
       <path d="M1 3.5l7 5.5 7-5.5" />
+    </svg>
+  );
+}
+function IcoServices() {
+  return (
+    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 16 16">
+      <circle cx="8" cy="4" r="2.5" />
+      <path d="M4 14c0-2.5 1.5-4 4-4s4 1.5 4 4" />
+      <path d="M13 7.5a5.5 5.5 0 00-5-2.5M3 7.5a5.5 5.5 0 015-2.5" />
     </svg>
   );
 }

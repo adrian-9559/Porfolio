@@ -102,6 +102,19 @@ export interface SystemHealth {
   db: { ok: boolean; tables: Record<string, boolean>; checkedAt: string; error?: string } | null;
 }
 
+export interface ServiceHealth {
+  key: string;
+  name: string;
+  icon: string;
+  description: string;
+  status: "active" | "warning" | "error" | "inactive";
+  recordCount: number | null;
+  details: { uptime?: number; memory?: { rss?: number; heapTotal?: number; heapUsed?: number }; nodeVersion?: string; lastStartup?: string } | null;
+  healthError?: string;
+  errorCount: number;
+  lastErrors: Array<{ action: string; metadata: any; timestamp: string }>;
+}
+
 // ── Service ────────────────────────────────────────────────────────────────────
 
 export const adminService = {
@@ -161,6 +174,9 @@ export const adminService = {
   listFriendships: () => apiFetch<AdminFriendship[]>("/admin/friendships"),
   listFriendRequests: () =>
     apiFetch<AdminFriendRequest[]>("/admin/friendships/requests"),
+
+  // Services health
+  getServicesHealth: () => apiFetch<ServiceHealth[]>("/admin/services/health"),
 
   // System health — public route, no auth required
   getHealth: () => apiFetch<SystemHealth>("/health"),
