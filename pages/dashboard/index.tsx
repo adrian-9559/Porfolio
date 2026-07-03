@@ -15,6 +15,7 @@ import { UserAppsSection } from "@/features/dashboard/components/UserAppsSection
 import { UserTasksSection } from "@/features/dashboard/components/UserTasksSection";
 import { UserFinancesSection } from "@/features/dashboard/components/UserFinancesSection";
 import { UserCalendarSection } from "@/features/dashboard/components/UserCalendarSection";
+import { UserTablesSection } from "@/features/dashboard/components/UserTablesSection";
 
 type Section =
   | "home"
@@ -27,6 +28,7 @@ type Section =
   | "tasks"
   | "finances"
   | "calendar"
+  | "tables"
   | "settings-profile"
   | "settings-security"
   | "settings-session";
@@ -41,6 +43,7 @@ function navItems(t: (k: string) => string): { id: Section; label: string; icon:
     { id: "apps", label: t("dashboard.sidebarApps"), icon: <IcoApps />, group: "herramientas" },
     { id: "tasks", label: t("dashboard.sidebarTasks"), icon: <IcoTasks />, group: "herramientas" },
     { id: "calendar", label: t("dashboard.sidebarCalendar"), icon: <IcoCalendar />, group: "herramientas" },
+    { id: "tables", label: t("dashboard.sidebarTables"), icon: <IcoTable />, group: "herramientas" },
     { id: "tricount", label: t("dashboard.sidebarTricount"), icon: <IcoMoney />, group: "finanzas" },
     { id: "finances", label: t("dashboard.sidebarFinancesPanel"), icon: <IcoChart />, group: "finanzas" },
     { id: "settings-profile", label: t("dashboard.sidebarProfile"), icon: <IcoUser />, group: "configuracion" },
@@ -174,6 +177,7 @@ export default function DashboardPage() {
             {section === "tasks" && <UserTasksSection />}
             {section === "finances" && <UserFinancesSection />}
             {section === "calendar" && <UserCalendarSection />}
+            {section === "tables" && <UserTablesSection />}
             {(section === "settings-profile" ||
               section === "settings-security" ||
               section === "settings-session") && (
@@ -328,6 +332,14 @@ function IcoCalendar() {
       <rect height="11" rx="1.5" width="13" x="1.5" y="3" />
       <path d="M1.5 6.5h13M5 1.5v3M11 1.5v3" />
       <path d="M5 9h.01M8 9h.01M11 9h.01M5 11.5h.01M8 11.5h.01" />
+    </svg>
+  );
+}
+function IcoTable() {
+  return (
+    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 16 16">
+      <rect x="1.5" y="1.5" width="13" height="13" rx="1.5" />
+      <path d="M1.5 5.5h13M5.5 1.5v13M10.5 1.5v13" />
     </svg>
   );
 }
