@@ -185,7 +185,7 @@ function useCollapseState(key: string, defaultOpen: boolean) {
 function Chevron({ open }: { open: boolean }) {
   return (
     <IconChevronRight
-      className={`w-3 h-3 text-[#aeaeb2] transition-transform duration-200 flex-shrink-0 motion-safe:transition-transform ${open ? "rotate-90" : ""}`}
+      className={`w-3 h-3 text-muted/60 transition-transform duration-200 flex-shrink-0 motion-safe:transition-transform ${open ? "rotate-90" : ""}`}
     />
   );
 }
@@ -212,15 +212,15 @@ function SidebarItem({ item, active }: { item: NavItem; active: boolean }) {
       {...(active ? { "aria-current": "page" as const } : {})}
       className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all no-underline motion-safe:transition-all ${
         active
-          ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400"
-          : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
+          ? "bg-blue-50 dark:bg-blue-950/30 text-accent"
+          : "text-muted hover:text-foreground hover:bg-default"
       }`}
     >
       <span
         aria-hidden="true"
         className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.color ?? "bg-gray-400"}`}
       />
-      <span className="flex-shrink-0 text-[#aeaeb2] dark:text-[#636366]">
+      <span className="flex-shrink-0 text-muted/60">
         {itemTypeIcon(item.href)}
       </span>
       <span className="truncate">{item.label}</span>
@@ -245,16 +245,16 @@ function SubGroup({
       <button
         aria-controls={regionId}
         aria-expanded={open}
-        className="flex items-center gap-2 w-full px-3 py-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors motion-safe:transition-colors"
+        className="flex items-center gap-2 w-full px-3 py-1.5 rounded-xl hover:bg-default transition-colors motion-safe:transition-colors"
         onClick={toggle}
       >
         <Chevron open={open} />
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] flex-1 text-left">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 flex-1 text-left">
           {group.label}
         </span>
         <span
           aria-hidden="true"
-          className="text-[10px] font-medium text-[#aeaeb2] dark:text-[#636366]"
+          className="text-[10px] font-medium text-muted/60"
         >
           {group.items?.length}
         </span>
@@ -310,22 +310,22 @@ function TopGroup({
       <button
         aria-controls={regionId}
         aria-expanded={open}
-        className="flex items-center gap-2 w-full px-3 py-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors motion-safe:transition-colors"
+        className="flex items-center gap-2 w-full px-3 py-1.5 rounded-xl hover:bg-default transition-colors motion-safe:transition-colors"
         onClick={toggle}
       >
         <Chevron open={open} />
         <span
           className={`text-[10px] font-semibold uppercase tracking-wider flex-1 text-left ${
             isGroupActive
-              ? "text-blue-600 dark:text-blue-400"
-              : "text-[#aeaeb2] dark:text-[#636366]"
+              ? "text-accent"
+              : "text-muted/60"
           }`}
         >
           {group.label}
         </span>
         <span
           aria-hidden="true"
-          className="text-[10px] font-medium text-[#aeaeb2] dark:text-[#636366]"
+          className="text-[10px] font-medium text-muted/60"
         >
           {allItems.length}
         </span>
@@ -394,12 +394,12 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
         {t("nav.blogSearch")}
       </label>
       <div className="relative">
-        <IconSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-[#aeaeb2]" />
+        <IconSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-muted/60" />
         <input
           aria-autocomplete="list"
           aria-controls={resultsId}
           aria-expanded={results.length > 0}
-          className="w-full pl-7 pr-3 py-2 rounded-xl bg-black/[0.04] dark:bg-white/[0.04] border border-black/8 dark:border-white/8 text-xs text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:ring-2 focus:ring-violet-400/30 focus:border-violet-300 dark:focus:border-violet-600 transition-all motion-safe:transition-all"
+          className="w-full pl-7 pr-3 py-2 rounded-xl bg-black/[0.04] dark:bg-white/[0.04] border border-border text-xs text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-violet-400/30 focus:border-violet-300 dark:focus:border-violet-600 transition-all motion-safe:transition-all"
           id={searchId}
           placeholder={t("nav.blogSearchPlaceholder")}
           type="text"
@@ -409,7 +409,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
         {q && (
           <button
             aria-label={t("nav.blogSearchClear")}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-[#aeaeb2] hover:text-[#6e6e73]"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted/60 hover:text-muted"
             onClick={() => setQ("")}
           >
             <IconClose className="w-3 h-3" />
@@ -420,7 +420,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
       {results.length > 0 && (
         <div
           aria-label={t("nav.blogResults")}
-          className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 rounded-xl shadow-xl overflow-hidden"
+          className="absolute top-full left-0 right-0 z-50 mt-1 bg-surface border border-black/10 dark:border-white/10 rounded-xl shadow-xl overflow-hidden"
           id={resultsId}
           role="listbox"
         >
@@ -441,7 +441,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
                     item.type === "article"
                       ? "bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400"
                       : item.type === "tutorial"
-                        ? "bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400"
+                        ? "bg-blue-100 dark:bg-blue-950/50 text-accent"
                         : "bg-violet-100 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400"
                   }`}
                 >
@@ -502,7 +502,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
                   aria-hidden="true"
                   className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.categoryColor}`}
                 />
-                <span className="text-xs text-[#1d1d1f] dark:text-white truncate">
+                <span className="text-xs text-foreground truncate">
                   {item.title}
                 </span>
               </Link>
@@ -534,7 +534,7 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
   }, [currentPath]);
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-white dark:bg-[#0a0a0f] overflow-x-clip">
+    <div className="relative flex flex-col min-h-screen bg-background overflow-x-clip">
       <Head {...seo} />
       <Navbar />
 
@@ -552,7 +552,7 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
           aria-controls="blog-sidebar"
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? t("nav.blogClose") : t("nav.blogOpen")}
-          className="sm:hidden self-end mb-4 p-2 rounded-xl border border-black/12 dark:border-white/12 text-[#1d1d1f] dark:text-white"
+          className="sm:hidden self-end mb-4 p-2 rounded-xl border border-black/12 dark:border-white/12 text-foreground"
           onClick={() => setMobileOpen((v) => !v)}
         >
           <svg
@@ -590,8 +590,8 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
                   : {})}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all no-underline mb-3 motion-safe:transition-all ${
                   currentPath === "/blog"
-                    ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400"
-                    : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
+                    ? "bg-blue-50 dark:bg-blue-950/30 text-accent"
+                    : "text-muted hover:text-foreground hover:bg-default"
                 }`}
               >
                 <IconHome className="w-4 h-4 flex-shrink-0" />
@@ -618,20 +618,20 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
       </div>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-black/8 dark:border-white/8">
+      <footer className="mt-auto border-t border-border">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 py-10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2.5">
               <div className="w-6 h-6 rounded-md bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-xs">
                 A
               </div>
-              <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+              <span className="text-sm font-medium text-foreground">
                 {t("footer.brandName")}
               </span>
             </div>
             <div className="flex items-center gap-6">
               <a
-                className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
+                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
                 href={siteConfig.links.github}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -639,7 +639,7 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
                 GitHub
               </a>
               <a
-                className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
+                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
                 href={siteConfig.links.linkedin}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -647,13 +647,13 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
                 LinkedIn
               </a>
               <a
-                className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
+                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
                 href={`mailto:${siteConfig.contact.email}`}
               >
                 {t("contact.email")}
               </a>
             </div>
-            <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+            <p className="text-xs text-muted/60">
               {t("footer.copyright", { year: new Date().getFullYear() })}
             </p>
           </div>

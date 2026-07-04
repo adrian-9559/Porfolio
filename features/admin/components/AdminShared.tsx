@@ -22,10 +22,10 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-4">
       <div>
-        <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+        <h2 className="text-lg font-semibold text-foreground">
           {title}
         </h2>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+        <p className="text-sm text-muted mt-0.5">
           {desc}
         </p>
       </div>
@@ -44,7 +44,7 @@ export function Card({
   return (
     <HeroCard
       variant="transparent"
-      className={`rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden p-0 gap-0 ${className}`}
+      className={`rounded-2xl border border-border bg-surface overflow-hidden p-0 gap-0 ${className}`}
     >
       {children}
     </HeroCard>
@@ -54,9 +54,9 @@ export function Card({
 export function EmptyState({ text, sub }: { text: string; sub?: string }) {
   return (
     <div className="px-5 py-10 text-center">
-      <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">{text}</p>
+      <p className="text-sm text-muted">{text}</p>
       {sub && (
-        <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1">{sub}</p>
+        <p className="text-xs text-muted/60 mt-1">{sub}</p>
       )}
     </div>
   );
@@ -65,7 +65,7 @@ export function EmptyState({ text, sub }: { text: string; sub?: string }) {
 export function Spinner() {
   return (
     <div className="px-5 py-10 flex justify-center">
-      <HeroSpinner className="text-blue-600" size="sm" />
+      <HeroSpinner className="text-accent" size="sm" />
     </div>
   );
 }
@@ -123,8 +123,8 @@ export function IconBtn({
         aria-label={title}
         className={`p-1.5 h-auto w-auto min-w-0 bg-transparent rounded-lg transition-colors ${
           danger
-            ? "text-[#aeaeb2] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20"
-            : "text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
+            ? "text-muted/60 hover:text-danger hover:bg-danger-soft"
+            : "text-muted/60 hover:text-foreground hover:bg-default"
         }`}
         variant="ghost"
         onPress={onClick}
@@ -147,7 +147,7 @@ export function SearchInput({
   return (
     <div className="relative">
       <svg
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#aeaeb2] z-10"
+        className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted/60 z-10"
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
@@ -158,7 +158,7 @@ export function SearchInput({
         <path d="M10 10l2.5 2.5" />
       </svg>
       <HeroInput
-        className="w-full pl-8 pr-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:border-blue-500 transition-all shadow-none"
+        className="w-full pl-8 pr-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:border-accent transition-all shadow-none"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -180,7 +180,7 @@ export function Input({
 }) {
   return (
     <HeroInput
-      className="flex-1 px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:border-blue-500 transition-all shadow-none"
+      className="flex-1 px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:border-accent transition-all shadow-none"
       placeholder={placeholder}
       type={type}
       value={value}
@@ -228,10 +228,10 @@ export function Btn({
 }) {
   const sizes = { sm: "px-3 py-1.5 text-xs h-auto", md: "px-4 py-2 text-sm h-auto" };
   const variants = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white",
+      primary: "bg-accent hover:bg-accent-hover text-accent-foreground",
     ghost:
-      "bg-transparent border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white",
-    danger: "bg-red-500 hover:bg-red-600 text-white",
+      "bg-transparent border border-border hover:bg-default text-foreground",
+    danger: "bg-danger hover:bg-danger/80 text-danger-foreground",
   };
 
   return (

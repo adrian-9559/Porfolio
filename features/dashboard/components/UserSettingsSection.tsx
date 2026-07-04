@@ -35,10 +35,10 @@ function ProfileTab() {
           {(name || "U")[0].toUpperCase()}
         </div>
         <div>
-          <button className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+          <button className="text-sm font-medium text-accent hover:underline">
             Cambiar foto
           </button>
-          <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+          <p className="text-xs text-muted/60 mt-0.5">
             JPG, PNG o GIF. Máx 2MB
           </p>
         </div>
@@ -46,11 +46,11 @@ function ProfileTab() {
 
       <div className="space-y-4">
         <div>
-          <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-2">
+          <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-2">
             Nombre
           </label>
           <input
-            className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+            className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
             placeholder="Tu nombre"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -58,25 +58,25 @@ function ProfileTab() {
         </div>
 
         <div>
-          <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-2">
+          <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-2">
             Email
           </label>
           <input
             disabled
-            className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-black/3 dark:bg-white/3 text-sm text-[#aeaeb2] dark:text-[#636366] cursor-not-allowed"
+            className="w-full px-3 py-2 rounded-xl border border-border bg-default text-sm text-muted/60 cursor-not-allowed"
             value={(user as any)?.email || ""}
           />
-          <p className="text-xs text-[#aeaeb2] mt-1">
+          <p className="text-xs text-muted/60 mt-1">
             El email no se puede cambiar
           </p>
         </div>
 
         <div>
-          <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-2">
+          <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-2">
             Bio
           </label>
           <textarea
-            className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all resize-none"
+            className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all resize-none"
             placeholder="Cuéntanos algo sobre ti..."
             rows={3}
             value={bio}
@@ -85,11 +85,11 @@ function ProfileTab() {
         </div>
 
         <div>
-          <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-2">
+          <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-2">
             Sitio web
           </label>
           <input
-            className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+            className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
             placeholder="https://tuportfolio.com"
             type="url"
             value={website}
@@ -102,7 +102,7 @@ function ProfileTab() {
         className={`flex items-center gap-2 text-sm font-medium px-5 py-2 rounded-xl transition-all ${
           saved
             ? "bg-emerald-600 text-white"
-            : "bg-blue-600 hover:bg-blue-700 text-white"
+            : "bg-accent hover:bg-accent-hover text-accent-foreground"
         }`}
         onClick={save}
       >
@@ -175,10 +175,10 @@ function SecurityTab() {
     <div className="space-y-8">
       {/* Password */}
       <div>
-        <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">
+        <p className="text-sm font-semibold text-foreground mb-1">
           Cambiar contraseña
         </p>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-4">
+        <p className="text-xs text-muted mb-4">
           Usa una contraseña segura de al menos 8 caracteres
         </p>
 
@@ -189,11 +189,11 @@ function SecurityTab() {
             { label: "Confirmar nueva", val: confirm, set: setConfirm },
           ].map((f) => (
             <div key={f.label}>
-              <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-1.5">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
                 {f.label}
               </label>
               <input
-                className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+                className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
                 type="password"
                 value={f.val}
                 onChange={(e) => f.set(e.target.value)}
@@ -211,7 +211,7 @@ function SecurityTab() {
         )}
 
         <button
-          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-xl transition-colors"
+          className="mt-4 bg-accent hover:bg-accent-hover text-accent-foreground text-sm font-medium px-5 py-2 rounded-xl transition-colors"
           onClick={changePassword}
         >
           Actualizar contraseña
@@ -220,19 +220,19 @@ function SecurityTab() {
 
       {/* Active sessions */}
       <div>
-        <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">
+        <p className="text-sm font-semibold text-foreground mb-1">
           Sesiones activas
         </p>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-4">
+        <p className="text-xs text-muted mb-4">
           Dispositivos donde has iniciado sesión
         </p>
 
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 divide-y divide-black/5 dark:divide-white/5">
+        <div className="rounded-2xl border border-border divide-y divide-black/5 dark:divide-white/5">
           {SESSIONS.map((s, i) => (
             <div key={i} className="flex items-center gap-4 px-4 py-3">
-              <div className="w-8 h-8 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-default flex items-center justify-center flex-shrink-0">
                 <svg
-                  className="w-4 h-4 text-[#6e6e73] dark:text-[#86868b]"
+                  className="w-4 h-4 text-muted"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -255,7 +255,7 @@ function SecurityTab() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+                  <p className="text-sm font-medium text-foreground">
                     {s.device}
                   </p>
                   {s.current && (
@@ -264,7 +264,7 @@ function SecurityTab() {
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                <p className="text-xs text-muted/60">
                   {s.location} · {s.date}
                 </p>
               </div>
@@ -301,29 +301,29 @@ function SessionTab() {
   return (
     <div className="space-y-8">
       {/* Remember me */}
-      <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5 space-y-4">
+      <div className="rounded-2xl border border-border bg-surface p-5 space-y-4">
         <div>
-          <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-0.5">
+          <p className="text-sm font-semibold text-foreground mb-0.5">
             Recordar sesión
           </p>
-          <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+          <p className="text-xs text-muted">
             Mantén la sesión activa entre cierres de navegador
           </p>
         </div>
 
         <div className="flex items-center justify-between py-3 border-t border-black/5 dark:border-white/5">
           <div>
-            <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+            <p className="text-sm font-medium text-foreground">
               Recordar inicio de sesión
             </p>
-            <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+            <p className="text-xs text-muted/60">
               {rememberMe
                 ? "Sesión persistente activada"
                 : "La sesión expira al cerrar el navegador"}
             </p>
           </div>
           <button
-            className={`w-10 h-6 rounded-full transition-colors relative flex-shrink-0 ${rememberMe ? "bg-blue-600" : "bg-black/20 dark:bg-white/20"}`}
+            className={`w-10 h-6 rounded-full transition-colors relative flex-shrink-0 ${rememberMe ? "bg-accent" : "bg-black/20 dark:bg-white/20"}`}
             onClick={() => setRememberMe((v) => !v)}
           >
             <span
@@ -334,7 +334,7 @@ function SessionTab() {
 
         {rememberMe && (
           <div>
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-2">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-2">
               Duración de la sesión
             </label>
             <div className="flex gap-2 flex-wrap">
@@ -348,8 +348,8 @@ function SessionTab() {
                   key={opt.id}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     expiry === opt.id
-                      ? "bg-blue-600 text-white"
-                      : "border border-black/12 dark:border-white/12 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"
+                      ? "bg-accent text-accent-foreground"
+                      : "border border-border/30 text-muted hover:bg-default"
                   }`}
                   onClick={() => setExpiry(opt.id)}
                 >
@@ -362,12 +362,12 @@ function SessionTab() {
       </div>
 
       {/* Theme preferences */}
-      <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5 space-y-4">
+      <div className="rounded-2xl border border-border bg-surface p-5 space-y-4">
         <div>
-          <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-0.5">
+          <p className="text-sm font-semibold text-foreground mb-0.5">
             Apariencia
           </p>
-          <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+          <p className="text-xs text-muted">
             Personaliza el tema de la interfaz
           </p>
         </div>
@@ -382,13 +382,13 @@ function SessionTab() {
               key={opt.id}
               className={`p-3 rounded-xl border text-center transition-all ${
                 theme === opt.id
-                  ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20"
-                  : "border-black/12 dark:border-white/12 hover:bg-black/3 dark:hover:bg-white/3"
+                  ? "border-accent bg-accent/10"
+                  : "border-border/30 hover:bg-black/3 dark:hover:bg-white/3"
               }`}
               onClick={() => setTheme(opt.id)}
             >
               <span className="text-xl">{opt.icon}</span>
-              <p className="text-xs font-medium text-[#1d1d1f] dark:text-white mt-1">
+              <p className="text-xs font-medium text-foreground mt-1">
                 {opt.label}
               </p>
             </button>
@@ -400,7 +400,7 @@ function SessionTab() {
         className={`flex items-center gap-2 text-sm font-medium px-5 py-2 rounded-xl transition-all ${
           saved
             ? "bg-emerald-600 text-white"
-            : "bg-blue-600 hover:bg-blue-700 text-white"
+            : "bg-accent hover:bg-accent-hover text-accent-foreground"
         }`}
         onClick={save}
       >
@@ -433,23 +433,23 @@ export function UserSettingsSection({ tab, onTabChange }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+        <h2 className="text-lg font-semibold text-foreground">
           Configuración
         </h2>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+        <p className="text-sm text-muted mt-0.5">
           Gestiona tu perfil y preferencias de cuenta
         </p>
       </div>
 
       {/* Sub-tabs */}
-      <div className="flex gap-1 p-1 rounded-xl bg-black/5 dark:bg-white/5 w-fit">
+      <div className="flex gap-1 p-1 rounded-xl bg-default w-fit">
         {TABS.map((t) => (
           <button
             key={t.id}
             className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
               tab === t.id
-                ? "bg-white dark:bg-[#111116] text-[#1d1d1f] dark:text-white shadow-sm"
-                : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                ? "bg-surface text-foreground shadow-sm"
+                : "text-muted hover:text-foreground"
             }`}
             onClick={() => onTabChange(t.id)}
           >
@@ -459,7 +459,7 @@ export function UserSettingsSection({ tab, onTabChange }: Props) {
       </div>
 
       {/* Content */}
-      <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6">
+      <div className="rounded-2xl border border-border bg-surface p-6">
         {tab === "settings-profile" && <ProfileTab />}
         {tab === "settings-security" && <SecurityTab />}
         {tab === "settings-session" && <SessionTab />}

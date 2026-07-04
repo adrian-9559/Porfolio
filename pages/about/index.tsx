@@ -32,7 +32,7 @@ export default function AboutPage() {
             >
               {t("about.title")}
             </h1>
-            <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed max-w-xl">
+            <p className="text-lg text-muted leading-relaxed max-w-xl">
               {t("about.introFull")}
             </p>
           </div>
@@ -42,7 +42,7 @@ export default function AboutPage() {
             {STAT_VALUE_KEYS.map((value, i) => (
               <div
                 key={i}
-                className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-center hover:border-black/15 dark:hover:border-white/15 transition-colors"
+                className="p-6 rounded-2xl bg-surface border border-border text-center hover:border-black/15 dark:hover:border-white/15 transition-colors"
               >
                 <p
                   className="text-3xl font-bold gradient-text"
@@ -50,7 +50,7 @@ export default function AboutPage() {
                 >
                   {value}
                 </p>
-                <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1.5 font-medium">
+                <p className="text-xs text-muted/60 mt-1.5 font-medium">
                   {t(STAT_LABEL_KEYS[i])}
                 </p>
               </div>
@@ -62,7 +62,7 @@ export default function AboutPage() {
             <div className="lg:col-span-3 space-y-8">
               <div className="space-y-3">
                 <h2 className="text-2xl font-bold">{t("about.myStory")}</h2>
-                <div className="space-y-4 text-[#6e6e73] dark:text-[#86868b] leading-relaxed text-sm">
+                <div className="space-y-4 text-muted leading-relaxed text-sm">
                   <p>
                     {t("about.storyP1")}
                   </p>
@@ -82,7 +82,7 @@ export default function AboutPage() {
                     <li key={i} className="flex items-start gap-3">
                       <span className="w-5 h-5 rounded-full bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <svg
-                          className="w-3 h-3 text-blue-600 dark:text-blue-400"
+                          className="w-3 h-3 text-accent"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -114,11 +114,11 @@ export default function AboutPage() {
               ].map((s, i) => (
                 <div
                   key={i}
-                  className="p-4 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8"
+                  className="p-4 rounded-xl bg-surface border border-border"
                 >
                   <div className="flex items-center gap-2.5 mb-1.5">
                     <div className={`w-2 h-2 rounded-full ${s.color}`} />
-                    <p className="text-xs font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider">
+                    <p className="text-xs font-semibold text-muted/60 uppercase tracking-wider">
                       {t(s.labelKey)}
                     </p>
                   </div>
@@ -154,13 +154,13 @@ export default function AboutPage() {
 
                     {/* Content */}
                     <div className="flex-1 pb-1">
-                      <p className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-0.5 leading-none">
+                      <p className="text-xs font-bold text-accent mb-0.5 leading-none">
                         {item.year}
                       </p>
-                      <h3 className="font-semibold text-[#1d1d1f] dark:text-white text-sm">
+                      <h3 className="font-semibold text-foreground text-sm">
                         {t(item.titleKey)}
                       </h3>
-                      <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1 leading-relaxed">
+                      <p className="text-sm text-muted mt-1 leading-relaxed">
                         {t(item.descKey)}
                       </p>
                     </div>

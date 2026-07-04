@@ -149,7 +149,8 @@ export const dataTableService = {
     form.append("file", file);
     if (metadata) form.append("metadata", JSON.stringify(metadata));
     const token = tokenStore.get();
-    const res = await fetch(`${env.apiUrl}${BASE}/import/${endpoint}`, {
+    const path = endpoint === "preview" ? `${BASE}/import/preview` : `${BASE}/import`;
+    const res = await fetch(`${env.apiUrl}${path}`, {
       method: "POST",
       headers: {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),

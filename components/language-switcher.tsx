@@ -39,7 +39,7 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
       <Dropdown.Trigger>
         <span
           aria-label={t("common.language")}
-          className={`w-8 h-8 rounded-lg inline-flex items-center justify-center text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/8 hover:text-[#1d1d1f] dark:hover:text-white transition-all duration-200 text-[11px] font-semibold uppercase tracking-wider cursor-pointer ${className ?? ""}`}
+          className={`w-8 h-8 rounded-lg inline-flex items-center justify-center text-muted hover:bg-default hover:text-foreground transition-all duration-200 text-[11px] font-semibold uppercase tracking-wider cursor-pointer ${className ?? ""}`}
         >
           {locale}
         </span>

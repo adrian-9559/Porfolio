@@ -106,7 +106,7 @@ function AppCard({ app, latest }: AppCardProps) {
   }
 
   return (
-    <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden">
+    <div className="rounded-2xl border border-border bg-surface overflow-hidden">
       {/* Header */}
       <div className="p-5 flex items-center gap-3">
         <div
@@ -116,16 +116,16 @@ function AppCard({ app, latest }: AppCardProps) {
           {app.icon_emoji ?? "📱"}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+          <p className="text-sm font-semibold text-foreground">
             {app.name}
           </p>
           {app.description && (
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] truncate">
+            <p className="text-xs text-muted truncate">
               {app.description}
             </p>
           )}
           {!app.description && (
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+            <p className="text-xs text-muted">
               {hasAndroid
                 ? `v${apk!.version} disponible · Android`
                 : "Sin versiones publicadas aún"}
@@ -133,7 +133,7 @@ function AppCard({ app, latest }: AppCardProps) {
           )}
         </div>
         {hasAndroid && (
-          <span className="text-xs font-mono text-[#aeaeb2] dark:text-[#636366]">
+          <span className="text-xs font-mono text-muted/60">
             v{apk!.version}
           </span>
         )}
@@ -181,7 +181,7 @@ function AppCard({ app, latest }: AppCardProps) {
       {error && <p className="px-5 pb-3 text-xs text-rose-500">{error}</p>}
 
       {apk?.release_notes && (
-        <p className="px-5 pb-3 text-[11px] text-[#aeaeb2] dark:text-[#636366]">
+        <p className="px-5 pb-3 text-[11px] text-muted/60">
           Publicado el{" "}
           {new Date(apk.created_at).toLocaleDateString("es-ES", {
             day: "numeric",
@@ -195,7 +195,7 @@ function AppCard({ app, latest }: AppCardProps) {
       {/* Version history */}
       <div className="border-t border-black/5 dark:border-white/5">
         <button
-          className="w-full flex items-center justify-between px-5 py-3 text-xs font-medium text-[#6e6e73] dark:text-[#86868b] hover:bg-black/2 dark:hover:bg-white/3 transition-colors"
+          className="w-full flex items-center justify-between px-5 py-3 text-xs font-medium text-muted hover:bg-black/2 dark:hover:bg-white/3 transition-colors"
           onClick={() => toggleHistory("android")}
         >
           <span>Historial de versiones</span>
@@ -227,7 +227,7 @@ function AppCard({ app, latest }: AppCardProps) {
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-[#1d1d1f] dark:text-white font-mono">
+                    <span className="text-sm font-semibold text-foreground font-mono">
                       v{v.version}
                     </span>
                     <span
@@ -245,7 +245,7 @@ function AppCard({ app, latest }: AppCardProps) {
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+                  <p className="text-[11px] text-muted mt-0.5">
                     {new Date(v.created_at).toLocaleDateString("es-ES", {
                       day: "numeric",
                       month: "short",
@@ -256,7 +256,7 @@ function AppCard({ app, latest }: AppCardProps) {
                   </p>
                 </div>
                 <button
-                  className="flex-shrink-0 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="flex-shrink-0 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-border/30 text-foreground hover:bg-default disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   disabled={!!downloading}
                   onClick={() => handleDownloadVersion(v)}
                 >
@@ -303,11 +303,11 @@ export function UserAppsSection() {
 
   if (apps.length === 0) {
     return (
-      <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-10 text-center">
-        <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+      <div className="rounded-2xl border border-border bg-surface p-10 text-center">
+        <p className="text-sm font-medium text-foreground">
           Sin apps publicadas
         </p>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">
+        <p className="text-xs text-muted mt-1">
           Próximamente habrá apps disponibles.
         </p>
       </div>
@@ -317,10 +317,10 @@ export function UserAppsSection() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+        <h2 className="text-lg font-semibold text-foreground">
           Apps
         </h2>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+        <p className="text-sm text-muted mt-0.5">
           Descarga las aplicaciones disponibles.
         </p>
       </div>

@@ -10,25 +10,25 @@ export default function DatabaseDocsPage() {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Link
-              className="text-xs text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+              className="text-xs text-muted hover:text-foreground transition-colors"
               href="/docs"
             >
               Docs
             </Link>
-            <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+            <span className="text-xs text-muted/60">
               /
             </span>
-            <span className="text-xs text-[#1d1d1f] dark:text-white font-medium">
+            <span className="text-xs text-foreground font-medium">
               Base de datos
             </span>
           </div>
           <h1
-            className="text-3xl font-bold text-[#1d1d1f] dark:text-white"
+            className="text-3xl font-bold text-foreground"
             style={{ letterSpacing: "-0.02em" }}
           >
             Base de datos
           </h1>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+          <p className="text-sm text-muted mt-1">
             Esquema completo con diagrama interactivo: tablas, columnas, tipos y
             relaciones FK.
           </p>

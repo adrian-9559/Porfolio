@@ -23,12 +23,12 @@ export default function DocsPage() {
       <div className="max-w-3xl mx-auto space-y-8">
         <div>
           <h1
-            className="text-3xl font-bold text-[#1d1d1f] dark:text-white"
+            className="text-3xl font-bold text-foreground"
             style={{ letterSpacing: "-0.02em" }}
           >
             Documentación
           </h1>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-2">
+          <p className="text-sm text-muted mt-2">
             Referencia técnica del proyecto: esquemas, APIs y arquitectura.
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function DocsPage() {
                   {s.badge}
                 </span>
               </div>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+              <p className="text-xs text-muted leading-relaxed">
                 {s.description}
               </p>
               <p

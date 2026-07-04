@@ -52,11 +52,11 @@ export function NotificationBell() {
     <div ref={ref} className="relative">
       <button
         aria-label="Notificaciones"
-        className="relative w-8 h-8 flex items-center justify-center rounded-xl hover:bg-black/5 dark:hover:bg-white/8 transition-colors"
+        className="relative w-8 h-8 flex items-center justify-center rounded-xl hover:bg-default transition-colors"
         onClick={() => setOpen((o) => !o)}
       >
         <svg
-          className="w-4.5 h-4.5 text-[#6e6e73] dark:text-[#86868b]"
+          className="w-4.5 h-4.5 text-muted"
           fill="none"
           stroke="currentColor"
           strokeWidth={1.8}
@@ -76,16 +76,16 @@ export function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-10 w-80 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 shadow-2xl z-50 overflow-hidden">
+        <div className="absolute right-0 top-10 w-80 rounded-2xl bg-surface border border-border shadow-2xl z-50 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-black/8 dark:border-white/8">
-            <span className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+            <span className="text-sm font-semibold text-foreground">
               Notificaciones{" "}
               {unread > 0 && <span className="text-red-500">({unread})</span>}
             </span>
             {unread > 0 && (
               <button
-                className="text-xs text-blue-500 hover:text-blue-600 font-medium"
+                className="text-xs text-accent hover:text-accent-hover font-medium"
                 onClick={markAllRead}
               >
                 Marcar todo leído
@@ -97,13 +97,13 @@ export function NotificationBell() {
           <div className="max-h-80 overflow-y-auto">
             {loading && (
               <div className="flex items-center justify-center py-8">
-                <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />
               </div>
             )}
             {!loading && recent.length === 0 && (
               <div className="flex flex-col items-center py-10 text-center">
                 <span className="text-2xl mb-2">🔔</span>
-                <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+                <p className="text-sm text-muted">
                   Sin notificaciones
                 </p>
               </div>
@@ -112,7 +112,7 @@ export function NotificationBell() {
               recent.map((n) => (
                 <button
                   key={n.id}
-                  className={`w-full flex gap-3 px-4 py-3 text-left border-b border-black/4 dark:border-white/4 last:border-0 hover:bg-black/3 dark:hover:bg-white/3 transition-colors ${!n.read ? "bg-blue-50/50 dark:bg-blue-950/10" : ""}`}
+                  className={`w-full flex gap-3 px-4 py-3 text-left border-b border-border/20 last:border-0 hover:bg-default transition-colors ${!n.read ? "bg-accent/5" : ""}`}
                   onClick={() => {
                     if (!n.read) markRead(n.id);
                   }}
@@ -123,29 +123,29 @@ export function NotificationBell() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <p
-                        className={`text-xs font-medium truncate ${!n.read ? "text-[#1d1d1f] dark:text-white" : "text-[#6e6e73] dark:text-[#86868b]"}`}
+                        className={`text-xs font-medium truncate ${!n.read ? "text-foreground" : "text-muted"}`}
                       >
                         {n.title}
                       </p>
-                      <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366] shrink-0">
+                      <span className="text-[10px] text-muted/60 shrink-0">
                         {timeAgo(n.created_at)}
                       </span>
                     </div>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5 line-clamp-2">
+                    <p className="text-xs text-muted mt-0.5 line-clamp-2">
                       {n.message}
                     </p>
                   </div>
                   {!n.read && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 mt-1.5" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
                   )}
                 </button>
               ))}
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-2.5 border-t border-black/8 dark:border-white/8">
+          <div className="px-4 py-2.5 border-t border-border">
             <button
-              className="w-full text-center text-xs text-blue-500 hover:text-blue-600 font-medium py-1"
+              className="w-full text-center text-xs text-accent hover:text-accent-hover font-medium py-1"
               onClick={() => {
                 router.push("/notifications");
                 setOpen(false);

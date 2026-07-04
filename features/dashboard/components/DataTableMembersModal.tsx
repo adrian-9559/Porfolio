@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
+import { Modal, Button } from "@heroui/react";
 import {
   dataTableService,
   type DataTableMember,
@@ -74,34 +75,14 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <div className="bg-white dark:bg-[#1a1a1f] rounded-2xl p-6 w-full max-w-lg mx-4 border border-black/8 dark:border-white/8 max-h-[80vh] flex flex-col">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white">
-            Miembros
-          </h3>
-          <button
-            onClick={onClose}
-            className="text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white p-1"
-          >
-            <svg
-              fill="none"
-              height="20"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeWidth="1.5"
-              viewBox="0 0 20 20"
-              width="20"
-            >
-              <path d="M5 5l10 10M15 5l-10 10" />
-            </svg>
-          </button>
-        </div>
+    <Modal.Backdrop isOpen variant="blur" onOpenChange={(open) => { if (!open) onClose(); }}>
+      <Modal.Container>
+        <Modal.Dialog className="max-h-[80vh] flex flex-col">
+          <Modal.CloseTrigger />
+          <Modal.Header>
+            <Modal.Heading>Miembros</Modal.Heading>
+          </Modal.Header>
+          <Modal.Body className="flex flex-col flex-1 overflow-hidden">
 
         {error && (
           <div className="mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 text-sm">
@@ -113,8 +94,8 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
         )}
 
         {/* Invite form */}
-        <div className="mb-5 p-4 rounded-xl bg-gray-50 dark:bg-[#111116] border border-black/8 dark:border-white/8">
-          <label className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider block mb-2">
+        <div className="mb-5 p-4 rounded-xl bg-default border border-border">
+          <label className="text-xs font-semibold text-muted uppercase tracking-wider block mb-2">
             Invitar por email
           </label>
           <div className="flex gap-2">
@@ -123,23 +104,19 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
               placeholder="email@ejemplo.com"
-              className="flex-1 text-sm rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1f] px-3 py-2 text-[#1d1d1f] dark:text-white"
+              className="flex-1 text-sm rounded-lg border border-border/30 bg-default px-3 py-2 text-foreground"
             />
             <select
               value={inviteRole}
               onChange={(e) => setInviteRole(e.target.value as "editor" | "viewer")}
-              className="text-sm rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1f] px-2 py-2 text-[#1d1d1f] dark:text-white"
+              className="text-sm rounded-lg border border-border/30 bg-default px-2 py-2 text-foreground"
             >
               <option value="editor">Editor</option>
               <option value="viewer">Espectador</option>
             </select>
-            <button
-              onClick={handleInvite}
-              disabled={submitting || !inviteEmail.trim()}
-              className="apple-btn-primary text-sm py-2 px-4"
-            >
+            <Button size="sm" isDisabled={submitting || !inviteEmail.trim()} onPress={handleInvite}>
               {submitting ? "..." : "Invitar"}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -149,7 +126,7 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-14 rounded-xl bg-gray-100 dark:bg-[#1a1a1f] animate-pulse"
+                className="h-14 rounded-xl bg-default animate-pulse"
               />
             ))}
           </div>
@@ -159,7 +136,7 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
         {!loading && (
           <div className="flex-1 overflow-y-auto space-y-2">
             {accepted.length === 0 && pending.length === 0 && (
-              <p className="text-sm text-[#6e6e73] dark:text-[#86868b] text-center py-8">
+              <p className="text-sm text-muted text-center py-8">
                 Sin miembros aún. Invita a alguien por email.
               </p>
             )}
@@ -167,18 +144,18 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
             {accepted.map((m) => (
               <div
                 key={m.id}
-                className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8"
+                className="flex items-center justify-between p-3 rounded-xl bg-surface border border-border"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 text-sm font-bold shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-accent/10 text-accent">
                     {(m.profile?.full_name ?? m.invited_email).charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-[#1d1d1f] dark:text-white truncate">
+                    <p className="text-sm font-medium text-foreground truncate">
                       {m.profile?.full_name ?? m.invited_email}
                     </p>
                     {m.profile?.full_name && (
-                      <p className="text-xs text-[#6e6e73] dark:text-[#86868b] truncate">
+                      <p className="text-xs text-muted truncate">
                         {m.invited_email}
                       </p>
                     )}
@@ -192,7 +169,7 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
                       onChange={(e) =>
                         handleRoleChange(m.id, e.target.value as "editor" | "viewer")
                       }
-                      className="text-xs rounded-lg border border-black/10 dark:border-white/10 bg-transparent px-2 py-1 text-[#1d1d1f] dark:text-white"
+                      className="text-xs rounded-lg border border-border/30 bg-transparent px-2 py-1 text-foreground"
                     >
                       <option value="editor">Editor</option>
                       <option value="viewer">Espectador</option>
@@ -205,7 +182,7 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
                   {m.role !== "owner" && (
                     <button
                       onClick={() => handleRemove(m.id)}
-                      className="text-[#6e6e73] hover:text-red-500 p-1"
+                      className="text-muted hover:text-red-500 p-1"
                       title="Quitar"
                     >
                       <svg
@@ -229,7 +206,7 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
             {pending.length > 0 && (
               <>
                 <div className="pt-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-muted/60 mb-2">
                     Invitaciones pendientes
                   </p>
                 </div>
@@ -243,7 +220,7 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
                         {m.invited_email.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-[#1d1d1f] dark:text-white truncate">
+                        <p className="text-sm font-medium text-foreground truncate">
                           {m.invited_email}
                         </p>
                         <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
@@ -253,7 +230,7 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
                     </div>
                     <button
                       onClick={() => handleRemove(m.id)}
-                      className="text-[#6e6e73] hover:text-red-500 p-1 shrink-0"
+                      className="text-muted hover:text-red-500 p-1 shrink-0"
                       title="Cancelar invitación"
                     >
                       <svg
@@ -274,7 +251,9 @@ export function DataTableMembersModal({ tableId, onClose }: Props) {
             )}
           </div>
         )}
-      </div>
-    </div>
+          </Modal.Body>
+        </Modal.Dialog>
+      </Modal.Container>
+    </Modal.Backdrop>
   );
 }

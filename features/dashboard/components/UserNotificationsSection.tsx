@@ -28,8 +28,8 @@ const TYPE_CONFIG: Record<
 > = {
   sistema: {
     label: "Sistema",
-    color: "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400",
-    dot: "bg-blue-500",
+    color: "bg-accent/10 text-accent",
+    dot: "bg-accent",
   },
   agente: {
     label: "Agente IA",
@@ -136,16 +136,16 @@ export function UserNotificationsSection() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+          <h2 className="text-lg font-semibold text-foreground">
             Notificaciones
           </h2>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+          <p className="text-sm text-muted mt-0.5">
             {unreadCount > 0 ? `${unreadCount} sin leer` : "Todo al día"}
           </p>
         </div>
         {unreadCount > 0 && (
           <button
-            className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
             onClick={markAll}
           >
             Marcar todas como leídas
@@ -157,7 +157,7 @@ export function UserNotificationsSection() {
       {loading && (
         <div className="flex items-center gap-2">
           <span className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
-          <span className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+          <span className="text-sm text-muted">
             Cargando…
           </span>
         </div>
@@ -173,8 +173,8 @@ export function UserNotificationsSection() {
             key={f.id}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               filter === f.id
-                ? "bg-blue-600 text-white"
-                : "border border-black/12 dark:border-white/12 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"
+                ? "bg-accent text-accent-foreground"
+                : "border border-border/30 text-muted hover:bg-default"
             }`}
             onClick={() => setFilter(f.id)}
           >
@@ -185,8 +185,8 @@ export function UserNotificationsSection() {
 
       {/* List */}
       {filtered.length === 0 ? (
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] py-16 text-center">
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+        <div className="rounded-2xl border border-border bg-surface py-16 text-center">
+          <p className="text-sm text-muted">
             No hay notificaciones
           </p>
         </div>
@@ -200,14 +200,14 @@ export function UserNotificationsSection() {
                 key={n.id}
                 className={`flex items-start gap-4 p-4 rounded-2xl border transition-colors ${
                   n.read
-                    ? "border-black/8 dark:border-white/8 bg-white dark:bg-[#111116]"
-                    : "border-blue-200 dark:border-blue-800/40 bg-blue-50/50 dark:bg-blue-950/10"
+                    ? "border-border bg-surface"
+                    : "border-accent/40 bg-accent/5"
                 }`}
               >
                 {/* Dot */}
                 <div className="mt-1.5 flex-shrink-0">
                   {!n.read ? (
-                    <span className="w-2 h-2 rounded-full bg-blue-500 block" />
+                    <span className="w-2 h-2 rounded-full bg-accent block" />
                   ) : (
                     <span className="w-2 h-2 rounded-full bg-transparent border border-black/15 dark:border-white/15 block" />
                   )}
@@ -220,14 +220,14 @@ export function UserNotificationsSection() {
                     >
                       {cfg.label}
                     </span>
-                    <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                    <span className="text-xs text-muted/60">
                       {relTime(n.date)}
                     </span>
                   </div>
-                  <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+                  <p className="text-sm font-medium text-foreground">
                     {n.title}
                   </p>
-                  <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+                  <p className="text-xs text-muted mt-0.5">
                     {n.body}
                   </p>
                 </div>
@@ -235,7 +235,7 @@ export function UserNotificationsSection() {
                 <div className="flex items-center gap-1 shrink-0">
                   {!n.read && (
                     <button
-                      className="p-1.5 rounded-lg text-[#aeaeb2] hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors"
+                      className="p-1.5 rounded-lg text-muted/60 hover:text-accent hover:bg-accent/10 transition-colors"
                       title="Marcar como leída"
                       onClick={() => markOne(n.id)}
                     >
@@ -255,7 +255,7 @@ export function UserNotificationsSection() {
                     </button>
                   )}
                   <button
-                    className="p-1.5 rounded-lg text-[#aeaeb2] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                    className="p-1.5 rounded-lg text-muted/60 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
                     title="Eliminar"
                     onClick={() => remove(n.id)}
                   >

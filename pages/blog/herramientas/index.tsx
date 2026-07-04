@@ -26,7 +26,7 @@ function ToolCard({ item }: { item: ContentMeta }) {
   const { t } = useT();
   return (
     <Link
-      className="block group p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/15 dark:hover:border-white/15 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
+      className="block group p-6 rounded-2xl bg-surface border-border hover:border-black/15 dark:hover:border-white/15 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
       href={`/blog/herramientas/${item.slug}`}
     >
       <div className="flex items-start justify-between gap-3 mb-4">
@@ -41,10 +41,10 @@ function ToolCard({ item }: { item: ContentMeta }) {
           {t("blog.type.tool")}
         </span>
       </div>
-      <h2 className="font-bold text-base text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug mb-2 line-clamp-2 motion-safe:transition-colors">
+      <h2 className="font-bold text-base text-foreground group-hover:text-accent transition-colors leading-snug mb-2 line-clamp-2 motion-safe:transition-colors">
         {item.title}
       </h2>
-      <p className="text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed line-clamp-3 mb-4">
+      <p className="text-sm text-muted leading-relaxed line-clamp-3 mb-4">
         {item.description}
       </p>
       {item.tags && (
@@ -57,7 +57,7 @@ function ToolCard({ item }: { item: ContentMeta }) {
         </div>
       )}
       <div className="flex items-center justify-between pt-3 border-t border-black/6 dark:border-white/6">
-        <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+        <span className="text-xs text-muted/60">
           {formatDate(item.publishedAt)}
         </span>
         <div className="flex items-center gap-2">
@@ -150,20 +150,20 @@ export default function HerramientasPage() {
         <header className="space-y-4">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2">
             <Link
-              className="text-xs text-[#aeaeb2] dark:text-[#636366] hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
+              className="text-xs text-muted/60 hover:text-muted transition-colors no-underline"
               href="/blog"
             >
               {t("blog.breadcrumb")}
             </Link>
             <span
               aria-hidden="true"
-              className="text-xs text-[#aeaeb2] dark:text-[#636366]"
+              className="text-xs text-muted/60"
             >
               /
             </span>
             <span
               aria-current="page"
-              className="text-xs font-medium text-[#1d1d1f] dark:text-white"
+              className="text-xs font-medium text-foreground"
             >
               {t("blog.type.tools")}
             </span>
@@ -182,7 +182,7 @@ export default function HerramientasPage() {
               </h1>
             </div>
           </div>
-          <p className="text-[#6e6e73] dark:text-[#86868b] max-w-xl leading-relaxed">
+          <p className="text-muted max-w-xl leading-relaxed">
             {t("blog.toolsDesc")}
           </p>
         </header>
@@ -192,9 +192,9 @@ export default function HerramientasPage() {
           <label className="sr-only" htmlFor="tools-search">
             {t("blog.searchLabelTools")}
           </label>
-          <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2]" />
+          <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted/60" />
           <input
-            className="w-full pl-11 pr-4 py-3 rounded-xl bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-400/20 transition-all"
+            className="w-full pl-11 pr-4 py-3 rounded-xl bg-surface border-border/30 text-sm text-foreground placeholder-muted/60 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all"
             id="tools-search"
             placeholder={t("blog.searchPlaceholderTools")}
             type="text"
@@ -204,7 +204,7 @@ export default function HerramientasPage() {
           {query && (
             <button
               aria-label={t("blog.searchClear")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#aeaeb2] hover:text-[#6e6e73]"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted/60 hover:text-muted"
               onClick={() => setQuery("")}
             >
               <IconClose className="w-4 h-4" />
@@ -213,18 +213,18 @@ export default function HerramientasPage() {
         </div>
 
         {/* Stats */}
-        <div className="flex flex-wrap items-center gap-3 text-xs text-[#aeaeb2] dark:text-[#636366]">
-          <span className="font-semibold text-[#6e6e73] dark:text-[#86868b]">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-muted/60">
+          <span className="font-semibold text-muted">
             {allTools.length} {t("blog.type.tools").toLowerCase()}
           </span>
           <span
             aria-hidden="true"
-            className="w-1 h-1 rounded-full bg-black/10 dark:bg-white/10"
+            className="w-1 h-1 rounded-full bg-default"
           />
           <span>{catMeta.length} {t("blog.categoryLabel")}</span>
           <span
             aria-hidden="true"
-            className="w-1 h-1 rounded-full bg-black/10 dark:bg-white/10"
+            className="w-1 h-1 rounded-full bg-default"
           />
           <span>{allToolTags.length} {t("blog.tagLabel")}</span>
         </div>
@@ -239,7 +239,7 @@ export default function HerramientasPage() {
             {catMeta.map((cat) => (
               <button
                 key={cat.id}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/4 dark:bg-white/8 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/8 dark:hover:bg-white/12 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-default text-muted hover:bg-default transition-colors"
                 onClick={() => setActiveCategory(cat.id)}
               >
                 {t(cat.labelKey)}
@@ -332,7 +332,7 @@ export default function HerramientasPage() {
             {(activeCategory !== "all" || activeTag !== "all") && (
               <button
                 aria-label={t("blog.clearFilters")}
-                className="text-sm text-[#aeaeb2] dark:text-[#636366] hover:text-[#6e6e73] dark:hover:text-[#86868b] self-center"
+                className="text-sm text-muted/60 hover:text-muted self-center"
                 onClick={() => {
                   setActiveCategory("all");
                   setActiveTag("all");
@@ -347,7 +347,7 @@ export default function HerramientasPage() {
 
         <p
           aria-live="polite"
-          className="text-sm text-[#aeaeb2] dark:text-[#636366]"
+          className="text-sm text-muted/60"
           role="status"
         >
           {results.length}{" "}
@@ -355,15 +355,15 @@ export default function HerramientasPage() {
           {query && (
             <span>
               {" "}
-              {t("blog.forQuery")} &quot;<span className="text-[#6e6e73] dark:text-[#86868b] font-medium">{query}</span>&quot;
+              {t("blog.forQuery")} &quot;<span className="text-muted font-medium">{query}</span>&quot;
             </span>
           )}
         </p>
 
         {results.length === 0 ? (
           <div className="text-center py-20">
-            <IconSearch className="w-12 h-12 text-[#aeaeb2] mx-auto mb-4" />
-            <p className="text-[#6e6e73] dark:text-[#86868b] font-medium">
+            <IconSearch className="w-12 h-12 text-muted/60 mx-auto mb-4" />
+            <p className="text-muted font-medium">
               {t("blog.noToolsFor")} &quot;{query}&quot;
             </p>
             <button

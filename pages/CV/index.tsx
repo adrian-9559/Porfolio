@@ -37,7 +37,7 @@ export default function ResumePage() {
             >
               {t("cv.header")}
             </h1>
-            <p className="text-base text-[#6e6e73] dark:text-[#86868b] max-w-2xl leading-relaxed">
+            <p className="text-base text-muted max-w-2xl leading-relaxed">
               {t("cv.intro")}
             </p>
           </div>
@@ -47,7 +47,7 @@ export default function ResumePage() {
             {statDefs.map((s, idx) => (
               <div
                 key={idx}
-                className="group p-6 rounded-2xl text-center bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/12 dark:hover:border-white/12 hover:shadow-lg hover:shadow-black/4 dark:hover:shadow-black/20 transition-all duration-300 overflow-hidden relative"
+                className="group p-6 rounded-2xl text-center bg-surface border-border hover:border-border/30 hover:shadow-lg hover:shadow-black/4 dark:hover:shadow-black/20 transition-all duration-300 overflow-hidden relative"
               >
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${s.color} opacity-0 group-hover:opacity-5 dark:group-hover:opacity-10 transition-opacity duration-300`}
@@ -58,7 +58,7 @@ export default function ResumePage() {
                 >
                   {s.value}
                 </p>
-                <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1.5 font-medium relative">
+                <p className="text-xs text-muted/60 mt-1.5 font-medium relative">
                   {t(s.labelKey)}
                 </p>
               </div>
@@ -66,7 +66,7 @@ export default function ResumePage() {
           </div>
 
           {/* Experience */}
-          <div className="p-6 md:p-8 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+          <div className="p-6 md:p-8 rounded-2xl bg-surface border-border">
             <ExperienceSection />
           </div>
 
@@ -74,10 +74,10 @@ export default function ResumePage() {
           <div className="space-y-6">
             <div className="flex items-start justify-between flex-wrap gap-3">
               <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">
+                <h3 className="text-2xl font-bold text-foreground">
                   {t("cv.education")}
                 </h3>
-                <p className="text-sm text-[#aeaeb2] dark:text-[#636366] mt-1">
+                <p className="text-sm text-muted/60 mt-1">
                   {t("cv.hint")}
                 </p>
               </div>
@@ -103,7 +103,7 @@ export default function ResumePage() {
                     </div>
 
                     {/* Card */}
-                    <div className="flex-1 p-5 md:p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 group-hover:border-black/15 dark:group-hover:border-white/15 group-hover:shadow-lg group-hover:shadow-black/5 dark:group-hover:shadow-black/20 transition-all duration-200">
+                    <div className="flex-1 p-5 md:p-6 rounded-2xl bg-surface border-border group-hover:border-border/40 group-hover:shadow-lg group-hover:shadow-black/5 dark:group-hover:shadow-black/20 transition-all duration-200">
                       <div className="flex items-start gap-4">
                         {/* Level badge */}
                         <div
@@ -116,19 +116,19 @@ export default function ResumePage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-3 flex-wrap">
                             <div className="min-w-0">
-                              <p className="font-bold text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                              <p className="font-bold text-foreground group-hover:text-accent transition-colors truncate">
                                 {edu.institution}
                               </p>
-                              <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-0.5 truncate">
+                              <p className="text-sm text-accent font-medium mt-0.5 truncate">
                                 {edu.program}
                               </p>
                             </div>
                             <div className="flex items-center gap-2 flex-shrink-0">
-                              <span className="text-xs text-[#aeaeb2] dark:text-[#636366] hidden sm:block">
+                              <span className="text-xs text-muted/60 hidden sm:block">
                                 {edu.year}
                               </span>
                               <svg
-                                className="w-4 h-4 text-[#aeaeb2] dark:text-[#636366] group-hover:text-blue-400 transition-colors"
+                                className="w-4 h-4 text-muted/60 group-hover:text-accent transition-colors"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -143,7 +143,7 @@ export default function ResumePage() {
                             </div>
                           </div>
 
-                          <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-2 leading-relaxed line-clamp-2">
+                          <p className="text-xs text-muted mt-2 leading-relaxed line-clamp-2">
                             {edu.summary}
                           </p>
 
@@ -152,19 +152,19 @@ export default function ResumePage() {
                             {edu.technologies.slice(0, 5).map((tech, i) => (
                               <span
                                 key={i}
-                                className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-black/4 dark:bg-white/6 text-[#6e6e73] dark:text-[#86868b] border border-black/6 dark:border-white/6"
+                                className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-default text-muted border-border/20"
                               >
                                 {tech}
                               </span>
                             ))}
                             {edu.technologies.length > 5 && (
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-medium text-[#aeaeb2] dark:text-[#636366]">
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-medium text-muted/60">
                                 {t("cv.moreTags", { n: edu.technologies.length - 5 })}
                               </span>
                             )}
                           </div>
 
-                          <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <p className="text-xs font-semibold text-accent mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                             {t("cv.viewFull")}
                           </p>
                         </div>

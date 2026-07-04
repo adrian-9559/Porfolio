@@ -87,15 +87,15 @@ function UserAvatar({
 function Spinner() {
   return (
     <div className="flex justify-center py-8">
-      <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+      <div className="w-5 h-5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
     </div>
   );
 }
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-8 text-center">
-      <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">{text}</p>
+    <div className="rounded-2xl border border-border bg-surface p-8 text-center">
+      <p className="text-sm text-muted">{text}</p>
     </div>
   );
 }
@@ -131,7 +131,7 @@ function FriendsTab({
       {friends.map((f) => (
         <div
           key={f.id}
-          className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 flex items-center gap-3"
+          className="rounded-2xl border border-border bg-surface p-4 flex items-center gap-3"
         >
           <UserAvatar
             avatarUrl={f.avatar_url}
@@ -139,30 +139,30 @@ function FriendsTab({
             name={f.full_name}
           />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
+            <p className="text-sm font-semibold text-foreground truncate">
               {f.full_name ?? f.email}
             </p>
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5 truncate">
+            <p className="text-xs text-muted mt-0.5 truncate">
               {f.email}
             </p>
-            <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+            <p className="text-xs text-muted/60 mt-0.5">
               Amigos desde {formatDate(f.created_at)}
             </p>
           </div>
           {confirmId === f.id ? (
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+              <span className="text-xs text-muted">
                 ¿Eliminar?
               </span>
               <button
-                className="bg-rose-600 hover:bg-rose-700 disabled:opacity-60 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
+                className="bg-danger hover:bg-danger/80 disabled:opacity-60 text-danger-foreground text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
                 disabled={deleting === f.id}
                 onClick={() => handleDelete(f)}
               >
                 {deleting === f.id ? "…" : "Sí"}
               </button>
               <button
-                className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
+                className="border border-border hover:bg-default text-foreground text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
                 onClick={() => setConfirmId(null)}
               >
                 No
@@ -170,7 +170,7 @@ function FriendsTab({
             </div>
           ) : (
             <button
-              className="text-xs font-medium border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 px-3 py-1.5 rounded-lg transition-colors flex-shrink-0"
+              className="text-xs font-medium border border-danger/20 text-danger hover:bg-danger-soft px-3 py-1.5 rounded-lg transition-colors flex-shrink-0"
               onClick={() => setConfirmId(f.id)}
             >
               Eliminar amigo
@@ -227,7 +227,7 @@ function ReceivedTab({
         return (
           <div
             key={req.id}
-            className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 flex items-center gap-3"
+            className="rounded-2xl border border-border bg-surface p-4 flex items-center gap-3"
           >
             <UserAvatar
               avatarUrl={sender?.avatar_url ?? null}
@@ -235,28 +235,28 @@ function ReceivedTab({
               name={sender?.full_name ?? null}
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
+              <p className="text-sm font-semibold text-foreground truncate">
                 {name}
               </p>
               {email && (
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5 truncate">
+                <p className="text-xs text-muted mt-0.5 truncate">
                   {email}
                 </p>
               )}
-              <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+              <p className="text-xs text-muted/60 mt-0.5">
                 {formatDate(req.created_at)}
               </p>
             </div>
             <div className="flex gap-2 flex-shrink-0">
               <button
-                className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
+                className="bg-success hover:bg-success/80 disabled:opacity-60 text-success-foreground text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
                 disabled={acting === req.id}
                 onClick={() => handleAccept(req)}
               >
                 {acting === req.id ? "…" : "Aceptar"}
               </button>
               <button
-                className="bg-rose-600 hover:bg-rose-700 disabled:opacity-60 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
+                className="bg-danger hover:bg-danger/80 disabled:opacity-60 text-danger-foreground text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
                 disabled={acting === req.id}
                 onClick={() => handleReject(req)}
               >
@@ -292,7 +292,7 @@ function SentTab({
         return (
           <div
             key={req.id}
-            className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 flex items-center gap-3"
+            className="rounded-2xl border border-border bg-surface p-4 flex items-center gap-3"
           >
             <UserAvatar
               avatarUrl={receiver?.avatar_url ?? null}
@@ -300,19 +300,19 @@ function SentTab({
               name={receiver?.full_name ?? null}
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
+              <p className="text-sm font-semibold text-foreground truncate">
                 {name}
               </p>
               {email && (
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5 truncate">
+                <p className="text-xs text-muted mt-0.5 truncate">
                   {email}
                 </p>
               )}
-              <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+              <p className="text-xs text-muted/60 mt-0.5">
                 {formatDate(req.created_at)}
               </p>
             </div>
-            <span className="flex-shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <span className="flex-shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-warning-soft text-warning-soft-foreground">
               Pendiente
             </span>
           </div>
@@ -381,14 +381,14 @@ function SearchTab({ onRequestSent }: { onRequestSent: () => void }) {
     <div className="flex flex-col gap-4">
       <form className="flex gap-2" onSubmit={handleSearch}>
         <input
-          className="flex-1 px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+          className="flex-1 px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30"
           placeholder="Buscar por email…"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <button
-          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors flex-shrink-0"
+          className="bg-accent hover:bg-accent-hover disabled:opacity-60 text-accent-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors flex-shrink-0"
           disabled={searching}
           type="submit"
         >
@@ -401,37 +401,37 @@ function SearchTab({ onRequestSent }: { onRequestSent: () => void }) {
       </form>
 
       {error && (
-        <div className="rounded-2xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/20 p-4">
-          <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>
+        <div className="rounded-2xl border border-danger/20 bg-danger-soft p-4">
+          <p className="text-sm text-danger-soft-foreground">{error}</p>
         </div>
       )}
 
       {result && (
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 flex items-center gap-3">
+        <div className="rounded-2xl border border-border bg-surface p-4 flex items-center gap-3">
           <UserAvatar
             avatarUrl={result.avatar_url}
             email={result.email}
             name={result.full_name}
           />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
+            <p className="text-sm font-semibold text-foreground truncate">
               {result.full_name ?? result.email}
             </p>
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5 truncate">
+            <p className="text-xs text-muted mt-0.5 truncate">
               {result.email}
             </p>
           </div>
           {result.relationship !== "none" ? (
-            <span className="flex-shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-black/5 dark:bg-white/8 text-[#6e6e73] dark:text-[#86868b]">
+            <span className="flex-shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-default text-muted">
               {relationshipLabel[result.relationship]}
             </span>
           ) : sent ? (
-            <span className="flex-shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <span className="flex-shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-success-soft text-success-soft-foreground">
               Solicitud enviada
             </span>
           ) : (
             <button
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors flex-shrink-0"
+              className="bg-accent hover:bg-accent-hover disabled:opacity-60 text-accent-foreground text-xs font-medium px-3 py-1.5 rounded-lg transition-colors flex-shrink-0"
               disabled={!isActionable || sending}
               onClick={handleSendRequest}
             >
@@ -520,10 +520,10 @@ export function UserFriendsSection() {
     <section className="flex flex-col gap-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+          <h2 className="text-lg font-semibold text-foreground">
             Amigos
           </h2>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+          <p className="text-sm text-muted mt-0.5">
             Gestiona tus contactos y solicitudes de amistad
           </p>
         </div>
@@ -534,12 +534,12 @@ export function UserFriendsSection() {
         {metrics.map((m) => (
           <div
             key={m.label}
-            className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 text-center"
+            className="rounded-2xl border border-border bg-surface p-4 text-center"
           >
-            <p className="text-2xl font-semibold text-[#1d1d1f] dark:text-white">
+            <p className="text-2xl font-semibold text-foreground">
               {m.value}
             </p>
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mt-1">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mt-1">
               {m.label}
             </p>
           </div>
@@ -547,14 +547,14 @@ export function UserFriendsSection() {
       </div>
 
       {/* Tab switcher */}
-      <div className="flex gap-1 p-1 rounded-xl bg-black/5 dark:bg-white/5">
+      <div className="flex gap-1 p-1 rounded-xl bg-default">
         {TABS.map((t) => (
           <button
             key={t.id}
             className={`flex-1 py-1.5 text-sm font-medium rounded-lg transition-colors ${
               tab === t.id
-                ? "bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-sm"
-                : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                ? "bg-surface text-foreground shadow-sm"
+                : "text-muted hover:text-foreground"
             }`}
             onClick={() => handleTabClick(t.id)}
           >

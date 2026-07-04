@@ -207,7 +207,7 @@ function Avatar({ name, size = "sm" }: { name: string; size?: "sm" | "md" }) {
 function BalanceBadge({ net }: { net: number }) {
   if (Math.abs(net) < 0.005) {
     return (
-      <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/8 text-[#6e6e73] dark:text-[#86868b]">
+      <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-default text-muted">
         Saldado
       </span>
     );
@@ -312,31 +312,31 @@ function NewGroupModal({
       onClick={onClose}
     >
       <div
-        className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6 w-full max-w-sm mx-4 shadow-xl"
+        className="rounded-2xl border border-border bg-surface p-6 w-full max-w-sm mx-4 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-semibold text-[#1d1d1f] dark:text-white mb-4">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
           Nuevo grupo
         </h3>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
               Nombre del grupo
             </label>
             <input
               autoFocus
-              className="px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+              className="px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30"
               placeholder="Ej: Viaje a Madrid"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
               Moneda
             </label>
             <input
-              className="px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+              className="px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/30"
               maxLength={10}
               placeholder="EUR"
               value={currency}
@@ -346,30 +346,30 @@ function NewGroupModal({
 
           {/* Friend picker */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
               Invitar amigos
             </label>
             {friendsLoading ? (
-              <p className="text-xs text-[#aeaeb2] py-2">Cargando amigos…</p>
+              <p className="text-xs text-muted/60 py-2">Cargando amigos…</p>
             ) : friendsError ? (
               <p className="text-xs text-amber-500 py-1">{friendsError}</p>
             ) : friends.length === 0 ? (
-              <div className="rounded-xl border border-black/8 dark:border-white/8 p-3 text-center">
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+              <div className="rounded-xl border border-border p-3 text-center">
+                <p className="text-xs text-muted">
                   Añade amigos desde la sección Amigos para invitarlos a grupos
                 </p>
               </div>
             ) : (
               <>
                 <input
-                  className="px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                  className="px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30"
                   placeholder="Buscar por nombre o email…"
                   value={friendSearch}
                   onChange={(e) => setFriendSearch(e.target.value)}
                 />
-                <div className="flex flex-col gap-1 max-h-36 overflow-y-auto rounded-xl border border-black/8 dark:border-white/8">
+                <div className="flex flex-col gap-1 max-h-36 overflow-y-auto rounded-xl border border-border">
                   {filteredFriends.length === 0 ? (
-                    <p className="text-xs text-[#aeaeb2] px-3 py-2">
+                    <p className="text-xs text-muted/60 px-3 py-2">
                       Sin resultados
                     </p>
                   ) : (
@@ -382,8 +382,8 @@ function NewGroupModal({
                           key={f.id}
                           className={`flex items-center gap-2.5 px-3 py-2 text-left text-sm transition-colors ${
                             checked
-                              ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                              : "text-[#1d1d1f] dark:text-white hover:bg-black/4 dark:hover:bg-white/5"
+                              ? "bg-blue-50 dark:bg-blue-500/10 text-accent"
+                              : "text-foreground hover:bg-default"
                           }`}
                           type="button"
                           onClick={() => toggleFriend(f.id)}
@@ -391,7 +391,7 @@ function NewGroupModal({
                           <span
                             className={`w-4 h-4 rounded flex items-center justify-center border transition-colors ${
                               checked
-                                ? "bg-blue-600 border-blue-600"
+                                ? "bg-accent border-accent"
                                 : "border-black/20 dark:border-white/20"
                             }`}
                           >
@@ -418,7 +418,7 @@ function NewGroupModal({
                               {label}
                             </p>
                             {f.full_name && (
-                              <p className="text-[11px] text-[#6e6e73] dark:text-[#86868b] truncate">
+                              <p className="text-[11px] text-muted truncate">
                                 {f.email}
                               </p>
                             )}
@@ -429,7 +429,7 @@ function NewGroupModal({
                   )}
                 </div>
                 {selectedIds.size > 0 && (
-                  <p className="text-[11px] text-[#6e6e73] dark:text-[#86868b]">
+                  <p className="text-[11px] text-muted">
                     {selectedIds.size} amigo{selectedIds.size !== 1 ? "s" : ""}{" "}
                     seleccionado{selectedIds.size !== 1 ? "s" : ""}
                   </p>
@@ -441,14 +441,14 @@ function NewGroupModal({
           {error && <p className="text-xs text-rose-500">{error}</p>}
           <div className="flex gap-2 justify-end pt-1">
             <button
-              className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+              className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
               type="button"
               onClick={onClose}
             >
               Cancelar
             </button>
             <button
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+              className="bg-accent hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
               disabled={loading}
               type="submit"
             >
@@ -509,31 +509,31 @@ function AddExpenseForm({
 
   return (
     <form
-      className="rounded-2xl border border-blue-500/20 bg-blue-50/30 dark:bg-blue-500/5 p-4 flex flex-col gap-3"
+      className="rounded-2xl border border-accent/20 bg-accent/5 p-4 flex flex-col gap-3"
       onSubmit={handleSubmit}
     >
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
         Nuevo gasto
       </p>
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1">
-          <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+          <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
             Descripción
           </label>
           <input
             autoFocus
-            className="px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+            className="px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30"
             placeholder="Ej: Cena"
             value={desc}
             onChange={(e) => setDesc(e.target.value)}
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+          <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
             Importe (€)
           </label>
           <input
-            className="px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+            className="px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30"
             min="0.01"
             placeholder="0,00"
             step="0.01"
@@ -544,11 +544,11 @@ function AddExpenseForm({
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
           Pagado por
         </label>
         <select
-          className="px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+          className="px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/30"
           value={paidBy}
           onChange={(e) => setPaidBy(e.target.value)}
         >
@@ -560,7 +560,7 @@ function AddExpenseForm({
         </select>
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
           Dividir entre
         </label>
         <div className="flex flex-wrap gap-2">
@@ -572,8 +572,8 @@ function AddExpenseForm({
                 key={m}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-medium transition-colors ${
                   checked
-                    ? "bg-blue-600 text-white"
-                    : "border border-black/12 dark:border-white/12 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"
+                    ? "bg-accent text-white"
+                    : "border border-border/30 text-muted hover:bg-default"
                 }`}
                 type="button"
                 onClick={() => toggleMember(m)}
@@ -592,14 +592,14 @@ function AddExpenseForm({
       {error && <p className="text-xs text-rose-500">{error}</p>}
       <div className="flex gap-2 justify-end pt-1">
         <button
-          className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+          className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
           type="button"
           onClick={onCancel}
         >
           Cancelar
         </button>
         <button
-          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+          className="bg-accent hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
           disabled={loading}
           type="submit"
         >
@@ -627,7 +627,7 @@ function GroupCard({
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
-    <div className="w-full rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] flex flex-col">
+    <div className="w-full rounded-2xl border border-border bg-surface flex flex-col">
       <div className="flex items-center">
         <button
           className="flex-1 text-left p-4 hover:bg-black/2 dark:hover:bg-white/3 transition-colors flex items-center gap-4 rounded-2xl min-w-0"
@@ -639,10 +639,10 @@ function GroupCard({
             {group.name[0]}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
+            <p className="text-sm font-semibold text-foreground truncate">
               {group.name}
             </p>
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+            <p className="text-xs text-muted mt-0.5">
               {group.members.length} miembros · {group.expenses.length} gastos ·{" "}
               {formatAmount(totalExpenses)} total
             </p>
@@ -651,7 +651,7 @@ function GroupCard({
             <BalanceBadge net={myBalance} />
           </div>
           <svg
-            className="w-4 h-4 text-[#aeaeb2] flex-shrink-0"
+            className="w-4 h-4 text-muted/60 flex-shrink-0"
             fill="none"
             stroke="currentColor"
             strokeWidth={2}
@@ -665,7 +665,7 @@ function GroupCard({
           </svg>
         </button>
         <button
-          className="text-[#aeaeb2] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 p-1.5 rounded-lg transition-colors mr-3 flex-shrink-0"
+          className="text-muted/60 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 p-1.5 rounded-lg transition-colors mr-3 flex-shrink-0"
           title="Eliminar grupo"
           onClick={(e) => {
             e.stopPropagation();
@@ -689,15 +689,15 @@ function GroupCard({
       </div>
       {confirmDelete && (
         <div className="px-4 pb-3 flex items-center gap-2 border-t border-black/5 dark:border-white/5 pt-3">
-          <p className="text-xs text-[#6e6e73] dark:text-[#86868b] flex-1">
+          <p className="text-xs text-muted flex-1">
             ¿Eliminar el grupo{" "}
-            <span className="font-semibold text-[#1d1d1f] dark:text-white">
+            <span className="font-semibold text-foreground">
               {group.name}
             </span>
             ? Esta acción no se puede deshacer.
           </p>
           <button
-            className="text-xs px-3 py-1.5 rounded-lg border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#6e6e73] dark:text-[#86868b] transition-colors"
+            className="text-xs px-3 py-1.5 rounded-lg border border-border/30 hover:bg-default text-muted transition-colors"
             onClick={() => setConfirmDelete(false)}
           >
             Cancelar
@@ -770,26 +770,26 @@ function AddMemberModal({
       onClick={onClose}
     >
       <div
-        className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6 w-full max-w-sm mx-4 shadow-xl"
+        className="rounded-2xl border border-border bg-surface p-6 w-full max-w-sm mx-4 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-semibold text-[#1d1d1f] dark:text-white mb-4">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
           Añadir amigo al grupo
         </h3>
         <input
           autoFocus
-          className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 mb-3"
+          className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 mb-3"
           placeholder="Buscar amigo…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <div className="flex flex-col gap-1 max-h-56 overflow-y-auto rounded-xl border border-black/8 dark:border-white/8">
+        <div className="flex flex-col gap-1 max-h-56 overflow-y-auto rounded-xl border border-border">
           {loading ? (
             <div className="flex justify-center py-6">
-              <div className="w-4 h-4 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+              <div className="w-4 h-4 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
             </div>
           ) : available.length === 0 ? (
-            <p className="text-sm text-[#6e6e73] dark:text-[#86868b] text-center py-6">
+            <p className="text-sm text-muted text-center py-6">
               {friends.length === 0
                 ? "No tienes amigos añadidos aún"
                 : "Todos tus amigos ya están en el grupo"}
@@ -807,15 +807,15 @@ function AddMemberModal({
                     {initials(label)}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-[#1d1d1f] dark:text-white truncate">
+                    <p className="text-sm font-medium text-foreground truncate">
                       {label}
                     </p>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] truncate">
+                    <p className="text-xs text-muted truncate">
                       {f.email}
                     </p>
                   </div>
                   <button
-                    className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
+                    className="flex-shrink-0 bg-accent hover:bg-blue-700 disabled:opacity-60 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
                     disabled={isAdding}
                     onClick={() => handleAdd(f)}
                   >
@@ -830,7 +830,7 @@ function AddMemberModal({
           )}
         </div>
         <button
-          className="mt-4 w-full border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium py-2 rounded-xl transition-colors"
+          className="mt-4 w-full border border-border/30 hover:bg-default text-foreground text-sm font-medium py-2 rounded-xl transition-colors"
           onClick={onClose}
         >
           Cerrar
@@ -915,7 +915,7 @@ function GroupDetail({
       {/* Header */}
       <div className="flex items-center gap-3">
         <button
-          className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5"
+          className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5"
           onClick={onBack}
         >
           <svg
@@ -934,20 +934,20 @@ function GroupDetail({
           Grupos
         </button>
         <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white truncate">
+          <h2 className="text-lg font-semibold text-foreground truncate">
             {group.name}
           </h2>
         </div>
       </div>
 
       {/* Members */}
-      <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4">
+      <div className="rounded-2xl border border-border bg-surface p-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60">
             Miembros
           </p>
           <button
-            className="flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            className="flex items-center gap-1 text-xs font-medium text-accent hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
             onClick={() => setShowAddMember(true)}
           >
             <svg
@@ -967,7 +967,7 @@ function GroupDetail({
           {group.members.map((m) => (
             <div key={m} className="flex items-center gap-2">
               <Avatar name={m} />
-              <span className="text-sm text-[#1d1d1f] dark:text-white">
+              <span className="text-sm text-foreground">
                 {m}
               </span>
             </div>
@@ -990,14 +990,14 @@ function GroupDetail({
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 rounded-xl bg-black/4 dark:bg-white/6 p-1">
+      <div className="flex gap-1 rounded-xl bg-default p-1">
         {(["gastos", "saldos"] as const).map((t) => (
           <button
             key={t}
             className={`flex-1 py-1.5 text-sm font-medium rounded-lg transition-colors capitalize ${
               tab === t
-                ? "bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-sm"
-                : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                ? "bg-surface text-foreground shadow-sm"
+                : "text-muted hover:text-foreground"
             }`}
             onClick={() => setTab(t)}
           >
@@ -1010,8 +1010,8 @@ function GroupDetail({
       {tab === "gastos" && (
         <div className="flex flex-col gap-3">
           {group.expenses.length === 0 && !showAddExpense && (
-            <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-8 text-center">
-              <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+            <div className="rounded-2xl border border-border bg-surface p-8 text-center">
+              <p className="text-sm text-muted">
                 No hay gastos aún
               </p>
             </div>
@@ -1025,7 +1025,7 @@ function GroupDetail({
             return (
               <div
                 key={expense.id}
-                className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] flex flex-col"
+                className="rounded-2xl border border-border bg-surface flex flex-col"
               >
                 <div className="p-4 flex items-center gap-3">
                   <div
@@ -1046,12 +1046,12 @@ function GroupDetail({
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                    <p className="text-sm font-semibold text-foreground">
                       {expense.desc}
                     </p>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+                    <p className="text-xs text-muted mt-0.5">
                       Pagó{" "}
-                      <span className="font-medium text-[#1d1d1f] dark:text-white">
+                      <span className="font-medium text-foreground">
                         {expense.paidBy}
                       </span>{" "}
                       · {formatDate(expense.date)} · dividido entre{" "}
@@ -1059,17 +1059,17 @@ function GroupDetail({
                     </p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                    <p className="text-sm font-semibold text-foreground">
                       {formatAmount(expense.amount)}
                     </p>
                     {myShare > 0 && (
-                      <p className="text-[11px] text-[#6e6e73] dark:text-[#86868b]">
+                      <p className="text-[11px] text-muted">
                         Tu parte: {formatAmount(myShare)}
                       </p>
                     )}
                   </div>
                   <button
-                    className="text-[#aeaeb2] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 p-1.5 rounded-lg transition-colors flex-shrink-0"
+                    className="text-muted/60 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 p-1.5 rounded-lg transition-colors flex-shrink-0"
                     title="Eliminar gasto"
                     onClick={() =>
                       setConfirmDeleteExpenseId(
@@ -1094,15 +1094,15 @@ function GroupDetail({
                 </div>
                 {isConfirming && (
                   <div className="px-4 pb-3 flex items-center gap-2 border-t border-black/5 dark:border-white/5 pt-3">
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] flex-1">
+                    <p className="text-xs text-muted flex-1">
                       ¿Eliminar{" "}
-                      <span className="font-semibold text-[#1d1d1f] dark:text-white">
+                      <span className="font-semibold text-foreground">
                         {expense.desc}
                       </span>
                       ?
                     </p>
                     <button
-                      className="text-xs px-3 py-1.5 rounded-lg border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#6e6e73] dark:text-[#86868b] transition-colors"
+                      className="text-xs px-3 py-1.5 rounded-lg border border-border/30 hover:bg-default text-muted transition-colors"
                       onClick={() => setConfirmDeleteExpenseId(null)}
                     >
                       Cancelar
@@ -1127,7 +1127,7 @@ function GroupDetail({
             />
           ) : (
             <button
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors w-full flex items-center justify-center gap-2"
+              className="bg-accent hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors w-full flex items-center justify-center gap-2"
               onClick={() => setShowAddExpense(true)}
             >
               <svg
@@ -1151,15 +1151,15 @@ function GroupDetail({
 
       {tab === "saldos" && (
         <div className="flex flex-col gap-3">
-          <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-3">
+          <div className="rounded-2xl border border-border bg-surface p-4">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-3">
               Balance por persona
             </p>
             <div className="flex flex-col gap-2">
               {balances.map((b) => (
                 <div key={b.member} className="flex items-center gap-3">
                   <Avatar name={b.member} />
-                  <span className="text-sm text-[#1d1d1f] dark:text-white flex-1">
+                  <span className="text-sm text-foreground flex-1">
                     {b.member}
                   </span>
                   <BalanceBadge net={b.net} />
@@ -1168,12 +1168,12 @@ function GroupDetail({
             </div>
           </div>
 
-          <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-3">
+          <div className="rounded-2xl border border-border bg-surface p-4">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-3">
               Transferencias simplificadas
             </p>
             {debts.length === 0 ? (
-              <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+              <p className="text-sm text-muted">
                 Todo saldado ✓
               </p>
             ) : (
@@ -1184,10 +1184,10 @@ function GroupDetail({
                     className="flex items-center gap-2 py-1.5 border-b border-black/5 dark:border-white/5 last:border-0"
                   >
                     <Avatar name={d.from} size="sm" />
-                    <span className="text-sm text-[#1d1d1f] dark:text-white font-medium">
+                    <span className="text-sm text-foreground font-medium">
                       {d.from}
                     </span>
-                    <div className="flex items-center gap-1 text-[#aeaeb2]">
+                    <div className="flex items-center gap-1 text-muted/60">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -1203,7 +1203,7 @@ function GroupDetail({
                       </svg>
                     </div>
                     <Avatar name={d.to} size="sm" />
-                    <span className="text-sm text-[#1d1d1f] dark:text-white font-medium">
+                    <span className="text-sm text-foreground font-medium">
                       {d.to}
                     </span>
                     <span className="ml-auto text-sm font-semibold text-rose-600 dark:text-rose-400">
@@ -1332,10 +1332,10 @@ export function UserTricountSection() {
       {/* Section header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+          <h2 className="text-lg font-semibold text-foreground">
             Gastos compartidos
           </h2>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+          <p className="text-sm text-muted mt-0.5">
             {loadingGroups
               ? "Cargando…"
               : `${groups.length} ${groups.length === 1 ? "grupo" : "grupos"} · ${
@@ -1349,7 +1349,7 @@ export function UserTricountSection() {
         </div>
         {!selectedGroupId && (
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors flex items-center gap-2 flex-shrink-0"
+            className="bg-accent hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors flex items-center gap-2 flex-shrink-0"
             onClick={() => setShowNewGroup(true)}
           >
             <svg
@@ -1378,8 +1378,8 @@ export function UserTricountSection() {
 
       {/* Content */}
       {loadingGroups ? (
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-8 text-center">
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+        <div className="rounded-2xl border border-border bg-surface p-8 text-center">
+          <p className="text-sm text-muted">
             Cargando grupos…
           </p>
         </div>
@@ -1392,8 +1392,8 @@ export function UserTricountSection() {
       ) : (
         <div className="flex flex-col gap-2">
           {groups.length === 0 && (
-            <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-8 text-center">
-              <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+            <div className="rounded-2xl border border-border bg-surface p-8 text-center">
+              <p className="text-sm text-muted">
                 No tienes grupos aún. ¡Crea el primero!
               </p>
             </div>

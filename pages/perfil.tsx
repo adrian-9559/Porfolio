@@ -37,7 +37,7 @@ export default function PerfilPage() {
     return (
       <DefaultLayout>
         <div className="flex justify-center py-20">
-          <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+          <div className="w-5 h-5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
         </div>
       </DefaultLayout>
     );
@@ -67,7 +67,7 @@ export default function PerfilPage() {
       label: t("profile.statTutorials"),
       value: allContent.filter((c) => c.type === "tutorial").length,
       icon: "🎓",
-      color: "text-blue-600 dark:text-blue-400",
+      color: "text-accent",
       bg: "bg-blue-50 dark:bg-blue-950/30",
     },
     {
@@ -92,19 +92,19 @@ export default function PerfilPage() {
         {/* Breadcrumb */}
         <div className="flex items-center gap-2">
           <Link
-            className="text-xs text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+            className="text-xs text-muted hover:text-foreground transition-colors"
             href="/dashboard"
           >
             {t("profile.panelBtn")}
           </Link>
-          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">/</span>
-          <span className="text-xs text-[#1d1d1f] dark:text-white font-medium">
+          <span className="text-xs text-muted/60">/</span>
+          <span className="text-xs text-foreground font-medium">
             {t("profile.title")}
           </span>
         </div>
 
         {/* Hero card */}
-        <div className="rounded-3xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden">
+        <div className="rounded-3xl border border-border bg-surface overflow-hidden">
           {/* Banner */}
           <div className="h-36 relative bg-gradient-to-r from-blue-600 via-violet-600 to-pink-500">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
@@ -133,7 +133,7 @@ export default function PerfilPage() {
               </div>
               <div className="pb-1 flex gap-2">
                 {isAdmin && (
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50">
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/30 text-accent border border-blue-200 dark:border-blue-800/50">
                     {t("admin.adminBadge")}
                   </span>
                 )}
@@ -143,25 +143,25 @@ export default function PerfilPage() {
               </div>
             </div>
             <h1
-              className="text-2xl font-bold text-[#1d1d1f] dark:text-white"
+              className="text-2xl font-bold text-foreground"
               style={{ letterSpacing: "-0.02em" }}
             >
               {t("profile.greeting", { name: firstName })}
             </h1>
-            <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+            <p className="text-sm text-muted mt-0.5">
               {user?.email}
             </p>
-            <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1">
+            <p className="text-xs text-muted/60 mt-1">
               {t("profile.memberSince", { year: memberSince })}
             </p>
           </div>
 
           {/* Stats bar */}
-          <div className="border-t border-black/8 dark:border-white/8 grid grid-cols-4">
+          <div className="border-t border-border grid grid-cols-4">
             {stats.map((s, i) => (
               <div
                 key={s.label}
-                className={`flex flex-col items-center py-4 px-2 ${i < stats.length - 1 ? "border-r border-black/8 dark:border-white/8" : ""}`}
+                className={`flex flex-col items-center py-4 px-2 ${i < stats.length - 1 ? "border-r border-border" : ""}`}
               >
                 <span
                   className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm mb-2 ${s.bg}`}
@@ -169,7 +169,7 @@ export default function PerfilPage() {
                   {s.icon}
                 </span>
                 <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
-                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+                <p className="text-[10px] text-muted/60 mt-0.5">
                   {s.label}
                 </p>
               </div>
@@ -179,14 +179,14 @@ export default function PerfilPage() {
 
         {/* Services */}
         <div>
-          <h2 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-3">
+          <h2 className="text-base font-bold text-foreground mb-3">
             {t("profile.services")}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             {SERVICES.map((s) => (
               <Link
                 key={s.id}
-                className="group p-4 rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] hover:border-black/15 dark:hover:border-white/15 hover:shadow-md transition-all text-center no-underline"
+                className="group p-4 rounded-2xl border border-border bg-surface hover:border-black/15 dark:hover:border-white/15 hover:shadow-md transition-all text-center no-underline"
                 href={s.href}
               >
                 <div
@@ -194,10 +194,10 @@ export default function PerfilPage() {
                 >
                   {s.icon}
                 </div>
-                <p className="text-xs font-semibold text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <p className="text-xs font-semibold text-foreground group-hover:text-accent transition-colors">
                   {s.label}
                 </p>
-                <p className="text-[10px] text-[#6e6e73] dark:text-[#86868b] mt-0.5 leading-tight">
+                <p className="text-[10px] text-muted mt-0.5 leading-tight">
                   {s.desc}
                 </p>
               </Link>
@@ -216,7 +216,7 @@ export default function PerfilPage() {
               title={t("profile.statArticles")}
             />
             <ContentGroup
-              color="text-blue-600 dark:text-blue-400"
+              color="text-accent"
               emoji="🎓"
               href="/blog/tutoriales"
               items={tutorials}
@@ -232,14 +232,14 @@ export default function PerfilPage() {
           </div>
 
           {/* Quick actions vertical */}
-          <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 flex flex-col gap-2">
-            <h3 className="text-xs font-bold text-[#1d1d1f] dark:text-white mb-1">
+          <div className="rounded-2xl border border-border bg-surface p-4 flex flex-col gap-2">
+            <h3 className="text-xs font-bold text-foreground mb-1">
               {t("profile.quickActions")}
             </h3>
             {QUICK_ACTIONS.map((a) => (
               <Link
                 key={a.href}
-                className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 hover:border-black/15 dark:hover:border-white/15 text-xs font-medium text-[#1d1d1f] dark:text-white transition-all no-underline"
+                className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-border hover:border-black/15 dark:hover:border-white/15 text-xs font-medium text-foreground transition-all no-underline"
                 href={a.href}
               >
                 <span className="text-sm">{a.icon}</span>
@@ -277,11 +277,11 @@ function ContentGroup({
 }) {
   const { t } = useT();
   return (
-    <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4">
+    <div className="rounded-2xl border border-border bg-surface p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-1.5">
           <span>{emoji}</span>
-          <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-white">
+          <h3 className="text-sm font-bold text-foreground">
             {title}
           </h3>
         </div>
@@ -296,7 +296,7 @@ function ContentGroup({
         {items.map((item) => (
           <li key={item.id}>
             <Link
-              className="text-xs text-[#3d3d3d] dark:text-[#c0c0c5] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline line-clamp-1"
+              className="text-xs text-[#3d3d3d] dark:text-[#c0c0c5] hover:text-foreground transition-colors no-underline line-clamp-1"
               href={`/blog/${item.slug}`}
             >
               {item.title}

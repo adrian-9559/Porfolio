@@ -184,34 +184,34 @@ export function UserAgentsSection() {
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <button
-            className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+            className="text-sm text-muted hover:text-foreground transition-colors"
             onClick={() => setView("list")}
           >
             ← Agentes
           </button>
-          <span className="text-[#aeaeb2]">/</span>
-          <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+          <span className="text-muted/60">/</span>
+          <span className="text-sm font-medium text-foreground">
             Nuevo agente
           </span>
         </div>
 
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6 space-y-6">
+        <div className="rounded-2xl border border-border bg-surface p-6 space-y-6">
           {/* Preset selector */}
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-3">
               Preset
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {PRESETS.map((p) => (
                 <button
                   key={p.id}
-                  className={`p-3 rounded-xl border text-left transition-all ${preset.id === p.id ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20" : "border-black/12 dark:border-white/12 hover:bg-black/3 dark:hover:bg-white/3"}`}
+                  className={`p-3 rounded-xl border text-left transition-all ${preset.id === p.id ? "border-accent bg-accent/10" : "border-border/30 hover:bg-default"}`}
                   onClick={() => handlePresetChange(p)}
                 >
-                  <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+                  <p className="text-sm font-medium text-foreground">
                     {p.label}
                   </p>
-                  <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+                  <p className="text-xs text-muted mt-0.5">
                     {p.desc}
                   </p>
                 </button>
@@ -221,11 +221,11 @@ export function UserAgentsSection() {
 
           {/* Name */}
           <div>
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-2">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-2">
               Nombre del agente
             </label>
             <input
-              className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+              className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
               placeholder="Ej: Mi asistente de código"
               value={agentName}
               onChange={(e) => setAgentName(e.target.value)}
@@ -234,11 +234,11 @@ export function UserAgentsSection() {
 
           {/* Prompt */}
           <div>
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-2">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-2">
               Prompt base
             </label>
             <textarea
-              className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all resize-none"
+              className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all resize-none"
               placeholder="Describe el comportamiento del agente..."
               rows={5}
               value={agentPrompt}
@@ -248,14 +248,14 @@ export function UserAgentsSection() {
 
           {/* Tools */}
           <div>
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-3">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-3">
               Herramientas
             </label>
             <div className="flex flex-wrap gap-2">
               {ALL_TOOLS.map((t) => (
                 <button
                   key={t}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${agentTools.includes(t) ? "bg-blue-600 text-white" : "border border-black/12 dark:border-white/12 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"}`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${agentTools.includes(t) ? "bg-accent text-accent-foreground" : "border border-border/30 text-muted hover:bg-default"}`}
                   onClick={() =>
                     setAgentTools((prev) =>
                       prev.includes(t)
@@ -273,15 +273,15 @@ export function UserAgentsSection() {
           {/* Memory */}
           <div className="flex items-center justify-between py-3 border-t border-black/5 dark:border-white/5">
             <div>
-              <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+              <p className="text-sm font-medium text-foreground">
                 Memoria persistente
               </p>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+              <p className="text-xs text-muted">
                 El agente recuerda conversaciones anteriores
               </p>
             </div>
             <button
-              className={`w-10 h-6 rounded-full transition-colors relative ${agentMemory ? "bg-blue-600" : "bg-black/20 dark:bg-white/20"}`}
+              className={`w-10 h-6 rounded-full transition-colors relative ${agentMemory ? "bg-accent" : "bg-black/20 dark:bg-white/20"}`}
               onClick={() => setAgentMemory((v) => !v)}
             >
               <span
@@ -292,14 +292,14 @@ export function UserAgentsSection() {
 
           <div className="flex gap-3 pt-2">
             <button
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-medium px-5 py-2 rounded-xl transition-colors"
+              className="bg-accent hover:bg-accent-hover disabled:opacity-50 text-accent-foreground text-sm font-medium px-5 py-2 rounded-xl transition-colors"
               disabled={!agentName.trim()}
               onClick={handleCreate}
             >
               Crear agente
             </button>
             <button
-              className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+              className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
               onClick={() => setView("list")}
             >
               Cancelar
@@ -315,7 +315,7 @@ export function UserAgentsSection() {
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <button
-            className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+            className="text-sm text-muted hover:text-foreground transition-colors"
             onClick={() => {
               setView("list");
               setRunInput("");
@@ -324,13 +324,13 @@ export function UserAgentsSection() {
           >
             ← Agentes
           </button>
-          <span className="text-[#aeaeb2]">/</span>
-          <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+          <span className="text-muted/60">/</span>
+          <span className="text-sm font-medium text-foreground">
             Ejecutar: {selectedAgent.name}
           </span>
         </div>
 
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6 space-y-4">
+        <div className="rounded-2xl border border-border bg-surface p-6 space-y-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-950/40 flex items-center justify-center">
               <svg
@@ -356,17 +356,17 @@ export function UserAgentsSection() {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+              <p className="text-sm font-semibold text-foreground">
                 {selectedAgent.name}
               </p>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+              <p className="text-xs text-muted">
                 {selectedAgent.tools.join(", ")}
               </p>
             </div>
           </div>
 
           <textarea
-            className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all resize-none"
+            className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all resize-none"
             placeholder="Escribe tu consulta al agente..."
             rows={4}
             value={runInput}
@@ -374,7 +374,7 @@ export function UserAgentsSection() {
           />
 
           <button
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-medium px-5 py-2 rounded-xl transition-colors"
+            className="flex items-center gap-2 bg-accent hover:bg-accent-hover disabled:opacity-50 text-accent-foreground text-sm font-medium px-5 py-2 rounded-xl transition-colors"
             disabled={!runInput.trim() || running}
             onClick={handleRun}
           >
@@ -405,11 +405,11 @@ export function UserAgentsSection() {
           </button>
 
           {runResult && (
-            <div className="mt-4 p-4 rounded-xl bg-black/3 dark:bg-white/3 border border-black/8 dark:border-white/8">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2">
+            <div className="mt-4 p-4 rounded-xl bg-default border border-border">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-2">
                 Respuesta
               </p>
-              <p className="text-sm text-[#1d1d1f] dark:text-white whitespace-pre-wrap leading-relaxed">
+              <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
                 {runResult}
               </p>
             </div>
@@ -424,13 +424,13 @@ export function UserAgentsSection() {
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <button
-            className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+            className="text-sm text-muted hover:text-foreground transition-colors"
             onClick={() => setView("list")}
           >
             ← Agentes
           </button>
-          <span className="text-[#aeaeb2]">/</span>
-          <span className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+          <span className="text-muted/60">/</span>
+          <span className="text-sm font-medium text-foreground">
             Historial de ejecuciones
           </span>
         </div>
@@ -439,25 +439,25 @@ export function UserAgentsSection() {
           {execs.map((ex) => (
             <div
               key={ex.id}
-              className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 space-y-3"
+              className="rounded-2xl border border-border bg-surface p-4 space-y-3"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  <span className="text-xs font-medium text-[#1d1d1f] dark:text-white">
+                  <span className="text-xs font-medium text-foreground">
                     {ex.agentName}
                   </span>
-                  <span className="text-xs text-[#aeaeb2]">{ex.duration}</span>
+                  <span className="text-xs text-muted/60">{ex.duration}</span>
                 </div>
-                <span className="text-xs text-[#aeaeb2]">
+                <span className="text-xs text-muted/60">
                   {relTime(ex.date)}
                 </span>
               </div>
-              <div className="p-3 rounded-lg bg-black/3 dark:bg-white/3">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] mb-1">
+              <div className="p-3 rounded-lg bg-default">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-1">
                   Input
                 </p>
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] truncate">
+                <p className="text-xs text-muted truncate">
                   {ex.input}
                 </p>
               </div>
@@ -465,7 +465,7 @@ export function UserAgentsSection() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-blue-400 mb-1">
                   Respuesta
                 </p>
-                <p className="text-xs text-[#1d1d1f] dark:text-white line-clamp-3 whitespace-pre-wrap">
+                <p className="text-xs text-foreground line-clamp-3 whitespace-pre-wrap">
                   {ex.output}
                 </p>
               </div>
@@ -486,16 +486,16 @@ export function UserAgentsSection() {
       )}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+          <h2 className="text-lg font-semibold text-foreground">
             Agentes IA
           </h2>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+          <p className="text-sm text-muted mt-0.5">
             Crea y gestiona tus asistentes inteligentes personalizados
           </p>
         </div>
         <div className="flex gap-2">
           <button
-            className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5"
+            className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5"
             onClick={() => setView("history")}
           >
             <svg
@@ -514,7 +514,7 @@ export function UserAgentsSection() {
             Historial
           </button>
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors flex items-center gap-1.5"
+            className="bg-accent hover:bg-accent-hover text-accent-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors flex items-center gap-1.5"
             onClick={() => setView("create")}
           >
             <svg
@@ -536,18 +536,18 @@ export function UserAgentsSection() {
       </div>
 
       {loading ? (
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] py-16 text-center">
+        <div className="rounded-2xl border border-border bg-surface py-16 text-center">
           <div className="w-6 h-6 rounded-full border-2 border-black/20 dark:border-white/20 border-t-blue-500 animate-spin mx-auto" />
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-3">
+          <p className="text-sm text-muted mt-3">
             Cargando agentes...
           </p>
         </div>
       ) : agents.length === 0 ? (
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] py-16 text-center">
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+        <div className="rounded-2xl border border-border bg-surface py-16 text-center">
+          <p className="text-sm text-muted">
             No tienes agentes creados
           </p>
-          <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1">
+          <p className="text-xs text-muted/60 mt-1">
             Crea tu primer agente personalizado
           </p>
         </div>
@@ -556,7 +556,7 @@ export function UserAgentsSection() {
           {agents.map((agent) => (
             <div
               key={agent.id}
-              className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5"
+              className="rounded-2xl border border-border bg-surface p-5"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -584,7 +584,7 @@ export function UserAgentsSection() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                    <p className="text-sm font-semibold text-foreground">
                       {agent.name}
                     </p>
                     <div className="flex items-center gap-2 mt-1 flex-wrap">
@@ -593,14 +593,14 @@ export function UserAgentsSection() {
                           agent.preset}
                       </span>
                       {agent.memory_enabled && (
-                        <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 text-xs">
+                        <span className="px-2 py-0.5 rounded-full bg-accent/10 text-accent text-xs">
                           memoria
                         </span>
                       )}
                       {agent.tools.slice(0, 2).map((t) => (
                         <span
                           key={t}
-                          className="text-xs text-[#aeaeb2] dark:text-[#636366]"
+                          className="text-xs text-muted/60"
                         >
                           {t}
                         </span>
@@ -609,17 +609,17 @@ export function UserAgentsSection() {
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                  <p className="text-xs text-muted/60">
                     {relTime(agent.created_at)}
                   </p>
                 </div>
               </div>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-3 line-clamp-2">
+              <p className="text-xs text-muted mt-3 line-clamp-2">
                 {agent.system_prompt}
               </p>
               <div className="flex gap-2 mt-4">
                 <button
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
+                  className="bg-accent hover:bg-accent-hover text-accent-foreground text-xs font-medium px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
                   onClick={() => {
                     setSelectedAgent(agent);
                     setRunInput("");
@@ -643,7 +643,7 @@ export function UserAgentsSection() {
                   Ejecutar
                 </button>
                 <button
-                  className="text-xs text-[#aeaeb2] hover:text-red-500 px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                  className="text-xs text-muted/60 hover:text-red-500 px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
                   onClick={async () => {
                     try {
                       await agentService.delete(agent.id);

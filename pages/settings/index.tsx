@@ -13,10 +13,10 @@ export default function SettingsPage() {
     <DefaultLayout>
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-[#1d1d1f] dark:text-white">
+          <h1 className="text-2xl font-semibold text-foreground">
             {t("settings.title")}
           </h1>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+          <p className="text-sm text-muted mt-1">
             {t("settings.subtitle")}
           </p>
         </div>

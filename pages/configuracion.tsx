@@ -23,7 +23,7 @@ export default function ConfiguracionPage() {
     return (
       <DefaultLayout>
         <div className="flex justify-center py-20">
-          <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+          <div className="w-5 h-5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
         </div>
       </DefaultLayout>
     );
@@ -36,25 +36,25 @@ export default function ConfiguracionPage() {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Link
-              className="text-xs text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+              className="text-xs text-muted hover:text-foreground transition-colors"
               href="/perfil"
             >
               {t("profile.title")}
             </Link>
-            <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+            <span className="text-xs text-muted/60">
               /
             </span>
-            <span className="text-xs text-[#1d1d1f] dark:text-white font-medium">
+            <span className="text-xs text-foreground font-medium">
               {t("settings.title")}
             </span>
           </div>
           <h1
-            className="text-3xl font-bold text-[#1d1d1f] dark:text-white"
+            className="text-3xl font-bold text-foreground"
             style={{ letterSpacing: "-0.02em" }}
           >
             {t("settings.title")}
           </h1>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+          <p className="text-sm text-muted mt-1">
             {t("settings.subtitle")}
           </p>
         </div>
@@ -64,7 +64,7 @@ export default function ConfiguracionPage() {
           {TABS.map((t) => (
             <button
               key={t.id}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${tab === t.id ? "bg-white dark:bg-[#1c1c22] text-[#1d1d1f] dark:text-white shadow-sm" : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"}`}
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${tab === t.id ? "bg-white dark:bg-[#1c1c22] text-foreground shadow-sm" : "text-muted hover:text-foreground"}`}
               onClick={() => setTab(t.id)}
             >
               <span>{t.icon}</span>
@@ -74,7 +74,7 @@ export default function ConfiguracionPage() {
         </div>
 
         {/* Content */}
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6">
+        <div className="rounded-2xl border border-border bg-surface p-6">
           {tab === "perfil" && <PerfilTab />}
           {tab === "seguridad" && <SeguridadTab />}
           {tab === "preferencias" && <PreferenciasTab />}
@@ -93,7 +93,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-1.5">
+      <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
         {label}
       </label>
       {children}
@@ -102,14 +102,14 @@ function Field({
 }
 
 const inputCls =
-  "w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/[0.03] dark:bg-white/[0.05] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all";
+  "w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/[0.03] dark:bg-white/[0.05] text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all";
 
 function SaveBtn({ saved, onClick }: { saved: boolean; onClick: () => void }) {
   const { t } = useT();
 
   return (
     <button
-      className={`flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-xl transition-all ${saved ? "bg-emerald-600 text-white" : "bg-blue-600 hover:bg-blue-700 text-white"}`}
+      className={`flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-xl transition-all ${saved ? "bg-emerald-600 text-white" : "bg-accent hover:bg-accent-hover text-accent-foreground"}`}
       onClick={onClick}
     >
       {saved ? <>✓ {t("settings.saved")}</> : t("settings.saveChanges")}
@@ -141,10 +141,10 @@ function PerfilTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-1">
+        <h2 className="text-base font-bold text-foreground mb-1">
           {t("settings.profileInfo")}
         </h2>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+        <p className="text-xs text-muted">
           {t("settings.profileInfoDesc")}
         </p>
       </div>
@@ -163,10 +163,10 @@ function PerfilTab() {
           )}
         </div>
         <div>
-          <button className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+          <button className="text-sm font-medium text-accent hover:underline">
             {t("settings.changePhoto")}
           </button>
-          <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+          <p className="text-xs text-muted/60 mt-0.5">
             {t("settings.photoHint")}
           </p>
         </div>
@@ -185,10 +185,10 @@ function PerfilTab() {
         <Field label={t("auth.email")}>
           <input
             disabled
-            className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-black/[0.03] dark:bg-white/[0.03] text-sm text-[#aeaeb2] dark:text-[#636366] cursor-not-allowed"
+            className="w-full px-3 py-2 rounded-xl border border-border bg-black/[0.03] dark:bg-white/[0.03] text-sm text-muted/60 cursor-not-allowed"
             value={user?.email ?? ""}
           />
-          <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1">
+          <p className="text-xs text-muted/60 mt-1">
             {t("settings.emailNotChangable")}
           </p>
         </Field>
@@ -262,10 +262,10 @@ function SeguridadTab() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-1">
+        <h2 className="text-base font-bold text-foreground mb-1">
           {t("settings.changePassword")}
         </h2>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-5">
+        <p className="text-xs text-muted mb-5">
           {t("settings.changePasswordSubtitle")}
         </p>
 
@@ -295,7 +295,7 @@ function SeguridadTab() {
         )}
 
         <button
-          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2 rounded-xl transition-colors"
+          className="mt-4 bg-accent hover:bg-accent-hover text-accent-foreground text-sm font-semibold px-5 py-2 rounded-xl transition-colors"
           onClick={changePassword}
         >
           {t("settings.updatePassword")}
@@ -303,18 +303,18 @@ function SeguridadTab() {
       </div>
 
       <div>
-        <h2 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-1">
+        <h2 className="text-base font-bold text-foreground mb-1">
           {t("settings.activeSessions")}
         </h2>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-4">
+        <p className="text-xs text-muted mb-4">
           {t("settings.sessionsDesc")}
         </p>
-        <div className="rounded-xl border border-black/8 dark:border-white/8 divide-y divide-black/5 dark:divide-white/5">
+        <div className="rounded-xl border border-border divide-y divide-black/5 dark:divide-white/5">
           {SESSIONS.map((s, i) => (
             <div key={i} className="flex items-center gap-4 px-4 py-3">
-              <div className="w-8 h-8 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-default flex items-center justify-center flex-shrink-0">
                 <svg
-                  className="w-4 h-4 text-[#6e6e73]"
+                  className="w-4 h-4 text-muted"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -337,7 +337,7 @@ function SeguridadTab() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+                  <p className="text-sm font-medium text-foreground">
                     {s.device}
                   </p>
                   {s.current && (
@@ -346,7 +346,7 @@ function SeguridadTab() {
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                <p className="text-xs text-muted/60">
                   {s.location} · {s.date}
                 </p>
               </div>
@@ -388,10 +388,10 @@ function PreferenciasTab() {
   }) => (
     <div className="flex items-start justify-between gap-4 py-3 border-b border-black/6 dark:border-white/6 last:border-0">
       <div>
-        <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+        <p className="text-sm font-medium text-foreground">
           {label}
         </p>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+        <p className="text-xs text-muted mt-0.5">
           {desc}
         </p>
       </div>
@@ -409,19 +409,19 @@ function PreferenciasTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-1">
+        <h2 className="text-base font-bold text-foreground mb-1">
           {t("user.tabPreferences")}
         </h2>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+        <p className="text-xs text-muted">
           {t("settings.appearanceDesc")}
         </p>
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider mb-2">
+        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
           {t("notifications.title")}
         </p>
-        <div className="rounded-xl border border-black/8 dark:border-white/8 px-4">
+        <div className="rounded-xl border border-border px-4">
           <Toggle
             desc={t("settings.emailNotificationsDesc")}
             label={t("settings.emailNotifications")}
@@ -438,7 +438,7 @@ function PreferenciasTab() {
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider mb-2">
+        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
           {t("settings.account")}
         </p>
         <div className="rounded-xl border border-red-200 dark:border-red-800/40 bg-red-50/50 dark:bg-red-950/10 p-4 space-y-3">

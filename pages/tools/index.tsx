@@ -106,7 +106,7 @@ export default function ToolsPage() {
         <meta content="summary_large_image" name="twitter:card" />
       </Head>
 
-      <div className="min-h-screen bg-white dark:bg-[#0a0a0f]">
+      <div className="min-h-screen bg-background">
         <div className="max-w-5xl mx-auto px-5 sm:px-6 py-12">
           {/* Header */}
           <div className="mb-10">
@@ -115,10 +115,10 @@ export default function ToolsPage() {
                 {t("tools.aiTokensBadge")}
               </span>
             </div>
-            <h1 className="text-4xl font-bold text-[#1d1d1f] dark:text-white mb-3">
+            <h1 className="text-4xl font-bold text-foreground mb-3">
               {t("tools.header")}
             </h1>
-            <p className="text-lg text-[#6e6e73] dark:text-[#86868b] max-w-xl">
+            <p className="text-lg text-muted max-w-xl">
               {t("tools.subtitle")}
             </p>
           </div>
@@ -127,7 +127,7 @@ export default function ToolsPage() {
           <div className="flex flex-col sm:flex-row gap-3 mb-8">
             <div className="relative flex-1">
               <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2]"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted/60"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={2}
@@ -140,21 +140,21 @@ export default function ToolsPage() {
                 />
               </svg>
               <input
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-black/12 dark:border-white/12 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-black/12 dark:border-white/12 bg-surface text-sm text-foreground placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50"
                 placeholder={t("tools.searchPlaceholder")}
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="flex gap-1 p-1 rounded-xl bg-black/5 dark:bg-white/5">
+            <div className="flex gap-1 p-1 rounded-xl bg-default">
               {Object.keys(categoryToKey).map((cat) => (
                 <button
                   key={cat}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     category === cat
-                      ? "bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-sm"
-                      : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                      ? "bg-surface text-foreground shadow-sm"
+                      : "text-muted hover:text-foreground"
                   }`}
                   onClick={() => setCategory(cat)}
                 >
@@ -167,7 +167,7 @@ export default function ToolsPage() {
           {/* Grid */}
           {filtered.length === 0 && (
             <div className="text-center py-20">
-              <p className="text-[#6e6e73] dark:text-[#86868b]">
+              <p className="text-muted">
                 {t("tools.noResults", { search })}
               </p>
             </div>
@@ -180,7 +180,7 @@ export default function ToolsPage() {
               return (
                 <button
                   key={tool.slug}
-                  className="group text-left border border-black/8 dark:border-white/8 rounded-2xl p-5 hover:border-fuchsia-300 dark:hover:border-fuchsia-700 hover:shadow-lg hover:shadow-fuchsia-500/5 transition-all bg-white dark:bg-[#111116]"
+                  className="group text-left border-border rounded-2xl p-5 hover:border-fuchsia-300 dark:hover:border-fuchsia-700 hover:shadow-lg hover:shadow-fuchsia-500/5 transition-all bg-surface"
                   onClick={() => router.push(`/blog/herramientas/${tool.slug}`)}
                 >
                   <div className="flex items-start justify-between gap-3 mb-3">
@@ -189,24 +189,24 @@ export default function ToolsPage() {
                     >
                       {tool.title[0]}
                     </div>
-                    <span className="text-xs text-[#aeaeb2] dark:text-[#636366] bg-black/5 dark:bg-white/8 px-2 py-0.5 rounded-full">
+                    <span className="text-xs text-muted/60 bg-default px-2 py-0.5 rounded-full">
                       {info?.category}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-fuchsia-600 dark:group-hover:text-fuchsia-400 transition-colors">
+                  <h3 className="text-base font-semibold text-foreground mb-1 group-hover:text-fuchsia-600 dark:group-hover:text-fuchsia-400 transition-colors">
                     {tool.title}
                   </h3>
-                  <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mb-4 leading-relaxed">
+                  <p className="text-sm text-muted mb-4 leading-relaxed">
                     {tool.description}
                   </p>
 
                   {info?.endpoint && (
                     <div className="mb-3">
-                      <p className="text-[10px] font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider mb-1">
+                      <p className="text-[10px] font-semibold text-muted/60 uppercase tracking-wider mb-1">
                         {t("tools.endpointLabel")}
                       </p>
-                      <code className="text-xs bg-black/5 dark:bg-white/5 px-2 py-1 rounded-lg text-[#1d1d1f] dark:text-[#e5e5ea] font-mono">
+                      <code className="text-xs bg-default px-2 py-1 rounded-lg text-[#1d1d1f] dark:text-[#e5e5ea] font-mono">
                         {info.endpoint}
                       </code>
                     </div>
@@ -214,10 +214,10 @@ export default function ToolsPage() {
 
                   {info?.example && (
                     <div>
-                      <p className="text-[10px] font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider mb-1">
+                      <p className="text-[10px] font-semibold text-muted/60 uppercase tracking-wider mb-1">
                         {t("tools.exampleLabel")}
                       </p>
-                      <p className="text-xs text-[#6e6e73] dark:text-[#86868b] italic">
+                      <p className="text-xs text-muted italic">
                         {info.example}
                       </p>
                     </div>
@@ -232,7 +232,7 @@ export default function ToolsPage() {
           </div>
 
           {/* Git Repositories CTA */}
-          <div className="mt-8 flex items-center gap-4 p-5 rounded-2xl border border-black/8 dark:border-white/8 bg-[#0d1117] dark:bg-[#0d1117]">
+          <div className="mt-8 flex items-center gap-4 p-5 rounded-2xl border-border bg-[#0d1117] dark:bg-[#0d1117]">
             <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
               <svg
                 fill="none"
@@ -264,11 +264,11 @@ export default function ToolsPage() {
           </div>
 
           {/* API Info */}
-          <div className="mt-6 p-6 rounded-2xl bg-black/3 dark:bg-white/3 border border-black/8 dark:border-white/8">
-            <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white mb-2">
+          <div className="mt-6 p-6 rounded-2xl bg-default border-border">
+            <h3 className="text-base font-semibold text-foreground mb-2">
               {t("tools.apiTitle")}
             </h3>
-            <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mb-4">
+            <p className="text-sm text-muted mb-4">
               {t("tools.apiDesc")}
             </p>
             <pre className="bg-[#0d1117] rounded-xl p-4 text-xs text-[#e6edf3] overflow-x-auto">

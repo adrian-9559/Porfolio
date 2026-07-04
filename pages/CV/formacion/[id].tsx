@@ -21,7 +21,7 @@ function Section({
 }) {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-bold text-[#1d1d1f] dark:text-white">
+      <h2 className="text-lg font-bold text-foreground">
         {title}
       </h2>
       {children}
@@ -50,7 +50,7 @@ function BulletList({ items }: { items: string[] }) {
           className="flex items-start gap-3 text-sm text-[#3d3d3d] dark:text-[#c0c0c5] leading-relaxed"
         >
           <svg
-            className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"
+            className="w-4 h-4 text-accent flex-shrink-0 mt-0.5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -79,21 +79,21 @@ export default function FormacionPage({ edu }: Props) {
     >
       <div className="max-w-4xl mx-auto space-y-12 py-4">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-[#aeaeb2] dark:text-[#636366]">
+        <nav className="flex items-center gap-2 text-xs text-muted/60">
           <Link
-            className="hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
+            className="hover:text-muted transition-colors no-underline"
             href="/CV"
           >
             CV
           </Link>
           <span>/</span>
-          <span className="text-[#6e6e73] dark:text-[#86868b] truncate max-w-[250px]">
+          <span className="text-muted truncate max-w-[250px]">
             {edu.program}
           </span>
         </nav>
 
         {/* Hero */}
-        <div className="relative overflow-clip rounded-3xl p-8 md:p-10 bg-gradient-to-br from-white to-[#f5f5f7] dark:from-[#111116] dark:to-[#0d0d12] border border-black/8 dark:border-white/8">
+        <div className="relative overflow-clip rounded-3xl p-8 md:p-10 bg-gradient-to-br from-white to-[#f5f5f7] dark:from-[#111116] dark:to-[#0d0d12] border-border">
           <div
             className={`blob absolute -top-20 -right-20 w-[400px] h-[400px] bg-gradient-to-bl ${edu.color} opacity-10 -z-10`}
           />
@@ -104,20 +104,20 @@ export default function FormacionPage({ edu }: Props) {
               {edu.level}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest mb-1">
+              <p className="text-xs font-semibold text-muted/60 uppercase tracking-widest mb-1">
                 {edu.levelFull}
               </p>
               <h1
-                className="text-2xl md:text-3xl font-bold text-[#1d1d1f] dark:text-white leading-tight mb-1"
+                className="text-2xl md:text-3xl font-bold text-foreground leading-tight mb-1"
                 style={{ letterSpacing: "-0.02em" }}
               >
                 {edu.program}
               </h1>
-              <p className="text-base font-semibold text-blue-600 dark:text-blue-400">
+              <p className="text-base font-semibold text-accent">
                 {edu.institution}
               </p>
               <div className="flex items-center gap-4 mt-3 flex-wrap">
-                <span className="flex items-center gap-1.5 text-sm text-[#6e6e73] dark:text-[#86868b]">
+                <span className="flex items-center gap-1.5 text-sm text-muted">
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -133,7 +133,7 @@ export default function FormacionPage({ edu }: Props) {
                   </svg>
                   {edu.year}
                 </span>
-                <span className="flex items-center gap-1.5 text-sm text-[#6e6e73] dark:text-[#86868b]">
+                <span className="flex items-center gap-1.5 text-sm text-muted">
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -162,16 +162,16 @@ export default function FormacionPage({ edu }: Props) {
 
         {/* Summary + Institution */}
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 space-y-3">
-            <h2 className="text-sm font-bold text-[#1d1d1f] dark:text-white uppercase tracking-wider">
+          <div className="p-6 rounded-2xl bg-surface border-border space-y-3">
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">
               Resumen
             </h2>
             <p className="text-sm text-[#3d3d3d] dark:text-[#c0c0c5] leading-relaxed">
               {edu.summary}
             </p>
           </div>
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 space-y-3">
-            <h2 className="text-sm font-bold text-[#1d1d1f] dark:text-white uppercase tracking-wider">
+          <div className="p-6 rounded-2xl bg-surface border-border space-y-3">
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">
               Sobre el centro
             </h2>
             <p className="text-sm text-[#3d3d3d] dark:text-[#c0c0c5] leading-relaxed">
@@ -181,14 +181,14 @@ export default function FormacionPage({ edu }: Props) {
         </div>
 
         {/* Objectives */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+        <div className="p-6 rounded-2xl bg-surface border-border">
           <Section title="Objetivos de la formación">
             <BulletList items={edu.objectives} />
           </Section>
         </div>
 
         {/* Competencies */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+        <div className="p-6 rounded-2xl bg-surface border-border">
           <Section title="Competencias desarrolladas">
             <PillList items={edu.competencies} />
           </Section>
@@ -196,8 +196,8 @@ export default function FormacionPage({ edu }: Props) {
 
         {/* Technologies + Tools + Methodologies */}
         <div className="grid md:grid-cols-3 gap-4">
-          <div className="p-5 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 space-y-3">
-            <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-white">
+          <div className="p-5 rounded-2xl bg-surface border-border space-y-3">
+            <h3 className="text-sm font-bold text-foreground">
               Tecnologías
             </h3>
             <div className="flex flex-wrap gap-1.5">
@@ -208,8 +208,8 @@ export default function FormacionPage({ edu }: Props) {
               ))}
             </div>
           </div>
-          <div className="p-5 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 space-y-3">
-            <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-white">
+          <div className="p-5 rounded-2xl bg-surface border-border space-y-3">
+            <h3 className="text-sm font-bold text-foreground">
               Herramientas
             </h3>
             <div className="flex flex-wrap gap-1.5">
@@ -220,8 +220,8 @@ export default function FormacionPage({ edu }: Props) {
               ))}
             </div>
           </div>
-          <div className="p-5 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 space-y-3">
-            <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-white">
+          <div className="p-5 rounded-2xl bg-surface border-border space-y-3">
+            <h3 className="text-sm font-bold text-foreground">
               Metodologías
             </h3>
             <div className="flex flex-wrap gap-1.5">
@@ -235,23 +235,23 @@ export default function FormacionPage({ edu }: Props) {
         </div>
 
         {/* Subjects */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+        <div className="p-6 rounded-2xl bg-surface border-border">
           <Section title="Módulos y materias">
             <div className="grid sm:grid-cols-2 gap-3">
               {edu.subjects.map((subject, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 p-3 rounded-xl bg-black/2 dark:bg-white/3"
+                  className="flex items-start gap-3 p-3 rounded-xl bg-default"
                 >
                   <div
                     className={`w-1.5 h-1.5 rounded-full bg-gradient-to-b ${edu.color} flex-shrink-0 mt-1.5`}
                   />
                   <div>
-                    <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                    <p className="text-sm font-semibold text-foreground">
                       {subject.name}
                     </p>
                     {subject.description && (
-                      <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5 leading-relaxed">
+                      <p className="text-xs text-muted mt-0.5 leading-relaxed">
                         {subject.description}
                       </p>
                     )}
@@ -265,22 +265,22 @@ export default function FormacionPage({ edu }: Props) {
         {/* Projects */}
         {edu.projects.length > 0 && (
           <div className="space-y-4">
-            <h2 className="text-lg font-bold text-[#1d1d1f] dark:text-white">
+            <h2 className="text-lg font-bold text-foreground">
               Proyectos realizados
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
               {edu.projects.map((project, i) => (
                 <div
                   key={i}
-                  className="group p-5 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/12 dark:hover:border-white/12 hover:shadow-md transition-all duration-200"
+                  className="group p-5 rounded-2xl bg-surface border-border hover:border-border/30 hover:shadow-md transition-all duration-200"
                 >
                   <div className="flex items-start justify-between gap-3 mb-3">
-                    <h3 className="font-bold text-sm text-[#1d1d1f] dark:text-white">
+                    <h3 className="font-bold text-sm text-foreground">
                       {project.name}
                     </h3>
                     {project.url && (
                       <a
-                        className="flex-shrink-0 w-7 h-7 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#6e6e73] hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
+                        className="flex-shrink-0 w-7 h-7 rounded-lg bg-default flex items-center justify-center text-muted hover:text-accent hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
                         href={project.url}
                         rel="noopener noreferrer"
                         target="_blank"
@@ -301,7 +301,7 @@ export default function FormacionPage({ edu }: Props) {
                       </a>
                     )}
                   </div>
-                  <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-3">
+                  <p className="text-xs text-muted leading-relaxed mb-3">
                     {project.description}
                   </p>
                   {project.technologies && (
@@ -309,7 +309,7 @@ export default function FormacionPage({ edu }: Props) {
                       {project.technologies.map((t, j) => (
                         <span
                           key={j}
-                          className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-black/4 dark:bg-white/6 text-[#6e6e73] dark:text-[#86868b] border border-black/6 dark:border-white/6"
+                          className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-default text-muted border-border/20"
                         >
                           {t}
                         </span>
@@ -324,12 +324,12 @@ export default function FormacionPage({ edu }: Props) {
 
         {/* Knowledge + Applications */}
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+          <div className="p-6 rounded-2xl bg-surface border-border">
             <Section title="Conocimientos adquiridos">
               <BulletList items={edu.knowledge} />
             </Section>
           </div>
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+          <div className="p-6 rounded-2xl bg-surface border-border">
             <Section title="Aplicaciones prácticas">
               <BulletList items={edu.applications} />
             </Section>
@@ -363,7 +363,7 @@ export default function FormacionPage({ edu }: Props) {
 
         {/* Navigation between education pages */}
         <div className="pt-4 border-t border-black/8 dark:border-white/8">
-          <p className="text-xs text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest mb-4">
+          <p className="text-xs text-muted/60 uppercase tracking-widest mb-4">
             Otras formaciones
           </p>
           <div className="grid sm:grid-cols-3 gap-3">
@@ -372,7 +372,7 @@ export default function FormacionPage({ edu }: Props) {
               .map((other) => (
                 <Link
                   key={other.id}
-                  className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/12 dark:hover:border-white/12 hover:shadow-sm transition-all no-underline"
+                  className="group flex items-center gap-3 p-4 rounded-xl bg-surface border-border hover:border-border/30 hover:shadow-sm transition-all no-underline"
                   href={`/CV/formacion/${other.id}`}
                 >
                   <div
@@ -381,10 +381,10 @@ export default function FormacionPage({ edu }: Props) {
                     {other.level}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-[#1d1d1f] dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    <p className="text-xs font-semibold text-foreground truncate group-hover:text-accent transition-colors">
                       {other.institution}
                     </p>
-                    <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+                    <p className="text-[10px] text-muted/60 mt-0.5">
                       {other.year}
                     </p>
                   </div>
@@ -393,7 +393,7 @@ export default function FormacionPage({ edu }: Props) {
           </div>
           <div className="mt-4">
             <Link
-              className="inline-flex items-center gap-2 text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
+              className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors no-underline"
               href="/CV"
             >
               <svg

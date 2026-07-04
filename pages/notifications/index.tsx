@@ -72,16 +72,16 @@ export default function NotificationsPage() {
         />
       </Head>
 
-      <div className="min-h-screen bg-white dark:bg-[#0a0a0f]">
+      <div className="min-h-screen bg-background">
         <div className="max-w-3xl mx-auto px-5 sm:px-6 py-12">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-[#1d1d1f] dark:text-white">
+              <h1 className="text-3xl font-bold text-foreground">
                 {t("notifications.title")}
               </h1>
               {unread > 0 && (
-                <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+                <p className="text-sm text-muted mt-1">
                   {t("notifications.filterUnread", { n: unread })}
                 </p>
               )}
@@ -89,7 +89,7 @@ export default function NotificationsPage() {
             <div className="flex gap-2">
               {unread > 0 && (
                 <button
-                  className="px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-[#1d1d1f] dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                  className="px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-foreground hover:bg-default transition-colors"
                   onClick={markAllRead}
                 >
                   {t("notifications.markAllRead")}
@@ -107,14 +107,14 @@ export default function NotificationsPage() {
           </div>
 
           {/* Filters */}
-          <div className="flex gap-1 p-1 rounded-2xl bg-black/5 dark:bg-white/5 mb-6 w-fit">
+          <div className="flex gap-1 p-1 rounded-2xl bg-default mb-6 w-fit">
             {(["all", "unread", "read"] as Filter[]).map((f) => (
               <button
                 key={f}
                 className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-colors ${
                   filter === f
-                    ? "bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-sm"
-                    : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                    ? "bg-white dark:bg-[#1c1c1e] text-foreground shadow-sm"
+                    : "text-muted hover:text-foreground"
                 }`}
                 onClick={() => setFilter(f)}
               >
@@ -126,21 +126,21 @@ export default function NotificationsPage() {
           {/* List */}
           {loading && (
             <div className="flex items-center justify-center py-20">
-              <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
             </div>
           )}
 
           {!loading && filtered.length === 0 && (
             <div className="flex flex-col items-center py-20 text-center">
               <span className="text-5xl mb-4">🔔</span>
-              <p className="text-lg font-medium text-[#1d1d1f] dark:text-white mb-1">
+              <p className="text-lg font-medium text-foreground mb-1">
                 {filter === "all"
                   ? t("notifications.empty")
                   : filter === "unread"
                     ? t("notifications.allRead")
                     : t("notifications.noReadNotifications")}
               </p>
-              <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+              <p className="text-sm text-muted">
                 {t("notifications.noNotificationsHint")}
               </p>
             </div>
@@ -154,11 +154,11 @@ export default function NotificationsPage() {
                   className={`relative flex gap-4 px-5 py-4 rounded-2xl border transition-colors ${
                     !n.read
                       ? "bg-blue-50/60 dark:bg-blue-950/10 border-blue-200 dark:border-blue-900/30"
-                      : "bg-white dark:bg-[#111116] border-black/8 dark:border-white/8"
+                      : "bg-surface border-border"
                   }`}
                 >
                   {/* Icon */}
-                  <div className="w-9 h-9 rounded-xl bg-black/5 dark:bg-white/8 flex items-center justify-center text-lg shrink-0">
+                  <div className="w-9 h-9 rounded-xl bg-default flex items-center justify-center text-lg shrink-0">
                     {TYPE_ICON[n.type]}
                   </div>
 
@@ -166,12 +166,12 @@ export default function NotificationsPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-3">
                       <p
-                        className={`text-sm font-medium ${!n.read ? "text-[#1d1d1f] dark:text-white" : "text-[#3a3a3c] dark:text-[#aeaeb2]"}`}
+                        className={`text-sm font-medium ${!n.read ? "text-foreground" : "text-[#3a3a3c] dark:text-[#aeaeb2]"}`}
                       >
                         {n.title}
                       </p>
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                        <span className="text-xs text-muted/60">
                           {timeAgo(n.created_at)}
                         </span>
                         {!n.read && (
@@ -179,16 +179,16 @@ export default function NotificationsPage() {
                         )}
                       </div>
                     </div>
-                    <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+                    <p className="text-sm text-muted mt-0.5">
                       {n.message}
                     </p>
                     <div className="flex items-center gap-3 mt-2">
-                      <span className="text-xs text-[#aeaeb2] dark:text-[#636366] bg-black/5 dark:bg-white/8 px-2 py-0.5 rounded-full">
+                      <span className="text-xs text-muted/60 bg-default px-2 py-0.5 rounded-full">
                         {t(`notifications.type${n.type.charAt(0).toUpperCase() + n.type.slice(1)}`)}
                       </span>
                       {!n.read && (
                         <button
-                          className="text-xs text-blue-500 hover:text-blue-600 font-medium"
+                          className="text-xs text-accent hover:text-accent-hover font-medium"
                           onClick={() => markRead(n.id)}
                         >
                           {t("notifications.markRead")}

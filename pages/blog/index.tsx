@@ -89,7 +89,7 @@ function ContentCard({
 
   return (
     <Link
-      className="block group relative overflow-hidden rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/15 dark:hover:border-white/12 hover:shadow-lg hover:shadow-black/8 dark:hover:shadow-black/30 transition-all duration-300 no-underline motion-safe:transition-all"
+      className="block group relative overflow-hidden rounded-2xl bg-surface border-border hover:border-black/15 dark:hover:border-white/12 hover:shadow-lg hover:shadow-black/8 dark:hover:shadow-black/30 transition-all duration-300 no-underline motion-safe:transition-all"
       href={`/blog/${typeSlug(item.type)}/${item.slug}`}
     >
       <div
@@ -112,24 +112,24 @@ function ContentCard({
               aria-hidden="true"
               className={`w-2 h-2 rounded-full flex-shrink-0 ${item.categoryColor}`}
             />
-            <span className="text-xs text-[#aeaeb2] dark:text-[#636366] font-medium">
+            <span className="text-xs text-muted/60 font-medium">
               {item.category}
             </span>
-            <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+            <span className="text-xs text-muted/60">
               · {item.readTime}
             </span>
           </div>
           {item.level && <LevelBadge level={item.level} size="xs" />}
         </div>
 
-        <h3 className="font-bold text-sm text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug mb-2 line-clamp-2 motion-safe:transition-colors">
+        <h3 className="font-bold text-sm text-foreground group-hover:text-accent transition-colors leading-snug mb-2 line-clamp-2 motion-safe:transition-colors">
           {item.title}
         </h3>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed line-clamp-2 mb-4">
+        <p className="text-xs text-muted leading-relaxed line-clamp-2 mb-4">
           {item.description}
         </p>
         <div className="flex items-center justify-between">
-          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+          <span className="text-xs text-muted/60">
             {formatDate(item.publishedAt)}
           </span>
           <span
@@ -216,7 +216,7 @@ export default function BlogHome() {
               {t("blog.headerLine1")}
               <span className="block hero-gradient-text">{t("blog.headerLine2")}</span>
             </h1>
-            <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] max-w-lg mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-muted max-w-lg mx-auto leading-relaxed">
               {t("blog.subtitle")}
             </p>
           </div>
@@ -249,7 +249,7 @@ export default function BlogHome() {
                 </span>
               </div>
               <p className={`font-bold text-base ${s.text}`}>{t(s.labelKey)}</p>
-              <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+              <p className="text-xs text-muted/60 mt-0.5">
                 {t(s.subKey)}
               </p>
               <div className="mt-3 flex items-center gap-1">
@@ -276,12 +276,12 @@ export default function BlogHome() {
             <label className="sr-only" htmlFor="blog-search">
               {t("blog.searchLabel")}
             </label>
-            <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2]" />
+            <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted/60" />
             <input
               aria-activedescendant={undefined}
               aria-controls="search-results"
               aria-expanded={isSearching}
-              className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:border-violet-400 dark:focus:border-violet-500 focus:ring-2 focus:ring-violet-400/20 dark:focus:ring-violet-500/20 transition-all shadow-sm"
+              className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-surface border-border/30 text-sm text-foreground placeholder-muted/60 focus:outline-none focus:border-violet-400 dark:focus:border-violet-500 focus:ring-2 focus:ring-violet-400/20 dark:focus:ring-violet-500/20 transition-all shadow-sm"
               id="blog-search"
               placeholder={t("blog.searchPlaceholder")}
               type="text"
@@ -291,7 +291,7 @@ export default function BlogHome() {
             {query && (
               <button
                 aria-label={t("blog.searchClear")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#aeaeb2] hover:text-[#6e6e73] transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted/60 hover:text-muted transition-colors"
                 onClick={() => setQuery("")}
               >
                 <IconClose className="w-4 h-4" />
@@ -307,11 +307,11 @@ export default function BlogHome() {
                 className="flex items-center gap-1.5 flex-wrap"
                 role="group"
               >
-                <span className="text-[10px] font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider w-14">
+                <span className="text-[10px] font-bold text-muted/60 uppercase tracking-wider w-14">
                   {t("blog.filterLevel")}
                 </span>
                 <button
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${activeLevel === "all" ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]" : "border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"}`}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${activeLevel === "all" ? "bg-accent text-accent-foreground" : "border-border/30 text-muted hover:bg-default"}`}
                   onClick={() => setActiveLevel("all")}
                 >
                   {t("blog.filterAll")}
@@ -320,7 +320,7 @@ export default function BlogHome() {
                   <button
                     key={l.id}
                     aria-pressed={activeLevel === l.id}
-                    className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${activeLevel === l.id ? `${l.bgColor} ${l.color} ring-1 ring-current` : "border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"}`}
+                    className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${activeLevel === l.id ? `${l.bgColor} ${l.color} ring-1 ring-current` : "border-border/30 text-muted hover:bg-default"}`}
                     onClick={() =>
                       setActiveLevel(activeLevel === l.id ? "all" : l.id)
                     }
@@ -334,11 +334,11 @@ export default function BlogHome() {
                 className="flex items-center gap-1.5 flex-wrap"
                 role="group"
               >
-                <span className="text-[10px] font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider w-14">
+                <span className="text-[10px] font-bold text-muted/60 uppercase tracking-wider w-14">
                   {t("blog.filterPath")}
                 </span>
                 <button
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${activePath === "all" ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]" : "border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"}`}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${activePath === "all" ? "bg-accent text-accent-foreground" : "border-border/30 text-muted hover:bg-default"}`}
                   onClick={() => setActivePath("all")}
                 >
                   {t("blog.filterAllPaths")}
@@ -347,7 +347,7 @@ export default function BlogHome() {
                   <button
                     key={p.id}
                     aria-pressed={activePath === p.id}
-                    className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${activePath === p.id ? "bg-violet-600 text-white" : "border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"}`}
+                    className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-colors ${activePath === p.id ? "bg-violet-600 text-white" : "border-border/30 text-muted hover:bg-default"}`}
                     onClick={() =>
                       setActivePath(activePath === p.id ? "all" : p.id)
                     }
@@ -364,16 +364,16 @@ export default function BlogHome() {
             <div
               aria-label={t("blog.searchResults")}
               aria-live="polite"
-              className="mt-3 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden shadow-xl shadow-black/8 dark:shadow-black/30"
+              className="mt-3 rounded-2xl bg-surface border-border overflow-hidden shadow-xl shadow-black/8 dark:shadow-black/30"
               id="search-results"
               role="region"
             >
               {searchResults.length === 0 ? (
                 <div className="px-5 py-10 text-center">
-                  <IconSearch className="w-12 h-12 mx-auto mb-3 text-[#aeaeb2] dark:text-[#636366]" />
-                  <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+                  <IconSearch className="w-12 h-12 mx-auto mb-3 text-muted/60" />
+                  <p className="text-sm text-muted">
                     {t("blog.noResultsPrefix")}
-                    <span className="font-bold text-[#1d1d1f] dark:text-white">
+                    <span className="font-bold text-foreground">
                       &quot;{query}&quot;
                     </span>
                   </p>
@@ -391,7 +391,7 @@ export default function BlogHome() {
                       <Link
                         key={item.id}
                         aria-selected={false}
-                        className="flex items-start gap-4 px-5 py-4 hover:bg-black/3 dark:hover:bg-white/3 transition-colors no-underline group"
+                        className="flex items-start gap-4 px-5 py-4 hover:bg-default transition-colors no-underline group"
                         href={`/blog/${typeSlug(item.type)}/${item.slug}`}
                         role="option"
                         onClick={() => setQuery("")}
@@ -413,19 +413,19 @@ export default function BlogHome() {
                             </span>
                             <span
                               aria-hidden="true"
-                              className="text-xs text-[#aeaeb2] dark:text-[#636366]"
+                              className="text-xs text-muted/60"
                             >
                               ·
                             </span>
-                            <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                            <span className="text-xs text-muted/60">
                               {item.category}
                             </span>
                           </div>
-                          <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                          <p className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors truncate">
                             {item.title}
                           </p>
                         </div>
-                        <IconExternal className="w-4 h-4 text-[#aeaeb2] flex-shrink-0 mt-1" />
+                        <IconExternal className="w-4 h-4 text-muted/60 flex-shrink-0 mt-1" />
                       </Link>
                     );
                   })}
@@ -443,14 +443,14 @@ export default function BlogHome() {
               <section aria-labelledby="filtered-title" className="space-y-4">
                 <div className="flex items-center gap-3">
                   <h2
-                    className="text-xs font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest"
+                    className="text-xs font-bold text-muted/60 uppercase tracking-widest"
                     id="filtered-title"
                   >
                     {filteredContent.length} {filteredContent.length === 1 ? t("blog.result") : t("blog.results")}
                   </h2>
                   <span
                     aria-hidden="true"
-                    className="flex-1 h-px bg-black/8 dark:bg-white/8"
+                    className="flex-1 h-px bg-default"
                   />
                   <button
                     className="text-xs font-semibold text-violet-600 dark:text-violet-400 hover:underline"
@@ -464,7 +464,7 @@ export default function BlogHome() {
                 </div>
                 {filteredContent.length === 0 ? (
                   <div className="py-16 text-center">
-                    <div className="w-12 h-12 mx-auto mb-4 text-[#aeaeb2] dark:text-[#636366]">
+                    <div className="w-12 h-12 mx-auto mb-4 text-muted/60">
                       <svg
                         aria-hidden="true"
                         fill="none"
@@ -479,7 +479,7 @@ export default function BlogHome() {
                         />
                       </svg>
                     </div>
-                    <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+                    <p className="text-sm text-muted">
                       {t("blog.noContent")}
                     </p>
                   </div>
@@ -502,7 +502,7 @@ export default function BlogHome() {
               <section aria-labelledby="latest-title" className="space-y-4">
                 <div className="flex items-center gap-3">
                   <h2
-                    className="text-xs font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest flex items-center gap-1.5"
+                    className="text-xs font-bold text-muted/60 uppercase tracking-widest flex items-center gap-1.5"
                     id="latest-title"
                   >
                     <IconArticle className="w-3.5 h-3.5 text-amber-400" />
@@ -510,7 +510,7 @@ export default function BlogHome() {
                   </h2>
                   <span
                     aria-hidden="true"
-                    className="flex-1 h-px bg-black/8 dark:bg-white/8"
+                    className="flex-1 h-px bg-default"
                   />
                 </div>
                 <Link
@@ -541,35 +541,35 @@ export default function BlogHome() {
                             aria-hidden="true"
                             className={`w-2 h-2 rounded-full ${latest.categoryColor}`}
                           />
-                          <span className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b]">
+                          <span className="text-xs font-semibold text-muted">
                             {latest.category}
                           </span>
                           <span
                             aria-hidden="true"
-                            className="text-xs text-[#aeaeb2] dark:text-[#636366]"
+                            className="text-xs text-muted/60"
                           >
                             ·
                           </span>
-                          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                          <span className="text-xs text-muted/60">
                             {formatDate(latest.publishedAt)}
                           </span>
                           <span
                             aria-hidden="true"
-                            className="text-xs text-[#aeaeb2] dark:text-[#636366]"
+                            className="text-xs text-muted/60"
                           >
                             ·
                           </span>
-                          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                          <span className="text-xs text-muted/60">
                             {latest.readTime}
                           </span>
                         </div>
                         <h3
-                          className="text-2xl md:text-3xl font-black text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors motion-safe:transition-colors"
+                          className="text-2xl md:text-3xl font-black text-foreground group-hover:text-accent transition-colors motion-safe:transition-colors"
                           style={{ letterSpacing: "-0.03em" }}
                         >
                           {latest.title}
                         </h3>
-                        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed max-w-lg">
+                        <p className="text-sm text-muted leading-relaxed max-w-lg">
                           {latest.description}
                         </p>
                         {latest.tags && (
@@ -681,14 +681,14 @@ function ContentSection({
           </div>
           <div>
             <h2
-              className="text-lg font-black text-[#1d1d1f] dark:text-white"
+              className="text-lg font-black text-foreground"
               id={`section-${title}`}
               style={{ letterSpacing: "-0.02em" }}
             >
               {title}
             </h2>
           </div>
-          <span className="text-xs text-[#aeaeb2] dark:text-[#636366] font-medium bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded-full">
+          <span className="text-xs text-muted/60 font-medium bg-default px-2 py-0.5 rounded-full">
             {total}
           </span>
         </div>

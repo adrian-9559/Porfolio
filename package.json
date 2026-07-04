@@ -1,7 +1,7 @@
 {
 	"dependencies": {
 		"@hello-pangea/dnd": "^18.0.1",
-		"@heroui/react": "3.1.0",
+		"@heroui/react": "^3.1.0",
 		"@heroui/styles": "3.1.0",
 		"@iconify-json/material-icon-theme": "^1.2.67",
 		"clsx": "2.1.1",

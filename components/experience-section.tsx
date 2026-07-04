@@ -61,10 +61,10 @@ export function ExperienceSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">
+        <h3 className="text-2xl font-bold text-foreground">
           {t("sections.experience.title")}
         </h3>
-        <p className="text-sm text-[#aeaeb2] dark:text-[#636366] mt-1.5">
+        <p className="text-sm text-muted/60 mt-1.5">
           {t("sections.experience.hint")}
         </p>
       </div>
@@ -79,7 +79,7 @@ export function ExperienceSection() {
               className={`rounded-2xl border transition-all duration-300 overflow-hidden cursor-pointer ${
                 isOpen
                   ? "border-blue-200 dark:border-blue-800/60 bg-blue-50/50 dark:bg-blue-950/20"
-                  : "border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] hover:border-black/15 dark:hover:border-white/15"
+                  : "border-border bg-surface hover:border-black/15 dark:hover:border-white/15"
               }`}
               onClick={() => setExpandedIndex(isOpen ? null : idx)}
             >
@@ -95,15 +95,15 @@ export function ExperienceSection() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h4 className="font-semibold text-[#1d1d1f] dark:text-white">
+                        <h4 className="font-semibold text-foreground">
                           {exp.role}
                         </h4>
-                        <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-0.5">
+                        <p className="text-sm text-accent font-medium mt-0.5">
                           {exp.company}
                         </p>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0 text-right">
-                        <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                        <span className="text-xs text-muted/60">
                           {exp.period}
                         </span>
                         <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">
@@ -111,14 +111,14 @@ export function ExperienceSection() {
                         </span>
                       </div>
                     </div>
-                    <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-3 leading-relaxed">
+                    <p className="text-sm text-muted mt-3 leading-relaxed">
                       {exp.description}
                     </p>
                   </div>
 
                   {/* Chevron */}
                   <svg
-                    className={`w-4 h-4 text-[#aeaeb2] flex-shrink-0 mt-1 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                    className={`w-4 h-4 text-muted/60 flex-shrink-0 mt-1 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -137,7 +137,7 @@ export function ExperienceSection() {
               {isOpen && (
                 <div className="px-6 pb-6 pt-0 border-t border-blue-100 dark:border-blue-900/40 space-y-5">
                   <div className="pt-5">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-[#aeaeb2] dark:text-[#636366] mb-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted/60 mb-3">
                       {t("sections.experience.responsibilities")}
                     </p>
                     <ul className="space-y-2">
@@ -154,7 +154,7 @@ export function ExperienceSection() {
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-[#aeaeb2] dark:text-[#636366] mb-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted/60 mb-3">
                       {t("sections.experience.technologies")}
                     </p>
                     <div className="flex flex-wrap gap-1.5">

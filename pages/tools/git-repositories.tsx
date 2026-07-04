@@ -219,7 +219,7 @@ function AddRepoModal({
 
   const field = (label: string, children: React.ReactNode) => (
     <div className="flex flex-col gap-1">
-      <label className="text-xs font-medium text-[#6e6e73] dark:text-[#86868b]">
+      <label className="text-xs font-medium text-muted">
         {label}
       </label>
       {children}
@@ -227,12 +227,12 @@ function AddRepoModal({
   );
 
   const inputCls =
-    "w-full px-3 py-2 text-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40";
+    "w-full px-3 py-2 text-sm rounded-xl border-border/30 bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/40";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-      <div className="w-full max-w-md bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-2xl p-6">
-        <h2 className="text-base font-semibold text-[#1d1d1f] dark:text-white mb-5">
+      <div className="w-full max-w-md bg-surface rounded-2xl shadow-2xl p-6">
+        <h2 className="text-base font-semibold text-foreground mb-5">
           Connect Repository
         </h2>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -300,14 +300,14 @@ function AddRepoModal({
           {error && <p className="text-xs text-red-500">{error}</p>}
           <div className="flex gap-3 mt-1">
             <button
-              className="flex-1 py-2 rounded-xl text-sm border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              className="flex-1 py-2 rounded-xl text-sm border-border/30 text-muted hover:bg-default transition-colors"
               type="button"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
-              className="flex-1 py-2 rounded-xl text-sm bg-blue-500 hover:bg-blue-600 text-white font-medium disabled:opacity-50 transition-colors"
+              className="flex-1 py-2 rounded-xl text-sm bg-accent hover:bg-accent-hover text-accent-foreground font-medium disabled:opacity-50 transition-colors"
               disabled={saving}
               type="submit"
             >
@@ -393,8 +393,8 @@ function RepoDashboard({
   const tabCls = (t: DashTab) =>
     `px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
       tab === t
-        ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]"
-        : "text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"
+        ? "bg-accent text-accent-foreground"
+        : "text-muted hover:bg-default"
     }`;
 
   return (
@@ -402,7 +402,7 @@ function RepoDashboard({
       {/* Header */}
       <div className="flex items-center gap-3">
         <button
-          className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-[#6e6e73] dark:text-[#86868b]"
+          className="p-2 rounded-xl hover:bg-default transition-colors text-muted"
           onClick={onBack}
         >
           <svg
@@ -423,15 +423,15 @@ function RepoDashboard({
             className="w-3 h-3 rounded-full"
             style={{ background: PROVIDER_COLOR[repo.provider] }}
           />
-          <h2 className="text-base font-semibold text-[#1d1d1f] dark:text-white">
+          <h2 className="text-base font-semibold text-foreground">
             {repo.name}
           </h2>
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-black/5 dark:bg-white/10 text-[#6e6e73] dark:text-[#86868b]">
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-default text-muted">
             {PROVIDER_LABEL[repo.provider]}
           </span>
         </div>
         <a
-          className="ml-auto text-xs text-blue-500 hover:underline flex items-center gap-1"
+          className="ml-auto text-xs text-accent hover:underline flex items-center gap-1"
           href={repo.repository_url}
           rel="noopener noreferrer"
           target="_blank"
@@ -441,7 +441,7 @@ function RepoDashboard({
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-black/[0.04] dark:bg-white/[0.04] p-1 rounded-2xl w-fit">
+      <div className="flex gap-1 bg-default p-1 rounded-2xl w-fit">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -459,7 +459,7 @@ function RepoDashboard({
         </p>
       )}
       {loading && (
-        <div className="flex items-center gap-2 text-sm text-[#6e6e73] dark:text-[#86868b]">
+        <div className="flex items-center gap-2 text-sm text-muted">
           <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
           Loading…
         </div>
@@ -478,28 +478,28 @@ function RepoDashboard({
             ].map((s) => (
               <div
                 key={s.label}
-                className="bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl px-4 py-4"
+                className="bg-surface border-border/20 rounded-2xl px-4 py-4"
               >
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-1">
+                <p className="text-xs text-muted mb-1">
                   {s.label}
                 </p>
-                <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                <p className="text-sm font-semibold text-foreground">
                   {s.value}
                 </p>
               </div>
             ))}
           </div>
           {/* Recent commits */}
-          <div className="bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-black/[0.06] dark:border-white/[0.06]">
-              <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+          <div className="bg-surface border-border/20 rounded-2xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-border/20">
+              <p className="text-sm font-semibold text-foreground">
                 Recent commits
               </p>
             </div>
             {commits.slice(0, 5).map((c) => (
               <div
                 key={c.sha}
-                className="flex items-start gap-3 px-5 py-3 border-b border-black/[0.04] dark:border-white/[0.04] last:border-0"
+                className="flex items-start gap-3 px-5 py-3 border-b border-border/20 last:border-0"
               >
                 <Avatar
                   avatarUrl={c.author.avatar_url}
@@ -507,14 +507,14 @@ function RepoDashboard({
                   size={28}
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-[#1d1d1f] dark:text-white truncate">
+                  <p className="text-sm text-foreground truncate">
                     {c.message}
                   </p>
-                  <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                  <p className="text-xs text-muted">
                     {c.author.name} · {relativeTime(c.date)}
                   </p>
                 </div>
-                <code className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366] flex-shrink-0">
+                <code className="text-[10px] font-mono text-muted/60 flex-shrink-0">
                   {shortSha(c.sha)}
                 </code>
               </div>
@@ -525,19 +525,19 @@ function RepoDashboard({
 
       {/* Branches */}
       {tab === "branches" && !loading && (
-        <div className="bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl overflow-hidden">
+        <div className="bg-surface border-border/20 rounded-2xl overflow-hidden">
           {branches.length === 0 ? (
-            <p className="px-5 py-8 text-sm text-center text-[#6e6e73] dark:text-[#86868b]">
+            <p className="px-5 py-8 text-sm text-center text-muted">
               No branches found
             </p>
           ) : (
             branches.map((b) => (
               <div
                 key={b.name}
-                className="flex items-center gap-3 px-5 py-3.5 border-b border-black/[0.04] dark:border-white/[0.04] last:border-0"
+                className="flex items-center gap-3 px-5 py-3.5 border-b border-border/20 last:border-0"
               >
                 <svg
-                  className="text-[#86868b]"
+                  className="text-muted"
                   fill="none"
                   height="14"
                   stroke="currentColor"
@@ -553,7 +553,7 @@ function RepoDashboard({
                 </svg>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+                    <p className="text-sm font-medium text-foreground">
                       {b.name}
                     </p>
                     {b.is_default && (
@@ -563,14 +563,14 @@ function RepoDashboard({
                     )}
                   </div>
                   {b.last_commit && (
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] truncate">
+                    <p className="text-xs text-muted truncate">
                       {b.last_commit.message} · {b.last_commit.author} ·{" "}
                       {relativeTime(b.last_commit.date)}
                     </p>
                   )}
                 </div>
                 {b.last_commit && (
-                  <code className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366]">
+                  <code className="text-[10px] font-mono text-muted/60">
                     {shortSha(b.last_commit.sha)}
                   </code>
                 )}
@@ -585,7 +585,7 @@ function RepoDashboard({
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <select
-              className="px-3 py-2 text-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white"
+              className="px-3 py-2 text-sm rounded-xl border-border/30 bg-surface text-foreground"
               value={selectedBranch}
               onChange={(e) => setSelectedBranch(e.target.value)}
             >
@@ -596,22 +596,22 @@ function RepoDashboard({
               ))}
             </select>
             <button
-              className="px-3 py-2 text-sm rounded-xl border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"
+              className="px-3 py-2 text-sm rounded-xl border-border/30 text-muted hover:bg-default"
               onClick={() => load("commits")}
             >
               Reload
             </button>
           </div>
-          <div className="bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl overflow-hidden">
+          <div className="bg-surface border-border/20 rounded-2xl overflow-hidden">
             {commits.length === 0 ? (
-              <p className="px-5 py-8 text-sm text-center text-[#6e6e73] dark:text-[#86868b]">
+              <p className="px-5 py-8 text-sm text-center text-muted">
                 No commits
               </p>
             ) : (
               commits.map((c) => (
                 <a
                   key={c.sha}
-                  className="flex items-start gap-3 px-5 py-3.5 border-b border-black/[0.04] dark:border-white/[0.04] last:border-0 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors group"
+                  className="flex items-start gap-3 px-5 py-3.5 border-b border-border/20 last:border-0 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors group"
                   href={c.url}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -622,22 +622,22 @@ function RepoDashboard({
                     size={32}
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-[#1d1d1f] dark:text-white group-hover:text-blue-500 transition-colors">
+                    <p className="text-sm text-foreground group-hover:text-accent transition-colors">
                       {c.message}
                     </p>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                      <p className="text-xs text-muted">
                         {c.author.name} &lt;{c.author.email}&gt;
                       </p>
-                      <span className="text-[#aeaeb2] dark:text-[#636366]">
+                      <span className="text-muted/60">
                         ·
                       </span>
-                      <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                      <p className="text-xs text-muted">
                         {relativeTime(c.date)}
                       </p>
                     </div>
                   </div>
-                  <code className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366] flex-shrink-0 pt-0.5">
+                  <code className="text-[10px] font-mono text-muted/60 flex-shrink-0 pt-0.5">
                     {shortSha(c.sha)}
                   </code>
                 </a>
@@ -649,16 +649,16 @@ function RepoDashboard({
 
       {/* Graph */}
       {tab === "graph" && !loading && graph && (
-        <div className="bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl overflow-hidden">
-          <div className="px-5 py-4 border-b border-black/[0.06] dark:border-white/[0.06] flex items-center gap-3">
-            <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+        <div className="bg-surface border-border/20 rounded-2xl overflow-hidden">
+          <div className="px-5 py-4 border-b border-border/20 flex items-center gap-3">
+            <p className="text-sm font-semibold text-foreground">
               Branch graph
             </p>
             <div className="flex items-center gap-3 ml-auto flex-wrap">
               {graph.branches.slice(0, 5).map((b, i) => (
                 <span
                   key={b}
-                  className="flex items-center gap-1 text-xs text-[#6e6e73] dark:text-[#86868b]"
+                  className="flex items-center gap-1 text-xs text-muted"
                 >
                   <span
                     className="w-2 h-2 rounded-full"
@@ -681,16 +681,16 @@ function RepoDashboard({
                     className="flex items-center gap-3 px-3"
                     style={{ height: 36, marginTop: i === 0 ? 0 : 0 }}
                   >
-                    <p className="text-sm text-[#1d1d1f] dark:text-white truncate flex-1">
+                    <p className="text-sm text-foreground truncate flex-1">
                       {c.message}
                     </p>
-                    <span className="text-xs text-[#6e6e73] dark:text-[#86868b] flex-shrink-0">
+                    <span className="text-xs text-muted flex-shrink-0">
                       {c.author}
                     </span>
-                    <code className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366] flex-shrink-0">
+                    <code className="text-[10px] font-mono text-muted/60 flex-shrink-0">
                       {shortSha(c.sha)}
                     </code>
-                    <span className="text-xs text-[#aeaeb2] dark:text-[#636366] flex-shrink-0">
+                    <span className="text-xs text-muted/60 flex-shrink-0">
                       {relativeTime(c.date)}
                     </span>
                   </div>
@@ -719,12 +719,12 @@ function RepoDashboard({
             ].map((s) => (
               <div
                 key={s.label}
-                className="bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl px-4 py-4"
+                className="bg-surface border-border/20 rounded-2xl px-4 py-4"
               >
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-1">
+                <p className="text-xs text-muted mb-1">
                   {s.label}
                 </p>
-                <p className="text-2xl font-semibold text-[#1d1d1f] dark:text-white">
+                <p className="text-2xl font-semibold text-foreground">
                   {s.value}
                 </p>
               </div>
@@ -732,8 +732,8 @@ function RepoDashboard({
           </div>
 
           {/* Commit activity bar chart */}
-          <div className="bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl p-5">
-            <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-4">
+          <div className="bg-surface border-border/20 rounded-2xl p-5">
+            <p className="text-sm font-semibold text-foreground mb-4">
               Commit activity (last 30 days)
             </p>
             {(() => {
@@ -754,7 +754,7 @@ function RepoDashboard({
                           minHeight: d.count > 0 ? 2 : 0,
                         }}
                       />
-                      <div className="absolute bottom-full mb-1 hidden group-hover:block z-10 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-[10px] px-2 py-1 rounded whitespace-nowrap">
+                      <div className="absolute bottom-full mb-1 hidden group-hover:block z-10 bg-accent text-accent-foreground text-[10px] px-2 py-1 rounded whitespace-nowrap">
                         {d.date}: {d.count}
                       </div>
                     </div>
@@ -765,9 +765,9 @@ function RepoDashboard({
           </div>
 
           {/* Monthly breakdown */}
-          <div className="bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-black/[0.06] dark:border-white/[0.06]">
-              <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+          <div className="bg-surface border-border/20 rounded-2xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-border/20">
+              <p className="text-sm font-semibold text-foreground">
                 Monthly activity
               </p>
             </div>
@@ -783,18 +783,18 @@ function RepoDashboard({
                 return (
                   <div
                     key={m.month}
-                    className="flex items-center gap-4 px-5 py-3 border-b border-black/[0.04] dark:border-white/[0.04] last:border-0"
+                    className="flex items-center gap-4 px-5 py-3 border-b border-border/20 last:border-0"
                   >
-                    <p className="text-sm text-[#6e6e73] dark:text-[#86868b] w-20">
+                    <p className="text-sm text-muted w-20">
                       {m.month}
                     </p>
-                    <div className="flex-1 h-1.5 rounded-full bg-black/5 dark:bg-white/5">
+                    <div className="flex-1 h-1.5 rounded-full bg-default">
                       <div
                         className="h-full rounded-full bg-blue-500"
                         style={{ width: `${(m.count / maxM) * 100}%` }}
                       />
                     </div>
-                    <p className="text-sm font-medium text-[#1d1d1f] dark:text-white w-8 text-right">
+                    <p className="text-sm font-medium text-foreground w-8 text-right">
                       {m.count}
                     </p>
                   </div>
@@ -819,7 +819,7 @@ function RepoCard({
 }) {
   return (
     <button
-      className="w-full text-left bg-white dark:bg-[#1c1c1e] border border-black/[0.06] dark:border-white/[0.06] rounded-2xl p-5 hover:border-blue-500/40 hover:shadow-sm transition-all group"
+      className="w-full text-left bg-surface border-border/20 rounded-2xl p-5 hover:border-blue-500/40 hover:shadow-sm transition-all group"
       onClick={onSelect}
     >
       <div className="flex items-start gap-3">
@@ -830,26 +830,26 @@ function RepoCard({
           {repo.provider[0]?.toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-blue-500 transition-colors">
+          <p className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors">
             {repo.name}
           </p>
-          <p className="text-xs text-[#6e6e73] dark:text-[#86868b] truncate mt-0.5">
+          <p className="text-xs text-muted truncate mt-0.5">
             {repo.repository_url}
           </p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="px-1.5 py-0.5 rounded text-[10px] bg-black/[0.04] dark:bg-white/[0.04] text-[#6e6e73] dark:text-[#86868b]">
+            <span className="px-1.5 py-0.5 rounded text-[10px] bg-default text-muted">
               {PROVIDER_LABEL[repo.provider]}
             </span>
-            <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
+            <span className="text-[10px] text-muted/60">
               {repo.default_branch}
             </span>
-            <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
+            <span className="text-[10px] text-muted/60">
               Added {relativeTime(repo.created_at)}
             </span>
           </div>
         </div>
         <button
-          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 text-[#aeaeb2] hover:text-red-500 transition-all"
+          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 text-muted/60 hover:text-danger transition-all"
           title="Remove repository"
           onClick={(e) => {
             e.stopPropagation();
@@ -910,7 +910,7 @@ export default function GitRepositoriesPage() {
   if (!isAuthenticated && !loadingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+        <p className="text-sm text-muted">
           Sign in to manage your repositories.
         </p>
       </div>
@@ -944,16 +944,16 @@ export default function GitRepositoriesPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">
+                <h1 className="text-2xl font-bold text-foreground">
                   Git Repositories
                 </h1>
-                <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+                <p className="text-sm text-muted mt-1">
                   Connect and visualize your repositories from GitHub, GitLab,
                   or Bitbucket.
                 </p>
               </div>
               <button
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium hover:opacity-90 transition-opacity"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent text-accent-foreground text-sm font-medium hover:opacity-90 transition-opacity"
                 onClick={() => setShowAdd(true)}
               >
                 <svg
@@ -975,7 +975,7 @@ export default function GitRepositoriesPage() {
             <div className="flex items-center gap-3 mb-6">
               <div className="relative flex-1 max-w-xs">
                 <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[#aeaeb2]"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted/60"
                   fill="none"
                   height="14"
                   stroke="currentColor"
@@ -988,14 +988,14 @@ export default function GitRepositoriesPage() {
                   <path d="M10.5 10.5L14 14" />
                 </svg>
                 <input
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2]"
+                  className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border-border/30 bg-surface text-foreground placeholder:text-muted/60"
                   placeholder="Search repositories…"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
               <select
-                className="px-3 py-2 text-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white"
+                className="px-3 py-2 text-sm rounded-xl border-border/30 bg-surface text-foreground"
                 value={filterProvider}
                 onChange={(e) =>
                   setFilterProvider(e.target.value as Provider | "all")
@@ -1010,14 +1010,14 @@ export default function GitRepositoriesPage() {
 
             {/* List */}
             {loading ? (
-              <div className="flex items-center gap-2 text-sm text-[#6e6e73] dark:text-[#86868b] py-8">
+              <div className="flex items-center gap-2 text-sm text-muted py-8">
                 <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                 Loading repositories…
               </div>
             ) : filtered.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-20 gap-3">
                 <svg
-                  className="text-[#aeaeb2]"
+                  className="text-muted/60"
                   fill="none"
                   height="40"
                   stroke="currentColor"
@@ -1029,14 +1029,14 @@ export default function GitRepositoriesPage() {
                 >
                   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                 </svg>
-                <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+                <p className="text-sm font-medium text-foreground">
                   {search || filterProvider !== "all"
                     ? "No matching repositories"
                     : "No repositories connected"}
                 </p>
                 {!search && filterProvider === "all" && (
                   <button
-                    className="text-sm text-blue-500 hover:underline"
+                    className="text-sm text-accent hover:underline"
                     onClick={() => setShowAdd(true)}
                   >
                     Connect your first repository →

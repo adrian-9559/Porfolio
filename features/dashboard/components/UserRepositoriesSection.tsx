@@ -42,14 +42,14 @@ function GraphView({
   if (loading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+        <div className="w-5 h-5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
       </div>
     );
   }
   if (commits.length === 0) {
     return (
-      <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] py-16 text-center">
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+      <div className="rounded-2xl border border-border bg-surface py-16 text-center">
+        <p className="text-sm text-muted">
           {t("repositories.graphNoData")}
         </p>
       </div>
@@ -93,7 +93,7 @@ function GraphView({
   });
 
   return (
-    <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-x-auto">
+    <div className="rounded-2xl border border-border bg-surface overflow-x-auto">
       <svg
         style={{ minWidth: "400px", display: "block" }}
         viewBox={`0 0 ${SVG_W} ${SVG_H}`}
@@ -458,7 +458,7 @@ export function UserRepositoriesSection() {
     return (
       <section>
         <button
-          className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors mb-4 flex items-center gap-1.5"
+          className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors mb-4 flex items-center gap-1.5"
           onClick={() => setView("list")}
         >
           <span>←</span>
@@ -466,11 +466,11 @@ export function UserRepositoriesSection() {
         </button>
 
         {/* Header card */}
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5 mb-4">
+        <div className="rounded-2xl border border-border bg-surface p-5 mb-4">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap mb-1">
-                <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+                <h2 className="text-lg font-semibold text-foreground">
                   {selected.name}
                 </h2>
                 <span
@@ -480,16 +480,16 @@ export function UserRepositoriesSection() {
                 </span>
               </div>
               <a
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline font-mono truncate block max-w-sm"
+                className="text-xs text-accent hover:underline font-mono truncate block max-w-sm"
                 href={selected.repository_url}
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 {selected.repository_url}
               </a>
-              <div className="mt-2 flex items-center gap-1.5 text-xs text-[#6e6e73] dark:text-[#86868b]">
+              <div className="mt-2 flex items-center gap-1.5 text-xs text-muted">
                 <BranchIcon />
-                <span className="font-mono bg-black/5 dark:bg-white/5 px-1.5 py-0.5 rounded">
+                <span className="font-mono bg-default px-1.5 py-0.5 rounded">
                   {selected.default_branch}
                 </span>
               </div>
@@ -499,14 +499,14 @@ export function UserRepositoriesSection() {
 
         {/* Tab switcher + branch selector */}
         <div className="flex items-center gap-3 mb-4 flex-wrap">
-          <div className="flex gap-1 p-1 rounded-xl bg-black/5 dark:bg-white/5">
+          <div className="flex gap-1 p-1 rounded-xl bg-default">
             {(["commits", "branches", "graph"] as const).map((tab) => (
               <button
                 key={tab}
                 className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
                   detailTab === tab
-                    ? "bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-sm"
-                    : "text-[#6e6e73] dark:text-[#86868b]"
+                    ? "bg-surface text-foreground shadow-sm"
+                    : "text-muted"
                 }`}
                 onClick={() => {
                   setDetailTab(tab);
@@ -527,11 +527,11 @@ export function UserRepositoriesSection() {
           {/* Branch selector — only visible on commits tab */}
           {detailTab === "commits" && branches.length > 0 && (
             <div className="flex items-center gap-1.5">
-              <span className="text-[#6e6e73] dark:text-[#86868b] flex-shrink-0">
+              <span className="text-muted flex-shrink-0">
                 <BranchIcon />
               </span>
               <select
-                className="text-sm font-mono bg-white dark:bg-[#1c1c1e] border border-black/12 dark:border-white/12 text-[#1d1d1f] dark:text-white rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                className="text-sm font-mono bg-surface border border-border/30 text-foreground rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-accent/30 transition-all"
                 value={selectedBranch}
                 onChange={(e) => switchBranch(e.target.value)}
               >
@@ -548,7 +548,7 @@ export function UserRepositoriesSection() {
 
         {detailLoading ? (
           <div className="flex justify-center py-12">
-            <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+            <div className="w-5 h-5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
           </div>
         ) : detailError ? (
           <div className="rounded-2xl border border-red-200 dark:border-red-900/40 bg-red-50 dark:bg-red-950/20 p-5 text-center">
@@ -563,15 +563,15 @@ export function UserRepositoriesSection() {
             loading={graphLoading}
           />
         ) : detailTab === "commits" ? (
-          <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] divide-y divide-black/5 dark:divide-white/5 relative">
+          <div className="rounded-2xl border border-border bg-surface divide-y divide-border relative">
             {commitsLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-white/70 dark:bg-[#111116]/70 rounded-2xl z-10">
-                <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+                <div className="w-5 h-5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
               </div>
             )}
             {commits.length === 0 ? (
               <div className="py-16 text-center">
-                <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+                <p className="text-sm text-muted">
                   No hay commits en esta rama.
                 </p>
               </div>
@@ -579,13 +579,13 @@ export function UserRepositoriesSection() {
               commits.map((commit, i) => (
                 <div key={commit.sha} className="p-4 flex items-start gap-3">
                   <div className="flex flex-col items-center mt-1 flex-shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-blue-500" />
+                    <div className="w-2 h-2 rounded-full bg-accent" />
                     {i < commits.length - 1 && (
                       <div className="w-px flex-1 bg-black/8 dark:bg-white/8 mt-1 min-h-[1.5rem]" />
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm text-[#1d1d1f] dark:text-white font-medium">
+                    <p className="text-sm text-foreground font-medium">
                       {commit.message}
                     </p>
                     <div className="mt-1 flex items-center gap-2 flex-wrap">
@@ -595,14 +595,14 @@ export function UserRepositoriesSection() {
                         rel="noopener noreferrer"
                         target="_blank"
                       >
-                        <code className="text-[10px] font-mono bg-black/5 dark:bg-white/8 px-1.5 py-0.5 rounded text-blue-600 dark:text-blue-400">
+                        <code className="text-[10px] font-mono bg-default px-1.5 py-0.5 rounded text-accent">
                           {commit.sha.slice(0, 7)}
                         </code>
                       </a>
-                      <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                      <span className="text-xs text-muted">
                         {commit.author.name}
                       </span>
-                      <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                      <span className="text-xs text-muted/60">
                         {relTime(commit.date)}
                       </span>
                     </div>
@@ -612,38 +612,38 @@ export function UserRepositoriesSection() {
             )}
           </div>
         ) : (
-          <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] divide-y divide-black/5 dark:divide-white/5">
+          <div className="rounded-2xl border border-border bg-surface divide-y divide-border">
             {branches.length === 0 ? (
               <div className="py-16 text-center">
-                <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
+                <p className="text-sm text-muted">
                   No hay ramas disponibles.
                 </p>
               </div>
             ) : (
               branches.map((branch) => (
                 <div key={branch.name} className="p-4 flex items-center gap-3">
-                  <span className="text-[#6e6e73] dark:text-[#86868b] flex-shrink-0">
+                  <span className="text-muted flex-shrink-0">
                     <BranchIcon />
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-medium text-[#1d1d1f] dark:text-white font-mono">
+                      <span className="text-sm font-medium text-foreground font-mono">
                         {branch.name}
                       </span>
                       {branch.is_default && (
-                        <span className="text-[10px] font-semibold uppercase tracking-wider bg-blue-500/10 text-blue-600 dark:text-blue-400 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider bg-accent/10 text-accent px-1.5 py-0.5 rounded">
                           default
                         </span>
                       )}
                     </div>
                     <div className="mt-0.5">
-                      <code className="text-[10px] font-mono bg-black/5 dark:bg-white/8 px-1.5 py-0.5 rounded text-[#6e6e73] dark:text-[#86868b]">
+                      <code className="text-[10px] font-mono bg-default px-1.5 py-0.5 rounded text-muted">
                         {branch.last_commit?.sha.slice(0, 7) ?? "—"}
                       </code>
                     </div>
                   </div>
                   <button
-                    className="flex-shrink-0 text-xs text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                    className="flex-shrink-0 text-xs text-accent hover:underline font-medium"
                     onClick={() => {
                       setSelectedBranch(branch.name);
                       setDetailTab("commits");
@@ -659,7 +659,7 @@ export function UserRepositoriesSection() {
         )}
 
         {/* Delete button */}
-        <div className="mt-6 pt-4 border-t border-black/8 dark:border-white/8">
+        <div className="mt-6 pt-4 border-t border-border">
           <button
             className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium transition-colors"
             onClick={() => handleDelete(selected.id)}
@@ -678,7 +678,7 @@ export function UserRepositoriesSection() {
     return (
       <section>
         <button
-          className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors mb-4 flex items-center gap-1.5"
+          className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors mb-4 flex items-center gap-1.5"
           onClick={() => {
             setView("list");
             setAddError("");
@@ -688,20 +688,20 @@ export function UserRepositoriesSection() {
                   <span>{t("repositories.title")}</span>
                 </button>
 
-                <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-4">
+                <div className="rounded-2xl border border-border bg-surface p-5">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-4">
                     {t("repositories.add")}
           </p>
 
           <form className="flex flex-col gap-4" onSubmit={handleAdd}>
             {/* Nombre */}
             <div>
-              <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-1.5">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
                 Nombre
               </label>
               <input
                 required
-                className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+                className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
                 placeholder="mi-repositorio"
                 type="text"
                 value={form.name}
@@ -713,7 +713,7 @@ export function UserRepositoriesSection() {
 
             {/* Proveedor */}
             <div>
-              <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-1.5">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
                 Proveedor
               </label>
               <div className="flex gap-2 flex-wrap">
@@ -722,8 +722,8 @@ export function UserRepositoriesSection() {
                     key={p}
                     className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors border ${
                       form.provider === p
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white"
+                        ? "bg-accent text-accent-foreground border-accent"
+                        : "border-border/30 hover:bg-default text-foreground"
                     }`}
                     type="button"
                     onClick={() => setForm((f) => ({ ...f, provider: p }))}
@@ -736,12 +736,12 @@ export function UserRepositoriesSection() {
 
             {/* URL */}
             <div>
-              <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-1.5">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
                 URL del repositorio
               </label>
               <input
                 required
-                className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+                className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
                 placeholder="https://github.com/usuario/repo"
                 type="url"
                 value={form.repository_url}
@@ -753,11 +753,11 @@ export function UserRepositoriesSection() {
 
             {/* Rama principal */}
             <div>
-              <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-1.5">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
                 Rama principal
               </label>
               <input
-                className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+                className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
                 placeholder="main"
                 type="text"
                 value={form.default_branch}
@@ -769,11 +769,11 @@ export function UserRepositoriesSection() {
 
             {/* Token */}
             <div>
-              <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] block mb-1.5">
+              <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
                 Token de acceso (opcional)
               </label>
               <input
-                className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+                className="w-full px-3 py-2 rounded-xl border border-border/30 bg-default text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
                 placeholder="ghp_..."
                 type="password"
                 value={form.access_token}
@@ -781,7 +781,7 @@ export function UserRepositoriesSection() {
                   setForm((f) => ({ ...f, access_token: e.target.value }))
                 }
               />
-              <p className="mt-1 text-xs text-[#6e6e73] dark:text-[#86868b]">
+              <p className="mt-1 text-xs text-muted">
                 Necesario para repositorios privados
               </p>
             </div>
@@ -794,7 +794,7 @@ export function UserRepositoriesSection() {
 
             <div className="flex gap-2 pt-1">
               <button
-                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-60"
+                className="bg-accent hover:bg-accent-hover text-accent-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-60"
                 disabled={adding}
                 type="submit"
               >
@@ -804,7 +804,7 @@ export function UserRepositoriesSection() {
                 Añadir repositorio
               </button>
               <button
-                className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+                className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
                 type="button"
                 onClick={() => {
                   setView("list");
@@ -827,16 +827,16 @@ export function UserRepositoriesSection() {
       {/* Section header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-0.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-0.5">
             Repositorios
           </p>
-          <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+          <h2 className="text-lg font-semibold text-foreground">
             Git Repositories
           </h2>
         </div>
         {!loading && !error && (
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            className="bg-accent hover:bg-accent-hover text-accent-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
             onClick={() => setView("add")}
           >
             + Añadir repositorio
@@ -847,16 +847,16 @@ export function UserRepositoriesSection() {
       {/* Loading */}
       {loading && (
         <div className="flex justify-center py-16">
-          <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+          <div className="w-5 h-5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
         </div>
       )}
 
       {/* Error */}
       {!loading && error && (
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5">
+        <div className="rounded-2xl border border-border bg-surface p-5">
           <p className="text-sm text-red-600 dark:text-red-400 mb-3">{error}</p>
           <button
-            className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
             onClick={() => {
               setError("");
               setLoading(true);
@@ -874,12 +874,12 @@ export function UserRepositoriesSection() {
 
       {/* Empty state */}
       {!loading && !error && repos.length === 0 && (
-        <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] py-16 text-center">
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mb-3">
+        <div className="rounded-2xl border border-border bg-surface py-16 text-center">
+          <p className="text-sm text-muted mb-3">
             No tienes repositorios añadidos
           </p>
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            className="bg-accent hover:bg-accent-hover text-accent-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
             onClick={() => setView("add")}
           >
             Añadir primero
@@ -893,11 +893,11 @@ export function UserRepositoriesSection() {
           {repos.map((repo) => (
             <div
               key={repo.id}
-              className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5"
+              className="rounded-2xl border border-border bg-surface p-5"
             >
               {/* Name + provider */}
               <div className="flex items-start justify-between gap-2 mb-2">
-                <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
+                <h3 className="text-sm font-semibold text-foreground truncate">
                   {repo.name}
                 </h3>
                 <span
@@ -908,17 +908,17 @@ export function UserRepositoriesSection() {
               </div>
 
               {/* URL */}
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] font-mono truncate mb-2">
+              <p className="text-xs text-muted font-mono truncate mb-2">
                 {repo.repository_url}
               </p>
 
               {/* Branch + date */}
-              <div className="flex items-center gap-3 text-xs text-[#6e6e73] dark:text-[#86868b] mb-4">
+              <div className="flex items-center gap-3 text-xs text-muted mb-4">
                 <span className="flex items-center gap-1">
                   <BranchIcon />
                   <span className="font-mono">{repo.default_branch}</span>
                 </span>
-                <span className="text-[#aeaeb2] dark:text-[#636366]">
+                <span className="text-muted/60">
                   {relTime(repo.created_at)}
                 </span>
               </div>
@@ -926,14 +926,14 @@ export function UserRepositoriesSection() {
               {/* Actions */}
               <div className="flex items-center gap-2">
                 <button
-                  className="border border-black/12 dark:border-white/12 hover:bg-black/5 dark:hover:bg-white/5 text-[#1d1d1f] dark:text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+                  className="border border-border/30 hover:bg-default text-foreground text-sm font-medium px-4 py-2 rounded-xl transition-colors"
                   onClick={() => openDetail(repo)}
                 >
                   Ver detalle
                 </button>
                 <button
                   aria-label="Eliminar repositorio"
-                  className="ml-auto p-2 rounded-xl border border-black/12 dark:border-white/12 hover:bg-red-50 dark:hover:bg-red-950/20 text-[#6e6e73] dark:text-[#86868b] hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                  className="ml-auto p-2 rounded-xl border border-border/30 hover:bg-red-50 dark:hover:bg-red-950/20 text-muted hover:text-red-600 dark:hover:text-red-400 transition-colors"
                   onClick={() => handleDelete(repo.id)}
                 >
                   <TrashIcon />

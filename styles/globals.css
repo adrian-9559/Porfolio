@@ -6,6 +6,9 @@
 @theme {
 	--font-sans: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	--font-mono: "Fira Code", "SF Mono", "JetBrains Mono", monospace;
+	--color-brand-from: #2563eb;
+	--color-brand-via: #06b6d4;
+	--color-brand-to: #4f46e5;
 }
 
 @layer base {
@@ -19,7 +22,7 @@
 	}
 
 	body {
-		@apply bg-white dark:bg-[#0a0a0f] transition-colors duration-300;
+		@apply bg-background text-foreground transition-colors duration-300;
 		font-feature-settings: "kern", "liga", "calt";
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
@@ -36,75 +39,71 @@
 	}
 
 	::selection {
-		@apply bg-blue-500/20 text-blue-700 dark:text-blue-300;
+		background: color-mix(in oklab, var(--accent) 20%, transparent);
+		color: var(--accent);
 	}
 }
 
 @layer components {
-	/* Apple-style glass card */
 	.glass-card {
-		@apply bg-white/80 dark:bg-white/5 backdrop-blur-xl;
-		border: 1px solid rgba(0, 0, 0, 0.08);
+		@apply backdrop-blur-xl border border-border/30;
+		background: color-mix(in oklab, var(--background) 80%, transparent);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
 	}
 
 	.dark .glass-card {
-		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: color-mix(in oklab, var(--foreground) 5%, transparent);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
 	}
 
-	/* Section label */
 	.section-label {
-		@apply text-xs font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400;
+		@apply text-xs font-semibold uppercase tracking-widest text-accent;
 	}
 
-	/* Gradient text */
 	.gradient-text {
-		@apply bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent;
-	}
-
-	/* Hero multicolor gradient text */
-	.hero-gradient-text {
-		background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 40%, #f97316 80%, #06b6d4 100%);
+		background: linear-gradient(135deg, var(--color-brand-from), var(--color-brand-via), var(--color-brand-to));
 		-webkit-background-clip: text;
 		background-clip: text;
 		-webkit-text-fill-color: transparent;
 	}
 
-	/* Rainbow animated button */
+	.hero-gradient-text {
+		background: linear-gradient(135deg, var(--color-brand-from) 0%, var(--color-brand-via) 50%, var(--color-brand-to) 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
 	.rainbow-btn {
 		@apply relative inline-flex items-center justify-center text-white font-bold rounded-full transition-all duration-300 active:scale-95;
-		background: linear-gradient(135deg, #8b5cf6, #ec4899, #f97316);
+		background: linear-gradient(135deg, var(--color-brand-from), var(--color-brand-via), var(--color-brand-to));
 		background-size: 200% 200%;
 		animation: gradientShift 3s ease infinite;
-		box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+		box-shadow: 0 4px 20px color-mix(in oklab, var(--accent) 50%, transparent);
 	}
 	.rainbow-btn:hover {
-		box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+		box-shadow: 0 8px 30px color-mix(in oklab, var(--accent) 60%, transparent);
 		transform: translateY(-1px);
 	}
 
-	/* Apple-style buttons */
 	.apple-btn-primary {
-		@apply inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white font-semibold rounded-full px-6 py-2.5 text-sm transition-all duration-200 active:scale-95;
+		@apply inline-flex items-center justify-center bg-accent hover:bg-accent-hover text-accent-foreground font-semibold rounded-full px-6 py-2.5 text-sm transition-all duration-200 active:scale-95;
 	}
 
 	.apple-btn-secondary {
-		@apply inline-flex items-center justify-center bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/15 text-[#1d1d1f] dark:text-white font-semibold rounded-full px-6 py-2.5 text-sm transition-all duration-200 active:scale-95;
+		@apply inline-flex items-center justify-center bg-default hover:bg-black/10 dark:hover:bg-white/15 text-foreground font-semibold rounded-full px-6 py-2.5 text-sm transition-all duration-200 active:scale-95;
 	}
 
-	/* Tag chip */
 	.tag-chip {
-		@apply px-3 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-900/50;
+		@apply px-3 py-1 rounded-full text-xs font-medium bg-accent-soft text-accent-soft-foreground border border-accent/20;
 	}
 
-	/* Sidebar nav items */
 	.sidebar-item {
-		@apply flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5 hover:text-[#1d1d1f] dark:hover:text-white transition-all duration-150 cursor-pointer;
+		@apply flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm text-muted hover:bg-default hover:text-foreground transition-all duration-150 cursor-pointer;
 	}
 
 	.sidebar-item-active {
-		@apply flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 font-medium;
+		@apply flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm bg-accent-soft text-accent font-medium;
 	}
 
 	/* Ambient gradient blobs – used as decorative backgrounds */
@@ -156,5 +155,5 @@
 /* Sidebar-only subtle scrollbar */
 .sidebar-scroll::-webkit-scrollbar       { width: 3px; }
 .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
-.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 99px; }
-.dark .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+.dark .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); }
