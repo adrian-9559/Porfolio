@@ -38,6 +38,10 @@ import RagMcpContent from "@/components/blog/tutorials/RagMcpContent";
 import ParallelAgentsContent from "@/components/blog/tutorials/ParallelAgentsContent";
 import OpenCodeModelsContent from "@/components/blog/opencode-models";
 
+// VS Code articles — ES
+import VSCodeConfigContent from "@/components/blog/tutorials/VSCodeConfigContent";
+import VSCodeExtensionsContent from "@/components/blog/tutorials/VSCodeExtensionsContent";
+
 // Tutorials — EN
 import SvgContentEn from "@/components/blog/tutorials/en/SvgContent";
 import DatabaseContentEn from "@/components/blog/tutorials/en/DatabaseContent";
@@ -72,6 +76,10 @@ import OllamaMcpContentEn from "@/components/blog/tutorials/en/OllamaMcpContent"
 import RagMcpContentEn from "@/components/blog/tutorials/en/RagMcpContent";
 import ParallelAgentsContentEn from "@/components/blog/tutorials/en/ParallelAgentsContent";
 import OpenCodeModelsContentEn from "@/components/blog/opencode-models/en";
+
+// VS Code articles — EN
+import VSCodeConfigContentEn from "@/components/blog/tutorials/en/VSCodeConfigContent";
+import VSCodeExtensionsContentEn from "@/components/blog/tutorials/en/VSCodeExtensionsContent";
 
 // Tools — ES
 import PasswordContent from "@/components/blog/tools/PasswordContent";
@@ -143,6 +151,8 @@ const contentMap: Record<string, { es: React.ComponentType; en: React.ComponentT
   "rag-con-mcp": { es: RagMcpContent, en: RagMcpContentEn },
   "agentes-paralelo": { es: ParallelAgentsContent, en: ParallelAgentsContentEn },
   "opencode-models": { es: OpenCodeModelsContent, en: OpenCodeModelsContentEn },
+  "vscode-config": { es: VSCodeConfigContent, en: VSCodeConfigContentEn },
+  "vscode-extensions": { es: VSCodeExtensionsContent, en: VSCodeExtensionsContentEn },
   password: { es: PasswordContent, en: PasswordContentEn },
   "json-formatter": { es: JsonFormatterContent, en: JsonFormatterContentEn },
   base64: { es: Base64Content, en: Base64ContentEn },
