@@ -124,6 +124,31 @@ export default function ResumePage() {
                               </p>
                             </div>
                             <div className="flex items-center gap-2 flex-shrink-0">
+                              {edu.url && (
+                                <button
+                                  className="flex items-center justify-center w-6 h-6 rounded-lg text-muted/60 hover:text-accent hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors cursor-pointer"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    window.open(edu.url!, '_blank', 'noopener,noreferrer');
+                                  }}
+                                  aria-label="Abrir repositorio"
+                                >
+                                  <svg
+                                    className="w-3.5 h-3.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                    />
+                                  </svg>
+                                </button>
+                              )}
                               <span className="text-xs text-muted/60 hidden sm:block">
                                 {edu.year}
                               </span>

@@ -42,6 +42,16 @@ import OpenCodeModelsContent from "@/components/blog/opencode-models";
 import VSCodeConfigContent from "@/components/blog/tutorials/VSCodeConfigContent";
 import VSCodeExtensionsContent from "@/components/blog/tutorials/VSCodeExtensionsContent";
 
+// Database articles — ES
+import DatabaseIntroContent from "@/components/blog/tutorials/DatabaseIntroContent";
+import SQLvsNoSQLContent from "@/components/blog/tutorials/SQLvsNoSQLContent";
+import SQLBasicsContent from "@/components/blog/tutorials/SQLBasicsContent";
+import MySQLGuideContent from "@/components/blog/tutorials/MySQLGuideContent";
+import PostgreSQLGuideContent from "@/components/blog/tutorials/PostgreSQLGuideContent";
+import MongoDBGuideContent from "@/components/blog/tutorials/MongoDBGuideContent";
+import SupabaseGuideContent from "@/components/blog/tutorials/SupabaseGuideContent";
+import SQLBuilderDocContent from "@/components/blog/tutorials/SQLBuilderDocContent";
+
 // Tutorials — EN
 import SvgContentEn from "@/components/blog/tutorials/en/SvgContent";
 import DatabaseContentEn from "@/components/blog/tutorials/en/DatabaseContent";
@@ -81,6 +91,16 @@ import OpenCodeModelsContentEn from "@/components/blog/opencode-models/en";
 import VSCodeConfigContentEn from "@/components/blog/tutorials/en/VSCodeConfigContent";
 import VSCodeExtensionsContentEn from "@/components/blog/tutorials/en/VSCodeExtensionsContent";
 
+// Database articles — EN
+import DatabaseIntroContentEn from "@/components/blog/tutorials/en/DatabaseIntroContent";
+import SQLvsNoSQLContentEn from "@/components/blog/tutorials/en/SQLvsNoSQLContent";
+import SQLBasicsContentEn from "@/components/blog/tutorials/en/SQLBasicsContent";
+import MySQLGuideContentEn from "@/components/blog/tutorials/en/MySQLGuideContent";
+import PostgreSQLGuideContentEn from "@/components/blog/tutorials/en/PostgreSQLGuideContent";
+import MongoDBGuideContentEn from "@/components/blog/tutorials/en/MongoDBGuideContent";
+import SupabaseGuideContentEn from "@/components/blog/tutorials/en/SupabaseGuideContent";
+import SQLBuilderDocContentEn from "@/components/blog/tutorials/en/SQLBuilderDocContent";
+
 // Tools — ES
 import PasswordContent from "@/components/blog/tools/PasswordContent";
 import JsonFormatterContent from "@/components/blog/tools/JsonFormatterContent";
@@ -94,6 +114,9 @@ import TimestampConverterContent from "@/components/blog/tools/TimestampConverte
 import CaseConverterContent from "@/components/blog/tools/CaseConverterContent";
 import DiffCheckerContent from "@/components/blog/tools/DiffCheckerContent";
 
+// SQL Builder
+import SQLBuilderContent from "@/components/blog/tools/SQLBuilderContent";
+
 // Tools — EN
 import PasswordContentEn from "@/components/blog/tools/en/PasswordContent";
 import JsonFormatterContentEn from "@/components/blog/tools/en/JsonFormatterContent";
@@ -106,6 +129,9 @@ import UuidGeneratorContentEn from "@/components/blog/tools/en/UuidGeneratorCont
 import TimestampConverterContentEn from "@/components/blog/tools/en/TimestampConverterContent";
 import CaseConverterContentEn from "@/components/blog/tools/en/CaseConverterContent";
 import DiffCheckerContentEn from "@/components/blog/tools/en/DiffCheckerContent";
+
+// SQL Builder — EN
+import SQLBuilderContentEn from "@/components/blog/tools/en/SQLBuilderContent";
 
 const PdfEditorContent = dynamic(
   () => import("@/components/blog/tools/PdfEditorContent"),
@@ -153,6 +179,13 @@ const contentMap: Record<string, { es: React.ComponentType; en: React.ComponentT
   "opencode-models": { es: OpenCodeModelsContent, en: OpenCodeModelsContentEn },
   "vscode-config": { es: VSCodeConfigContent, en: VSCodeConfigContentEn },
   "vscode-extensions": { es: VSCodeExtensionsContent, en: VSCodeExtensionsContentEn },
+  "database-intro": { es: DatabaseIntroContent, en: DatabaseIntroContentEn },
+  "sql-vs-nosql": { es: SQLvsNoSQLContent, en: SQLvsNoSQLContentEn },
+  "sql-basics": { es: SQLBasicsContent, en: SQLBasicsContentEn },
+  "mysql-guide": { es: MySQLGuideContent, en: MySQLGuideContentEn },
+  "postgresql-guide": { es: PostgreSQLGuideContent, en: PostgreSQLGuideContentEn },
+  "mongodb-guide": { es: MongoDBGuideContent, en: MongoDBGuideContentEn },
+  "supabase-guide": { es: SupabaseGuideContent, en: SupabaseGuideContentEn },
   password: { es: PasswordContent, en: PasswordContentEn },
   "json-formatter": { es: JsonFormatterContent, en: JsonFormatterContentEn },
   base64: { es: Base64Content, en: Base64ContentEn },
@@ -165,6 +198,8 @@ const contentMap: Record<string, { es: React.ComponentType; en: React.ComponentT
   "case-converter": { es: CaseConverterContent, en: CaseConverterContentEn },
   "diff-checker": { es: DiffCheckerContent, en: DiffCheckerContentEn },
   "pdf-editor": { es: PdfEditorContent, en: PdfEditorContentEn },
+  "sql-builder": { es: SQLBuilderContent, en: SQLBuilderContentEn },
+  "sql-builder-guide": { es: SQLBuilderDocContent, en: SQLBuilderDocContentEn },
 };
 
 export function getContentComponent(id: string, locale: Locale): React.ComponentType | null {

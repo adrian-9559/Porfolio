@@ -153,8 +153,31 @@ export default function FormacionPage({ edu }: Props) {
                       strokeWidth={2}
                     />
                   </svg>
-                  {edu.location}
+                    {edu.location}
                 </span>
+                {edu.url && (
+                  <a
+                    className="flex items-center gap-1.5 text-sm text-muted hover:text-accent transition-colors"
+                    href={edu.url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                      />
+                    </svg>
+                    Repositorio
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -359,6 +382,40 @@ export default function FormacionPage({ edu }: Props) {
               </ul>
             </Section>
           </div>
+        )}
+
+        {/* Full repository link */}
+        {edu.url && (
+          <a
+            className="block p-5 rounded-2xl bg-gradient-to-br from-emerald-500/[0.07] to-teal-400/[0.07] border border-emerald-500/15 hover:border-emerald-500/30 hover:shadow-md hover:shadow-emerald-500/5 transition-all duration-200 group"
+            href={edu.url}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold text-foreground group-hover:text-accent transition-colors">
+                  Repositorio completo
+                </p>
+                <p className="text-xs text-muted mt-0.5">
+                  Todos los proyectos del Cursus en GitHub
+                </p>
+              </div>
+              <svg
+                className="w-5 h-5 text-muted group-hover:text-accent transition-colors flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                />
+              </svg>
+            </div>
+          </a>
         )}
 
         {/* Navigation between education pages */}

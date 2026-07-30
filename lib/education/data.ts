@@ -31,6 +31,7 @@ export interface EducationData {
   knowledge: string[];
   applications: string[];
   achievements?: string[];
+  url?: string;
 }
 
 export const educationData: EducationData[] = [
@@ -199,9 +200,10 @@ export const educationData: EducationData[] = [
       "JavaScript (ES6+)",
       "TypeScript",
       "React",
-      "Next.js",
+      "Spring Boot",
       "Node.js",
       "Express.js",
+      "Java",
       "PostgreSQL",
       "MongoDB",
       "HTML5 / CSS3",
@@ -320,6 +322,7 @@ export const educationData: EducationData[] = [
     year: "2025 — Presente",
     location: "Madrid",
     color: "from-emerald-500 to-teal-400",
+    url: "https://github.com/adrian-9559/42_Network",
     summary:
       "Educación técnica intensiva peer-to-peer en programación de sistemas, algoritmos, arquitectura de software y ciencias de la computación. Sin profesores, sin clases: aprendizaje colaborativo 100% basado en proyectos.",
     institutionDescription:
@@ -447,12 +450,14 @@ export const educationData: EducationData[] = [
         description:
           "Shell funcional en C con soporte para builtins, variables de entorno, redirecciones, pipes y gestión de señales. Proyecto colaborativo de alto nivel técnico.",
         technologies: ["C", "POSIX", "Fork/exec", "Lex/parsing"],
+        url: "https://github.com/adrian-9559/minishell",
       },
       {
         name: "philosophers",
         description:
           "Solución al problema de los filósofos comensales implementando concurrencia con pthreads y mutexes, sin deadlocks ni race conditions.",
         technologies: ["C", "pthreads", "mutexes", "semáforos"],
+        url: "https://github.com/adrian-9559/philosophers",
       },
     ],
     knowledge: [
