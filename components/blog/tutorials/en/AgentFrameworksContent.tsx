@@ -28,9 +28,9 @@ export default function AgentFrameworksContent() {
         AI Agent Frameworks: LangChain, CrewAI, OpenAI Agents SDK y más
       </h1>
       <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-8">
-        Practical comparison of the main frameworks para construir
-        agentes de IA. LangChain, CrewAI, OpenAI Agents SDK, Anthropic Claude
-        Agent, AutoGPT y Phidata — cuándo usar cada uno, con ejemplos mínimos de
+        Practical comparison of the main frameworks para construir agentes de
+        IA. LangChain, CrewAI, OpenAI Agents SDK, Anthropic Claude Agent,
+        AutoGPT y Phidata — cuándo usar cada uno, con ejemplos mínimos de
         código.
       </p>
 

@@ -79,7 +79,9 @@ export default function Hero() {
             style={{ letterSpacing: "-0.04em", lineHeight: 1.04 }}
           >
             {t("hero.title")}
-            <span className="block hero-gradient-text">{t("hero.titleAccent")}</span>
+            <span className="block hero-gradient-text">
+              {t("hero.titleAccent")}
+            </span>
           </h1>
           <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed max-w-lg mx-auto">
             {t("hero.description")}

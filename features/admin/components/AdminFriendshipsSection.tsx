@@ -4,7 +4,6 @@ import type {
 } from "@/services/adminService";
 
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
 
 import {
   SectionHeader,
@@ -15,6 +14,7 @@ import {
   relativeTime,
 } from "./AdminShared";
 
+import { useT } from "@/hooks/useT";
 import { adminService } from "@/services/adminService";
 
 function MetricCard({
@@ -104,7 +104,9 @@ export function AdminFriendshipsSection() {
             }`}
             onClick={() => setTab(tabKey)}
           >
-            {tabKey === "friendships" ? t("admin.tabFriendships") : t("admin.tabRequests")}
+            {tabKey === "friendships"
+              ? t("admin.tabFriendships")
+              : t("admin.tabRequests")}
           </button>
         ))}
       </div>

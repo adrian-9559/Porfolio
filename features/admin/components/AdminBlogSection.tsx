@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { SectionHeader, Card, SearchInput, Badge } from "./AdminShared";
 
-import { allContent, ContentType } from "@/lib/blog/registry";
+import { allContent, ContentType, contentHref } from "@/lib/blog/registry";
 
 const typeColor: Record<ContentType, "blue" | "green" | "purple"> = {
   article: "blue",
@@ -128,7 +128,7 @@ export function AdminBlogSection() {
                 </div>
                 <a
                   className="text-[#aeaeb2] hover:text-blue-500 transition-colors p-1.5"
-                  href={`/blog/${c.slug}`}
+                  href={contentHref(c.type, c.slug)}
                   rel="noopener noreferrer"
                   target="_blank"
                 >

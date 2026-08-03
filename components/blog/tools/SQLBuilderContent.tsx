@@ -1,278 +1,82 @@
 "use client";
-import { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import { useAuthStore } from "@/store/authStore";
+import type {
+  TableDef,
+  ColumnRef,
+  HistoryItem,
+  ExampleSchema,
+} from "./utils/sqlBuilder";
+
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
+
+import {
+  EXAMPLE_DDL_USERS_ORDERS,
+  EXAMPLE_DDL_EMPLOYEES,
+  parseDDL,
+  generateSQL,
+  relativeTime,
+  getTypeColor,
+} from "./utils/sqlBuilder";
+import {
+  BookIcon,
+  LinkIcon,
+  DocumentIcon,
+  WarningIcon,
+  KeyIcon,
+  ClipboardIcon,
+  TrashIcon,
+  CheckIcon,
+  PlusIcon,
+  highlightSQL,
+} from "./SQLBuilderIcons";
+import { Badge } from "./SQLBuilderBadge";
+
 import { apiFetch } from "@/services/apiClient";
-
-interface ColumnDef {
-  name: string;
-  type: string;
-  isPk: boolean;
-  fk?: { table: string; column: string };
-}
-
-interface TableDef {
-  name: string;
-  columns: ColumnDef[];
-}
-
-type ColumnRef = string;
-
-interface HistoryItem {
-  id: string;
-  sql_text: string;
-  schema_snapshot: Record<string, unknown> | null;
-  created_at: string;
-}
-
-interface ExampleSchema {
-  id: string;
-  label: string;
-  ddl: string;
-  tables: string;
-}
+import { useAuthStore } from "@/store/authStore";
 
 const EXAMPLE_SCHEMAS: ExampleSchema[] = [
   {
     id: "users-orders",
     label: "Usuarios-Pedidos",
     tables: "usuarios, pedidos",
-    ddl: `CREATE TABLE usuarios (
-  id SERIAL PRIMARY KEY,
-  nombre VARCHAR(100) NOT NULL,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  edad INT,
-  ciudad VARCHAR(100),
-  creado_en TIMESTAMP DEFAULT NOW()
-);
-
-CREATE TABLE pedidos (
-  id SERIAL PRIMARY KEY,
-  usuario_id INT REFERENCES usuarios(id),
-  producto VARCHAR(255) NOT NULL,
-  total DECIMAL(10,2) NOT NULL,
-  fecha DATE DEFAULT CURRENT_DATE
-);`,
+    ddl: EXAMPLE_DDL_USERS_ORDERS,
   },
   {
     id: "employees",
     label: "Empleados-Departamentos",
     tables: "departamentos, empleados",
-    ddl: `CREATE TABLE departamentos (
-  id SERIAL PRIMARY KEY,
-  nombre VARCHAR(100) NOT NULL,
-  presupuesto DECIMAL(12,2)
-);
-
-CREATE TABLE empleados (
-  id SERIAL PRIMARY KEY,
-  nombre VARCHAR(100) NOT NULL,
-  salario DECIMAL(10,2),
-  departamento_id INT REFERENCES departamentos(id),
-  fecha_contratacion DATE
-);`,
+    ddl: EXAMPLE_DDL_EMPLOYEES,
   },
 ];
-
-const BADGE_STYLES = {
-  blue: {
-    active: "bg-blue-500 text-white shadow-sm",
-    inactive: "bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/30",
-  },
-  amber: {
-    active: "bg-amber-500 text-white shadow-sm",
-    inactive: "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/30",
-  },
-  green: {
-    active: "bg-emerald-500 text-white shadow-sm",
-    inactive: "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/30",
-  },
-  purple: {
-    active: "bg-purple-500 text-white shadow-sm",
-    inactive: "bg-purple-50 dark:bg-purple-950/20 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900/30",
-  },
-} as const;
-
-function BookIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M2 3h5a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2V3Z" /><path d="M14 3H9a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h5V3Z" /><path d="M7 6H3.5M7 8H3.5" /></svg>);
-}
-function FolderIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M1.5 4.5v7a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H8.5L7 3.5h-4a1 1 0 0 0-1 1Z" /></svg>);
-}
-function LinkIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M6.5 9.5a4 4 0 0 0 5.66 0l2-2a4 4 0 0 0-5.66-5.66l-1 1" /><path d="M9.5 6.5a4 4 0 0 0-5.66 0l-2 2a4 4 0 1 0 5.66 5.66l1-1" /></svg>);
-}
-function DocumentIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M4 1.5h5l3.5 3.5v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-12a1 1 0 0 1 1-1Z" /><path d="M9 1.5V5h3.5" /></svg>);
-}
-function WarningIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M8 1L1 14h14L8 1Z" /><path d="M8 6v3M8 12v.5" /></svg>);
-}
-function KeyIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="6" cy="10" r="3.5" /><path d="M8.5 7.5L13 3" /><path d="M11 5l1.5-1.5" /></svg>);
-}
-function ClipboardIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="3.5" y="2.5" width="9" height="12" rx="1" /><path d="M6 1.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V2a.5.5 0 0 1 .5-.5Z" /><path d="M5.5 6.5h5M5.5 9h5M5.5 11.5h3" /></svg>);
-}
-function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M2 3.5h12" /><path d="M5 3.5V2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1.5" /><path d="M3.5 3.5l.72 9.36a1 1 0 0 0 .995.89h5.57a1 1 0 0 0 .995-.89L12.5 3.5" /></svg>);
-}
-
-function Badge({
-  active, color, onClick, label, children,
-}: {
-  active: boolean;
-  color: keyof typeof BADGE_STYLES;
-  onClick: () => void;
-  label: string;
-  children: React.ReactNode;
-}) {
-  const s = BADGE_STYLES[color];
-  return (
-    <button
-      role="switch"
-      aria-checked={active}
-      aria-label={label}
-      onClick={onClick}
-      className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold transition-all cursor-pointer select-none leading-none ${active ? s.active : s.inactive} focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600`}
-    >
-      {children}
-    </button>
-  );
-}
-
-function splitByCommaOutsideParens(sql: string): string[] {
-  const parts: string[] = [];
-  let depth = 0;
-  let current = "";
-  for (const ch of sql) {
-    if (ch === "(") depth++;
-    else if (ch === ")") depth--;
-    if (ch === "," && depth === 0) {
-      if (current.trim()) parts.push(current.trim());
-      current = "";
-    } else {
-      current += ch;
-    }
-  }
-  if (current.trim()) parts.push(current.trim());
-  return parts;
-}
-
-function extractBody(ddl: string, openIdx: number): string {
-  let depth = 1;
-  let i = openIdx;
-  while (i < ddl.length && depth > 0) {
-    i++;
-    if (ddl[i] === "(") depth++;
-    else if (ddl[i] === ")") depth--;
-  }
-  return ddl.slice(openIdx + 1, i);
-}
-
-function parseDDL(ddl: string): TableDef[] {
-  const tables: TableDef[] = [];
-  const tableRegex = /CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?(\w+)\s*\(/gi;
-  let match: RegExpExecArray | null;
-  while ((match = tableRegex.exec(ddl)) !== null) {
-    const tableName = match[1];
-    const body = extractBody(ddl, match.index + match[0].length - 1);
-    const columns: ColumnDef[] = [];
-    const pkCols = new Set<string>();
-    const fkCols = new Map<string, { table: string; column: string }>();
-    for (const part of splitByCommaOutsideParens(body)) {
-      const trimmed = part.trim();
-      if (!trimmed) continue;
-      const pkMatch = trimmed.match(/^PRIMARY\s+KEY\s*\(\s*(\w+)\s*\)/i);
-      if (pkMatch) { pkCols.add(pkMatch[1]); continue; }
-      const fkMatch = trimmed.match(/^FOREIGN\s+KEY\s*\(\s*(\w+)\s*\)\s*REFERENCES\s+(\w+)\s*\(\s*(\w+)\s*\)/i);
-      if (fkMatch) { fkCols.set(fkMatch[1], { table: fkMatch[2], column: fkMatch[3] }); continue; }
-      const colMatch = trimmed.match(/^(\w+)\s+(\w+(?:\s*\([^)]*\))?)\s*(.*)/i);
-      if (colMatch) {
-        const colName = colMatch[1], colType = colMatch[2], constraints = colMatch[3] ?? "";
-        if (/primary\s+key/i.test(constraints)) pkCols.add(colName);
-        const refMatch = constraints.match(/references\s+(\w+)\s*\((\w+)\)/i);
-        if (refMatch) fkCols.set(colName, { table: refMatch[1], column: refMatch[2] });
-        columns.push({ name: colName, type: colType, isPk: false });
-      }
-    }
-    for (const col of columns) {
-      if (pkCols.has(col.name)) col.isPk = true;
-      const fk = fkCols.get(col.name);
-      if (fk) col.fk = fk;
-    }
-    if (columns.length > 0) tables.push({ name: tableName, columns });
-  }
-  return tables;
-}
-
-function generateSQL(
-  schema: TableDef[], selectCols: Set<ColumnRef>, whereCols: Map<ColumnRef, string>,
-  orderByCols: Map<ColumnRef, "ASC" | "DESC">, groupByCols: Set<ColumnRef>,
-): string {
-  const tablesInvolved = new Set<string>();
-  const collect = (ref: ColumnRef) => tablesInvolved.add(ref.split(".")[0]);
-  selectCols.forEach(collect);
-  whereCols.forEach((_, ref) => collect(ref));
-  orderByCols.forEach((_, ref) => collect(ref));
-  groupByCols.forEach(collect);
-  if (tablesInvolved.size === 0) return "";
-  const childLinks = new Map<string, { fromCol: string; parentTable: string; toCol: string }>();
-  for (const table of schema) {
-    if (!tablesInvolved.has(table.name)) continue;
-    for (const col of table.columns) {
-      if (col.fk && tablesInvolved.has(col.fk.table)) {
-        childLinks.set(table.name, { fromCol: col.name, parentTable: col.fk.table, toCol: col.fk.column });
-      }
-    }
-  }
-  const childTables = new Set(childLinks.keys());
-  const fromTable = Array.from(tablesInvolved).find((t) => !childTables.has(t)) ?? Array.from(tablesInvolved)[0];
-  const lines: string[] = [];
-  if (selectCols.size === 0) { lines.push("SELECT *"); }
-  else { lines.push(`SELECT\n  ${Array.from(selectCols).sort().join(",\n  ")}`); }
-  lines.push(`FROM ${fromTable}`);
-  for (const [child, link] of childLinks) {
-    if (child === fromTable) continue;
-    lines.push(`JOIN ${child} ON ${child}.${link.fromCol} = ${link.parentTable}.${link.toCol}`);
-  }
-  const whereParts = Array.from(whereCols.entries()).filter(([, val]) => val.trim() !== "").map(([col, val]) => `${col} = '${val}'`);
-  if (whereParts.length > 0) lines.push(`WHERE\n  ${whereParts.join("\n  AND ")}`);
-  if (groupByCols.size > 0) lines.push(`GROUP BY ${Array.from(groupByCols).sort().join(", ")}`);
-  if (orderByCols.size > 0) lines.push(`ORDER BY ${Array.from(orderByCols).map(([col, dir]) => `${col} ${dir}`).join(", ")}`);
-  return lines.join("\n") + ";";
-}
-
-function relativeTime(dateStr: string): string {
-  const now = Date.now();
-  const then = new Date(dateStr).getTime();
-  const diffSec = Math.floor((now - then) / 1000);
-  if (diffSec < 60) return "hace unos segundos";
-  const diffMin = Math.floor(diffSec / 60);
-  if (diffMin < 60) return `hace ${diffMin} min`;
-  const diffHr = Math.floor(diffMin / 60);
-  if (diffHr < 24) return `hace ${diffHr}h`;
-  const diffDays = Math.floor(diffHr / 24);
-  if (diffDays < 30) return `hace ${diffDays} día${diffDays > 1 ? "s" : ""}`;
-  return new Date(dateStr).toLocaleDateString("es-ES");
-}
 
 export default function SQLBuilderContent() {
   const { isAuthenticated } = useAuthStore();
   const outputRef = useRef<HTMLDivElement>(null);
 
-  const [ddlInput, setDdlInput] = useState("");
+  const [ddlInput, setDdlInput] = useState(EXAMPLE_SCHEMAS[0].ddl);
+  const [showCustomDDL, setShowCustomDDL] = useState(false);
   const [schema, setSchema] = useState<TableDef[]>([]);
   const [selectCols, setSelectCols] = useState<Set<ColumnRef>>(new Set());
   const [whereCols, setWhereCols] = useState<Map<ColumnRef, string>>(new Map());
-  const [orderByCols, setOrderByCols] = useState<Map<ColumnRef, "ASC" | "DESC">>(new Map());
+  const [orderByCols, setOrderByCols] = useState<
+    Map<ColumnRef, "ASC" | "DESC">
+  >(new Map());
   const [groupByCols, setGroupByCols] = useState<Set<ColumnRef>>(new Set());
   const [activeSQL, setActiveSQL] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showDocs, setShowDocs] = useState(false);
-  const [showExamples, setShowExamples] = useState(false);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [collapsedTables, setCollapsedTables] = useState<Set<string>>(
+    new Set(),
+  );
+  const [columnFilter, setColumnFilter] = useState("");
 
   const clearSelections = useCallback(() => {
     setSelectCols(new Set());
@@ -282,11 +86,40 @@ export default function SQLBuilderContent() {
     setActiveSQL(null);
   }, []);
 
+  const toggleCollapse = useCallback((tableName: string) => {
+    setCollapsedTables((prev) => {
+      const n = new Set(prev);
+
+      if (n.has(tableName)) n.delete(tableName);
+      else n.add(tableName);
+
+      return n;
+    });
+  }, []);
+
+  const toggleSelectAll = useCallback((table: TableDef) => {
+    setSelectCols((prev) => {
+      const allRefs = table.columns.map(
+        (col) => `${table.name}.${col.name}` as ColumnRef,
+      );
+      const allSelected = allRefs.every((ref) => prev.has(ref));
+      const n = new Set(prev);
+
+      if (allSelected) {
+        allRefs.forEach((ref) => n.delete(ref));
+      } else {
+        allRefs.forEach((ref) => n.add(ref));
+      }
+
+      return n;
+    });
+  }, []);
+
   useEffect(() => {
     const parsed = parseDDL(ddlInput);
+
     setSchema(parsed);
     clearSelections();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ddlInput]);
 
   const generatedSQL = useMemo(
@@ -294,50 +127,98 @@ export default function SQLBuilderContent() {
     [schema, selectCols, whereCols, orderByCols, groupByCols],
   );
 
+  useEffect(() => {
+    if (generatedSQL && outputRef.current) {
+      outputRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [generatedSQL]);
+
   const displaySQL = activeSQL ?? generatedSQL;
 
   const hasSchema = schema.length > 0;
   const parseError = ddlInput.trim() !== "" && !hasSchema;
 
   const toggleSelect = (ref: ColumnRef) => {
-    setSelectCols((prev) => { const n = new Set(prev); if (n.has(ref)) n.delete(ref); else n.add(ref); return n; });
+    setSelectCols((prev) => {
+      const n = new Set(prev);
+
+      if (n.has(ref)) n.delete(ref);
+      else n.add(ref);
+
+      return n;
+    });
   };
   const toggleWhere = (ref: ColumnRef) => {
-    setWhereCols((prev) => { const n = new Map(prev); if (n.has(ref)) n.delete(ref); else n.set(ref, ""); return n; });
+    setWhereCols((prev) => {
+      const n = new Map(prev);
+
+      if (n.has(ref)) n.delete(ref);
+      else n.set(ref, "");
+
+      return n;
+    });
   };
   const updateWhereValue = (ref: ColumnRef, value: string) => {
-    setWhereCols((prev) => { const n = new Map(prev); n.set(ref, value); return n; });
+    setWhereCols((prev) => {
+      const n = new Map(prev);
+
+      n.set(ref, value);
+
+      return n;
+    });
   };
   const toggleOrderBy = (ref: ColumnRef) => {
     setOrderByCols((prev) => {
       const n = new Map(prev);
+
       if (!n.has(ref)) n.set(ref, "ASC");
       else if (n.get(ref) === "ASC") n.set(ref, "DESC");
       else n.delete(ref);
+
       return n;
     });
   };
   const toggleGroupBy = (ref: ColumnRef) => {
-    setGroupByCols((prev) => { const n = new Set(prev); if (n.has(ref)) n.delete(ref); else n.add(ref); return n; });
+    setGroupByCols((prev) => {
+      const n = new Set(prev);
+
+      if (n.has(ref)) n.delete(ref);
+      else n.add(ref);
+
+      return n;
+    });
   };
-  const orderLabel = (dir: "ASC" | "DESC") => dir === "ASC" ? "ORDER ↑" : "ORDER ↓";
+  const handleStartOver = () => {
+    setDdlInput(EXAMPLE_SCHEMAS[0].ddl);
+    clearSelections();
+    setShowCustomDDL(false);
+    setColumnFilter("");
+  };
 
   const loadExample = (example: ExampleSchema) => {
     setDdlInput(example.ddl);
-    setShowExamples(false);
   };
 
   const handleCopy = async () => {
     const sql = displaySQL;
+
     if (!sql) return;
-    try { await navigator.clipboard.writeText(sql); } catch {}
+    try {
+      await navigator.clipboard.writeText(sql);
+    } catch {}
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     if (isAuthenticated) {
       try {
         await apiFetch("/api/sql-history", {
           method: "POST",
-          body: JSON.stringify({ sql_text: sql, schema_snapshot: schema as unknown as Record<string, unknown> }),
+          body: JSON.stringify({
+            sql_text: sql,
+            schema_snapshot: schema as unknown as Record<string, unknown>,
+          }),
         });
       } catch {}
     }
@@ -346,20 +227,29 @@ export default function SQLBuilderContent() {
   const loadHistory = useCallback(async () => {
     if (!isAuthenticated) return;
     setHistoryLoading(true);
-    try { const data = await apiFetch<HistoryItem[]>("/api/sql-history"); setHistory(data ?? []); }
-    catch { setHistory([]); }
-    finally { setHistoryLoading(false); }
+    try {
+      const data = await apiFetch<HistoryItem[]>("/api/sql-history");
+
+      setHistory(data ?? []);
+    } catch {
+      setHistory([]);
+    } finally {
+      setHistoryLoading(false);
+    }
   }, [isAuthenticated]);
 
   const handleToggleHistory = () => {
     const next = !showHistory;
+
     setShowHistory(next);
     if (next) loadHistory();
   };
 
   const deleteHistoryItem = async (id: string) => {
-    try { await apiFetch(`/api/sql-history/${id}`, { method: "DELETE" }); setHistory((p) => p.filter((h) => h.id !== id)); }
-    catch {}
+    try {
+      await apiFetch(`/api/sql-history/${id}`, { method: "DELETE" });
+      setHistory((p) => p.filter((h) => h.id !== id));
+    } catch {}
   };
 
   const loadHistoryItem = (item: HistoryItem) => {
@@ -368,247 +258,650 @@ export default function SQLBuilderContent() {
   };
 
   return (
-    <article className="max-w-4xl" aria-label="Constructor SQL interactivo">
+    <article aria-label="Constructor SQL interactivo" className="max-w-4xl">
       {/* ── Header ── */}
       <div className="space-y-3 mb-6">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50">Herramienta</span>
-          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">Interactivo</span>
+          <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50">
+            Herramienta
+          </span>
+          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+            Interactivo
+          </span>
         </div>
-        <h1 className="text-4xl font-bold text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.02em" }}>Constructor SQL</h1>
+        <h1
+          className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
+          style={{ letterSpacing: "-0.02em" }}
+        >
+          Constructor SQL
+        </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Construye consultas <code className="font-semibold">SELECT</code> cliqueando tablas y columnas. Sin escribir SQL a mano.
+          Construye consultas <code className="font-semibold">SELECT</code>{" "}
+          cliqueando tablas y columnas. Sin escribir SQL a mano.
         </p>
       </div>
 
       {/* ── Docs toggle ── */}
       <div className="mb-4">
         <button
-          aria-expanded={showDocs}
           aria-controls="sql-builder-docs"
-          onClick={() => setShowDocs((v) => !v)}
+          aria-expanded={showDocs}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all"
+          onClick={() => setShowDocs((v) => !v)}
         >
-          {showDocs ? "▼" : "▶"} <BookIcon className="w-3.5 h-3.5" aria-hidden="true" /> ¿Cómo usarlo?
+          <svg
+            className="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeWidth="2"
+            viewBox="0 0 16 16"
+          >
+            <path d={showDocs ? "M4 10l4-4 4 4" : "M6 4l4 4-4 4"} />
+          </svg>{" "}
+          <BookIcon aria-hidden="true" className="w-3.5 h-3.5" /> ¿Cómo usarlo?
         </button>
       </div>
 
       {showDocs && (
         <div
-          id="sql-builder-docs"
           className="mb-6 p-4 rounded-2xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] text-sm text-[#3a3a3c] dark:text-[#aeaeb2] space-y-3"
+          id="sql-builder-docs"
         >
-          <p className="font-semibold text-[#1d1d1f] dark:text-white flex items-center gap-1.5"><BookIcon className="w-4 h-4" aria-hidden="true" /> Guía rápida</p>
+          <p className="font-semibold text-[#1d1d1f] dark:text-white flex items-center gap-1.5">
+            <BookIcon aria-hidden="true" className="w-4 h-4" /> Guía rápida
+          </p>
           <ol className="list-decimal pl-4 space-y-1.5">
-            <li><strong>Pega tu DDL</strong> en el textarea con tus sentencias <code>CREATE TABLE</code>, o haz clic en <strong><FolderIcon className="w-3.5 h-3.5 inline-block align-text-bottom" aria-hidden="true" /> Cargar ejemplos</strong> para usar un esquema precargado.</li>
-            <li><strong>Haz clic en los badges</strong> de cada columna para añadirla a <code>SELECT</code>, <code>WHERE</code>, <code>ORDER BY</code> o <code>GROUP BY</code>.</li>
-            <li>En <code>WHERE</code> escribe el valor del filtro en el campo que aparece.</li>
-            <li>En <code>ORDER BY</code> cada clic cambia: <strong>OFF → ASC → DESC → OFF</strong>.</li>
+            <li>
+              Haz clic en una columna para seleccionarla{" "}
+              <svg
+                aria-hidden="true"
+                className="w-3.5 h-3.5 inline-block align-text-bottom text-emerald-500"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 16 16"
+              >
+                <path d="M3 8l3 3 7-7" />
+              </svg>
+              .
+            </li>
+            <li>
+              Usa <strong>Filtrar</strong>, <strong>Ordenar</strong> o{" "}
+              <strong>Agrupar</strong> en cada columna para armar tu consulta.
+            </li>
+            <li>
+              En <strong>Filtrar</strong> escribe el valor después del{" "}
+              <code>=</code>.
+            </li>
+            <li>
+              En <strong>Ordenar</strong> cada clic cambia:{" "}
+              <strong>
+                OFF{" "}
+                <svg
+                  aria-hidden="true"
+                  className="w-3 h-3 inline-block align-text-bottom"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M9 3l4 4-4 4M13 7H3" />
+                </svg>{" "}
+                <svg
+                  aria-hidden="true"
+                  className="w-3 h-3 inline-block align-text-bottom"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="2"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 12V4M4 8l4-4 4 4" />
+                </svg>{" "}
+                ASC{" "}
+                <svg
+                  aria-hidden="true"
+                  className="w-3 h-3 inline-block align-text-bottom"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="2"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 4v8M4 8l4 4 4-4" />
+                </svg>{" "}
+                DESC{" "}
+                <svg
+                  aria-hidden="true"
+                  className="w-3 h-3 inline-block align-text-bottom"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M7 13l-4-4 4-4M3 9h10" />
+                </svg>{" "}
+                OFF
+              </strong>
+              .
+            </li>
           </ol>
-          <p className="font-semibold text-[#1d1d1f] dark:text-white mt-3 flex items-center gap-1.5"><LinkIcon className="w-4 h-4" aria-hidden="true" /> JOINs automáticos</p>
-          <p>Si seleccionas columnas de tablas relacionadas por clave foránea (<code>REFERENCES</code>), el JOIN se genera automáticamente. La tabla sin FK actúa como <code>FROM</code> principal.</p>
-          <p className="font-semibold text-[#1d1d1f] dark:text-white mt-3 flex items-center gap-1.5"><DocumentIcon className="w-4 h-4" aria-hidden="true" /> Formato DDL esperado</p>
-          <p>Sentencias <code>CREATE TABLE</code> estándar con columnas, tipos, <code>PRIMARY KEY</code> inline o standalone, y <code>REFERENCES</code> para claves foráneas.</p>
+          <p className="font-semibold text-[#1d1d1f] dark:text-white mt-3 flex items-center gap-1.5">
+            <LinkIcon aria-hidden="true" className="w-4 h-4" /> JOINs
+            automáticos
+          </p>
+          <p>
+            Si seleccionas columnas de tablas relacionadas por clave foránea (
+            <code>REFERENCES</code>), el JOIN se genera automáticamente. La
+            tabla sin FK actúa como <code>FROM</code> principal.
+          </p>
+          <p className="font-semibold text-[#1d1d1f] dark:text-white mt-3 flex items-center gap-1.5">
+            <DocumentIcon aria-hidden="true" className="w-4 h-4" /> Formato DDL
+            esperado
+          </p>
+          <p>
+            Sentencias <code>CREATE TABLE</code> estándar con columnas, tipos,{" "}
+            <code>PRIMARY KEY</code> inline o standalone, y{" "}
+            <code>REFERENCES</code> para claves foráneas.
+          </p>
         </div>
       )}
 
-      {/* ── DDL Input + Examples ── */}
-      <div className="mb-6 space-y-2">
-        <div className="flex items-center justify-between gap-2 flex-wrap">
-          <label htmlFor="sql-ddl-input" className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            DDL
-          </label>
-          <button
-            aria-expanded={showExamples}
-            aria-controls="sql-examples-panel"
-            onClick={() => setShowExamples((v) => !v)}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all"
-          >
-            <FolderIcon className="w-3 h-3" aria-hidden="true" /> Cargar ejemplos {showExamples ? "▲" : "▼"}
-          </button>
-        </div>
-        <textarea
-          id="sql-ddl-input"
-          aria-describedby={parseError ? "ddl-parse-error" : undefined}
-          aria-invalid={parseError}
-          className="w-full h-28 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 focus:border-transparent transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-          placeholder="Pega tus sentencias CREATE TABLE aquí&#10;CREATE TABLE usuarios (&#10;  id SERIAL PRIMARY KEY,&#10;  nombre VARCHAR(100) NOT NULL&#10;);"
-          value={ddlInput}
-          onChange={(e) => setDdlInput(e.target.value)}
-        />
-        {parseError && (
-          <p id="ddl-parse-error" role="alert" className="text-xs text-amber-600 dark:text-amber-400">
-            <WarningIcon className="w-3.5 h-3.5 inline-block align-text-bottom" aria-hidden="true" /> No se pudieron detectar tablas. Revisa la sintaxis DDL.
-          </p>
+      {/* ── Schema preview ── */}
+      <div className="mb-6 space-y-3">
+        <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
+          Tablas
+        </p>
+        {hasSchema && (
+          <div className="relative">
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#aeaeb2] dark:text-[#636366]"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="1.5"
+              viewBox="0 0 16 16"
+            >
+              <circle cx="7" cy="7" r="4.5" />
+              <path d="M10.5 10.5L14 14" />
+            </svg>
+            <input
+              aria-label="Filtrar columnas"
+              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 focus:border-transparent transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
+              placeholder="Buscar columna…"
+              type="text"
+              value={columnFilter}
+              onChange={(e) => setColumnFilter(e.target.value)}
+            />
+          </div>
         )}
-
-        {/* Examples panel */}
-        {showExamples && (
-          <div id="sql-examples-panel" className="grid gap-2 sm:grid-cols-2">
+        {!hasSchema ? (
+          <div className="grid gap-3 sm:grid-cols-2">
             {EXAMPLE_SCHEMAS.map((ex) => (
               <button
                 key={ex.id}
+                className="text-left p-5 rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#111116] hover:bg-blue-50/50 dark:hover:bg-blue-950/20 hover:border-blue-200 dark:hover:border-blue-800 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 group"
                 onClick={() => loadExample(ex)}
-                className="text-left p-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#111116] hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 group"
               >
-                <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{ex.label}</p>
-                <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-0.5">Tablas: {ex.tables}</p>
+                <p className="font-semibold text-sm text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  {ex.label}
+                </p>
+                <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1">
+                  Tablas: {ex.tables}
+                </p>
+                <div className="flex gap-1.5 mt-2">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                    Empezar
+                  </span>
+                </div>
               </button>
             ))}
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {schema.map((table) => {
+              const filteredCount = columnFilter
+                ? table.columns.filter((col) =>
+                    col.name.toLowerCase().includes(columnFilter.toLowerCase()),
+                  ).length
+                : table.columns.length;
+              const tableHasActive = table.columns.some((col) => {
+                const ref = `${table.name}.${col.name}`;
+
+                return (
+                  selectCols.has(ref) ||
+                  whereCols.has(ref) ||
+                  orderByCols.has(ref) ||
+                  groupByCols.has(ref)
+                );
+              });
+              const allRefs = table.columns.map(
+                (col) => `${table.name}.${col.name}` as ColumnRef,
+              );
+              const allSelected = allRefs.every((ref) => selectCols.has(ref));
+
+              return (
+                <div
+                  key={table.name}
+                  className="border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-white dark:bg-[#0a0a0f] shadow-sm"
+                >
+                  {/* Clickable header with collapse/expand */}
+                  <div
+                    className="px-4 py-2.5 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 dark:from-blue-950/20 dark:to-indigo-950/20 border-b border-black/10 dark:border-white/10 cursor-pointer hover:from-blue-50 dark:hover:from-blue-950/30 transition-colors"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => toggleCollapse(table.name)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        toggleCollapse(table.name);
+                      }
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <svg
+                          className={`w-3.5 h-3.5 text-[#6e6e73] dark:text-[#86868b] transition-transform flex-shrink-0 ${collapsedTables.has(table.name) ? "-rotate-90" : ""}`}
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeWidth="2"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M4 6l4 4 4-4" />
+                        </svg>
+                        <h3 className="font-semibold text-sm text-[#1d1d1f] dark:text-white tracking-tight truncate">
+                          {table.name}
+                        </h3>
+                      </div>
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        {tableHasActive && (
+                          <div
+                            aria-label="Cláusulas activas"
+                            className="w-2 h-2 rounded-full bg-blue-500"
+                          />
+                        )}
+                        <button
+                          aria-label={
+                            allSelected
+                              ? `Deseleccionar todas las columnas de ${table.name}`
+                              : `Seleccionar todas las columnas de ${table.name}`
+                          }
+                          className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all flex-shrink-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleSelectAll(table);
+                          }}
+                        >
+                          {allSelected ? "✕ ALL" : "SEL ALL"}
+                        </button>
+                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-white/60 dark:bg-black/40 text-[#6e6e73] dark:text-[#86868b] border border-black/5 dark:border-white/10">
+                          {columnFilter
+                            ? `${filteredCount}/${table.columns.length}`
+                            : table.columns.length}{" "}
+                          col{table.columns.length !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Column rows */}
+                  {!collapsedTables.has(table.name) && (
+                    <div className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
+                      {table.columns
+                        .filter(
+                          (col) =>
+                            !columnFilter ||
+                            col.name
+                              .toLowerCase()
+                              .includes(columnFilter.toLowerCase()),
+                        )
+                        .map((col) => {
+                          const ref = `${table.name}.${col.name}` as ColumnRef;
+                          const selActive = selectCols.has(ref);
+                          const whrActive = whereCols.has(ref);
+                          const whrValue = whereCols.get(ref) ?? "";
+                          const ordActive = orderByCols.has(ref);
+                          const ordDir = orderByCols.get(ref);
+                          const grpActive = groupByCols.has(ref);
+                          const hasActive =
+                            selActive || whrActive || ordActive || grpActive;
+
+                          return (
+                            <div key={col.name}>
+                              <div
+                                className="flex items-center gap-2 px-4 py-2 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors cursor-pointer group"
+                                role="button"
+                                tabIndex={0}
+                                onClick={() => toggleSelect(ref)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    toggleSelect(ref);
+                                  }
+                                }}
+                              >
+                                {/* Selected checkmark */}
+                                <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center">
+                                  {selActive ? (
+                                    <CheckIcon
+                                      aria-label="Seleccionada"
+                                      className="w-4 h-4 text-emerald-500"
+                                    />
+                                  ) : (
+                                    <div
+                                      aria-hidden="true"
+                                      className="w-4 h-4 rounded border-2 border-black/20 dark:border-white/20 group-hover:border-blue-400 dark:group-hover:border-blue-500 transition-colors"
+                                    />
+                                  )}
+                                </div>
+                                {/* PK/FK icon */}
+                                <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center">
+                                  {col.isPk && (
+                                    <KeyIcon
+                                      aria-label="Clave primaria"
+                                      className="w-3.5 h-3.5 text-amber-500"
+                                    />
+                                  )}
+                                  {col.fk && !col.isPk && (
+                                    <LinkIcon
+                                      aria-label={`Clave foránea a ${col.fk.table}.${col.fk.column}`}
+                                      className="w-3.5 h-3.5 text-blue-400 dark:text-blue-500"
+                                    />
+                                  )}
+                                </div>
+                                {/* Column name */}
+                                <span
+                                  className={`font-mono text-sm truncate min-w-0 ${selActive ? "text-blue-600 dark:text-blue-400 font-semibold" : "text-[#1d1d1f] dark:text-white"}`}
+                                >
+                                  {col.name}
+                                </span>
+                                {/* Type badge */}
+                                <span
+                                  className={`text-[10px] font-mono px-1.5 py-0.5 rounded flex-shrink-0 ${getTypeColor(col.type)}`}
+                                >
+                                  {col.type}
+                                </span>
+                                {/* FK reference */}
+                                {col.fk && (
+                                  <span className="text-[10px] text-blue-500 dark:text-blue-400 font-mono flex-shrink-0 hidden sm:inline">
+                                    → {col.fk.table}.{col.fk.column}
+                                  </span>
+                                )}
+                                {/* Spacer */}
+                                <div className="flex-1 min-w-2" />
+                                {/* Toggle badges */}
+                                <div
+                                  aria-label={`Cláusulas para ${col.name}`}
+                                  className="flex items-center gap-1 flex-shrink-0"
+                                  role="group"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <Badge
+                                    active={whrActive}
+                                    color="amber"
+                                    label={`WHERE ${ref}`}
+                                    onClick={() => toggleWhere(ref)}
+                                  >
+                                    Filtrar
+                                  </Badge>
+                                  <Badge
+                                    active={ordActive}
+                                    color="green"
+                                    label={`ORDER BY ${ref}`}
+                                    onClick={() => toggleOrderBy(ref)}
+                                  >
+                                    {ordActive && ordDir
+                                      ? ordDir === "ASC"
+                                        ? "↑"
+                                        : "↓"
+                                      : "Ordenar"}
+                                  </Badge>
+                                  <Badge
+                                    active={grpActive}
+                                    color="purple"
+                                    label={`GROUP BY ${ref}`}
+                                    onClick={() => toggleGroupBy(ref)}
+                                  >
+                                    Agrupar
+                                  </Badge>
+                                </div>
+                              </div>
+                              {/* WHERE value input */}
+                              {whrActive && (
+                                <div className="flex items-center gap-1.5 pb-2 pl-11 pr-4">
+                                  <span
+                                    aria-hidden="true"
+                                    className="text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b]"
+                                  >
+                                    =
+                                  </span>
+                                  <input
+                                    aria-label={`Valor para filtro WHERE en ${ref}`}
+                                    className="flex-1 max-w-32 px-2 py-0.5 rounded-md text-xs font-mono bg-black/[0.04] dark:bg-white/[0.04] border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 dark:focus:ring-amber-600 focus:border-transparent transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
+                                    placeholder="valor"
+                                    value={whrValue}
+                                    onChange={(e) =>
+                                      updateWhereValue(ref, e.target.value)
+                                    }
+                                    onClick={(e) => e.stopPropagation()}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
 
-      {/* ── Schema preview ── */}
-      <div className="mb-6 space-y-3">
-        <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">Esquema</p>
-        {!hasSchema ? (
-          <div className="p-8 rounded-2xl border border-black/10 dark:border-white/10 text-center text-sm text-[#aeaeb2] dark:text-[#636366]">
-            Pega sentencias CREATE TABLE o carga un ejemplo para empezar
-          </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2" role="list" aria-label="Tablas disponibles">
-            {schema.map((table) => (
-              <div key={table.name} role="listitem" className="border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden">
-                <div className="px-4 py-2.5 bg-black/[0.03] dark:bg-white/[0.03] border-b border-black/10 dark:border-white/10">
-                  <h3 className="font-semibold text-sm text-[#1d1d1f] dark:text-white">{table.name}</h3>
-                </div>
-                <div className="px-4 py-2 divide-y divide-black/[0.04] dark:divide-white/[0.04]">
-                  {table.columns.map((col) => {
-                    const ref = `${table.name}.${col.name}` as ColumnRef;
-                    const selActive = selectCols.has(ref);
-                    const whrActive = whereCols.has(ref);
-                    const whrValue = whereCols.get(ref) ?? "";
-                    const ordActive = orderByCols.has(ref);
-                    const ordDir = orderByCols.get(ref);
-                    const grpActive = groupByCols.has(ref);
-                    return (
-                      <div key={col.name} className="py-1.5">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex items-center gap-1.5 min-w-0">
-                            {col.isPk && <KeyIcon className="w-3 h-3 flex-shrink-0" aria-label="Clave primaria" />}
-                            {col.fk && <LinkIcon className="w-3 h-3 flex-shrink-0" aria-label={`Clave foránea a ${col.fk.table}.${col.fk.column}`} />}
-                            <span className="font-mono text-sm text-[#1d1d1f] dark:text-white truncate">{col.name}</span>
-                            <span className="text-xs text-[#aeaeb2] dark:text-[#636366] font-mono hidden sm:inline flex-shrink-0">{col.type}</span>
-                          </div>
-                          <div className="flex items-center gap-1 flex-shrink-0 flex-wrap justify-end">
-                            <Badge active={selActive} color="blue" onClick={() => toggleSelect(ref)} label={`Añadir ${ref} a SELECT`}>
-                              SELECT
-                            </Badge>
-                            <Badge active={whrActive} color="amber" onClick={() => toggleWhere(ref)} label={`Añadir ${ref} a WHERE`}>
-                              WHERE
-                            </Badge>
-                            <Badge active={ordActive} color="green" onClick={() => toggleOrderBy(ref)} label={`Añadir ${ref} a ORDER BY`}>
-                              {ordActive && ordDir ? orderLabel(ordDir) : "ORDER"}
-                            </Badge>
-                            <Badge active={grpActive} color="purple" onClick={() => toggleGroupBy(ref)} label={`Añadir ${ref} a GROUP BY`}>
-                              GROUP BY
-                            </Badge>
-                          </div>
-                        </div>
-                        {whrActive && (
-                          <div className="flex items-center gap-1.5 mt-1.5 ml-5">
-                            <span className="text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b]" aria-hidden="true">=</span>
-                            <input
-                              aria-label={`Valor para filtro WHERE en ${ref}`}
-                              className="w-28 px-2 py-0.5 rounded-md text-xs font-mono bg-black/[0.04] dark:bg-white/[0.04] border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 dark:focus:ring-amber-600 focus:border-transparent transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-                              placeholder="valor"
-                              value={whrValue}
-                              onChange={(e) => updateWhereValue(ref, e.target.value)}
-                              onClick={(e) => e.stopPropagation()}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+      {/* ── Start over ── */}
+      {selectCols.size > 0 && (
+        <div className="mb-4 flex justify-center">
+          <button
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all focus:outline-none focus:ring-2 focus:ring-red-400"
+            onClick={handleStartOver}
+          >
+            <TrashIcon aria-hidden="true" className="w-3.5 h-3.5" /> Empezar de
+            nuevo
+          </button>
+        </div>
+      )}
+
+      {/* ── Custom DDL (collapsible) ── */}
+      <div className="mb-6">
+        <button
+          aria-expanded={showCustomDDL}
+          className="inline-flex items-center gap-1.5 text-xs text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors focus:outline-none"
+          onClick={() => setShowCustomDDL((v) => !v)}
+        >
+          <PlusIcon
+            aria-hidden="true"
+            className={`w-3.5 h-3.5 transition-transform ${showCustomDDL ? "rotate-45" : ""}`}
+          />
+          ¿Tienes tus propias tablas?
+        </button>
+        {showCustomDDL && (
+          <div className="mt-2 space-y-2">
+            <textarea
+              aria-describedby={parseError ? "ddl-parse-error" : undefined}
+              aria-invalid={parseError}
+              className="w-full h-24 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 focus:border-transparent transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
+              id="sql-ddl-input"
+              placeholder="Pega tus sentencias CREATE TABLE aquí&#10;CREATE TABLE usuarios (&#10;  id SERIAL PRIMARY KEY,&#10;  nombre VARCHAR(100) NOT NULL&#10;);"
+              value={ddlInput}
+              onChange={(e) => setDdlInput(e.target.value)}
+            />
+            {parseError && (
+              <p
+                className="text-xs text-amber-600 dark:text-amber-400"
+                id="ddl-parse-error"
+                role="alert"
+              >
+                <WarningIcon
+                  aria-hidden="true"
+                  className="w-3.5 h-3.5 inline-block align-text-bottom"
+                />{" "}
+                No se pudieron detectar tablas. Revisa la sintaxis.
+              </p>
+            )}
+            <div className="flex gap-2 flex-wrap">
+              {EXAMPLE_SCHEMAS.map((ex) => (
+                <button
+                  key={ex.id}
+                  className="text-[10px] px-2 py-1 rounded-lg bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  onClick={() => loadExample(ex)}
+                >
+                  {ex.label}
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>
 
       {/* ── SQL output ── */}
-      <div className="space-y-2 mb-6" ref={outputRef}>
-        <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">SQL generado</p>
-        {!displaySQL ? (
-          <div className="rounded-xl bg-[#0d1117] p-4 overflow-x-auto text-xs text-[#8b949e]">
-            Selecciona columnas y cláusulas para generar una consulta…
-          </div>
-        ) : (
-          <>
-            <div role="region" aria-live="polite" aria-label="Consulta SQL generada">
-              <pre className="rounded-xl bg-[#0d1117] p-4 overflow-x-auto text-xs leading-relaxed">
-                <code className="text-[#e6edf3]">{displaySQL}</code>
-              </pre>
+      <div ref={outputRef} className="sticky top-4 z-10 mb-6">
+        <div className="space-y-2 bg-white dark:bg-[#0a0a0f] rounded-xl p-4 border border-black/10 dark:border-white/10 shadow-sm">
+          <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
+            Tu consulta
+          </p>
+          {!displaySQL ? (
+            <div className="rounded-xl bg-[#0d1117] p-4 overflow-x-auto text-xs text-[#8b949e]">
+              Selecciona columnas y cláusulas para generar una consulta…
             </div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <button
-                onClick={handleCopy}
-                aria-label={copied ? "SQL copiado" : "Copiar SQL al portapapeles"}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${copied ? "bg-emerald-500 text-white" : "bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15"} focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600`}
+          ) : (
+            <>
+              <div
+                aria-label="Consulta SQL generada"
+                aria-live="polite"
+                role="region"
               >
-                {copied ? "¡Copiado!" : <><ClipboardIcon className="w-3.5 h-3.5" aria-hidden="true" /> Copiar</>}
-              </button>
-              {isAuthenticated && (
+                <pre className="rounded-xl bg-[#0d1117] p-4 overflow-x-auto text-xs leading-relaxed">
+                  {highlightSQL(displaySQL)}
+                </pre>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
                 <button
-                  onClick={handleToggleHistory}
-                  aria-expanded={showHistory}
-                  aria-controls="sql-history-panel"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600"
+                  aria-label={
+                    copied ? "SQL copiado" : "Copiar SQL al portapapeles"
+                  }
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${copied ? "bg-emerald-500 text-white" : "bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15"} focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600`}
+                  onClick={handleCopy}
                 >
-                  <ClipboardIcon className="w-3.5 h-3.5" aria-hidden="true" /> Historial
+                  {copied ? (
+                    "¡Copiado!"
+                  ) : (
+                    <>
+                      <ClipboardIcon
+                        aria-hidden="true"
+                        className="w-3.5 h-3.5"
+                      />{" "}
+                      Copiar
+                    </>
+                  )}
                 </button>
-              )}
-              {activeSQL && (
-                <button
-                  onClick={() => setActiveSQL(null)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/5 dark:bg-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/10 dark:hover:bg-white/15 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600"
-                >
-                  Volver al editor
-                </button>
-              )}
-              {copied && <span role="status" className="text-xs text-emerald-600 dark:text-emerald-400">Copiado al portapapeles</span>}
-            </div>
-          </>
-        )}
+                {isAuthenticated && (
+                  <button
+                    aria-controls="sql-history-panel"
+                    aria-expanded={showHistory}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600"
+                    onClick={handleToggleHistory}
+                  >
+                    <ClipboardIcon aria-hidden="true" className="w-3.5 h-3.5" />{" "}
+                    Historial
+                  </button>
+                )}
+                {activeSQL && (
+                  <button
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/5 dark:bg-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/10 dark:hover:bg-white/15 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600"
+                    onClick={() => setActiveSQL(null)}
+                  >
+                    Volver al editor
+                  </button>
+                )}
+                {copied && (
+                  <span
+                    className="text-xs text-emerald-600 dark:text-emerald-400"
+                    role="status"
+                  >
+                    Copiado al portapapeles
+                  </span>
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* ── History panel ── */}
       {isAuthenticated && showHistory && (
-        <div id="sql-history-panel" className="mb-6 rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden">
+        <div
+          className="mb-6 rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden"
+          id="sql-history-panel"
+        >
           <div className="px-4 py-2.5 bg-black/[0.03] dark:bg-white/[0.03] border-b border-black/10 dark:border-white/10">
-            <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white">Historial de consultas</h3>
+            <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+              Historial de consultas
+            </h3>
           </div>
           <div className="px-4 py-3 max-h-64 overflow-y-auto">
             {historyLoading ? (
-              <div className="flex items-center justify-center py-6" aria-live="polite">
-                <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">Cargando…</span>
+              <div
+                aria-live="polite"
+                className="flex items-center justify-center py-6"
+              >
+                <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                  Cargando…
+                </span>
               </div>
             ) : history.length === 0 ? (
-              <div className="py-6 text-center text-xs text-[#aeaeb2] dark:text-[#636366]">No hay consultas guardadas</div>
+              <div className="py-6 text-center text-xs text-[#aeaeb2] dark:text-[#636366]">
+                No hay consultas guardadas
+              </div>
             ) : (
-              <ul className="space-y-2" role="list" aria-label="Consultas guardadas">
+              <ul
+                aria-label="Consultas guardadas"
+                className="space-y-2"
+                role="list"
+              >
                 {history.map((item) => (
-                  <li key={item.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
+                  <li
+                    key={item.id}
+                    className="flex items-center gap-3 p-2.5 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5"
+                  >
                     <div className="flex-1 min-w-0">
-                      <pre className="text-xs font-mono text-[#1d1d1f] dark:text-white truncate">{item.sql_text}</pre>
-                      <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] mt-0.5">{relativeTime(item.created_at)}</p>
+                      <pre className="text-xs font-mono text-[#1d1d1f] dark:text-white truncate">
+                        {item.sql_text}
+                      </pre>
+                      <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] mt-0.5">
+                        {relativeTime(item.created_at, "es")}
+                      </p>
                     </div>
                     <button
-                      onClick={() => loadHistoryItem(item)}
-                      className="px-2 py-1 rounded-lg text-[10px] font-semibold bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600"
                       aria-label={`Cargar consulta: ${item.sql_text.slice(0, 60)}`}
+                      className="px-2 py-1 rounded-lg text-[10px] font-semibold bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600"
+                      onClick={() => loadHistoryItem(item)}
                     >
                       Cargar
                     </button>
                     <button
-                      onClick={() => deleteHistoryItem(item.id)}
-                      className="px-2 py-1 rounded-lg text-[10px] font-semibold bg-black/5 dark:bg-white/10 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-red-400 dark:focus:ring-red-600"
                       aria-label={`Eliminar consulta: ${item.sql_text.slice(0, 60)}`}
+                      className="px-2 py-1 rounded-lg text-[10px] font-semibold bg-black/5 dark:bg-white/10 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-red-400 dark:focus:ring-red-600"
+                      onClick={() => deleteHistoryItem(item.id)}
                     >
-                      <TrashIcon className="w-3.5 h-3.5" aria-hidden="true" />
+                      <TrashIcon aria-hidden="true" className="w-3.5 h-3.5" />
                       <span className="sr-only">Eliminar</span>
                     </button>
                   </li>

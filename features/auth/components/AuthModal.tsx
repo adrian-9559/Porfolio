@@ -102,9 +102,7 @@ export function AuthModal({ open, onClose }: Props) {
       setForgotSuccess(t("auth.codeSent"));
       setForgotStep("code");
     } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : t("auth.loginError"),
-      );
+      setError(err instanceof Error ? err.message : t("auth.loginError"));
     } finally {
       setLoading(false);
     }
@@ -127,11 +125,7 @@ export function AuthModal({ open, onClose }: Props) {
         reset();
       }, 1500);
     } catch (err: unknown) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : t("auth.loginError"),
-      );
+      setError(err instanceof Error ? err.message : t("auth.loginError"));
     } finally {
       setLoading(false);
     }
@@ -196,7 +190,9 @@ export function AuthModal({ open, onClose }: Props) {
                   setError("");
                 }}
               >
-                {tabKey === "login" ? t("auth.tabLogin") : t("auth.tabRegister")}
+                {tabKey === "login"
+                  ? t("auth.tabLogin")
+                  : t("auth.tabRegister")}
               </button>
             ))}
           </div>

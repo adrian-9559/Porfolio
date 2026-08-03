@@ -11,7 +11,7 @@ import {
   BlogP,
   BlogUl,
 } from "@/components/blog/shared";
-import { getContentByTag, typeSlug } from "@/lib/blog/registry";
+import { getContentByTag, contentHref } from "@/lib/blog/registry";
 
 export default function SkillsTutorialContent() {
   const skills = getContentByTag("skills");
@@ -244,7 +244,7 @@ Carga \`ui-styling\` si necesitas código frontend.`}</BlogCode>
               <li key={s.slug}>
                 <Link
                   className="flex items-center gap-3 px-5 py-3 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors no-underline group"
-                  href={`/blog/${typeSlug(s.type)}/${s.slug}`}
+                  href={contentHref(s.type, s.slug)}
                 >
                   <span
                     aria-hidden="true"

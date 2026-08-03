@@ -1,11 +1,12 @@
 import { Envelope, LogoLinkedin } from "@gravity-ui/icons";
 import Link from "next/link";
-import { useT } from "@/hooks/useT";
 
+import { useT } from "@/hooks/useT";
 import { siteConfig } from "@/config/site";
 
 export default function CTA() {
   const { t } = useT();
+
   return (
     <section className="w-full">
       <div className="relative rounded-3xl overflow-hidden bg-[#0a0a0f]">

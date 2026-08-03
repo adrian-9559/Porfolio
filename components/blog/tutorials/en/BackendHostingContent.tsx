@@ -198,8 +198,8 @@ export default function BackendHostingContent() {
           Best platforms to host backend
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Where to host your API, Node.js server, Python, Go, or any backend
-          in 2026. With free plans, honest analysis, and guidance on when to use
+          Where to host your API, Node.js server, Python, Go, or any backend in
+          2026. With free plans, honest analysis, and guidance on when to use
           each one.
         </p>
       </div>
@@ -207,19 +207,18 @@ export default function BackendHostingContent() {
       {/* Intro */}
       <div className="prose prose-sm dark:prose-invert max-w-none mb-10">
         <p className="text-[#3d3d3d] dark:text-[#c0c0c5] leading-relaxed">
-          Choosing where to host your backend is more critical than the frontend: it affects
-          latency, availability, and scaling cost. The market has
-          changed a lot: Heroku is no longer the obvious choice and there are better
-          alternatives for almost every use case.
+          Choosing where to host your backend is more critical than the
+          frontend: it affects latency, availability, and scaling cost. The
+          market has changed a lot: Heroku is no longer the obvious choice and
+          there are better alternatives for almost every use case.
         </p>
         <div className="mt-4 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40">
           <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300 mb-1">
             ⚡ Quick rule
           </p>
           <p className="text-sm text-emerald-700 dark:text-emerald-400">
-            For personal projects → Railway (best DX). For serious
-            production → DigitalOcean. For ultra-fast global APIs → Cloudflare
-            Workers.
+            For personal projects → Railway (best DX). For serious production →
+            DigitalOcean. For ultra-fast global APIs → Cloudflare Workers.
           </p>
         </div>
       </div>
@@ -357,8 +356,8 @@ export default function BackendHostingContent() {
         </h3>
         <p className="text-sm text-[#3d3d3d] dark:text-[#c0c0c5] leading-relaxed">
           For personal projects I use <strong>Railway</strong>: the best
-          developer experience, deploy in seconds, and everything in one panel. For
-          APIs that need to scale globally,{" "}
+          developer experience, deploy in seconds, and everything in one panel.
+          For APIs that need to scale globally,{" "}
           <strong>Cloudflare Workers</strong> is unbeatable in price and
           performance.
         </p>

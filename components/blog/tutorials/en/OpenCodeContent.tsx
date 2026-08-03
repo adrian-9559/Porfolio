@@ -104,23 +104,22 @@ function SectionQueEs() {
       <BlogP>
         <strong>OpenCode</strong> is an artificial intelligence assistant that
         works directly from your terminal. Unlike typical web interfaces,
-        OpenCode runs in your command line, understands your
-        project and can read, write and modify files autonomously.
+        OpenCode runs in your command line, understands your project and can
+        read, write and modify files autonomously.
       </BlogP>
 
       <BlogP>
         It is built on top of advanced language models and is specifically
-        designed for <strong>software engineering tasks</strong>:
-        from writing code to refactoring entire projects, including debugging,
-        testing, documentation, and deployment.
+        designed for <strong>software engineering tasks</strong>: from writing
+        code to refactoring entire projects, including debugging, testing,
+        documentation, and deployment.
       </BlogP>
 
       <BlogP>
         By default, OpenCode provides you with{" "}
-        <strong>interactive modals</strong> in the terminal to approve
-        changes, review diffs, select files, and confirm actions before
-        executing them. It is not a blind chat: every modification goes through
-        your approval.
+        <strong>interactive modals</strong> in the terminal to approve changes,
+        review diffs, select files, and confirm actions before executing them.
+        It is not a blind chat: every modification goes through your approval.
       </BlogP>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6">
@@ -184,9 +183,9 @@ function SectionQueEs() {
       </div>
 
       <BlogCallout type="info">
-        OpenCode is <strong>open source</strong> — you can inspect its
-        code, contribute, and adapt it to your needs. It is published under
-        the Apache 2.0 license.
+        OpenCode is <strong>open source</strong> — you can inspect its code,
+        contribute, and adapt it to your needs. It is published under the Apache
+        2.0 license.
       </BlogCallout>
     </>
   );
@@ -199,9 +198,9 @@ function SectionParaQueSirve() {
 
       <BlogP>
         OpenCode is designed to{" "}
-        <strong>accelerate your workflow as a developer</strong>. It is not
-        a generic chat: it is an artificial software engineer that works
-        inside your project.
+        <strong>accelerate your workflow as a developer</strong>. It is not a
+        generic chat: it is an artificial software engineer that works inside
+        your project.
       </BlogP>
 
       <div className="space-y-3 my-6">
@@ -341,9 +340,9 @@ function SectionParaQueSirve() {
       </div>
 
       <BlogCallout type="tip">
-        Think of OpenCode as a <strong>programming partner</strong>{" "}
-        that is always ready to help, never gets tired, and works at whatever
-        pace you set. It does not replace your judgment — it amplifies it.
+        Think of OpenCode as a <strong>programming partner</strong> that is
+        always ready to help, never gets tired, and works at whatever pace you
+        set. It does not replace your judgment — it amplifies it.
       </BlogCallout>
     </>
   );
@@ -372,21 +371,19 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 nvm install --lts`}</BlogCode>
 
       <BlogH3>Option 1: Global npm installation (recommended)</BlogH3>
-      <BlogP>
-        The simplest way and the one we recommend to get started:
-      </BlogP>
+      <BlogP>The simplest way and the one we recommend to get started:</BlogP>
       <BlogCode>{`npm install -g @opencode/cli`}</BlogCode>
       <BlogP>
         This installs OpenCode globally and adds the{" "}
-        <BlogInlineCode>opencode</BlogInlineCode> command to your PATH. Once installed,
-        verify it works:
+        <BlogInlineCode>opencode</BlogInlineCode> command to your PATH. Once
+        installed, verify it works:
       </BlogP>
       <BlogCode>{`opencode --version`}</BlogCode>
 
       <BlogH3>Option 2: Use npx (no installation)</BlogH3>
       <BlogP>
-        If you prefer not to install it globally, you can run it directly
-        with npx. The first time it will take a few seconds to download:
+        If you prefer not to install it globally, you can run it directly with
+        npx. The first time it will take a few seconds to download:
       </BlogP>
       <BlogCode>{`npx @opencode/cli`}</BlogCode>
 
@@ -402,9 +399,9 @@ npm link`}</BlogCode>
 
       <BlogH3>Initial configuration</BlogH3>
       <BlogP>
-        The first time you run OpenCode, it will guide you through an
-        assisted setup via modals in the terminal itself. It will ask for
-        your API key from the provider you choose:
+        The first time you run OpenCode, it will guide you through an assisted
+        setup via modals in the terminal itself. It will ask for your API key
+        from the provider you choose:
       </BlogP>
       <BlogCode>{`# Configuration is done through interactive modals
 # Open opencode and follow the steps shown on screen:
@@ -420,14 +417,15 @@ opencode
 export OPENCODE_API_KEY="your-api-key-here"`}</BlogCode>
 
       <BlogCallout type="warn">
-        <strong>Never share your API key.</strong> Do not commit it to Git, do not
-        include it in source code, and do not publish it in public repositories.
+        <strong>Never share your API key.</strong> Do not commit it to Git, do
+        not include it in source code, and do not publish it in public
+        repositories.
       </BlogCallout>
 
       <BlogCallout type="info">
         <strong>Coming soon:</strong> OpenCode will support{" "}
-        <strong>Ollama</strong> and local models, allowing you to
-        run it completely offline without relying on external APIs.
+        <strong>Ollama</strong> and local models, allowing you to run it
+        completely offline without relying on external APIs.
       </BlogCallout>
     </>
   );
@@ -439,8 +437,8 @@ function SectionPrimerUso() {
       <BlogH2>First use</BlogH2>
 
       <BlogP>
-        Once installed and configured, starting OpenCode is as simple as
-        running a command from your project root.
+        Once installed and configured, starting OpenCode is as simple as running
+        a command from your project root.
       </BlogP>
 
       <BlogH3>Start OpenCode</BlogH3>
@@ -451,9 +449,9 @@ cd my-project
 opencode`}</BlogCode>
 
       <BlogP>
-        Running <BlogInlineCode>opencode</BlogInlineCode> without arguments opens
-        an <strong>interactive session</strong> in your terminal with modals
-        to guide you. You will see something like:
+        Running <BlogInlineCode>opencode</BlogInlineCode> without arguments
+        opens an <strong>interactive session</strong> in your terminal with
+        modals to guide you. You will see something like:
       </BlogP>
 
       <BlogCode>{`✦ OpenCode
@@ -463,8 +461,9 @@ opencode`}</BlogCode>
   > _`}</BlogCode>
 
       <BlogP>
-        The cursor <BlogInlineCode>&gt; _</BlogInlineCode> indicates that OpenCode
-        is ready to receive instructions. You can start typing what you need.
+        The cursor <BlogInlineCode>&gt; _</BlogInlineCode> indicates that
+        OpenCode is ready to receive instructions. You can start typing what you
+        need.
       </BlogP>
 
       <BlogH3>Your first workflow</BlogH3>
@@ -511,8 +510,8 @@ echo '{"name":"my-first-project","type":"module"}' > package.json`}</BlogCode>
       </Step>
 
       <BlogCallout type="done">
-        You have completed your first full workflow with OpenCode! In less than 2
-        minutes you created an HTTP server and modified it without writing a
+        You have completed your first full workflow with OpenCode! In less than
+        2 minutes you created an HTTP server and modified it without writing a
         single line of code manually.
       </BlogCallout>
 
@@ -569,8 +568,8 @@ function SectionComandos() {
       <BlogH2>Main commands</BlogH2>
 
       <BlogP>
-        OpenCode offers several commands and flags to adapt to different
-        ways of working. These are the essentials:
+        OpenCode offers several commands and flags to adapt to different ways of
+        working. These are the essentials:
       </BlogP>
 
       <BlogH3>Execution modes</BlogH3>
@@ -601,9 +600,8 @@ function SectionComandos() {
 
       <BlogH3>Commands inside the interactive session</BlogH3>
       <BlogP>
-        Once inside a session with{" "}
-        <BlogInlineCode>opencode</BlogInlineCode>, you can use these internal
-        commands:
+        Once inside a session with <BlogInlineCode>opencode</BlogInlineCode>,
+        you can use these internal commands:
       </BlogP>
       <CmdGrid
         rows={[
@@ -662,9 +660,9 @@ opencode -p "Migrate src/utils/ from JavaScript to TypeScript
   adding types and interfaces where appropriate"`}</BlogCode>
 
       <BlogCallout type="tip">
-        <strong>Be specific in your instructions.</strong> The more context
-        and detail you give OpenCode, the better the results. Include the
-        tech stack, relevant file structure, and expected outcome.
+        <strong>Be specific in your instructions.</strong> The more context and
+        detail you give OpenCode, the better the results. Include the tech
+        stack, relevant file structure, and expected outcome.
       </BlogCallout>
     </>
   );
@@ -676,8 +674,8 @@ function SectionConsejos() {
       <BlogH2>Tips and best practices</BlogH2>
 
       <BlogP>
-        To get the most out of OpenCode, here are some tips based on daily
-        usage experience:
+        To get the most out of OpenCode, here are some tips based on daily usage
+        experience:
       </BlogP>
 
       <BlogH3>How to write good prompts</BlogH3>
@@ -762,12 +760,12 @@ function SectionConsejos() {
           "create the CRUD routes", etc.
         </BlogLi>
         <BlogLi>
-          <strong>Provide context:</strong> If there is an error, paste the stack
-          trace. If you want a refactor, explain why.
+          <strong>Provide context:</strong> If there is an error, paste the
+          stack trace. If you want a refactor, explain why.
         </BlogLi>
         <BlogLi>
-          <strong>Use interactive mode for long tasks:</strong> For
-          changes that require multiple iterations, open a session with{" "}
+          <strong>Use interactive mode for long tasks:</strong> For changes that
+          require multiple iterations, open a session with{" "}
           <BlogInlineCode>opencode</BlogInlineCode> without flags.
         </BlogLi>
         <BlogLi>
@@ -778,14 +776,13 @@ function SectionConsejos() {
           <BlogInlineCode>-p</BlogInlineCode> flag is more efficient.
         </BlogLi>
         <BlogLi>
-          <strong>Always review changes:</strong> OpenCode is powerful,
-          but you are responsible for the code. Review changes before
-          committing.
+          <strong>Always review changes:</strong> OpenCode is powerful, but you
+          are responsible for the code. Review changes before committing.
         </BlogLi>
         <BlogLi>
-          <strong>Leverage version control:</strong> Work on a separate
-          branch when using OpenCode for large changes. This way you can
-          review the full diff before merging.
+          <strong>Leverage version control:</strong> Work on a separate branch
+          when using OpenCode for large changes. This way you can review the
+          full diff before merging.
         </BlogLi>
       </BlogUl>
 
@@ -840,8 +837,8 @@ function SectionConsejos() {
 
       <BlogH3>Integrating into your workflow</BlogH3>
       <BlogP>
-        Here is an example of how to integrate OpenCode into your daily
-        routine as a developer:
+        Here is an example of how to integrate OpenCode into your daily routine
+        as a developer:
       </BlogP>
 
       <div className="space-y-2 my-4">
@@ -861,8 +858,7 @@ function SectionConsejos() {
           },
           {
             time: "09:00",
-            action:
-              "Stuck on a bug. Paste the error: Debug this stack trace",
+            action: "Stuck on a bug. Paste the error: Debug this stack trace",
           },
           {
             time: "09:05",
@@ -870,17 +866,16 @@ function SectionConsejos() {
           },
           {
             time: "11:00",
-            action:
-              "Need tests: Generate tests for the new payments module",
+            action: "Need tests: Generate tests for the new payments module",
           },
           {
             time: "11:45",
-            action: "Ask for a PR review: Review my changes and suggest improvements",
+            action:
+              "Ask for a PR review: Review my changes and suggest improvements",
           },
           {
             time: "12:00",
-            action:
-              "Exit with /exit. OpenCode saves the context automatically",
+            action: "Exit with /exit. OpenCode saves the context automatically",
           },
         ].map(({ time, action }) => (
           <div
@@ -904,8 +899,7 @@ function SectionConsejos() {
           You are ready to use OpenCode
         </p>
         <p className="text-sm text-white/80">
-          Install it now and start coding faster. It takes less than 2
-          minutes.
+          Install it now and start coding faster. It takes less than 2 minutes.
         </p>
         <code className="inline-block mt-3 px-4 py-2 rounded-lg bg-black/20 text-sm font-mono">
           npm install -g @opencode/cli
@@ -943,7 +937,7 @@ function SectionConsejos() {
             </p>
             <a
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
-              href="/blog/tutoriales/opencode-models"
+              href="/campus/tutoriales/opencode-models"
             >
               Read full guide
               <svg

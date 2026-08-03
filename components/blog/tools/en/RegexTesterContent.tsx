@@ -121,8 +121,8 @@ export default function RegexTesterContent() {
           Regex Tester
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Test regular expressions in real time. Highlights matches and
-          shows the count.
+          Test regular expressions in real time. Highlights matches and shows
+          the count.
         </p>
       </div>
 

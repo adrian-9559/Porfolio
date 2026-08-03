@@ -103,7 +103,9 @@ export const financesService = {
       body: JSON.stringify(data),
     }),
   deleteBudget: (id: string) =>
-    apiFetch<{ message: string }>(`${BASE}/budgets/${id}`, { method: "DELETE" }),
+    apiFetch<{ message: string }>(`${BASE}/budgets/${id}`, {
+      method: "DELETE",
+    }),
 
   listGoals: () => apiFetch<FinancialGoal[]>(`${BASE}/goals`),
   getGoal: (id: string) => apiFetch<FinancialGoal>(`${BASE}/goals/${id}`),
@@ -112,7 +114,10 @@ export const financesService = {
       method: "POST",
       body: JSON.stringify(data),
     }),
-  updateGoal: (id: string, data: Partial<CreateGoalInput & { achieved: boolean }>) =>
+  updateGoal: (
+    id: string,
+    data: Partial<CreateGoalInput & { achieved: boolean }>,
+  ) =>
     apiFetch<FinancialGoal>(`${BASE}/goals/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
@@ -121,17 +126,23 @@ export const financesService = {
     apiFetch<{ message: string }>(`${BASE}/goals/${id}`, { method: "DELETE" }),
 
   listSubscriptions: () => apiFetch<Subscription[]>(`${BASE}/subscriptions`),
-  getSubscription: (id: string) => apiFetch<Subscription>(`${BASE}/subscriptions/${id}`),
+  getSubscription: (id: string) =>
+    apiFetch<Subscription>(`${BASE}/subscriptions/${id}`),
   createSubscription: (data: CreateSubscriptionInput) =>
     apiFetch<Subscription>(`${BASE}/subscriptions`, {
       method: "POST",
       body: JSON.stringify(data),
     }),
-  updateSubscription: (id: string, data: Partial<CreateSubscriptionInput & { active: boolean }>) =>
+  updateSubscription: (
+    id: string,
+    data: Partial<CreateSubscriptionInput & { active: boolean }>,
+  ) =>
     apiFetch<Subscription>(`${BASE}/subscriptions/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
     }),
   deleteSubscription: (id: string) =>
-    apiFetch<{ message: string }>(`${BASE}/subscriptions/${id}`, { method: "DELETE" }),
+    apiFetch<{ message: string }>(`${BASE}/subscriptions/${id}`, {
+      method: "DELETE",
+    }),
 };

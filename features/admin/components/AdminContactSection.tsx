@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
 
 import {
   SectionHeader,
@@ -13,6 +12,7 @@ import {
   relativeTime,
 } from "./AdminShared";
 
+import { useT } from "@/hooks/useT";
 import { adminService, ContactMessage } from "@/services/adminService";
 
 const statusColor = {
@@ -85,7 +85,11 @@ export function AdminContactSection() {
   return (
     <div className="flex flex-col gap-5">
       <SectionHeader
-        desc={t("admin.messagesCount", { n: messages.length, pending, s: pending !== 1 ? "s" : "" })}
+        desc={t("admin.messagesCount", {
+          n: messages.length,
+          pending,
+          s: pending !== 1 ? "s" : "",
+        })}
         title={t("admin.messages")}
       />
 
@@ -119,7 +123,9 @@ export function AdminContactSection() {
           <Spinner />
         ) : filtered.length === 0 ? (
           <EmptyState
-            sub={search ? t("admin.noMessagesSearch") : t("admin.noMessagesHint")}
+            sub={
+              search ? t("admin.noMessagesSearch") : t("admin.noMessagesHint")
+            }
             text={t("admin.noMessages")}
           />
         ) : (
@@ -143,7 +149,9 @@ export function AdminContactSection() {
                       </a>
                       <Badge
                         color={statusColor[m.status]}
-                        label={t(`admin.status${m.status.charAt(0).toUpperCase() + m.status.slice(1)}`)}
+                        label={t(
+                          `admin.status${m.status.charAt(0).toUpperCase() + m.status.slice(1)}`,
+                        )}
                       />
                       <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
                         {relativeTime(m.created_at)}
@@ -161,7 +169,9 @@ export function AdminContactSection() {
                           setExpanded(expanded === m.id ? null : m.id)
                         }
                       >
-                        {expanded === m.id ? t("admin.seeLess") : t("admin.seeMore")}
+                        {expanded === m.id
+                          ? t("admin.seeLess")
+                          : t("admin.seeMore")}
                       </button>
                     )}
                   </div>
@@ -226,7 +236,10 @@ export function AdminContactSection() {
       </Card>
 
       <p className="text-xs text-center text-[#aeaeb2] dark:text-[#636366]">
-        {t("admin.showingCount", { filtered: filtered.length, total: messages.length })}
+        {t("admin.showingCount", {
+          filtered: filtered.length,
+          total: messages.length,
+        })}
       </p>
     </div>
   );

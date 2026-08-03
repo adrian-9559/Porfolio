@@ -11,6 +11,14 @@ const nextConfig = {
 	turbopack: {
 		root: __dirname,
 	},
+	async redirects() {
+		return [
+			{ source: "/blog/tutoriales", destination: "/campus", permanent: true },
+			{ source: "/blog/tutoriales/guias", destination: "/campus/guias", permanent: true },
+			{ source: "/blog/tutoriales/guias/:path*", destination: "/campus/guias/:path*", permanent: true },
+			{ source: "/blog/tutoriales/:path*", destination: "/campus/tutoriales/:path*", permanent: true },
+		];
+	},
 	async headers() {
 		return [
 			{

@@ -37,9 +37,9 @@ function SectionIntro() {
     <>
       <BlogH2>Introduction to Node.js and Express</BlogH2>
       <BlogP>
-        Node.js is a JavaScript runtime built on Chrome's V8 engine.
-        It uses a non-blocking, event-driven I/O model, ideal for APIs and
-        real-time applications.
+        Node.js is a JavaScript runtime built on Chrome's V8 engine. It uses a
+        non-blocking, event-driven I/O model, ideal for APIs and real-time
+        applications.
       </BlogP>
       <BlogP>
         Express is the most popular web framework for Node.js. Minimalist and
@@ -216,8 +216,8 @@ export class TasksController {
 }`}</BlogCode>
       <BlogCallout type="tip">
         Use the correct HTTP status codes: 201 for created resources, 204 for
-        successful deletions with no body, 404 for not found, 422 for
-        failed validation.
+        successful deletions with no body, 404 for not found, 422 for failed
+        validation.
       </BlogCallout>
     </>
   );
@@ -307,8 +307,8 @@ function validate(schema: z.ZodSchema) {
 
 router.post("/", validate(CreateTaskSchema), ctrl.create);`}</BlogCode>
       <BlogCallout type="danger">
-        Never store passwords in plain text. Always use bcrypt or argon2
-        with at least 10 salt rounds.
+        Never store passwords in plain text. Always use bcrypt or argon2 with at
+        least 10 salt rounds.
       </BlogCallout>
     </>
   );

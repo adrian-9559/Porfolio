@@ -29,8 +29,7 @@ function ExerciseCard({
 }) {
   const [open, setOpen] = useState(false);
   const levelColor = {
-    Easy:
-      "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
+    Easy: "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
     Intermediate:
       "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
     Hard: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
@@ -253,8 +252,7 @@ GRANT ALL PRIVILEGES ON DATABASE mi_proyecto TO dev;
           <strong>INET / CIDR / MACADDR</strong> — network types.
         </BlogLi>
         <BlogLi>
-          <strong>Geometric</strong> —{" "}
-          <BlogInlineCode>point</BlogInlineCode>,{" "}
+          <strong>Geometric</strong> — <BlogInlineCode>point</BlogInlineCode>,{" "}
           <BlogInlineCode>line</BlogInlineCode>,{" "}
           <BlogInlineCode>circle</BlogInlineCode>,{" "}
           <BlogInlineCode>polygon</BlogInlineCode>, and more.
@@ -295,11 +293,11 @@ CREATE INDEX idx_usuarios_metadata ON usuarios USING GIN (metadata);`}</BlogCode
       </BlogP>
 
       <BlogCallout type="warn">
-        <strong>Be careful with UUIDs as primary keys.</strong> Random UUIDs
-        can fragment indexes on very large tables. For tables with millions of
-        rows, consider using{" "}
-        <BlogInlineCode>uuid_generate_v7()</BlogInlineCode> (time-sequential)
-        or a classic <BlogInlineCode>BIGSERIAL</BlogInlineCode>.
+        <strong>Be careful with UUIDs as primary keys.</strong> Random UUIDs can
+        fragment indexes on very large tables. For tables with millions of rows,
+        consider using <BlogInlineCode>uuid_generate_v7()</BlogInlineCode>{" "}
+        (time-sequential) or a classic{" "}
+        <BlogInlineCode>BIGSERIAL</BlogInlineCode>.
       </BlogCallout>
 
       <BlogH2 id="jsonb">JSONB in PostgreSQL</BlogH2>
@@ -395,9 +393,9 @@ WHERE busqueda @@ to_tsquery('english', 'postgresql & tutorial');`}</BlogCode>
 
       <BlogCallout type="tip">
         <strong>Use GENERATED ALWAYS AS ... STORED columns</strong> for the
-        search vector. This way the{" "}
-        <BlogInlineCode>TSVECTOR</BlogInlineCode> updates automatically on every
-        INSERT or UPDATE, without needing triggers or extra application logic.
+        search vector. This way the <BlogInlineCode>TSVECTOR</BlogInlineCode>{" "}
+        updates automatically on every INSERT or UPDATE, without needing
+        triggers or extra application logic.
       </BlogCallout>
 
       <BlogH2 id="explain-analyze">EXPLAIN ANALYZE and Performance</BlogH2>
@@ -442,9 +440,9 @@ SELECT * FROM usuarios WHERE email = 'ana@email.com';
       <BlogH3>VACUUM and maintenance</BlogH3>
 
       <BlogP>
-        PostgreSQL uses MVCC, meaning updated or deleted rows are not
-        physically removed immediately. The{" "}
-        <BlogInlineCode>VACUUM</BlogInlineCode> command reclaims that space:
+        PostgreSQL uses MVCC, meaning updated or deleted rows are not physically
+        removed immediately. The <BlogInlineCode>VACUUM</BlogInlineCode> command
+        reclaims that space:
       </BlogP>
 
       <BlogCode>{`-- Reclaim space and update statistics
@@ -478,11 +476,12 @@ WHERE tablename = 'usuarios';`}</BlogCode>
 
       <div className="space-y-3" id="exercises">
         <ExerciseCard
-          num={1}
-          title="Install, CREATE DATABASE, and UUID table"
-          level="Easy"
           description="Install PostgreSQL (or use Docker), create a database 'tienda', enable the uuid-ossp extension, and create a 'categorias' table with UUID id, name (VARCHAR 100), description (TEXT), and creado_en (TIMESTAMPTZ)."
-          hint={'CREATE EXTENSION IF NOT EXISTS "uuid-ossp". For the UUID use UUID PRIMARY KEY DEFAULT uuid_generate_v4().'}
+          hint={
+            'CREATE EXTENSION IF NOT EXISTS "uuid-ossp". For the UUID use UUID PRIMARY KEY DEFAULT uuid_generate_v4().'
+          }
+          level="Easy"
+          num={1}
           solution={`CREATE DATABASE tienda;
 \\c tienda
 
@@ -494,14 +493,16 @@ CREATE TABLE categorias (
   descripcion TEXT,
   creado_en TIMESTAMPTZ DEFAULT NOW()
 );`}
+          title="Install, CREATE DATABASE, and UUID table"
         />
 
         <ExerciseCard
-          num={2}
-          title="JSONB query: insert and filter"
-          level="Intermediate"
           description="Create a 'productos' table with id (UUID), nombre, precio, and atributos (JSONB). Insert 3 products with different attributes (color, weight, size available) and then query products that have a specific attribute using the @> operator."
-          hint={"For JSONB insert use JSON string syntax. For filtering use WHERE atributos @> '{\"color\": \"red\"}'."}
+          hint={
+            'For JSONB insert use JSON string syntax. For filtering use WHERE atributos @> \'{"color": "red"}\'.'
+          }
+          level="Intermediate"
+          num={2}
           solution={`CREATE TABLE productos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   nombre VARCHAR(150) NOT NULL,
@@ -519,14 +520,14 @@ SELECT * FROM productos WHERE atributos @> '{"color": "red"}';
 
 -- Waterproof products
 SELECT * FROM productos WHERE atributos @> '{"waterproof": true}';`}
+          title="JSONB query: insert and filter"
         />
 
         <ExerciseCard
-          num={3}
-          title="Full-text search with TSVECTOR"
-          level="Intermediate"
           description="Create a 'documentos' table with TEXT content, an auto-generated TSVECTOR, and a GIN index. Insert 2 documents in English and search for those containing the words 'database' and 'tutorial'."
           hint="Use GENERATED ALWAYS AS (to_tsvector('english', contenido)) STORED. Query with @@ to_tsquery('english', 'database & tutorial')."
+          level="Intermediate"
+          num={3}
           solution={`CREATE TABLE documentos (
   id SERIAL PRIMARY KEY,
   titulo TEXT NOT NULL,
@@ -543,14 +544,14 @@ INSERT INTO documentos (titulo, contenido) VALUES
 
 SELECT titulo FROM documentos
 WHERE busqueda @@ to_tsquery('english', 'database & tutorial');`}
+          title="Full-text search with TSVECTOR"
         />
 
         <ExerciseCard
-          num={4}
-          title="CREATE INDEX and EXPLAIN ANALYZE"
-          level="Intermediate"
           description="Create a 'ventas' table with 100,000 test rows (use generate_series). Without an index, run EXPLAIN ANALYZE for an email lookup. Then create an index and compare the execution plan."
           hint="generate_series(1,100000) generates rows. For unique emails: 'user' || i || '@email.com'. Compare Seq Scan vs Index Scan."
+          level="Intermediate"
+          num={4}
           solution={`CREATE TABLE ventas (
   id INT PRIMARY KEY,
   email VARCHAR(255) NOT NULL,
@@ -570,14 +571,14 @@ CREATE INDEX idx_ventas_email ON ventas (email);
 
 -- With index (Index Scan)
 EXPLAIN ANALYZE SELECT * FROM ventas WHERE email = 'user50000@email.com';`}
+          title="CREATE INDEX and EXPLAIN ANALYZE"
         />
 
         <ExerciseCard
-          num={5}
-          title="Array operations: ANY and UNNEST"
-          level="Hard"
           description="Create a 'cursos' table with a TEXT[] tags column. Insert courses with different tags. Search for courses containing the tag 'SQL' using ANY, then expand the tags of a course with UNNEST."
           hint="To search in an array: WHERE 'SQL' = ANY(tags). UNNEST(tags) expands the array into rows."
+          level="Hard"
+          num={5}
           solution={`CREATE TABLE cursos (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(200) NOT NULL,
@@ -596,14 +597,14 @@ WHERE 'SQL' = ANY(tags);
 -- Expand tags of the first course
 SELECT nombre, unnest(tags) AS tag
 FROM cursos WHERE id = 1;`}
+          title="Array operations: ANY and UNNEST"
         />
 
         <ExerciseCard
-          num={6}
-          title="Recursive CTE for hierarchies"
-          level="Hard"
           description="Create an 'empleados' table with id, nombre, and manager_id (self-referencing). Insert a 3-level hierarchy and use a recursive CTE to get the full tree under a specific manager, showing the depth level."
           hint="A recursive CTE has two parts: the base case (WHERE manager_id IS NULL) and the recursive part that JOINs with the CTE. Use UNION ALL between them."
+          level="Hard"
+          num={6}
           solution={`CREATE TABLE empleados (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
@@ -637,14 +638,15 @@ SELECT nombre,
        repeat('  ', level) || nombre AS tree
 FROM org_chart
 ORDER BY level, nombre;`}
+          title="Recursive CTE for hierarchies"
         />
       </div>
 
       <BlogCallout type="tip">
         <strong>Keep learning:</strong> PostgreSQL's official documentation is
         one of the best in the entire open-source ecosystem. The book
-        &ldquo;PostgreSQL: Up and Running&rdquo; by Regina Obe and Leo Hsu is
-        an excellent next step.
+        &ldquo;PostgreSQL: Up and Running&rdquo; by Regina Obe and Leo Hsu is an
+        excellent next step.
       </BlogCallout>
     </article>
   );

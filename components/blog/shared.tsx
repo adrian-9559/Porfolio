@@ -489,6 +489,46 @@ export function IconExternal({
   );
 }
 
+export function IconGraduation({
+  className = "w-4 h-4",
+}: {
+  className?: string;
+}) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      {/* Gorro (tablero rómbico más ancho que IconTutorial) */}
+      <path
+        d="M2.5 9.5L12 4.25l9.5 5.25L12 14.75 2.5 9.5z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.75}
+      />
+      {/* Banda inferior */}
+      <path
+        d="M6.25 12.6v2.1c0 1.18 2.5 2.3 5.75 2.3s5.75-1.12 5.75-2.3v-2.1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.75}
+      />
+      {/* Botón central */}
+      <path d="M12 9.5v3.1" strokeLinecap="round" strokeWidth={1.75} />
+      {/* Borla (trazo fino) */}
+      <path
+        d="M12 9.5c1.2 1.4 2.6 2.6 4.3 3.4"
+        strokeLinecap="round"
+        strokeWidth={1.5}
+      />
+      <circle cx="16.6" cy="13.2" r="0.75" strokeWidth={1.5} />
+    </svg>
+  );
+}
+
 export function IconHome({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg
@@ -554,6 +594,7 @@ export function IconCheck({ className = "w-4 h-4" }: { className?: string }) {
 
 export function FilterBar({ children }: { children: React.ReactNode }) {
   const { t } = useT();
+
   return (
     <div className="bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 rounded-2xl p-4 shadow-sm">
       <div className="flex items-center gap-2 mb-3 text-[#aeaeb2] dark:text-[#636366]">
@@ -670,5 +711,40 @@ export function BlogTableOfContents({
         ))}
       </ul>
     </nav>
+  );
+}
+
+export function IconCode({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M8 9l-3 3 3 3M16 9l3 3-3 3M13.5 6l-3 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
+  );
+}
+
+export function IconServer({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <rect x="3" y="4" width="18" height="7" rx="2" strokeWidth={2} />
+      <rect x="3" y="13" width="18" height="7" rx="2" strokeWidth={2} />
+      <path d="M7 7.5h.01M7 16.5h.01" strokeLinecap="round" strokeWidth={2.5} />
+    </svg>
+  );
+}
+
+export function IconSparkles({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M19 15l.7 1.8L21.5 17.5l-1.8.7L19 20l-.7-1.8L16.5 17.5l1.8-.7L19 15z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
+  );
+}
+
+export function IconTerminal({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M4 17l6-5-6-5M12 19h8" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
   );
 }

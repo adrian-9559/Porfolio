@@ -49,11 +49,11 @@ function ExerciseCard({
 }) {
   const [open, setOpen] = useState(false);
   const levelColor = {
-    "Básico":
+    Básico:
       "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
-    "Intermedio":
+    Intermedio:
       "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-    "Avanzado": "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
+    Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
   }[level];
 
   return (
@@ -179,11 +179,10 @@ function SIntro() {
     <>
       <BlogH2>What is C++?</BlogH2>
       <BlogP>
-        C++ is a general-purpose language created by Bjarne Stroustrup in
-        the early 1980s as an extension of C. It adds object-oriented
-        programming (OOP), templates (generics), automatic resource management
-        (RAII), and the STL. It is a superset of C: almost all valid C code
-        compiles in C++.
+        C++ is a general-purpose language created by Bjarne Stroustrup in the
+        early 1980s as an extension of C. It adds object-oriented programming
+        (OOP), templates (generics), automatic resource management (RAII), and
+        the STL. It is a superset of C: almost all valid C code compiles in C++.
       </BlogP>
 
       <BlogH3>Fundamental differences from C</BlogH3>
@@ -203,7 +202,10 @@ function SIntro() {
             {[
               ["printf/scanf", "cout/cin, fmt::print"],
               ["malloc/free", "new/delete (avoid) or smart pointers"],
-              ["struct without methods", "class with methods, controlled access"],
+              [
+                "struct without methods",
+                "class with methods, controlled access",
+              ],
               ["No function overloading", "Overloading by full signature"],
               ["No exceptions", "try/catch/throw, noexcept"],
               ["No generics", "Templates (static compilation)"],
@@ -617,8 +619,8 @@ public:
 
       <BlogH3>Rule of Five</BlogH3>
       <BlogP>
-        If you define any of these five methods, you should define all
-        five: destructor, copy constructor, copy assignment operator, move
+        If you define any of these five methods, you should define all five:
+        destructor, copy constructor, copy assignment operator, move
         constructor, move assignment operator.
       </BlogP>
       <BlogCallout type="info">
@@ -702,9 +704,8 @@ function SSTL() {
     <>
       <BlogH2>STL — Standard Template Library</BlogH2>
       <BlogP>
-        The STL provides containers, iterators, and generic algorithms
-        that are highly optimized. It is the most powerful tool in the C++
-        ecosystem.
+        The STL provides containers, iterators, and generic algorithms that are
+        highly optimized. It is the most powerful tool in the C++ ecosystem.
       </BlogP>
 
       <BlogH3>vector — dynamic array</BlogH3>
@@ -1044,10 +1045,10 @@ int main() {
 }`}</BlogCode>
 
       <BlogCallout type="warn">
-        Always check if the file was opened successfully before operating
-        on it. An <code>ifstream</code> that could not open simply won\'t read
-        anything, without throwing an exception (unless you enable exceptions with{" "}
-        <code>f.exceptions(...)</code>).
+        Always check if the file was opened successfully before operating on it.
+        An <code>ifstream</code> that could not open simply won\'t read
+        anything, without throwing an exception (unless you enable exceptions
+        with <code>f.exceptions(...)</code>).
       </BlogCallout>
     </>
   );
@@ -1089,8 +1090,8 @@ function SEjercicios() {
     <>
       <BlogH2>C++ Exercises</BlogH2>
       <BlogP>
-        Complete projects to practice all the concepts in this tutorial.
-        Each one combines several language features.
+        Complete projects to practice all the concepts in this tutorial. Each
+        one combines several language features.
       </BlogP>
       <div className="space-y-2">
         {ejercicios.map((ej, i) => (
@@ -1103,8 +1104,8 @@ function SEjercicios() {
         </p>
         <p className="text-sm text-[#3a3a3c] dark:text-[#aeaeb2]">
           Combine everything into a <strong>library system</strong>: books,
-          users, loans with dates, late fines, CSV file persistence,
-          search by title/author/ISBN, and upcoming return notifications.
+          users, loans with dates, late fines, CSV file persistence, search by
+          title/author/ISBN, and upcoming return notifications.
         </p>
       </div>
     </>

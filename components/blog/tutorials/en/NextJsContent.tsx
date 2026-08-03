@@ -37,14 +37,14 @@ function SectionIntro() {
     <>
       <BlogH2>SSR vs CSR: when to use each</BlogH2>
       <BlogP>
-        Next.js lets you choose the most appropriate rendering strategy for
-        each page within the same project. This flexibility is its main
-        advantage over plain React.
+        Next.js lets you choose the most appropriate rendering strategy for each
+        page within the same project. This flexibility is its main advantage
+        over plain React.
       </BlogP>
       <BlogH3>Client-Side Rendering (CSR)</BlogH3>
       <BlogP>
-        The HTML arrives empty in the browser and JavaScript renders the content.
-        Ideal for private dashboards or highly interactive pages.
+        The HTML arrives empty in the browser and JavaScript renders the
+        content. Ideal for private dashboards or highly interactive pages.
       </BlogP>
       <BlogCode>{`// Client component: marked with "use client"
 "use client";
@@ -89,9 +89,9 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   );
 }`}</BlogCode>
       <BlogCallout type="tip">
-        In the App Router (Next.js 13+), components are Server Components
-        by default. Only add <code>"use client"</code> when you need
-        state, effects, or browser APIs.
+        In the App Router (Next.js 13+), components are Server Components by
+        default. Only add <code>"use client"</code> when you need state,
+        effects, or browser APIs.
       </BlogCallout>
     </>
   );
@@ -102,9 +102,8 @@ function SectionRouting() {
     <>
       <BlogH2>Routing with App Router</BlogH2>
       <BlogP>
-        The App Router uses the file system. Each folder under{" "}
-        <code>app/</code> is a route segment. Special files
-        define the behavior of each segment.
+        The App Router uses the file system. Each folder under <code>app/</code>{" "}
+        is a route segment. Special files define the behavior of each segment.
       </BlogP>
       <BlogCode>{`app/
 ├── layout.tsx           # Root layout (always present)
@@ -186,9 +185,8 @@ function SectionApiRoutes() {
     <>
       <BlogH2>API Routes</BlogH2>
       <BlogP>
-        Files named <code>route.ts</code> inside <code>app/api/</code>{" "}
-        define HTTP endpoints. Each exported function corresponds to an HTTP
-        method.
+        Files named <code>route.ts</code> inside <code>app/api/</code> define
+        HTTP endpoints. Each exported function corresponds to an HTTP method.
       </BlogP>
       <BlogCode>{`// app/api/posts/route.ts
 import { NextRequest, NextResponse } from "next/server";
@@ -300,8 +298,8 @@ export async function POST(request: NextRequest) {
 }`}</BlogCode>
       <BlogCallout type="tip">
         ISR is the recommended default strategy:{" "}
-        <code>next: {"{ revalidate: N }"}</code>. Content is static
-        (fast) but updates periodically.
+        <code>next: {"{ revalidate: N }"}</code>. Content is static (fast) but
+        updates periodically.
       </BlogCallout>
     </>
   );
@@ -313,9 +311,9 @@ function SectionOptimizacion() {
       <BlogH2>Optimization and performance</BlogH2>
       <BlogH3>next/image</BlogH3>
       <BlogP>
-        Next.js <code>Image</code> component automatically optimizes
-        images: it serves them in WebP/AVIF, resizes them based on the
-        device, and applies lazy loading.
+        Next.js <code>Image</code> component automatically optimizes images: it
+        serves them in WebP/AVIF, resizes them based on the device, and applies
+        lazy loading.
       </BlogP>
       <BlogCode>{`import Image from "next/image";
 
@@ -535,9 +533,8 @@ export default function NewPostPage() {
   );
 }`}</BlogCode>
       <BlogCallout type="tip">
-        Server Actions eliminate the need to create API routes for
-        mutations. The form works even without JavaScript enabled on the
-        client.
+        Server Actions eliminate the need to create API routes for mutations.
+        The form works even without JavaScript enabled on the client.
       </BlogCallout>
     </>
   );

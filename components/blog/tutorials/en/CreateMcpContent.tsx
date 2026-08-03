@@ -37,8 +37,7 @@ export default function CreateMcpContent() {
       <BlogH2>What you need</BlogH2>
       <BlogUl>
         <BlogLi>
-          <BlogInlineCode>Node.js 18+</BlogInlineCode> — any recent LTS
-          version
+          <BlogInlineCode>Node.js 18+</BlogInlineCode> — any recent LTS version
         </BlogLi>
         <BlogLi>
           TypeScript — the SDK is written in TS, though you can use it from JS
@@ -59,8 +58,8 @@ npm init -y`}</BlogCode>
       <BlogCode>{`npm install @modelcontextprotocol/sdk zod
 npm install -D typescript @types/node`}</BlogCode>
       <BlogP>
-        Create a <BlogInlineCode>tsconfig.json</BlogInlineCode> with the
-        basic configuration:
+        Create a <BlogInlineCode>tsconfig.json</BlogInlineCode> with the basic
+        configuration:
       </BlogP>
       <BlogCode>{`{
   "compilerOptions": {
@@ -123,20 +122,20 @@ await server.connect(transport);`}</BlogCode>
 node dist/index.js`}</BlogCode>
       <BlogP>
         The server will listen on stdio. You won't see anything in the terminal
-        because it waits for JSON-RPC messages from the client. To test it you need
-        an MCP client like OpenCode or the Inspector.
+        because it waits for JSON-RPC messages from the client. To test it you
+        need an MCP client like OpenCode or the Inspector.
       </BlogP>
 
       <BlogCallout type="tip">
-        Use <BlogInlineCode>z.string().describe()</BlogInlineCode> so the
-        AI understands what to pass for each parameter. The description is key
-        for the model to use your tool correctly.
+        Use <BlogInlineCode>z.string().describe()</BlogInlineCode> so the AI
+        understands what to pass for each parameter. The description is key for
+        the model to use your tool correctly.
       </BlogCallout>
 
       <BlogH2>Add a Resource</BlogH2>
       <BlogP>
-        Resources allow the AI to read structured data from your
-        server. Let's expose fictional projects using a URI template:
+        Resources allow the AI to read structured data from your server. Let's
+        expose fictional projects using a URI template:
       </BlogP>
       <BlogCode>{`server.resource(
   "project",
@@ -162,13 +161,13 @@ node dist/index.js`}</BlogCode>
 );`}</BlogCode>
       <BlogP>
         The client can request{" "}
-        <BlogInlineCode>file://projects/42</BlogInlineCode> and will receive a JSON
-        with the project data. The URI is automatically parsed and the
+        <BlogInlineCode>file://projects/42</BlogInlineCode> and will receive a
+        JSON with the project data. The URI is automatically parsed and the
         handler receives the full <BlogInlineCode>URI</BlogInlineCode> object.
       </BlogP>
       <BlogP>
-        Your full <BlogInlineCode>src/index.ts</BlogInlineCode> should look
-        like this:
+        Your full <BlogInlineCode>src/index.ts</BlogInlineCode> should look like
+        this:
       </BlogP>
       <BlogCode>{`import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -218,8 +217,8 @@ await server.connect(transport);`}</BlogCode>
 
       <BlogH2>Test with MCP Inspector</BlogH2>
       <BlogP>
-        Anthropic provides an interactive tool for debugging MCP servers
-        without needing an AI client.
+        Anthropic provides an interactive tool for debugging MCP servers without
+        needing an AI client.
       </BlogP>
       <BlogP>First compile your server, then run:</BlogP>
       <BlogCode>{`npx @modelcontextprotocol/inspector node dist/index.js`}</BlogCode>
@@ -232,15 +231,14 @@ await server.connect(transport);`}</BlogCode>
       </BlogUl>
 
       <BlogCallout type="info">
-        The Inspector is a development tool. Don't use it in production.
-        It lets you iterate quickly without setting up a client each time.
+        The Inspector is a development tool. Don't use it in production. It lets
+        you iterate quickly without setting up a client each time.
       </BlogCallout>
 
       <BlogH2>Configure in OpenCode</BlogH2>
       <BlogP>
         Once your server works, add it to{" "}
-        <BlogInlineCode>opencode.json</BlogInlineCode> in your project
-        root:
+        <BlogInlineCode>opencode.json</BlogInlineCode> in your project root:
       </BlogP>
       <BlogCode>{`{
   "mcpServers": {
@@ -251,10 +249,9 @@ await server.connect(transport);`}</BlogCode>
   }
 }`}</BlogCode>
       <BlogP>
-        If you prefer the server to compile automatically before
-        running, use <BlogInlineCode>npm run build</BlogInlineCode> as
-        a pre-callback or point directly to the source with{" "}
-        <BlogInlineCode>tsx</BlogInlineCode>:
+        If you prefer the server to compile automatically before running, use{" "}
+        <BlogInlineCode>npm run build</BlogInlineCode> as a pre-callback or
+        point directly to the source with <BlogInlineCode>tsx</BlogInlineCode>:
       </BlogP>
       <BlogCode>{`{
   "mcpServers": {
@@ -266,20 +263,22 @@ await server.connect(transport);`}</BlogCode>
 }`}</BlogCode>
       <BlogP>
         With this configuration, OpenCode will load your server when starting a
-        session and you'll be able to use the <BlogInlineCode>greet</BlogInlineCode> tool and the{" "}
+        session and you'll be able to use the{" "}
+        <BlogInlineCode>greet</BlogInlineCode> tool and the{" "}
         <BlogInlineCode>file://projects/</BlogInlineCode> resource directly from
         the chat.
       </BlogP>
 
       <BlogH2>Publish your server</BlogH2>
       <BlogP>
-        If you want to share your server with the community, you can publish it on
-        npm:
+        If you want to share your server with the community, you can publish it
+        on npm:
       </BlogP>
       <BlogCode>{`npm publish`}</BlogCode>
       <BlogP>
-        Make sure you have a complete <BlogInlineCode>package.json</BlogInlineCode>{" "}
-        with <BlogInlineCode>name</BlogInlineCode>,{" "}
+        Make sure you have a complete{" "}
+        <BlogInlineCode>package.json</BlogInlineCode> with{" "}
+        <BlogInlineCode>name</BlogInlineCode>,{" "}
         <BlogInlineCode>version</BlogInlineCode>,{" "}
         <BlogInlineCode>main</BlogInlineCode> pointing to{" "}
         <BlogInlineCode>dist/index.js</BlogInlineCode>, and{" "}
@@ -287,15 +286,15 @@ await server.connect(transport);`}</BlogCode>
         <BlogInlineCode>npx</BlogInlineCode>.
       </BlogP>
       <BlogP>
-        You can also create a GitHub template for others to fork.
-        Include a README with clear instructions and configuration examples.
+        You can also create a GitHub template for others to fork. Include a
+        README with clear instructions and configuration examples.
       </BlogP>
 
       <BlogCallout type="done">
-        You have created your first MCP server from scratch. Now you understand the
-        protocol architecture, how to define tools with Zod, how to expose
-        resources, and how to connect it to OpenCode. From here you can explore the
-        rest of the SDK: prompts, notifications, HTTP transport, and custom
+        You have created your first MCP server from scratch. Now you understand
+        the protocol architecture, how to define tools with Zod, how to expose
+        resources, and how to connect it to OpenCode. From here you can explore
+        the rest of the SDK: prompts, notifications, HTTP transport, and custom
         handlers.
       </BlogCallout>
     </article>

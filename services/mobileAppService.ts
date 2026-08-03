@@ -99,6 +99,7 @@ export const mobileAppService = {
 
     if (env.apiKey) headers["X-API-Key"] = env.apiKey;
     const token = tokenStore.get();
+
     if (token) headers["Authorization"] = `Bearer ${token}`;
     if (uploadDestination)
       formData.set("upload_destination", uploadDestination);

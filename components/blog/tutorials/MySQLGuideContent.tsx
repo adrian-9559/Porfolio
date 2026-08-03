@@ -160,8 +160,8 @@ export default function MySQLGuideContent() {
       <BlogH2 id="instalacion">Instalación</BlogH2>
 
       <BlogP>
-        MySQL está disponible en todos los sistemas operativos principales.
-        Aquí tienes las formas más comunes de instalarlo:
+        MySQL está disponible en todos los sistemas operativos principales. Aquí
+        tienes las formas más comunes de instalarlo:
       </BlogP>
 
       <BlogH3>macOS (Homebrew)</BlogH3>
@@ -224,8 +224,7 @@ DESCRIBE nombre_tabla;`}</BlogCode>
 
       <BlogUl>
         <BlogLi>
-          <strong>Numéricos:</strong>{" "}
-          <BlogInlineCode>INT</BlogInlineCode>,{" "}
+          <strong>Numéricos:</strong> <BlogInlineCode>INT</BlogInlineCode>,{" "}
           <BlogInlineCode>BIGINT</BlogInlineCode>,{" "}
           <BlogInlineCode>DECIMAL(10,2)</BlogInlineCode>,{" "}
           <BlogInlineCode>FLOAT</BlogInlineCode>,{" "}
@@ -240,9 +239,8 @@ DESCRIBE nombre_tabla;`}</BlogCode>
           <BlogInlineCode>ENUM('a','b')</BlogInlineCode>
         </BlogLi>
         <BlogLi>
-          <strong>Fecha/Hora:</strong>{" "}
-          <BlogInlineCode>DATETIME</BlogInlineCode>,{" "}
-          <BlogInlineCode>TIMESTAMP</BlogInlineCode>,{" "}
+          <strong>Fecha/Hora:</strong> <BlogInlineCode>DATETIME</BlogInlineCode>
+          , <BlogInlineCode>TIMESTAMP</BlogInlineCode>,{" "}
           <BlogInlineCode>DATE</BlogInlineCode>,{" "}
           <BlogInlineCode>TIME</BlogInlineCode>,{" "}
           <BlogInlineCode>YEAR</BlogInlineCode>
@@ -288,9 +286,9 @@ DESCRIBE nombre_tabla;`}</BlogCode>
       <BlogUl>
         <BlogLi>
           <strong>InnoDB</strong> — el motor por defecto desde MySQL 5.5.
-            Soporta transacciones (ACID), claves foráneas, row-level locking y
-            recuperación ante fallos. Es la opción recomendada para la mayoría de
-            los casos.
+          Soporta transacciones (ACID), claves foráneas, row-level locking y
+          recuperación ante fallos. Es la opción recomendada para la mayoría de
+          los casos.
         </BlogLi>
         <BlogLi>
           <strong>MyISAM</strong> — más antiguo, no soporta transacciones ni
@@ -311,11 +309,10 @@ DESCRIBE nombre_tabla;`}</BlogCode>
       </BlogP>
 
       <BlogCallout type="tip">
-        <strong>Buenas prácticas al crear tablas:</strong> usa siempre
-        InnoDB + utf8mb4. Define explícitamente{" "}
-        <BlogInlineCode>NOT NULL</BlogInlineCode> en campos obligatorios y
-        valores por defecto donde tenga sentido. Esto evita sorpresas y mejora
-        el rendimiento de las consultas.
+        <strong>Buenas prácticas al crear tablas:</strong> usa siempre InnoDB +
+        utf8mb4. Define explícitamente <BlogInlineCode>NOT NULL</BlogInlineCode>{" "}
+        en campos obligatorios y valores por defecto donde tenga sentido. Esto
+        evita sorpresas y mejora el rendimiento de las consultas.
       </BlogCallout>
 
       <BlogH2 id="schema-ejemplo">Schema completo de ejemplo</BlogH2>
@@ -389,13 +386,13 @@ LIMIT 10;`}</BlogCode>
       <BlogUl>
         <BlogLi>
           <strong>MySQL Workbench</strong> — la herramienta oficial de Oracle.
-            Incluye modelado ER, administración de servidores y editor de
-            consultas. Gratuita y multiplataforma.
+          Incluye modelado ER, administración de servidores y editor de
+          consultas. Gratuita y multiplataforma.
         </BlogLi>
         <BlogLi>
           <strong>TablePlus</strong> — cliente moderno con interfaz limpia.
-            Soporta MySQL, PostgreSQL, Redis y más. Rápido, con atajos de
-            teclado y multi-pestaña. De pago, pero con prueba gratuita.
+          Soporta MySQL, PostgreSQL, Redis y más. Rápido, con atajos de teclado
+          y multi-pestaña. De pago, pero con prueba gratuita.
         </BlogLi>
         <BlogLi>
           <strong>DBeaver</strong> — cliente universal open-source. Soporta
@@ -417,11 +414,10 @@ LIMIT 10;`}</BlogCode>
 
       <div className="space-y-3" id="ejercicios">
         <ExerciseCard
-          num={1}
-          title="Crear base de datos y tabla"
-          level="Básico"
           description="Crea una base de datos llamada 'blog' y dentro una tabla 'articulos' con los campos: id (entero auto-incrementable), titulo (VARCHAR 200), contenido (TEXT), publicado (BOOLEAN con default FALSE) y creado_en (TIMESTAMP)."
           hint="Usa CREATE DATABASE, luego USE, luego CREATE TABLE. Para BOOLEAN usa TINYINT(1) o BOOL."
+          level="Básico"
+          num={1}
           solution={`CREATE DATABASE blog;
 USE blog;
 
@@ -432,28 +428,28 @@ CREATE TABLE articulos (
   publicado BOOL DEFAULT FALSE,
   creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`}
+          title="Crear base de datos y tabla"
         />
 
         <ExerciseCard
-          num={2}
-          title="INSERT con datos reales"
-          level="Básico"
           description="Inserta al menos 3 artículos en la tabla 'articulos' del ejercicio anterior. Varía los valores: uno publicado, otro no, y uno con fecha explícita."
           hint="Usa INSERT INTO articulos (campo1, campo2) VALUES (valor1, valor2). Para fecha explícita usa 'YYYY-MM-DD HH:MM:SS'."
+          level="Básico"
+          num={2}
           solution={`INSERT INTO articulos (titulo, contenido, publicado, creado_en) VALUES
   ('Introducción a MySQL', 'Contenido del artículo...', TRUE, DEFAULT),
   ('Bases de datos NoSQL', 'Contenido...', FALSE, DEFAULT),
   ('Historia de SQL', 'Contenido...', TRUE, '2024-01-15 10:00:00');
 
 SELECT * FROM articulos;`}
+          title="INSERT con datos reales"
         />
 
         <ExerciseCard
-          num={3}
-          title="SELECT con JOIN de 3 tablas"
-          level="Intermedio"
           description="Usando el schema de e-commerce (usuarios, pedidos, detalle_pedidos, productos), obtén el nombre del usuario, el nombre del producto, la cantidad y el precio unitario de todos los pedidos entregados."
           hint="Necesitas JOIN entre las 4 tablas. Filtra por estado = 'entregado' en la tabla pedidos."
+          level="Intermedio"
+          num={3}
           solution={`SELECT u.nombre AS usuario, pr.nombre AS producto,
        dp.cantidad, dp.precio_unitario
 FROM usuarios u
@@ -461,41 +457,43 @@ JOIN pedidos p ON u.id = p.usuario_id
 JOIN detalle_pedidos dp ON p.id = dp.pedido_id
 JOIN productos pr ON dp.producto_id = pr.id
 WHERE p.estado = 'entregado';`}
+          title="SELECT con JOIN de 3 tablas"
         />
 
         <ExerciseCard
-          num={4}
-          title="Subconsulta con EXISTS"
-          level="Intermedio"
           description="Encuentra todos los usuarios que han realizado al menos un pedido. Usa EXISTS en lugar de JOIN para practicar subconsultas correlacionadas."
           hint="La subconsulta debe referenciar el id del usuario de la consulta exterior. EXISTS devuelve TRUE si la subconsulta devuelve algún registro."
+          level="Intermedio"
+          num={4}
           solution={`SELECT u.id, u.nombre, u.email
 FROM usuarios u
 WHERE EXISTS (
   SELECT 1 FROM pedidos p WHERE p.usuario_id = u.id
 );`}
+          title="Subconsulta con EXISTS"
         />
 
         <ExerciseCard
-          num={5}
-          title="GROUP BY con ROLLUP"
-          level="Avanzado"
           description="Agrupa las ventas por categoría de producto y muestra el total de unidades vendidas, incluyendo un subtotal general con ROLLUP. Ordena el resultado."
           hint="ROLLUP se añade después de GROUP BY. Con GROUP BY categoria, ROLLUP añade una fila extra con el total general donde categoria es NULL."
+          level="Avanzado"
+          num={5}
           solution={`SELECT
   COALESCE(pr.categoria, 'TOTAL') AS categoria,
   SUM(dp.cantidad) AS unidades_vendidas
 FROM detalle_pedidos dp
 JOIN productos pr ON dp.producto_id = pr.id
 GROUP BY pr.categoria WITH ROLLUP;`}
+          title="GROUP BY con ROLLUP"
         />
 
         <ExerciseCard
-          num={6}
-          title="Exportar datos con INTO OUTFILE"
-          level="Avanzado"
           description="Exporta los datos de la tabla 'productos' a un archivo CSV en el servidor. El archivo debe tener campos separados por coma y cada fila en una línea nueva. Luego intenta importarlo de vuelta con LOAD DATA INFILE."
-          hint={"INTO OUTFILE necesita privilegios FILE. Especifica FIELDS TERMINATED BY ',' y ENCLOSED BY '\"'. La ruta debe ser absoluta y escribible por el usuario de MySQL."}
+          hint={
+            "INTO OUTFILE necesita privilegios FILE. Especifica FIELDS TERMINATED BY ',' y ENCLOSED BY '\"'. La ruta debe ser absoluta y escribible por el usuario de MySQL."
+          }
+          level="Avanzado"
+          num={6}
           solution={`-- Exportar
 SELECT * FROM productos
 INTO OUTFILE '/tmp/productos_export.csv'
@@ -510,6 +508,7 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\\n'
 IGNORE 1 ROWS;`}
+          title="Exportar datos con INTO OUTFILE"
         />
       </div>
 

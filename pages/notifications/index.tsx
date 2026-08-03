@@ -38,6 +38,7 @@ function timeAgo(iso: string): string {
 
 export default function NotificationsPage() {
   const { t } = useT();
+
   useRequireAuth();
   const [filter, setFilter] = useState<Filter>("all");
   const {
@@ -61,10 +62,7 @@ export default function NotificationsPage() {
     <>
       <Head>
         <title>{t("meta.notifications.title")}</title>
-        <meta
-          content={t("meta.notifications.desc")}
-          name="description"
-        />
+        <meta content={t("meta.notifications.desc")} name="description" />
         <meta content={t("meta.notifications.title")} property="og:title" />
         <meta
           content={t("meta.notifications.desc")}
@@ -179,12 +177,12 @@ export default function NotificationsPage() {
                         )}
                       </div>
                     </div>
-                    <p className="text-sm text-muted mt-0.5">
-                      {n.message}
-                    </p>
+                    <p className="text-sm text-muted mt-0.5">{n.message}</p>
                     <div className="flex items-center gap-3 mt-2">
                       <span className="text-xs text-muted/60 bg-default px-2 py-0.5 rounded-full">
-                        {t(`notifications.type${n.type.charAt(0).toUpperCase() + n.type.slice(1)}`)}
+                        {t(
+                          `notifications.type${n.type.charAt(0).toUpperCase() + n.type.slice(1)}`,
+                        )}
                       </span>
                       {!n.read && (
                         <button

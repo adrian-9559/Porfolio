@@ -54,11 +54,11 @@ function ExerciseCard({
   const [open, setOpen] = useState(false);
   const levelColor =
     {
-      "Básico":
+      Básico:
         "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
-      "Intermedio":
+      Intermedio:
         "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-      "Avanzado": "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
+      Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
     }[level] ??
     "bg-blue-100 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400";
 
@@ -109,32 +109,28 @@ function SectionIntro() {
     <>
       <BlogH2>Frontend testing</BlogH2>
       <BlogP>
-        Automated tests are essential for maintaining quality in
-        frontend applications. A good testing strategy combines several
-        levels:
+        Automated tests are essential for maintaining quality in frontend
+        applications. A good testing strategy combines several levels:
       </BlogP>
       <BlogUl>
         <BlogLi>
-          <strong>Unit tests</strong> — verify functions and hooks
-          in isolation
+          <strong>Unit tests</strong> — verify functions and hooks in isolation
         </BlogLi>
         <BlogLi>
-          <strong>Component tests</strong> — render components and
-          verify their behavior
+          <strong>Component tests</strong> — render components and verify their
+          behavior
         </BlogLi>
         <BlogLi>
-          <strong>Integration tests</strong> — test complete flows
-          (multiple components + API)
+          <strong>Integration tests</strong> — test complete flows (multiple
+          components + API)
         </BlogLi>
         <BlogLi>
-          <strong>E2E tests</strong> — real browser simulating user
-          actions
+          <strong>E2E tests</strong> — real browser simulating user actions
         </BlogLi>
       </BlogUl>
       <BlogCallout type="tip">
-        Follow the "testing pyramid": many unit tests, fewer
-        integration tests, few E2E tests. Each level has different speed and
-        maintenance cost.
+        Follow the "testing pyramid": many unit tests, fewer integration tests,
+        few E2E tests. Each level has different speed and maintenance cost.
       </BlogCallout>
     </>
   );
@@ -285,10 +281,9 @@ describe('Counter', () => {
     });
 });`}</BlogCode>
       <BlogCallout type="tip">
-        Use <code>getByRole</code> whenever possible. It is the most
-        accessible and resilient query. <code>getByText</code> and{" "}
-        <code>getByTestId</code> are alternatives when there's no suitable
-        role.
+        Use <code>getByRole</code> whenever possible. It is the most accessible
+        and resilient query. <code>getByText</code> and <code>getByTestId</code>{" "}
+        are alternatives when there's no suitable role.
       </BlogCallout>
     </>
   );
@@ -299,8 +294,8 @@ function SectionMocks() {
     <>
       <BlogH2>Mocks, stubs, and spies</BlogH2>
       <BlogP>
-        Mocks replace real dependencies (APIs, modules, timers) to
-        isolate the code under test.
+        Mocks replace real dependencies (APIs, modules, timers) to isolate the
+        code under test.
       </BlogP>
       <BlogH3>Mocking fetch</BlogH3>
       <BlogCode>{`// api.ts
@@ -366,8 +361,8 @@ function SectionIntegracion() {
     <>
       <BlogH2>Integration tests</BlogH2>
       <BlogP>
-        Integration tests test complete flows: rendering multiple
-        components together, interacting with them, and verifying the result.
+        Integration tests test complete flows: rendering multiple components
+        together, interacting with them, and verifying the result.
       </BlogP>
       <BlogCode>{`// TaskList.tsx
 export function TaskList() {
@@ -452,9 +447,9 @@ function SectionE2e() {
     <>
       <BlogH2>E2E tests with Playwright</BlogH2>
       <BlogP>
-        E2E tests open a real browser and execute actions like a
-        user. Playwright is the most modern tool: fast, reliable, and with
-        support for multiple browsers.
+        E2E tests open a real browser and execute actions like a user.
+        Playwright is the most modern tool: fast, reliable, and with support for
+        multiple browsers.
       </BlogP>
       <BlogCode>{`// Installation
 // npm init playwright@latest
@@ -509,9 +504,8 @@ page.waitForURL('/dashboard');
 page.waitForSelector('.loaded');
 page.waitForResponse(resp => resp.url().includes('/api'));`}</BlogCode>
       <BlogCallout type="tip">
-        Playwright automatically waits for elements to be visible and
-        enabled before interacting. You don't need{" "}
-        <code>sleep()</code> or manual waits.
+        Playwright automatically waits for elements to be visible and enabled
+        before interacting. You don't need <code>sleep()</code> or manual waits.
       </BlogCallout>
     </>
   );
@@ -522,9 +516,9 @@ function SectionCobertura() {
     <>
       <BlogH2>Code coverage</BlogH2>
       <BlogP>
-        Coverage measures what percentage of code is executed during
-        tests. It doesn't guarantee the code works correctly, but it helps
-        identify untested code.
+        Coverage measures what percentage of code is executed during tests. It
+        doesn't guarantee the code works correctly, but it helps identify
+        untested code.
       </BlogP>
       <BlogCode>{`// vitest.config.ts
 import { defineConfig } from 'vitest/config';
@@ -568,9 +562,9 @@ export default defineConfig({
         </BlogLi>
       </BlogUl>
       <BlogCallout type="warn">
-        Coverage is a metric, not a target. Don't sacrifice quality to
-        reach 100%. Prioritize testing critical flows over trivial code
-        like getters or type interfaces.
+        Coverage is a metric, not a target. Don't sacrifice quality to reach
+        100%. Prioritize testing critical flows over trivial code like getters
+        or type interfaces.
       </BlogCallout>
     </>
   );

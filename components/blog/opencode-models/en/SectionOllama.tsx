@@ -40,10 +40,10 @@ export function SectionOllama() {
 
       <BlogH3>What is Ollama</BlogH3>
       <BlogP>
-        <strong>Ollama</strong> is the runtime that runs language models on
-        your machine. Don't confuse it with the models themselves — Ollama is the
-        program, the models are files you download and run with it.
-        OpenCode connects to Ollama via its OpenAI-compatible API.
+        <strong>Ollama</strong> is the runtime that runs language models on your
+        machine. Don't confuse it with the models themselves — Ollama is the
+        program, the models are files you download and run with it. OpenCode
+        connects to Ollama via its OpenAI-compatible API.
       </BlogP>
 
       <CapabilitiesCard

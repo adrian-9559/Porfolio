@@ -39,10 +39,10 @@ function SectionIntro() {
     <>
       <BlogH2>Introduction to Java</BlogH2>
       <BlogP>
-        Java is an object-oriented programming language, compiled to
-        bytecode and executed on the JVM (Java Virtual Machine). Its historic
-        motto is "write once, run anywhere". It is widely used in enterprise
-        backend, Android, and distributed systems.
+        Java is an object-oriented programming language, compiled to bytecode
+        and executed on the JVM (Java Virtual Machine). Its historic motto is
+        "write once, run anywhere". It is widely used in enterprise backend,
+        Android, and distributed systems.
       </BlogP>
       <BlogCode>{`// Hello World in Java
 public class HelloWorld {
@@ -56,9 +56,8 @@ public class HelloWorld {
     }
 }`}</BlogCode>
       <BlogCallout type="tip">
-        Since Java 21 you can use "unnamed classes" and the{" "}
-        <code>main</code> method without declaring the class. Makes initial
-        learning easier.
+        Since Java 21 you can use "unnamed classes" and the <code>main</code>{" "}
+        method without declaring the class. Makes initial learning easier.
       </BlogCallout>
       <BlogH3>Compile and run</BlogH3>
       <BlogCode>{`# Compile
@@ -80,8 +79,8 @@ function SectionFundamentos() {
       <BlogH2>Java Fundamentals</BlogH2>
       <BlogH3>Primitive types and variables</BlogH3>
       <BlogP>
-        Java is a statically typed language. It has 8 primitive types and
-        their equivalent wrapper classes.
+        Java is a statically typed language. It has 8 primitive types and their
+        equivalent wrapper classes.
       </BlogP>
       <BlogCode>{`// Primitive types
 byte   b  = 127;
@@ -237,9 +236,8 @@ public class Circle extends Shape {
     }
 }`}</BlogCode>
       <BlogCallout type="tip">
-        Prefer composition over inheritance whenever possible. Interfaces
-        with default methods are more flexible than deep
-        hierarchies.
+        Prefer composition over inheritance whenever possible. Interfaces with
+        default methods are more flexible than deep hierarchies.
       </BlogCallout>
     </>
   );
@@ -341,9 +339,9 @@ try {
     System.err.println("Missing: " + e.getShortage() + "€");
 }`}</BlogCode>
       <BlogCallout type="warn">
-        Use unchecked exceptions (extending <code>RuntimeException</code>)
-        for programming errors and checked exceptions for recoverable situations
-        the caller must handle.
+        Use unchecked exceptions (extending <code>RuntimeException</code>) for
+        programming errors and checked exceptions for recoverable situations the
+        caller must handle.
       </BlogCallout>
     </>
   );
@@ -354,9 +352,9 @@ function SectionStreams() {
     <>
       <BlogH2>Streams API (Java 8+)</BlogH2>
       <BlogP>
-        Streams allow processing collections in a functional and
-        declarative way, similar to SQL. They are lazy: they only execute when a
-        terminal operation is called.
+        Streams allow processing collections in a functional and declarative
+        way, similar to SQL. They are lazy: they only execute when a terminal
+        operation is called.
       </BlogP>
       <BlogCode>{`import java.util.stream.*;
 import java.util.*;
@@ -404,9 +402,8 @@ function SectionProyecto() {
     <>
       <BlogH2>Final Project: CLI Task Manager</BlogH2>
       <BlogP>
-        A command-line application for managing tasks. Allows adding,
-        listing, completing, and deleting tasks, with persistence in a JSON
-        file.
+        A command-line application for managing tasks. Allows adding, listing,
+        completing, and deleting tasks, with persistence in a JSON file.
       </BlogP>
       <BlogCode>{`// Task.java
 import java.time.LocalDateTime;
@@ -519,9 +516,8 @@ public class Main {
     }
 }`}</BlogCode>
       <BlogCallout type="tip">
-        Extend the project by adding persistence with{" "}
-        <code>ObjectMapper</code> from Jackson to save tasks in JSON
-        between sessions.
+        Extend the project by adding persistence with <code>ObjectMapper</code>{" "}
+        from Jackson to save tasks in JSON between sessions.
       </BlogCallout>
     </>
   );

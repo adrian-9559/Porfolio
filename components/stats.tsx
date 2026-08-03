@@ -54,6 +54,7 @@ const metrics: Metric[] = [
 
 export default function Stats() {
   const { t } = useT();
+
   return (
     <section className="relative w-full overflow-hidden">
       <div className="space-y-10">

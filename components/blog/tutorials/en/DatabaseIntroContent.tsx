@@ -100,8 +100,7 @@ export default function DatabaseIntroContentEn() {
         The acronym CRUD (Create, Read, Update, Delete) represents the four
         fundamental operations on any persistent data set. Every database,
         regardless of its type, implements these operations at a minimum. In SQL
-        they translate to{" "}
-        <BlogInlineCode>INSERT</BlogInlineCode>,{" "}
+        they translate to <BlogInlineCode>INSERT</BlogInlineCode>,{" "}
         <BlogInlineCode>SELECT</BlogInlineCode>,{" "}
         <BlogInlineCode>UPDATE</BlogInlineCode>, and{" "}
         <BlogInlineCode>DELETE</BlogInlineCode>:
@@ -140,9 +139,9 @@ DELETE FROM users WHERE id = 1;`}</BlogCode>
       <BlogH3>Data integrity</BlogH3>
       <BlogP>
         Databases enforce constraints that guarantee data validity: data types,
-        unique values, foreign keys referencing existing records, default values,
-        and custom validations. These rules prevent inconsistent data from
-        entering the system.
+        unique values, foreign keys referencing existing records, default
+        values, and custom validations. These rules prevent inconsistent data
+        from entering the system.
       </BlogP>
 
       <BlogH3>Security</BlogH3>
@@ -177,10 +176,10 @@ DELETE FROM users WHERE id = 1;`}</BlogCode>
 
       <BlogH3>Tables (Relational) / Collections (NoSQL)</BlogH3>
       <BlogP>
-        Where data actually lives. In the relational model, each table represents
-        an entity (users, products, orders) and each row an instance of that
-        entity. Columns define the attributes. In NoSQL databases, collections
-        group documents with flexible structure.
+        Where data actually lives. In the relational model, each table
+        represents an entity (users, products, orders) and each row an instance
+        of that entity. Columns define the attributes. In NoSQL databases,
+        collections group documents with flexible structure.
       </BlogP>
 
       <BlogH3>Indexes</BlogH3>

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { useT } from "@/hooks/useT";
 
 import { SectionHeader, Card, EmptyState, Spinner } from "./AdminShared";
 
+import { useT } from "@/hooks/useT";
 import {
   mobileAppService,
   type App,
@@ -57,10 +57,12 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
     setError(null);
     if (!name.trim()) {
       setError(t("admin.appNameRequired"));
+
       return;
     }
     if (!initial && !slug.trim()) {
       setError(t("admin.appSlugRequired"));
+
       return;
     }
     setLoading(true);
@@ -102,15 +104,15 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
             {initial ? t("admin.editApp") : t("admin.newApp")}
           </h3>
           <button
-            onClick={onClose}
             className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/8 dark:hover:bg-white/8 text-[#6e6e73]"
+            onClick={onClose}
           >
             <svg
-              viewBox="0 0 16 16"
+              className="w-4 h-4"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
-              className="w-4 h-4"
+              viewBox="0 0 16 16"
             >
               <path d="M3 3l10 10M13 3L3 13" strokeLinecap="round" />
             </svg>
@@ -123,14 +125,14 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
                 {t("admin.appSlug")} <span className="text-red-500">*</span>
               </label>
               <input
+                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={t("admin.appSlugPlaceholder")}
                 value={slug}
                 onChange={(e) =>
                   setSlug(
                     e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""),
                   )
                 }
-                placeholder={t("admin.appSlugPlaceholder")}
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           )}
@@ -140,10 +142,10 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
                 {t("admin.appName")} <span className="text-red-500">*</span>
               </label>
               <input
+                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={t("admin.appNamePlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder={t("admin.appNamePlaceholder")}
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -151,10 +153,10 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
                 {t("admin.appEmoji")}
               </label>
               <input
+                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={t("admin.appEmojiPlaceholder")}
                 value={iconEmoji}
                 onChange={(e) => setIconEmoji(e.target.value)}
-                placeholder={t("admin.appEmojiPlaceholder")}
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -163,15 +165,15 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
               </label>
               <div className="flex gap-2 items-center">
                 <input
+                  className="w-8 h-8 rounded-lg border border-black/12 dark:border-white/12 cursor-pointer"
                   type="color"
                   value={accentColor}
                   onChange={(e) => setAccentColor(e.target.value)}
-                  className="w-8 h-8 rounded-lg border border-black/12 dark:border-white/12 cursor-pointer"
                 />
                 <input
+                  className="flex-1 rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={accentColor}
                   onChange={(e) => setAccentColor(e.target.value)}
-                  className="flex-1 rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -181,19 +183,19 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
               {t("admin.appDescription")}
             </label>
             <textarea
+              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              placeholder={t("admin.appDescriptionPlaceholder")}
+              rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              rows={2}
-              placeholder={t("admin.appDescriptionPlaceholder")}
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
-              type="checkbox"
               checked={isPublished}
-              onChange={(e) => setIsPublished(e.target.checked)}
               className="rounded"
+              type="checkbox"
+              onChange={(e) => setIsPublished(e.target.checked)}
             />
             <span className="text-sm text-[#1d1d1f] dark:text-white">
               {t("admin.appPublished")}
@@ -202,16 +204,16 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
           {error && <p className="text-sm text-red-500">{error}</p>}
           <div className="flex gap-2 pt-1">
             <button
+              className="flex-1 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
               type="button"
               onClick={onClose}
-              className="flex-1 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
             >
               {t("admin.cancel")}
             </button>
             <button
-              type="submit"
-              disabled={loading}
               className="flex-1 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium disabled:opacity-50 transition-opacity"
+              disabled={loading}
+              type="submit"
             >
               {loading ? t("admin.saving") : t("admin.save")}
             </button>
@@ -260,18 +262,22 @@ function UploadModal({
     setError(null);
     if (!appId) {
       setError(t("admin.appNameRequired"));
+
       return;
     }
     if (!version.trim()) {
       setError(t("admin.appNameRequired"));
+
       return;
     }
     if (sourceType === "url" && !externalUrl.trim()) {
       setError(t("admin.appNameRequired"));
+
       return;
     }
     if (sourceType === "file" && !file) {
       setError(t("admin.appNameRequired"));
+
       return;
     }
     setLoading(true);
@@ -311,15 +317,15 @@ function UploadModal({
             {t("admin.newVersion")}
           </h3>
           <button
-            onClick={onClose}
             className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/8 dark:hover:bg-white/8 text-[#6e6e73]"
+            onClick={onClose}
           >
             <svg
-              viewBox="0 0 16 16"
+              className="w-4 h-4"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
-              className="w-4 h-4"
+              viewBox="0 0 16 16"
             >
               <path d="M3 3l10 10M13 3L3 13" strokeLinecap="round" />
             </svg>
@@ -331,9 +337,9 @@ function UploadModal({
               {t("admin.appName")} <span className="text-red-500">*</span>
             </label>
             <select
+              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={appId}
               onChange={(e) => setAppId(e.target.value)}
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {apps.map((a) => (
                 <option key={a.id} value={a.id}>
@@ -349,11 +355,11 @@ function UploadModal({
                 {t("admin.platform")}
               </label>
               <select
+                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={platform}
                 onChange={(e) =>
                   handlePlatformChange(e.target.value as "android" | "ios")
                 }
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="android">Android</option>
                 <option value="ios">iOS</option>
@@ -364,9 +370,9 @@ function UploadModal({
                 {t("admin.type")}
               </label>
               <select
+                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={buildType}
                 onChange={(e) => setBuildType(e.target.value)}
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {BUILD_TYPES[platform].map((bt) => (
                   <option key={bt} value={bt}>
@@ -381,10 +387,10 @@ function UploadModal({
               {t("admin.version")} <span className="text-red-500">*</span>
             </label>
             <input
+              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="1.0.0"
               value={version}
               onChange={(e) => setVersion(e.target.value)}
-              placeholder="1.0.0"
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
@@ -395,9 +401,9 @@ function UploadModal({
               {(["url", "file"] as const).map((st) => (
                 <button
                   key={st}
+                  className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors ${sourceType === st ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400" : "border-black/12 dark:border-white/12 text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"}`}
                   type="button"
                   onClick={() => setSourceType(st)}
-                  className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors ${sourceType === st ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400" : "border-black/12 dark:border-white/12 text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"}`}
                 >
                   {st === "url" ? t("admin.uploadVersion") : t("admin.upload")}
                 </button>
@@ -410,10 +416,10 @@ function UploadModal({
                 URL <span className="text-red-500">*</span>
               </label>
               <input
+                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="https://github.com/user/repo/blob/main/android/app.apk"
                 value={externalUrl}
                 onChange={(e) => setExternalUrl(e.target.value)}
-                placeholder="https://github.com/user/repo/blob/main/android/app.apk"
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               {externalUrl.trim() && (
                 <p className="mt-1.5 text-xs text-[#6e6e73] truncate">
@@ -427,11 +433,12 @@ function UploadModal({
           ) : (
             <div>
               <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-                {t("admin.uploadVersion")} <span className="text-red-500">*</span>
+                {t("admin.uploadVersion")}{" "}
+                <span className="text-red-500">*</span>
               </label>
               <div
-                onClick={() => fileRef.current?.click()}
                 className="w-full rounded-xl border-2 border-dashed border-black/12 dark:border-white/12 px-4 py-4 text-center cursor-pointer hover:border-blue-400 transition-colors"
+                onClick={() => fileRef.current?.click()}
               >
                 {file ? (
                   <p className="text-sm text-[#1d1d1f] dark:text-white">
@@ -448,9 +455,9 @@ function UploadModal({
               </div>
               <input
                 ref={fileRef}
-                type="file"
                 accept=".apk,.aab,.ipa"
                 className="hidden"
+                type="file"
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)}
               />
             </div>
@@ -458,29 +465,31 @@ function UploadModal({
           <div>
             <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
               {t("admin.uploadVersion")}{" "}
-              <span className="text-[#aeaeb2] font-normal">{t("common.optional")}</span>
+              <span className="text-[#aeaeb2] font-normal">
+                {t("common.optional")}
+              </span>
             </label>
             <textarea
+              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              placeholder={t("admin.uploadVersion")}
+              rows={2}
               value={releaseNotes}
               onChange={(e) => setReleaseNotes(e.target.value)}
-              rows={2}
-              placeholder={t("admin.uploadVersion")}
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
           {error && <p className="text-sm text-red-500">{error}</p>}
           <div className="flex gap-2 pt-1">
             <button
+              className="flex-1 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
               type="button"
               onClick={onClose}
-              className="flex-1 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
             >
               {t("admin.cancel")}
             </button>
             <button
-              type="submit"
-              disabled={loading}
               className="flex-1 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium disabled:opacity-50 transition-opacity"
+              disabled={loading}
+              type="submit"
             >
               {loading ? t("admin.uploading") : t("admin.uploadVersion")}
             </button>
@@ -557,31 +566,31 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
           </h3>
           <div className="flex items-center gap-2">
             <button
-              onClick={onUpload}
               className="flex items-center gap-1.5 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-medium px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
+              onClick={onUpload}
             >
               <svg
-                viewBox="0 0 16 16"
+                className="w-3 h-3"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
                 strokeLinecap="round"
-                className="w-3 h-3"
+                strokeWidth="2"
+                viewBox="0 0 16 16"
               >
                 <path d="M8 2v12M2 8h12" />
               </svg>
               Nueva versión
             </button>
             <button
-              onClick={onClose}
               className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/8 dark:hover:bg-white/8 text-[#6e6e73]"
+              onClick={onClose}
             >
               <svg
-                viewBox="0 0 16 16"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
-                className="w-4 h-4"
+                viewBox="0 0 16 16"
               >
                 <path d="M3 3l10 10M13 3L3 13" strokeLinecap="round" />
               </svg>
@@ -659,17 +668,17 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
                       <div className="flex items-center gap-1.5">
                         {!v.is_active && (
                           <button
-                            onClick={() => handleActivate(v.id)}
-                            disabled={activating === v.id}
                             className="px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 disabled:opacity-50 transition-colors"
+                            disabled={activating === v.id}
+                            onClick={() => handleActivate(v.id)}
                           >
                             {activating === v.id ? "…" : "Activar"}
                           </button>
                         )}
                         <button
-                          onClick={() => handleDelete(v.id)}
-                          disabled={deleting === v.id}
                           className="px-2.5 py-1 rounded-lg text-xs font-medium bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-100 disabled:opacity-50 transition-colors"
+                          disabled={deleting === v.id}
+                          onClick={() => handleDelete(v.id)}
                         >
                           {deleting === v.id ? "…" : "Eliminar"}
                         </button>
@@ -732,9 +741,20 @@ export function AdminAppsSection() {
     <div className="flex flex-col gap-6">
       <SectionHeader
         action={
-          <button onClick={() => setShowNewApp(true)}
-            className="flex items-center gap-2 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium px-4 py-2 rounded-xl hover:opacity-80 transition-opacity">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="w-3.5 h-3.5"><path d="M8 2v12M2 8h12" /></svg>
+          <button
+            className="flex items-center gap-2 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium px-4 py-2 rounded-xl hover:opacity-80 transition-opacity"
+            onClick={() => setShowNewApp(true)}
+          >
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="2"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 2v12M2 8h12" />
+            </svg>
             Nueva app
           </button>
         }
@@ -753,8 +773,8 @@ export function AdminAppsSection() {
           <Spinner />
         ) : apps.length === 0 ? (
           <EmptyState
-            text="Sin apps"
             sub="Crea la primera con el botón de arriba."
+            text="Sin apps"
           />
         ) : (
           <div className="grid gap-3 p-1">
@@ -791,30 +811,30 @@ export function AdminAppsSection() {
                 </div>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <button
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-colors"
                     onClick={() => {
                       setUploadForApp(app);
                       setVersionsApp(null);
                     }}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-colors"
                   >
                     Nueva versión
                   </button>
                   <button
                     className="px-3 py-1.5 rounded-lg text-xs font-medium bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
-                      onClick={() => setVersionsApp(app)}
+                    onClick={() => setVersionsApp(app)}
                   >
                     Versiones
                   </button>
                   <button
                     className="px-3 py-1.5 rounded-lg text-xs font-medium bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
-                      onClick={() => setEditingApp(app)}
+                    onClick={() => setEditingApp(app)}
                   >
                     Editar
                   </button>
                   <button
-                    onClick={() => handleDeleteApp(app.id)}
-                    disabled={deleting === app.id}
                     className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-100 dark:hover:bg-red-950/40 disabled:opacity-50 transition-colors"
+                    disabled={deleting === app.id}
+                    onClick={() => handleDeleteApp(app.id)}
                   >
                     {deleting === app.id ? "…" : "Eliminar"}
                   </button>

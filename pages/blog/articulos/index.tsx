@@ -24,6 +24,7 @@ const allArticles = getContentByType("article");
 
 function ArticleCard({ item }: { item: ContentMeta }) {
   const { t } = useT();
+
   return (
     <Link
       className="block group p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/15 dark:hover:border-white/15 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
@@ -95,7 +96,10 @@ export default function ArticulosPage() {
   const categoryOptions = useMemo(
     () => [
       { id: "all", labelKey: "blog.filterAll" },
-      ...articleCats.map((c) => ({ id: c, labelKey: getCategory(c)?.labelKey ?? c })),
+      ...articleCats.map((c) => ({
+        id: c,
+        labelKey: getCategory(c)?.labelKey ?? c,
+      })),
     ],
     [articleCats],
   );
@@ -234,12 +238,16 @@ export default function ArticulosPage() {
             aria-hidden="true"
             className="w-1 h-1 rounded-full bg-black/10 dark:bg-white/10"
           />
-          <span>{catMeta.length} {t("blog.categoryLabel")}</span>
+          <span>
+            {catMeta.length} {t("blog.categoryLabel")}
+          </span>
           <span
             aria-hidden="true"
             className="w-1 h-1 rounded-full bg-black/10 dark:bg-white/10"
           />
-          <span>{articleTags.length} {t("blog.tagLabel")}</span>
+          <span>
+            {articleTags.length} {t("blog.tagLabel")}
+          </span>
         </div>
 
         {/* Category quick-nav */}
@@ -280,7 +288,9 @@ export default function ArticulosPage() {
               <Select.Popover>
                 <ListBox>
                   {levelOptions.map((o) => {
-                    const label = o.id === "all" ? t("blog.filterAll") : t(o.labelKey);
+                    const label =
+                      o.id === "all" ? t("blog.filterAll") : t(o.labelKey);
+
                     return (
                       <ListBox.Item key={o.id} id={o.id} textValue={label}>
                         {label}
@@ -307,7 +317,11 @@ export default function ArticulosPage() {
               <Select.Popover>
                 <ListBox>
                   {categoryOptions.map((o) => {
-                    const label = o.id === "all" ? t("blog.filterAllFeminine") : t(o.labelKey);
+                    const label =
+                      o.id === "all"
+                        ? t("blog.filterAllFeminine")
+                        : t(o.labelKey);
+
                     return (
                       <ListBox.Item key={o.id} id={o.id} textValue={label}>
                         {label}
@@ -334,7 +348,9 @@ export default function ArticulosPage() {
               <Select.Popover>
                 <ListBox>
                   {tagOptions.map((o) => {
-                    const label = o.id === "all" ? t("blog.filterAll") : o.labelKey;
+                    const label =
+                      o.id === "all" ? t("blog.filterAll") : o.labelKey;
+
                     return (
                       <ListBox.Item key={o.id} id={o.id} textValue={label}>
                         {label}
@@ -360,7 +376,11 @@ export default function ArticulosPage() {
               </Select.Trigger>
               <Select.Popover>
                 <ListBox>
-                  <ListBox.Item key="newest" id="newest" textValue={t("blog.sortNewest")}>
+                  <ListBox.Item
+                    key="newest"
+                    id="newest"
+                    textValue={t("blog.sortNewest")}
+                  >
                     {t("blog.sortNewest")}
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
@@ -415,11 +435,18 @@ export default function ArticulosPage() {
           className="text-sm text-[#aeaeb2] dark:text-[#636366]"
           role="status"
         >
-          {results.length} {results.length === 1 ? t("blog.articleSingular") : t("blog.articlePlural")}
+          {results.length}{" "}
+          {results.length === 1
+            ? t("blog.articleSingular")
+            : t("blog.articlePlural")}
           {query && (
             <span>
               {" "}
-              {t("blog.forQuery")} &quot;<span className="text-[#6e6e73] dark:text-[#86868b] font-medium">{query}</span>&quot;
+              {t("blog.forQuery")} &quot;
+              <span className="text-[#6e6e73] dark:text-[#86868b] font-medium">
+                {query}
+              </span>
+              &quot;
             </span>
           )}
         </p>

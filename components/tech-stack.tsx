@@ -107,12 +107,15 @@ const LevelDots = ({ level }: { level: number }) => (
 
 export default function TechStack() {
   const { t } = useT();
+
   return (
     <section className="w-full">
       <div className="space-y-10">
         <div className="text-center space-y-3">
           <p className="section-label">{t("sections.techStack.badge")}</p>
-          <h2 className="text-3xl md:text-4xl font-bold">{t("sections.techStack.title")}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold">
+            {t("sections.techStack.title")}
+          </h2>
           <p className="text-[#6e6e73] dark:text-[#86868b] max-w-xl mx-auto">
             {t("sections.techStack.desc")}
           </p>

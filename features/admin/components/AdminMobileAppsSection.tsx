@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { useT } from "@/hooks/useT";
 
 import { SectionHeader, Card, EmptyState, Spinner } from "./AdminShared";
 import { GoogleDriveConnectCard } from "./GoogleDriveConnectCard";
 
+import { useT } from "@/hooks/useT";
 import { apiFetch } from "@/services/apiClient";
 import { tokenStore } from "@/services/tokenStore";
 import { env } from "@/config/env";
@@ -57,6 +57,7 @@ async function uploadVersion(
 
   if (env.apiKey) headers["X-API-Key"] = env.apiKey;
   const token = tokenStore.get();
+
   if (token) headers["Authorization"] = `Bearer ${token}`;
   formData.set("upload_destination", destination);
   const res = await fetch(`${env.apiUrl}${API}/upload`, {
@@ -344,7 +345,8 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
           ) : (
             <div>
               <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-                {t("admin.uploadVersion")} <span className="text-red-500">*</span>
+                {t("admin.uploadVersion")}{" "}
+                <span className="text-red-500">*</span>
               </label>
               <div
                 className="w-full rounded-xl border-2 border-dashed border-black/12 dark:border-white/12 px-4 py-4 text-center cursor-pointer hover:border-blue-400 transition-colors"
@@ -413,7 +415,9 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
           <div>
             <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
               {t("admin.uploadVersion")}{" "}
-              <span className="text-[#aeaeb2] font-normal">{t("common.optional")}</span>
+              <span className="text-[#aeaeb2] font-normal">
+                {t("common.optional")}
+              </span>
             </label>
             <textarea
               className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
@@ -635,7 +639,9 @@ export function AdminMobileAppsSection() {
                             disabled={activating === v.id}
                             onClick={() => handleActivate(v.id)}
                           >
-                            {activating === v.id ? "…" : t("admin.mobileActivate")}
+                            {activating === v.id
+                              ? "…"
+                              : t("admin.mobileActivate")}
                           </button>
                         )}
                         {v.external_url && (

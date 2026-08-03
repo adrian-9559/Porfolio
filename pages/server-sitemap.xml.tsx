@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-import { allContent, typeSlug } from "@/lib/blog/registry";
+import { allContent, contentHref, getGuides } from "@/lib/blog/registry";
 
 const Sitemap = () => null;
 
@@ -12,18 +12,20 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/contact",
     "/blog",
     "/blog/articulos",
-    "/blog/tutoriales",
     "/blog/herramientas",
-    "/blog/tutoriales/guias",
+    "/campus",
+    "/campus/guias",
     "/tools",
     "/tools/git-repositories",
   ];
 
-  const blogPages = allContent.map(
-    (c) => `/blog/${typeSlug(c.type)}/${c.slug}`,
-  );
+  const blogPages = allContent.map((c) => contentHref(c.type, c.slug));
 
-  const allUrls = [...staticPages, ...blogPages];
+  // Las guías no viven en allContent (no cubiertas por contentHref) → se añaden
+  // sus URLs manualmente para no perder su indexación al migrar de /blog/tutoriales/guias.
+  const guidePages = getGuides().map((g) => `/campus/guias/${g.slug}`);
+
+  const allUrls = [...staticPages, ...blogPages, ...guidePages];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

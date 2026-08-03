@@ -10,7 +10,7 @@ import {
   BlogP,
   BlogUl,
 } from "@/components/blog/shared";
-import { getContentByTag, typeSlug } from "@/lib/blog/registry";
+import { getContentByTag, contentHref } from "@/lib/blog/registry";
 
 export default function MCPTutorialContent() {
   const mcps = getContentByTag("mcp");
@@ -232,7 +232,7 @@ export default function MCPTutorialContent() {
               <li key={m.slug}>
                 <Link
                   className="flex items-center gap-3 px-5 py-3 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors no-underline group"
-                  href={`/blog/${typeSlug(m.type)}/${m.slug}`}
+                  href={contentHref(m.type, m.slug)}
                 >
                   <span
                     aria-hidden="true"

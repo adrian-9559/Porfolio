@@ -9,7 +9,7 @@ import {
 } from "@/components/blog/shared";
 import {
   getContentBySlug,
-  typeSlug,
+  contentHref,
   type ContentMeta,
 } from "@/lib/blog/registry";
 import {
@@ -46,6 +46,7 @@ interface TaxonomyMetaProps {
 
 export function TaxonomyMetaStrip({ meta }: TaxonomyMetaProps) {
   const { t } = useT();
+
   if (!meta.level && !meta.learningPaths?.length && !meta.estimatedMinutes)
     return null;
 
@@ -90,6 +91,7 @@ export function TaxonomyMetaStrip({ meta }: TaxonomyMetaProps) {
 
 export function PrerequisitesBlock({ meta }: TaxonomyMetaProps) {
   const { t } = useT();
+
   if (!meta.prerequisites?.length) return null;
 
   const prereqs = meta.prerequisites
@@ -114,7 +116,7 @@ export function PrerequisitesBlock({ meta }: TaxonomyMetaProps) {
           <li key={p.slug}>
             <Link
               className="flex items-center gap-2 text-sm text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 transition-colors no-underline"
-              href={`/blog/${typeSlug(p.type)}/${p.slug}`}
+              href={contentHref(p.type, p.slug)}
             >
               <IconChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
               <span>{p.title}</span>
@@ -131,6 +133,7 @@ export function PrerequisitesBlock({ meta }: TaxonomyMetaProps) {
 
 export function ObjectivesBlock({ meta }: TaxonomyMetaProps) {
   const { t } = useT();
+
   if (!meta.objectives?.length) return null;
 
   return (
@@ -209,7 +212,7 @@ export function RelatedContentBlock({ meta }: TaxonomyMetaProps) {
           <li key={content.slug}>
             <Link
               className="flex items-center gap-3 px-5 py-3 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors no-underline group"
-              href={`/blog/${typeSlug(content.type)}/${content.slug}`}
+              href={contentHref(content.type, content.slug)}
             >
               <span
                 aria-hidden="true"

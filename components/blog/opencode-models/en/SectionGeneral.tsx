@@ -15,17 +15,17 @@ export function SectionGeneral() {
       <BlogH2>Overview</BlogH2>
 
       <BlogP>
-        OpenCode is not a closed product with a single model. It is built
-        on <strong>AI SDK</strong> and <strong>Models.dev</strong>, giving it
-        access to <strong>over 75 providers</strong> of language
-        models. You can choose which model to use based on the task, your
-        budget, and your preferences, switching on the fly with{" "}
+        OpenCode is not a closed product with a single model. It is built on{" "}
+        <strong>AI SDK</strong> and <strong>Models.dev</strong>, giving it
+        access to <strong>over 75 providers</strong> of language models. You can
+        choose which model to use based on the task, your budget, and your
+        preferences, switching on the fly with{" "}
         <BlogInlineCode>/models</BlogInlineCode>.
       </BlogP>
 
       <BlogCallout type="info">
-        You are currently using <strong>DeepSeek V4 Flash Free</strong>. It is an
-        excellent model for code, but you can explore others depending on the
+        You are currently using <strong>DeepSeek V4 Flash Free</strong>. It is
+        an excellent model for code, but you can explore others depending on the
         task. Use the tabs above to see each provider in detail.
       </BlogCallout>
 
@@ -211,9 +211,8 @@ export function SectionGeneral() {
       <div className="rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 p-5 my-6 text-white">
         <p className="text-sm font-bold mb-1">Explore each provider</p>
         <p className="text-xs text-white/80">
-          Use the tabs above to see the complete guide for each
-          provider: step-by-step integration, configuration, use cases, and
-          capabilities.
+          Use the tabs above to see the complete guide for each provider:
+          step-by-step integration, configuration, use cases, and capabilities.
         </p>
       </div>
     </>

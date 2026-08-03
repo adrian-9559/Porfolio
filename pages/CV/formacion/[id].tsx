@@ -21,9 +21,7 @@ function Section({
 }) {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-bold text-foreground">
-        {title}
-      </h2>
+      <h2 className="text-lg font-bold text-foreground">{title}</h2>
       {children}
     </div>
   );
@@ -153,7 +151,7 @@ export default function FormacionPage({ edu }: Props) {
                       strokeWidth={2}
                     />
                   </svg>
-                    {edu.location}
+                  {edu.location}
                 </span>
                 {edu.url && (
                   <a
@@ -220,9 +218,7 @@ export default function FormacionPage({ edu }: Props) {
         {/* Technologies + Tools + Methodologies */}
         <div className="grid md:grid-cols-3 gap-4">
           <div className="p-5 rounded-2xl bg-surface border-border space-y-3">
-            <h3 className="text-sm font-bold text-foreground">
-              Tecnologías
-            </h3>
+            <h3 className="text-sm font-bold text-foreground">Tecnologías</h3>
             <div className="flex flex-wrap gap-1.5">
               {edu.technologies.map((t, i) => (
                 <span key={i} className="tag-chip">
@@ -232,9 +228,7 @@ export default function FormacionPage({ edu }: Props) {
             </div>
           </div>
           <div className="p-5 rounded-2xl bg-surface border-border space-y-3">
-            <h3 className="text-sm font-bold text-foreground">
-              Herramientas
-            </h3>
+            <h3 className="text-sm font-bold text-foreground">Herramientas</h3>
             <div className="flex flex-wrap gap-1.5">
               {edu.tools.map((t, i) => (
                 <span key={i} className="tag-chip">
@@ -244,9 +238,7 @@ export default function FormacionPage({ edu }: Props) {
             </div>
           </div>
           <div className="p-5 rounded-2xl bg-surface border-border space-y-3">
-            <h3 className="text-sm font-bold text-foreground">
-              Metodologías
-            </h3>
+            <h3 className="text-sm font-bold text-foreground">Metodologías</h3>
             <div className="flex flex-wrap gap-1.5">
               {edu.methodologies.map((m, i) => (
                 <span key={i} className="tag-chip">

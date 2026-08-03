@@ -59,7 +59,13 @@ export const useAuthStore = create<AuthState>()((set) => ({
   hydrate: async () => {
     // No refresh token stored → definitely logged out, skip the network round trip
     if (!tokenStore.getRefresh()) {
-      set({ user: null, isAuthenticated: false, isAdmin: false, loadingAuth: false });
+      set({
+        user: null,
+        isAuthenticated: false,
+        isAdmin: false,
+        loadingAuth: false,
+      });
+
       return;
     }
 

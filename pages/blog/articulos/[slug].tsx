@@ -7,7 +7,7 @@ import BlogLayout from "@/layouts/blog";
 import {
   getContentByType,
   formatDate,
-  typeSlug,
+  contentHref,
   ContentMeta,
 } from "@/lib/blog/registry";
 import { getContentComponent } from "@/lib/blog/componentMap";
@@ -59,7 +59,7 @@ export default function ArticlePage({ meta, prevMeta, nextMeta }: Props) {
               keywords: meta.tags?.join(", "),
               mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": `${siteConfig.url}/blog/${typeSlug(meta.type)}/${meta.slug}`,
+                "@id": `${siteConfig.url}${contentHref(meta.type, meta.slug)}`,
               },
             }),
           }}
@@ -120,7 +120,8 @@ export default function ArticlePage({ meta, prevMeta, nextMeta }: Props) {
               ·
             </span>
             <span className="text-sm text-[#aeaeb2] dark:text-[#636366]">
-              {meta.readTime}{t("blog.readTimeSuffix")}
+              {meta.readTime}
+              {t("blog.readTimeSuffix")}
             </span>
           </div>
           <TaxonomyMetaStrip meta={meta} />

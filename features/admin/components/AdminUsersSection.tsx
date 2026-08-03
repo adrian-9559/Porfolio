@@ -1,7 +1,6 @@
 import type { UserWithProfile, Role } from "@/types/auth";
 
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
 
 import {
   SectionHeader,
@@ -16,6 +15,7 @@ import {
 import { Avatar } from "./AdminDashboard";
 import { AdminUserModal } from "./AdminUserModal";
 
+import { useT } from "@/hooks/useT";
 import { roleService } from "@/services/roleService";
 import { userService } from "@/services/userService";
 
@@ -93,7 +93,10 @@ export function AdminUsers() {
   return (
     <div className="flex flex-col gap-5">
       <SectionHeader
-        desc={t("admin.usersCount", { n: users.length, s: users.length !== 1 ? "s" : "" })}
+        desc={t("admin.usersCount", {
+          n: users.length,
+          s: users.length !== 1 ? "s" : "",
+        })}
         title={t("admin.users")}
       />
 
@@ -107,7 +110,9 @@ export function AdminUsers() {
         {loading ? (
           <Spinner />
         ) : filtered.length === 0 ? (
-          <EmptyState text={search ? t("common.noResults") : t("admin.noUsers")} />
+          <EmptyState
+            text={search ? t("common.noResults") : t("admin.noUsers")}
+          />
         ) : (
           <div className="divide-y divide-black/5 dark:divide-white/5">
             {filtered.map((u) => (
@@ -201,7 +206,9 @@ export function AdminUsers() {
 
                 {confirmDeleteId === u.id ? (
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs text-[#6e6e73]">{t("admin.deleteUserConfirm")}</span>
+                    <span className="text-xs text-[#6e6e73]">
+                      {t("admin.deleteUserConfirm")}
+                    </span>
                     <button
                       className="px-2 py-1 rounded-lg text-xs font-medium bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-100 transition-colors"
                       onClick={() => handleDelete(u.id)}
@@ -250,7 +257,10 @@ export function AdminUsers() {
       </Card>
 
       <div className="text-xs text-[#aeaeb2] dark:text-[#636366] text-center">
-        {t("admin.showingOf", { filtered: filtered.length, total: users.length })}
+        {t("admin.showingOf", {
+          filtered: filtered.length,
+          total: users.length,
+        })}
       </div>
 
       {selectedUser && (

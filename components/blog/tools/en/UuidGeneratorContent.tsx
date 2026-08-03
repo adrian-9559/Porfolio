@@ -62,7 +62,8 @@ export default function UuidGeneratorContent() {
           UUID Generator
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Generate UUIDs v4 and v7. Copy individually or in batch, with or without dashes.
+          Generate UUIDs v4 and v7. Copy individually or in batch, with or
+          without dashes.
         </p>
       </div>
 

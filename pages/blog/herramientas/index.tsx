@@ -24,6 +24,7 @@ const allTools = getContentByType("tool");
 
 function ToolCard({ item }: { item: ContentMeta }) {
   const { t } = useT();
+
   return (
     <Link
       className="block group p-6 rounded-2xl bg-surface border-border hover:border-black/15 dark:hover:border-white/15 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
@@ -95,7 +96,10 @@ export default function HerramientasPage() {
   const categoryOptions = useMemo(
     () => [
       { id: "all", labelKey: "blog.filterAllFeminine" },
-      ...toolCats.map((c) => ({ id: c, labelKey: getCategory(c)?.labelKey ?? c })),
+      ...toolCats.map((c) => ({
+        id: c,
+        labelKey: getCategory(c)?.labelKey ?? c,
+      })),
     ],
     [toolCats],
   );
@@ -155,10 +159,7 @@ export default function HerramientasPage() {
             >
               {t("blog.breadcrumb")}
             </Link>
-            <span
-              aria-hidden="true"
-              className="text-xs text-muted/60"
-            >
+            <span aria-hidden="true" className="text-xs text-muted/60">
               /
             </span>
             <span
@@ -221,12 +222,16 @@ export default function HerramientasPage() {
             aria-hidden="true"
             className="w-1 h-1 rounded-full bg-default"
           />
-          <span>{catMeta.length} {t("blog.categoryLabel")}</span>
+          <span>
+            {catMeta.length} {t("blog.categoryLabel")}
+          </span>
           <span
             aria-hidden="true"
             className="w-1 h-1 rounded-full bg-default"
           />
-          <span>{allToolTags.length} {t("blog.tagLabel")}</span>
+          <span>
+            {allToolTags.length} {t("blog.tagLabel")}
+          </span>
         </div>
 
         {/* Category quick-nav */}
@@ -267,7 +272,11 @@ export default function HerramientasPage() {
               <Select.Popover>
                 <ListBox>
                   {categoryOptions.map((o) => (
-                    <ListBox.Item key={o.id} id={o.id} textValue={t(o.labelKey)}>
+                    <ListBox.Item
+                      key={o.id}
+                      id={o.id}
+                      textValue={t(o.labelKey)}
+                    >
                       {t(o.labelKey)}
                       <ListBox.ItemIndicator />
                     </ListBox.Item>
@@ -291,7 +300,11 @@ export default function HerramientasPage() {
               <Select.Popover>
                 <ListBox>
                   {tagOptions.map((o) => (
-                    <ListBox.Item key={o.id} id={o.id} textValue={t(o.labelKey)}>
+                    <ListBox.Item
+                      key={o.id}
+                      id={o.id}
+                      textValue={t(o.labelKey)}
+                    >
                       {t(o.labelKey)}
                       <ListBox.ItemIndicator />
                     </ListBox.Item>
@@ -314,7 +327,11 @@ export default function HerramientasPage() {
               </Select.Trigger>
               <Select.Popover>
                 <ListBox>
-                  <ListBox.Item key="newest" id="newest" textValue={t("blog.sortNewest")}>
+                  <ListBox.Item
+                    key="newest"
+                    id="newest"
+                    textValue={t("blog.sortNewest")}
+                  >
                     {t("blog.sortNewest")}
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
@@ -345,17 +362,14 @@ export default function HerramientasPage() {
           </div>
         </FilterBar>
 
-        <p
-          aria-live="polite"
-          className="text-sm text-muted/60"
-          role="status"
-        >
+        <p aria-live="polite" className="text-sm text-muted/60" role="status">
           {results.length}{" "}
           {results.length === 1 ? t("blog.toolSingular") : t("blog.toolPlural")}
           {query && (
             <span>
               {" "}
-              {t("blog.forQuery")} &quot;<span className="text-muted font-medium">{query}</span>&quot;
+              {t("blog.forQuery")} &quot;
+              <span className="text-muted font-medium">{query}</span>&quot;
             </span>
           )}
         </p>

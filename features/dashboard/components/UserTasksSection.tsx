@@ -10,6 +10,7 @@ import {
 import { Input, TextArea } from "@heroui/react";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
+
 import {
   taskService,
   type Task,
@@ -122,6 +123,7 @@ export function UserTasksSection() {
     setError(null);
     try {
       const data = await tricountService.listGroups();
+
       setGroups(data);
     } catch (err: any) {
       setError(err?.message ?? "Error al cargar grupos");
@@ -134,30 +136,28 @@ export function UserTasksSection() {
     fetchGroups();
   }, [fetchGroups]);
 
-  const loadGroupData = useCallback(
-    async (groupId: string) => {
-      setLoadingLists(true);
-      try {
-        const [listsData, membersData] = await Promise.all([
-          taskService.listLists(groupId),
-          tricountService.listMembers(groupId),
-        ]);
-        setLists(listsData);
-        setMembers(membersData);
-        if (listsData.length > 0) {
-          setSelectedListId(listsData[0].id);
-        } else {
-          setSelectedListId(null);
-          setTasks([]);
-        }
-      } catch (err: any) {
-        setError(err?.message ?? "Error al cargar datos del grupo");
-      } finally {
-        setLoadingLists(false);
+  const loadGroupData = useCallback(async (groupId: string) => {
+    setLoadingLists(true);
+    try {
+      const [listsData, membersData] = await Promise.all([
+        taskService.listLists(groupId),
+        tricountService.listMembers(groupId),
+      ]);
+
+      setLists(listsData);
+      setMembers(membersData);
+      if (listsData.length > 0) {
+        setSelectedListId(listsData[0].id);
+      } else {
+        setSelectedListId(null);
+        setTasks([]);
       }
-    },
-    [],
-  );
+    } catch (err: any) {
+      setError(err?.message ?? "Error al cargar datos del grupo");
+    } finally {
+      setLoadingLists(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (selectedGroupId) {
@@ -169,6 +169,7 @@ export function UserTasksSection() {
     setLoadingTasks(true);
     try {
       const data = await taskService.listTasks(listId);
+
       setTasks(data);
     } catch (err: any) {
       setError(err?.message ?? "Error al cargar tareas");
@@ -187,6 +188,7 @@ export function UserTasksSection() {
     setLoadingPersonal(true);
     try {
       const data = await taskService.listPersonalTasks();
+
       setPersonalTasks(data);
     } catch {
       // ignore
@@ -202,9 +204,11 @@ export function UserTasksSection() {
     setSubmitting(true);
     try {
       const group = await tricountService.createGroup(newGroupName.trim());
+
       setNewGroupName("");
       setShowNewGroup(false);
       const data = await tricountService.listGroups();
+
       setGroups(data);
       setSelectedGroupId(group.id);
     } catch (err: any) {
@@ -232,22 +236,26 @@ export function UserTasksSection() {
 
   const handleDragEnd = async (result: DropResult) => {
     const { source, destination, draggableId } = result;
+
     if (!destination) return;
 
     const sourceStatus = source.droppableId as TaskStatus;
     const destStatus = destination.droppableId as TaskStatus;
 
-    if (sourceStatus === destStatus && source.index === destination.index) return;
+    if (sourceStatus === destStatus && source.index === destination.index)
+      return;
 
     if (sourceStatus === destStatus) {
       const column = tasksByStatus(sourceStatus);
       const reordered = [...column];
       const [moved] = reordered.splice(source.index, 1);
+
       reordered.splice(destination.index, 0, moved);
       const newOrder = reordered.map((t) => t.id);
 
       setTasks((prev) => {
         const others = prev.filter((t) => t.status !== sourceStatus);
+
         return [
           ...others,
           ...reordered.map((t, i) => ({ ...t, sort_order: i })),
@@ -259,6 +267,7 @@ export function UserTasksSection() {
       } catch {
         fetchTasks(selectedListId!);
       }
+
       return;
     }
 
@@ -369,6 +378,7 @@ export function UserTasksSection() {
   const confirmDeleteTask = async () => {
     if (!confirmDelete) return;
     const { id, type } = confirmDelete;
+
     setConfirmDelete(null);
     if (type === "list") {
       try {
@@ -398,10 +408,7 @@ export function UserTasksSection() {
 
   // ── Status / inline helpers ───────────────────────────────────────────────
 
-  const handleStatusChange = async (
-    taskId: string,
-    newStatus: TaskStatus,
-  ) => {
+  const handleStatusChange = async (taskId: string, newStatus: TaskStatus) => {
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t)),
     );
@@ -419,6 +426,7 @@ export function UserTasksSection() {
     setLoadingComments(true);
     try {
       const data = await taskService.listComments(taskId);
+
       setComments(data);
     } catch {
       setComments([]);
@@ -433,6 +441,7 @@ export function UserTasksSection() {
       await taskService.addComment(expandedTaskId, newComment.trim());
       setNewComment("");
       const data = await taskService.listComments(expandedTaskId);
+
       setComments(data);
     } catch {
       // ignore
@@ -451,8 +460,8 @@ export function UserTasksSection() {
               Tareas
             </h2>
             <button
-              onClick={() => setShowNewGroup(true)}
               className="apple-btn-primary text-sm py-1.5 px-3"
+              onClick={() => setShowNewGroup(true)}
             >
               + Grupo
             </button>
@@ -462,25 +471,25 @@ export function UserTasksSection() {
           {showNewGroup && (
             <div className="mb-4 flex gap-2 items-center">
               <Input
+                className="max-w-xs"
+                disabled={submitting}
                 placeholder="Nombre del grupo"
                 value={newGroupName}
                 onChange={(e) => setNewGroupName(e.target.value)}
-                className="max-w-xs"
-                disabled={submitting}
               />
               <button
-                onClick={handleCreateGroup}
-                disabled={submitting || !newGroupName.trim()}
                 className="apple-btn-primary text-sm py-1.5 px-3"
+                disabled={submitting || !newGroupName.trim()}
+                onClick={handleCreateGroup}
               >
                 Crear
               </button>
               <button
+                className="apple-btn-secondary text-sm py-1.5 px-3"
                 onClick={() => {
                   setShowNewGroup(false);
                   setNewGroupName("");
                 }}
-                className="apple-btn-secondary text-sm py-1.5 px-3"
               >
                 Cancelar
               </button>
@@ -490,12 +499,20 @@ export function UserTasksSection() {
           {/* Personal tasks card */}
           <div className="mb-4">
             <button
-              onClick={enterPersonalMode}
               className="w-full p-5 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-left hover:border-purple-400 dark:hover:border-purple-600 transition-colors"
+              onClick={enterPersonalMode}
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
-                  <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 20 20" width="20">
+                  <svg
+                    fill="none"
+                    height="20"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeWidth="1.5"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
                     <path d="M10 3v14M3 10h14" />
                   </svg>
                 </div>
@@ -524,8 +541,8 @@ export function UserTasksSection() {
             <div className="p-6 text-center">
               <p className="text-red-500 mb-3">{error}</p>
               <button
-                onClick={fetchGroups}
                 className="apple-btn-primary text-sm py-2 px-4"
+                onClick={fetchGroups}
               >
                 Reintentar
               </button>
@@ -542,8 +559,8 @@ export function UserTasksSection() {
               {groups.map((g) => (
                 <button
                   key={g.id}
-                  onClick={() => setSelectedGroupId(g.id)}
                   className="p-5 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-left hover:border-blue-400 dark:hover:border-blue-600 transition-colors"
+                  onClick={() => setSelectedGroupId(g.id)}
                 >
                   <div className="font-semibold text-[#1d1d1f] dark:text-white mb-1">
                     {g.name}
@@ -564,14 +581,24 @@ export function UserTasksSection() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <button
+                className="text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
                 onClick={() => {
                   setPersonalMode(false);
                   setExpandedTaskId(null);
                 }}
-                className="text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
-                  <path d="M19 12H5m7-7l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 12H5m7-7l-7 7 7 7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </button>
               <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">
@@ -579,11 +606,11 @@ export function UserTasksSection() {
               </h2>
             </div>
             <button
+              className="apple-btn-primary text-sm py-1.5 px-3"
               onClick={() => {
                 resetForm();
                 setShowTaskModal(true);
               }}
-              className="apple-btn-primary text-sm py-1.5 px-3"
             >
               + Tarea
             </button>
@@ -592,7 +619,10 @@ export function UserTasksSection() {
           {loadingPersonal ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-16 rounded-xl bg-gray-100 dark:bg-[#1a1a1f] animate-pulse" />
+                <div
+                  key={i}
+                  className="h-16 rounded-xl bg-gray-100 dark:bg-[#1a1a1f] animate-pulse"
+                />
               ))}
             </div>
           ) : personalTasks.length === 0 ? (
@@ -601,11 +631,11 @@ export function UserTasksSection() {
                 No tienes tareas personales.
               </p>
               <button
+                className="apple-btn-primary text-sm py-2 px-4"
                 onClick={() => {
                   resetForm();
                   setShowTaskModal(true);
                 }}
-                className="apple-btn-primary text-sm py-2 px-4"
               >
                 Crear primera tarea
               </button>
@@ -615,6 +645,7 @@ export function UserTasksSection() {
               {personalTasks.map((task) => (
                 <button
                   key={task.id}
+                  className="w-full p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-left hover:border-blue-400 dark:hover:border-blue-600 transition-colors"
                   onClick={() => {
                     if (expandedTaskId === task.id) {
                       setExpandedTaskId(null);
@@ -622,7 +653,6 @@ export function UserTasksSection() {
                       openTaskDetail(task.id);
                     }
                   }}
-                  className="w-full p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-left hover:border-blue-400 dark:hover:border-blue-600 transition-colors"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
@@ -630,30 +660,47 @@ export function UserTasksSection() {
                         {task.title}
                       </div>
                       <div className="flex gap-2 mt-1">
-                        <span className={`text-[11px] font-semibold px-1.5 py-0.5 rounded ${PRIORITY_BADGE[task.priority]}`}>
+                        <span
+                          className={`text-[11px] font-semibold px-1.5 py-0.5 rounded ${PRIORITY_BADGE[task.priority]}`}
+                        >
                           {PRIORITY_LABEL[task.priority]}
                         </span>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <select
-                        value={task.status}
-                        onChange={(e) => handleStatusChange(task.id, e.target.value as TaskStatus)}
-                        onClick={(e) => e.stopPropagation()}
                         className="text-[11px] rounded border border-black/10 dark:border-white/10 bg-transparent px-1.5 py-0.5 text-[#1d1d1f] dark:text-white"
+                        value={task.status}
+                        onChange={(e) =>
+                          handleStatusChange(
+                            task.id,
+                            e.target.value as TaskStatus,
+                          )
+                        }
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {VALID_STATUSES.map((s) => (
-                          <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                          <option key={s} value={s}>
+                            {STATUS_LABELS[s]}
+                          </option>
                         ))}
                       </select>
                       <button
+                        className="text-[#6e6e73] hover:text-red-500 text-sm px-1.5 py-1"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeleteTask(task.id);
                         }}
-                        className="text-[#6e6e73] hover:text-red-500 text-sm px-1.5 py-1"
                       >
-                        <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14" width="14">
+                        <svg
+                          fill="none"
+                          height="14"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeWidth="1.5"
+                          viewBox="0 0 14 14"
+                          width="14"
+                        >
                           <path d="M2 3.5h10M5 3.5V2a1 1 0 011-1h2a1 1 0 011 1v1.5M11 3.5v8a1.5 1.5 0 01-1.5 1.5h-5A1.5 1.5 0 013 11.5v-8" />
                         </svg>
                       </button>
@@ -673,20 +720,20 @@ export function UserTasksSection() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <button
+                className="text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
                 onClick={() => {
                   setSelectedGroupId(null);
                   setSelectedListId(null);
                   setTasks([]);
                   setExpandedTaskId(null);
                 }}
-                className="text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  className="w-5 h-5"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2}
-                  className="w-5 h-5"
+                  viewBox="0 0 24 24"
                 >
                   <path
                     d="M19 12H5m7-7l-7 7 7 7"
@@ -703,12 +750,12 @@ export function UserTasksSection() {
             <div className="flex gap-2 items-center">
               {lists.length > 0 && (
                 <select
+                  className="text-sm rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1f] px-3 py-1.5 text-[#1d1d1f] dark:text-white"
                   value={selectedListId ?? ""}
                   onChange={(e) => {
                     setSelectedListId(e.target.value || null);
                     setExpandedTaskId(null);
                   }}
-                  className="text-sm rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1f] px-3 py-1.5 text-[#1d1d1f] dark:text-white"
                 >
                   {lists.map((l) => (
                     <option key={l.id} value={l.id}>
@@ -718,15 +765,15 @@ export function UserTasksSection() {
                 </select>
               )}
               <button
-                onClick={() => setShowNewList(true)}
                 className="apple-btn-secondary text-sm py-1.5 px-3"
+                onClick={() => setShowNewList(true)}
               >
                 + Lista
               </button>
               <button
-                onClick={openNewTask}
                 className="apple-btn-primary text-sm py-1.5 px-3"
                 disabled={!selectedListId}
+                onClick={openNewTask}
               >
                 + Tarea
               </button>
@@ -737,25 +784,25 @@ export function UserTasksSection() {
           {showNewList && (
             <div className="mb-4 flex gap-2 items-center">
               <Input
+                className="max-w-xs"
+                disabled={submitting}
                 placeholder="Nombre de la lista"
                 value={newListName}
                 onChange={(e) => setNewListName(e.target.value)}
-                className="max-w-xs"
-                disabled={submitting}
               />
               <button
-                onClick={handleCreateList}
-                disabled={submitting || !newListName.trim()}
                 className="apple-btn-primary text-sm py-1.5 px-3"
+                disabled={submitting || !newListName.trim()}
+                onClick={handleCreateList}
               >
                 Crear
               </button>
               <button
+                className="apple-btn-secondary text-sm py-1.5 px-3"
                 onClick={() => {
                   setShowNewList(false);
                   setNewListName("");
                 }}
-                className="apple-btn-secondary text-sm py-1.5 px-3"
               >
                 Cancelar
               </button>
@@ -781,8 +828,8 @@ export function UserTasksSection() {
                 No hay listas de tareas en este grupo.
               </p>
               <button
-                onClick={() => setShowNewList(true)}
                 className="apple-btn-primary text-sm py-2 px-4"
+                onClick={() => setShowNewList(true)}
               >
                 Crear primera lista
               </button>
@@ -798,6 +845,7 @@ export function UserTasksSection() {
               >
                 {VALID_STATUSES.map((status) => {
                   const columnTasks = tasksByStatus(status);
+
                   return (
                     <div key={status} className="flex-1 min-w-[260px]">
                       <div className="mb-3 flex items-center justify-between px-1">
@@ -811,15 +859,15 @@ export function UserTasksSection() {
                         </span>
                         {status === "pending" && (
                           <button
-                            onClick={openNewTask}
                             className="text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"
+                            onClick={openNewTask}
                           >
                             <svg
-                              viewBox="0 0 24 24"
+                              className="w-4 h-4"
                               fill="none"
                               stroke="currentColor"
                               strokeWidth={2}
-                              className="w-4 h-4"
+                              viewBox="0 0 24 24"
                             >
                               <path
                                 d="M12 5v14m-7-7h14"
@@ -859,6 +907,7 @@ export function UserTasksSection() {
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
+                                      className={`p-3 rounded-lg bg-white dark:bg-[#16161a] border border-black/6 dark:border-white/6 cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 transition-colors ${snapshot.isDragging ? "shadow-lg rotate-2" : "shadow-sm"}`}
                                       onClick={() => {
                                         if (expandedTaskId === task.id) {
                                           setExpandedTaskId(null);
@@ -866,7 +915,6 @@ export function UserTasksSection() {
                                           openTaskDetail(task.id);
                                         }
                                       }}
-                                      className={`p-3 rounded-lg bg-white dark:bg-[#16161a] border border-black/6 dark:border-white/6 cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 transition-colors ${snapshot.isDragging ? "shadow-lg rotate-2" : "shadow-sm"}`}
                                     >
                                       <div className="flex items-start justify-between gap-2 mb-2">
                                         <span className="text-sm font-medium text-[#1d1d1f] dark:text-white leading-snug">
@@ -883,11 +931,11 @@ export function UserTasksSection() {
                                         {task.assigned_member && (
                                           <span className="flex items-center gap-1">
                                             <svg
-                                              viewBox="0 0 24 24"
+                                              className="w-3 h-3"
                                               fill="none"
                                               stroke="currentColor"
                                               strokeWidth={2}
-                                              className="w-3 h-3"
+                                              viewBox="0 0 24 24"
                                             >
                                               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                                               <circle cx="12" cy="7" r="4" />
@@ -898,18 +946,18 @@ export function UserTasksSection() {
                                         {task.due_date && (
                                           <span className="flex items-center gap-1">
                                             <svg
-                                              viewBox="0 0 24 24"
+                                              className="w-3 h-3"
                                               fill="none"
                                               stroke="currentColor"
                                               strokeWidth={2}
-                                              className="w-3 h-3"
+                                              viewBox="0 0 24 24"
                                             >
                                               <rect
-                                                x="3"
-                                                y="4"
-                                                width="18"
                                                 height="18"
                                                 rx="2"
+                                                width="18"
+                                                x="3"
+                                                y="4"
                                               />
                                               <path d="M16 2v4M8 2v4M3 10h18" />
                                             </svg>
@@ -938,7 +986,9 @@ export function UserTasksSection() {
             <div className="mt-6 p-5 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
               {(() => {
                 const task = tasks.find((t) => t.id === expandedTaskId);
+
                 if (!task) return null;
+
                 return (
                   <>
                     <div className="flex items-start justify-between mb-4">
@@ -953,6 +1003,7 @@ export function UserTasksSection() {
                             {PRIORITY_LABEL[task.priority]}
                           </span>
                           <select
+                            className="text-[11px] rounded border border-black/10 dark:border-white/10 bg-transparent px-1.5 py-0.5 text-[#1d1d1f] dark:text-white"
                             value={task.status}
                             onChange={(e) =>
                               handleStatusChange(
@@ -960,7 +1011,6 @@ export function UserTasksSection() {
                                 e.target.value as TaskStatus,
                               )
                             }
-                            className="text-[11px] rounded border border-black/10 dark:border-white/10 bg-transparent px-1.5 py-0.5 text-[#1d1d1f] dark:text-white"
                           >
                             {VALID_STATUSES.map((s) => (
                               <option key={s} value={s}>
@@ -972,14 +1022,14 @@ export function UserTasksSection() {
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => openEditTask(task)}
                           className="text-[#6e6e73] hover:text-blue-500 text-sm px-2 py-1"
+                          onClick={() => openEditTask(task)}
                         >
                           Editar
                         </button>
                         <button
-                          onClick={() => handleDeleteTask(task.id)}
                           className="text-[#6e6e73] hover:text-red-500 text-sm px-2 py-1"
+                          onClick={() => handleDeleteTask(task.id)}
                         >
                           Eliminar
                         </button>
@@ -1055,16 +1105,16 @@ export function UserTasksSection() {
 
                       <div className="flex gap-2">
                         <TextArea
+                          className="flex-1 min-h-[0px]"
                           placeholder="Añadir comentario..."
+                          rows={2}
                           value={newComment}
                           onChange={(e) => setNewComment(e.target.value)}
-                          className="flex-1 min-h-[0px]"
-                          rows={2}
                         />
                         <button
-                          onClick={handleAddComment}
-                          disabled={!newComment.trim()}
                           className="apple-btn-primary text-sm py-1 px-3 self-end"
+                          disabled={!newComment.trim()}
+                          onClick={handleAddComment}
                         >
                           Enviar
                         </button>
@@ -1090,9 +1140,9 @@ export function UserTasksSection() {
                       Título *
                     </label>
                     <Input
+                      placeholder="Título de la tarea"
                       value={formTitle}
                       onChange={(e) => setFormTitle(e.target.value)}
-                      placeholder="Título de la tarea"
                     />
                   </div>
 
@@ -1101,10 +1151,10 @@ export function UserTasksSection() {
                       Descripción
                     </label>
                     <TextArea
-                      value={formDescription}
-                      onChange={(e) => setFormDescription(e.target.value)}
                       placeholder="Descripción (opcional)"
                       rows={3}
+                      value={formDescription}
+                      onChange={(e) => setFormDescription(e.target.value)}
                     />
                   </div>
 
@@ -1114,9 +1164,9 @@ export function UserTasksSection() {
                         Asignado a
                       </label>
                       <select
+                        className="w-full text-sm rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1f] px-3 py-2 text-[#1d1d1f] dark:text-white"
                         value={formAssignedTo}
                         onChange={(e) => setFormAssignedTo(e.target.value)}
-                        className="w-full text-sm rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1f] px-3 py-2 text-[#1d1d1f] dark:text-white"
                       >
                         <option value="">Sin asignar</option>
                         {members.map((m) => (
@@ -1132,9 +1182,9 @@ export function UserTasksSection() {
                         Prioridad
                       </label>
                       <select
+                        className="w-full text-sm rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1f] px-3 py-2 text-[#1d1d1f] dark:text-white"
                         value={formPriority}
                         onChange={(e) => setFormPriority(e.target.value)}
-                        className="w-full text-sm rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1f] px-3 py-2 text-[#1d1d1f] dark:text-white"
                       >
                         <option value="low">Baja</option>
                         <option value="medium">Media</option>
@@ -1158,18 +1208,18 @@ export function UserTasksSection() {
 
                 <div className="flex justify-end gap-3 mt-6">
                   <button
+                    className="apple-btn-secondary text-sm py-2 px-4"
                     onClick={() => {
                       setShowTaskModal(false);
                       resetForm();
                     }}
-                    className="apple-btn-secondary text-sm py-2 px-4"
                   >
                     Cancelar
                   </button>
                   <button
-                    onClick={handleSaveTask}
-                    disabled={submitting || !formTitle.trim()}
                     className="apple-btn-primary text-sm py-2 px-4"
+                    disabled={submitting || !formTitle.trim()}
+                    onClick={handleSaveTask}
                   >
                     {submitting
                       ? "Guardando..."
@@ -1193,14 +1243,14 @@ export function UserTasksSection() {
                 </p>
                 <div className="flex justify-end gap-3">
                   <button
-                    onClick={() => setConfirmDelete(null)}
                     className="apple-btn-secondary text-sm py-2 px-4"
+                    onClick={() => setConfirmDelete(null)}
                   >
                     Cancelar
                   </button>
                   <button
-                    onClick={confirmDeleteTask}
                     className="apple-btn-primary text-sm py-2 px-4 !bg-red-500 hover:!bg-red-600"
+                    onClick={confirmDeleteTask}
                   >
                     Eliminar
                   </button>

@@ -99,7 +99,12 @@ export interface SystemHealth {
   status: string;
   env: string;
   ts: string;
-  db: { ok: boolean; tables: Record<string, boolean>; checkedAt: string; error?: string } | null;
+  db: {
+    ok: boolean;
+    tables: Record<string, boolean>;
+    checkedAt: string;
+    error?: string;
+  } | null;
 }
 
 export interface ServiceHealth {
@@ -109,7 +114,12 @@ export interface ServiceHealth {
   description: string;
   status: "active" | "warning" | "error" | "inactive";
   recordCount: number | null;
-  details: { uptime?: number; memory?: { rss?: number; heapTotal?: number; heapUsed?: number }; nodeVersion?: string; lastStartup?: string } | null;
+  details: {
+    uptime?: number;
+    memory?: { rss?: number; heapTotal?: number; heapUsed?: number };
+    nodeVersion?: string;
+    lastStartup?: string;
+  } | null;
   healthError?: string;
   errorCount: number;
   lastErrors: Array<{ action: string; metadata: any; timestamp: string }>;

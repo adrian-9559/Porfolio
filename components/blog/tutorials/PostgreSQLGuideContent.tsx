@@ -154,8 +154,8 @@ export default function PostgreSQLGuideContent() {
       <BlogCallout type="info">
         <strong>PostgreSQL vs MySQL:</strong> PostgreSQL es generalmente más
         rico en características (JSONB indexable, full-text search, CTEs
-        recursivas, tipos de datos como arrays y rangos). MySQL tiende a ser
-        más rápido en lecturas simples y tiene una configuración inicial más
+        recursivas, tipos de datos como arrays y rangos). MySQL tiende a ser más
+        rápido en lecturas simples y tiene una configuración inicial más
         sencilla. Para aplicaciones complejas con datos semiestructurados,
         PostgreSQL suele ser la mejor opción.
       </BlogCallout>
@@ -172,9 +172,7 @@ export default function PostgreSQLGuideContent() {
 brew services start postgresql@16`}</BlogCode>
 
       <BlogH3>Docker</BlogH3>
-      <BlogP>
-        Ideal para desarrollo y entornos aislados:
-      </BlogP>
+      <BlogP>Ideal para desarrollo y entornos aislados:</BlogP>
       <BlogCode>{`docker run --name postgres \\
   -e POSTGRES_PASSWORD=root \\
   -p 5432:5432 \\
@@ -208,13 +206,14 @@ GRANT ALL PRIVILEGES ON DATABASE mi_proyecto TO dev;
       <BlogCallout type="tip">
         <strong>Diferencia clave con MySQL:</strong> en PostgreSQL,{" "}
         <BlogInlineCode>GRANT ALL PRIVILEGES ON DATABASE</BlogInlineCode> no
-        otorga permisos sobre el schema{" "}
-        <BlogInlineCode>public</BlogInlineCode> por defecto. Si el usuario
-        necesita crear tablas, también debes ejecutar{" "}
+        otorga permisos sobre el schema <BlogInlineCode>public</BlogInlineCode>{" "}
+        por defecto. Si el usuario necesita crear tablas, también debes ejecutar{" "}
         <BlogInlineCode>GRANT ALL ON SCHEMA public TO dev;</BlogInlineCode>.
       </BlogCallout>
 
-      <BlogH2 id="tipos-exclusivos">Tipos de datos exclusivos de PostgreSQL</BlogH2>
+      <BlogH2 id="tipos-exclusivos">
+        Tipos de datos exclusivos de PostgreSQL
+      </BlogH2>
 
       <BlogP>
         PostgreSQL ofrece tipos de datos que no encontrarás en otros SGBD
@@ -331,9 +330,7 @@ SELECT nombre, metadata->>'theme' AS tema
 FROM usuarios
 WHERE metadata @> '{"notifications": true}';`}</BlogCode>
 
-      <BlogP>
-        Operadores clave para JSONB:
-      </BlogP>
+      <BlogP>Operadores clave para JSONB:</BlogP>
 
       <BlogUl>
         <BlogLi>
@@ -419,9 +416,8 @@ WHERE busqueda @@ to_tsquery('spanish', 'postgresql & tutorial');`}</BlogCode>
 
       <BlogP>
         PostgreSQL ofrece herramientas de análisis de rendimiento de nivel
-        profesional. El comando{" "}
-        <BlogInlineCode>EXPLAIN ANALYZE</BlogInlineCode> ejecuta la consulta y
-        muestra el plan de ejecución real:
+        profesional. El comando <BlogInlineCode>EXPLAIN ANALYZE</BlogInlineCode>{" "}
+        ejecuta la consulta y muestra el plan de ejecución real:
       </BlogP>
 
       <BlogCode>{`EXPLAIN ANALYZE
@@ -436,9 +432,7 @@ SELECT * FROM usuarios WHERE email = 'ana@email.com';
 --  Planning Time: 0.087 ms
 --  Execution Time: 0.048 ms`}</BlogCode>
 
-      <BlogP>
-        Conceptos clave que debes conocer:
-      </BlogP>
+      <BlogP>Conceptos clave que debes conocer:</BlogP>
 
       <BlogUl>
         <BlogLi>
@@ -451,9 +445,9 @@ SELECT * FROM usuarios WHERE email = 'ana@email.com';
           específicas. Mucho más rápido para consultas selectivas.
         </BlogLi>
         <BlogLi>
-          <strong>Bitmap Index Scan</strong> — combina múltiples índices y
-          luego accede a las filas. PostgreSQL lo usa cuando varios índices
-          pueden ser relevantes.
+          <strong>Bitmap Index Scan</strong> — combina múltiples índices y luego
+          accede a las filas. PostgreSQL lo usa cuando varios índices pueden ser
+          relevantes.
         </BlogLi>
       </BlogUl>
 
@@ -498,11 +492,12 @@ WHERE tablename = 'usuarios';`}</BlogCode>
 
       <div className="space-y-3" id="ejercicios">
         <ExerciseCard
-          num={1}
-          title="Instalación, CREATE DATABASE y tabla con UUID"
-          level="Básico"
           description="Instala PostgreSQL (o usa Docker), crea una base de datos 'tienda', habilita la extensión uuid-ossp, y crea una tabla 'categorias' con id UUID, nombre (VARCHAR 100), descripcion (TEXT) y creado_en (TIMESTAMPTZ)."
-          hint={'CREATE EXTENSION IF NOT EXISTS "uuid-ossp". Para el UUID usa UUID PRIMARY KEY DEFAULT uuid_generate_v4().'}
+          hint={
+            'CREATE EXTENSION IF NOT EXISTS "uuid-ossp". Para el UUID usa UUID PRIMARY KEY DEFAULT uuid_generate_v4().'
+          }
+          level="Básico"
+          num={1}
           solution={`CREATE DATABASE tienda;
 \\c tienda
 
@@ -514,14 +509,16 @@ CREATE TABLE categorias (
   descripcion TEXT,
   creado_en TIMESTAMPTZ DEFAULT NOW()
 );`}
+          title="Instalación, CREATE DATABASE y tabla con UUID"
         />
 
         <ExerciseCard
-          num={2}
-          title="JSONB query: insertar y filtrar"
-          level="Intermedio"
           description="Crea una tabla 'productos' con campos id (UUID), nombre, precio y atributos (JSONB). Inserta 3 productos con diferentes atributos (color, peso, talla disponible) y luego consulta los productos que tengan un atributo específico usando el operador @>."
-          hint={"Para insertar JSONB usa la sintaxis de string JSON. Para filtrar usa WHERE atributos @> '{\"color\": \"rojo\"}'."}
+          hint={
+            'Para insertar JSONB usa la sintaxis de string JSON. Para filtrar usa WHERE atributos @> \'{"color": "rojo"}\'.'
+          }
+          level="Intermedio"
+          num={2}
           solution={`CREATE TABLE productos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   nombre VARCHAR(150) NOT NULL,
@@ -539,14 +536,14 @@ SELECT * FROM productos WHERE atributos @> '{"color": "rojo"}';
 
 -- Productos impermeables
 SELECT * FROM productos WHERE atributos @> '{"impermeable": true}';`}
+          title="JSONB query: insertar y filtrar"
         />
 
         <ExerciseCard
-          num={3}
-          title="Full-text search con TSVECTOR"
-          level="Intermedio"
           description="Crea una tabla 'documentos' con contenido TEXT, un TSVECTOR generado automáticamente, y un índice GIN. Inserta 2 documentos en español y busca aquellos que contengan las palabras 'base de datos'."
           hint="Usa GENERATED ALWAYS AS (to_tsvector('spanish', contenido)) STORED. La consulta usa @@ to_tsquery('spanish', 'base & datos')."
+          level="Intermedio"
+          num={3}
           solution={`CREATE TABLE documentos (
   id SERIAL PRIMARY KEY,
   titulo TEXT NOT NULL,
@@ -563,14 +560,14 @@ INSERT INTO documentos (titulo, contenido) VALUES
 
 SELECT titulo FROM documentos
 WHERE busqueda @@ to_tsquery('spanish', 'base & datos');`}
+          title="Full-text search con TSVECTOR"
         />
 
         <ExerciseCard
-          num={4}
-          title="CREATE INDEX y EXPLAIN ANALYZE"
-          level="Intermedio"
           description="Crea una tabla 'ventas' con 100,000 filas de prueba (usa generate_series). Sin índice, ejecuta EXPLAIN ANALYZE para una búsqueda por email. Luego crea un índice y compara el plan de ejecución."
           hint="generate_series(1,100000) genera filas. Para emails únicos: 'user' || i || '@email.com'. Compara Seq Scan vs Index Scan."
+          level="Intermedio"
+          num={4}
           solution={`CREATE TABLE ventas (
   id INT PRIMARY KEY,
   email VARCHAR(255) NOT NULL,
@@ -590,14 +587,14 @@ CREATE INDEX idx_ventas_email ON ventas (email);
 
 -- Con índice (Index Scan)
 EXPLAIN ANALYZE SELECT * FROM ventas WHERE email = 'user50000@email.com';`}
+          title="CREATE INDEX y EXPLAIN ANALYZE"
         />
 
         <ExerciseCard
-          num={5}
-          title="Array operations: ANY y UNNEST"
-          level="Avanzado"
           description="Crea una tabla 'cursos' con un campo etiquetas TEXT[]. Inserta cursos con diferentes etiquetas. Busca cursos que contengan la etiqueta 'SQL' usando ANY y luego expande las etiquetas de un curso con UNNEST."
           hint="Para buscar en array: WHERE 'SQL' = ANY(etiquetas). UNNEST(etiquetas) expande el array en filas."
+          level="Avanzado"
+          num={5}
           solution={`CREATE TABLE cursos (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(200) NOT NULL,
@@ -616,14 +613,14 @@ WHERE 'SQL' = ANY(etiquetas);
 -- Expandir etiquetas del primer curso
 SELECT nombre, unnest(etiquetas) AS etiqueta
 FROM cursos WHERE id = 1;`}
+          title="Array operations: ANY y UNNEST"
         />
 
         <ExerciseCard
-          num={6}
-          title="CTE recursiva para jerarquías"
-          level="Avanzado"
           description="Crea una tabla 'empleados' con id, nombre y manager_id (auto-referencia). Inserta una jerarquía de 3 niveles y usa una CTE recursiva para obtener el árbol completo de un manager específico, mostrando el nivel de profundidad."
           hint="Una CTE recursiva tiene dos partes: el caso base (WHERE manager_id IS NULL) y la parte recursiva que JOIN con la CTE. Usa UNION ALL entre ambas."
+          level="Avanzado"
+          num={6}
           solution={`CREATE TABLE empleados (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
@@ -657,6 +654,7 @@ SELECT nombre,
        repeat('  ', nivel) || nombre AS arbol
 FROM organigrama
 ORDER BY nivel, nombre;`}
+          title="CTE recursiva para jerarquías"
         />
       </div>
 

@@ -55,11 +55,11 @@ function ExerciseCard({
 }) {
   const [open, setOpen] = useState(false);
   const levelColor = {
-    "Básico":
+    Básico:
       "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
-    "Intermedio":
+    Intermedio:
       "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-    "Avanzado": "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
+    Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
   }[level];
 
   return (
@@ -199,21 +199,20 @@ function SIntro() {
     <>
       <BlogH2>What is C?</BlogH2>
       <BlogP>
-        C is a general-purpose, statically typed, compiled programming
-        language created by Dennis Ritchie at AT&T Bell Labs between 1969 and
-        1973. It is the language upon which much of modern software is built:
-        the Linux kernel, the Python interpreter, Node.js, and dozens of
-        operating systems are written in C.
+        C is a general-purpose, statically typed, compiled programming language
+        created by Dennis Ritchie at AT&T Bell Labs between 1969 and 1973. It is
+        the language upon which much of modern software is built: the Linux
+        kernel, the Python interpreter, Node.js, and dozens of operating systems
+        are written in C.
       </BlogP>
 
       <BlogH3>History</BlogH3>
       <BlogP>
-        C evolved from the B language (Ken Thompson, 1969), which in turn came from
-        BCPL. It was first standardized as ANSI C (C89/C90), and since
-        then has had revisions: C99 (loop declarations, <code>bool</code> types,{" "}
-        <code>_Bool</code>), C11 (basic threads, generics)
-        and C17 (minor corrections). The standard in use today is
-        mostly C11 or C17.
+        C evolved from the B language (Ken Thompson, 1969), which in turn came
+        from BCPL. It was first standardized as ANSI C (C89/C90), and since then
+        has had revisions: C99 (loop declarations, <code>bool</code> types,{" "}
+        <code>_Bool</code>), C11 (basic threads, generics) and C17 (minor
+        corrections). The standard in use today is mostly C11 or C17.
       </BlogP>
 
       <BlogH3>Real-world uses</BlogH3>
@@ -241,20 +240,16 @@ function SIntro() {
       <BlogH3>Compilation flow</BlogH3>
       <BlogP>A C program goes through four phases before execution:</BlogP>
       <div className="flex flex-wrap items-center gap-2 my-4 text-sm">
-        {[
-          "Preprocessor",
-          "Compiler",
-          "Assembler",
-          "Linker",
-          "Executable",
-        ].map((step, i, arr) => (
-          <div key={step} className="flex items-center gap-2">
-            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl px-3 py-1.5 text-blue-700 dark:text-blue-400 font-medium text-xs">
-              {step}
+        {["Preprocessor", "Compiler", "Assembler", "Linker", "Executable"].map(
+          (step, i, arr) => (
+            <div key={step} className="flex items-center gap-2">
+              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl px-3 py-1.5 text-blue-700 dark:text-blue-400 font-medium text-xs">
+                {step}
+              </div>
+              {i < arr.length - 1 && <span className="text-[#aeaeb2]">→</span>}
             </div>
-            {i < arr.length - 1 && <span className="text-[#aeaeb2]">→</span>}
-          </div>
-        ))}
+          ),
+        )}
       </div>
       <BlogCode>{`# Compile with GCC (all-in-one)
 gcc -std=c11 -Wall -Wextra -o program main.c
@@ -303,7 +298,10 @@ int main(void) {
               ["Strict static typing", "Dynamic typing"],
               ["No native OOP", "Built-in OOP"],
               ["Direct memory access", "Memory abstraction"],
-              ["~100x faster (low-level ops)", "Higher development productivity"],
+              [
+                "~100x faster (low-level ops)",
+                "Higher development productivity",
+              ],
             ].map(([c, py]) => (
               <tr
                 key={c}
@@ -376,8 +374,8 @@ int main(void) {
       <BlogH3>Overflow — silent danger!</BlogH3>
       <BlogP>
         If a value exceeds its type's range, <strong>overflow</strong> occurs.
-        In signed types, the behavior is <em>undefined</em> in C. In
-        unsigned types, it wraps around (modulo 2^N).
+        In signed types, the behavior is <em>undefined</em> in C. In unsigned
+        types, it wraps around (modulo 2^N).
       </BlogP>
       <BlogCode>{`#include <stdio.h>
 int main(void) {
@@ -421,8 +419,8 @@ int truncated = (int)3.99;      /* 3 */`}</BlogCode>
 
       <BlogCallout type="warn">
         When converting <code>double</code> to <code>int</code>, C{" "}
-        <strong>truncates</strong> (does not round). Use <code>round()</code> from{" "}
-        <code>&lt;math.h&gt;</code> if you need rounding.
+        <strong>truncates</strong> (does not round). Use <code>round()</code>{" "}
+        from <code>&lt;math.h&gt;</code> if you need rounding.
       </BlogCallout>
     </>
   );
@@ -785,9 +783,9 @@ printf("Address arr[2]:  %p\\n", (void*)&arr[2]);
 
       <BlogH3>Strings in C</BlogH3>
       <BlogP>
-        In C, a string is simply an array of <code>char</code> terminated by
-        the null character <code>'\0'</code>. This terminator is mandatory:
-        without it, string functions run out of bounds.
+        In C, a string is simply an array of <code>char</code> terminated by the
+        null character <code>'\0'</code>. This terminator is mandatory: without
+        it, string functions run out of bounds.
       </BlogP>
       <BlogCode>{`#include <stdio.h>
 #include <string.h>
@@ -851,17 +849,17 @@ function SPunteros() {
     <>
       <BlogH2>Pointers</BlogH2>
       <BlogP>
-        A pointer is a variable that stores the{" "}
-        <strong>memory address</strong> of another variable. They are the most
-        powerful feature of C and the source of many bugs if used incorrectly.
+        A pointer is a variable that stores the <strong>memory address</strong>{" "}
+        of another variable. They are the most powerful feature of C and the
+        source of many bugs if used incorrectly.
       </BlogP>
 
       <BlogH3>Memory concept</BlogH3>
       <BlogP>
-        RAM can be imagined as a large array of bytes, where each byte has a unique
-        address. When you declare <code>int x = 42</code>, the system reserves 4
-        consecutive bytes at some address, e.g. 0x7fff5abc, and stores 42 at that
-        position.
+        RAM can be imagined as a large array of bytes, where each byte has a
+        unique address. When you declare <code>int x = 42</code>, the system
+        reserves 4 consecutive bytes at some address, e.g. 0x7fff5abc, and
+        stores 42 at that position.
       </BlogP>
 
       <BlogH3>Declaration and basic operators</BlogH3>
@@ -997,8 +995,8 @@ int *bad(void) {
 
       <BlogCallout type="danger">
         Always compile with <code>-fsanitize=address,undefined</code> during
-        development. AddressSanitizer detects use-after-free, buffer overflows, and
-        other memory errors at runtime.
+        development. AddressSanitizer detects use-after-free, buffer overflows,
+        and other memory errors at runtime.
       </BlogCallout>
     </>
   );
@@ -1259,7 +1257,7 @@ int is_palindrome(const char *s) {
       title: "Multiplication table",
       description:
         "Print the multiplication table from 1 to 10 in an aligned grid format.",
-      hint: "Use printf with fixed field width: printf(\"%4d\", value).",
+      hint: 'Use printf with fixed field width: printf("%4d", value).',
       solution: `for (int i = 1; i <= 10; i++) {
     for (int j = 1; j <= 10; j++) {
         printf("%4d", i * j);
@@ -1435,8 +1433,8 @@ int count_words(const char *s) {
     <>
       <BlogH2>C Exercises</BlogH2>
       <BlogP>
-        Practice with these exercises ordered by difficulty. Try to
-        solve them before looking at the hint or solution.
+        Practice with these exercises ordered by difficulty. Try to solve them
+        before looking at the hint or solution.
       </BlogP>
 
       <BlogH3>Basics (1–10)</BlogH3>
@@ -1461,9 +1459,9 @@ int count_words(const char *s) {
       </div>
 
       <BlogCallout type="tip">
-        For the advanced exercises, first research the necessary theory
-        (trees, compression algorithms) before implementing. Reading others'
-        code and understanding structures is as important as writing your own.
+        For the advanced exercises, first research the necessary theory (trees,
+        compression algorithms) before implementing. Reading others' code and
+        understanding structures is as important as writing your own.
       </BlogCallout>
     </>
   );

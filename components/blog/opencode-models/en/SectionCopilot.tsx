@@ -40,17 +40,17 @@ export function SectionCopilot() {
 
       <BlogH3>What is GitHub Copilot in OpenCode</BlogH3>
       <BlogP>
-        GitHub Copilot is known as the code autocomplete in the IDE.
-        OpenCode goes a step further: it allows you to use your{" "}
-        <strong>Copilot subscription</strong> as a model provider for
-        the conversational agent. You don't need additional API keys — just your
+        GitHub Copilot is known as the code autocomplete in the IDE. OpenCode
+        goes a step further: it allows you to use your{" "}
+        <strong>Copilot subscription</strong> as a model provider for the
+        conversational agent. You don't need additional API keys — just your
         GitHub account.
       </BlogP>
 
       <BlogCallout type="info">
-        <strong>Key difference:</strong> Copilot in the IDE gives you
-        real-time autocomplete. Copilot as a provider in OpenCode gives you
-        a conversational agent that understands your entire project.
+        <strong>Key difference:</strong> Copilot in the IDE gives you real-time
+        autocomplete. Copilot as a provider in OpenCode gives you a
+        conversational agent that understands your entire project.
       </BlogCallout>
 
       <CapabilitiesCard
@@ -71,8 +71,8 @@ export function SectionCopilot() {
       <Step number={1} title="Connect with GitHub">
         <BlogP>
           Run <BlogInlineCode>/connect</BlogInlineCode>, look for{" "}
-          <strong>GitHub Copilot</strong> and follow the device
-          authentication flow:
+          <strong>GitHub Copilot</strong> and follow the device authentication
+          flow:
         </BlogP>
         <BlogCode>{`# ┌ Login with GitHub Copilot
 # │ https://github.com/login/device
@@ -99,8 +99,9 @@ export function SectionCopilot() {
 
       <BlogH3>Parallel use: IDE + OpenCode</BlogH3>
       <BlogP>
-        The most powerful combination is using <strong>Copilot in your IDE</strong>{" "}
-        (autocomplete) together with <strong>OpenCode</strong> (agent):
+        The most powerful combination is using{" "}
+        <strong>Copilot in your IDE</strong> (autocomplete) together with{" "}
+        <strong>OpenCode</strong> (agent):
       </BlogP>
 
       <div className="space-y-3 my-4">

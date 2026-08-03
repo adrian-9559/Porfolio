@@ -29,12 +29,11 @@ export function SectionIntro() {
     <div className="space-y-5 mb-8">
       <div className="rounded-2xl border border-black/8 dark:border-white/8 p-6 bg-gradient-to-b from-transparent via-violet-50/30 to-transparent dark:via-violet-950/10">
         <BlogP>
-          <strong>Language models</strong> (LLMs) are the brain of
-          OpenCode. They are neural networks trained on large volumes of
-          text and code that understand instructions, reason, generate code, and
-          execute complex tasks. OpenCode acts as the{" "}
-          <strong>orchestrator</strong>: you choose which model to use based on your
-          needs and budget.
+          <strong>Language models</strong> (LLMs) are the brain of OpenCode.
+          They are neural networks trained on large volumes of text and code
+          that understand instructions, reason, generate code, and execute
+          complex tasks. OpenCode acts as the <strong>orchestrator</strong>: you
+          choose which model to use based on your needs and budget.
         </BlogP>
       </div>
 

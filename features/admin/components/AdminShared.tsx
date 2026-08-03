@@ -22,12 +22,8 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-4">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">
-          {title}
-        </h2>
-        <p className="text-sm text-muted mt-0.5">
-          {desc}
-        </p>
+        <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+        <p className="text-sm text-muted mt-0.5">{desc}</p>
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </div>
@@ -43,8 +39,8 @@ export function Card({
 }) {
   return (
     <HeroCard
-      variant="transparent"
       className={`rounded-2xl border border-border bg-surface overflow-hidden p-0 gap-0 ${className}`}
+      variant="transparent"
     >
       {children}
     </HeroCard>
@@ -55,9 +51,7 @@ export function EmptyState({ text, sub }: { text: string; sub?: string }) {
   return (
     <div className="px-5 py-10 text-center">
       <p className="text-sm text-muted">{text}</p>
-      {sub && (
-        <p className="text-xs text-muted/60 mt-1">{sub}</p>
-      )}
+      {sub && <p className="text-xs text-muted/60 mt-1">{sub}</p>}
     </div>
   );
 }
@@ -226,9 +220,12 @@ export function Btn({
   type?: "button" | "submit";
   size?: "sm" | "md";
 }) {
-  const sizes = { sm: "px-3 py-1.5 text-xs h-auto", md: "px-4 py-2 text-sm h-auto" };
+  const sizes = {
+    sm: "px-3 py-1.5 text-xs h-auto",
+    md: "px-4 py-2 text-sm h-auto",
+  };
   const variants = {
-      primary: "bg-accent hover:bg-accent-hover text-accent-foreground",
+    primary: "bg-accent hover:bg-accent-hover text-accent-foreground",
     ghost:
       "bg-transparent border border-border hover:bg-default text-foreground",
     danger: "bg-danger hover:bg-danger/80 text-danger-foreground",

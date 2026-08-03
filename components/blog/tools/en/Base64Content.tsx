@@ -63,8 +63,8 @@ export default function Base64Content() {
           Base64 Encoder
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Encode and decode text in Base64 instantly. Useful for tokens,
-          images, and APIs.
+          Encode and decode text in Base64 instantly. Useful for tokens, images,
+          and APIs.
         </p>
       </div>
 

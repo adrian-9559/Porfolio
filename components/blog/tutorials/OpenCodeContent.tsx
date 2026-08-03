@@ -947,7 +947,7 @@ function SectionConsejos() {
             </p>
             <a
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
-              href="/blog/tutoriales/opencode-models"
+              href="/campus/tutoriales/opencode-models"
             >
               Leer guía completa
               <svg

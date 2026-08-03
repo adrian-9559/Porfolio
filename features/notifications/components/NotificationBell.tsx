@@ -103,9 +103,7 @@ export function NotificationBell() {
             {!loading && recent.length === 0 && (
               <div className="flex flex-col items-center py-10 text-center">
                 <span className="text-2xl mb-2">🔔</span>
-                <p className="text-sm text-muted">
-                  Sin notificaciones
-                </p>
+                <p className="text-sm text-muted">Sin notificaciones</p>
               </div>
             )}
             {!loading &&

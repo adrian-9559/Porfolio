@@ -49,11 +49,11 @@ function ExerciseCard({
 }) {
   const [open, setOpen] = useState(false);
   const levelColor = {
-    "Básico":
+    Básico:
       "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
-    "Intermedio":
+    Intermedio:
       "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-    "Avanzado": "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
+    Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
   }[level];
 
   return (
@@ -101,14 +101,14 @@ function SectionIntro() {
     <>
       <BlogH2>Introduction to TypeScript</BlogH2>
       <BlogP>
-        TypeScript is a superset of JavaScript developed by Microsoft
-        that adds <strong>optional static typing</strong>. When compiled,
-        it generates standard JavaScript code that can run in any environment.
+        TypeScript is a superset of JavaScript developed by Microsoft that adds{" "}
+        <strong>optional static typing</strong>. When compiled, it generates
+        standard JavaScript code that can run in any environment.
       </BlogP>
       <BlogP>
-        The key is static typing: you can declare the type of each
-        variable, function parameter, and return value, and the compiler will
-        warn you of errors <em>before</em> executing the code.
+        The key is static typing: you can declare the type of each variable,
+        function parameter, and return value, and the compiler will warn you of
+        errors <em>before</em> executing the code.
       </BlogP>
       <BlogCode>{`// JavaScript (no types)
 function sum(a, b) { return a + b; }
@@ -170,8 +170,8 @@ npx tsc --init  # generates tsconfig.json
   }
 }`}</BlogCode>
       <BlogCallout type="tip">
-        Enable <code>strict: true</code> from the start. It's easier than
-        adding it later when you already have a lot of code.
+        Enable <code>strict: true</code> from the start. It's easier than adding
+        it later when you already have a lot of code.
       </BlogCallout>
     </>
   );
@@ -182,8 +182,8 @@ function SectionTipos() {
     <>
       <BlogH2>Basic types</BlogH2>
       <BlogP>
-        TypeScript has types for all JavaScript primitive values
-        plus some language-specific ones.
+        TypeScript has types for all JavaScript primitive values plus some
+        language-specific ones.
       </BlogP>
       <BlogCode>{`// Primitives
 let name: string = "Ana";
@@ -237,9 +237,8 @@ function SectionFunciones() {
     <>
       <BlogH2>Typed functions</BlogH2>
       <BlogP>
-        Typing function parameters and return values is where
-        TypeScript provides the most value, as it catches errors at the call
-        site.
+        Typing function parameters and return values is where TypeScript
+        provides the most value, as it catches errors at the call site.
       </BlogP>
       <BlogCode>{`// Normal function
 function greet(name: string): string {
@@ -441,8 +440,8 @@ function login(email: string, password: string): boolean { return true; }
 type LoginParams = Parameters<typeof login>; // [string, string]`}</BlogCode>
       <BlogCallout type="tip">
         Utility Types are the key to not repeating definitions. If you find
-        yourself copying interfaces, there's probably a Utility Type that
-        solves it.
+        yourself copying interfaces, there's probably a Utility Type that solves
+        it.
       </BlogCallout>
     </>
   );
@@ -453,8 +452,8 @@ function SEjercicios() {
     <>
       <BlogH2>TypeScript Exercises</BlogH2>
       <BlogP>
-        Practice the TypeScript type system with these exercises. The
-        compiler is your best ally to verify your solutions are correct.
+        Practice the TypeScript type system with these exercises. The compiler
+        is your best ally to verify your solutions are correct.
       </BlogP>
       <div className="space-y-3 mt-6">
         <ExerciseCard

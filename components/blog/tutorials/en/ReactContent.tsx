@@ -40,9 +40,9 @@ function SectionIntro() {
       <BlogH2>Introduction to React</BlogH2>
       <BlogP>
         React is a JavaScript library developed by Meta for building user
-        interfaces. Its model is based on reusable components and
-        unidirectional data flow. Version 18 introduced concurrency, and
-        React 19 brings server hooks and actions.
+        interfaces. Its model is based on reusable components and unidirectional
+        data flow. Version 18 introduced concurrency, and React 19 brings server
+        hooks and actions.
       </BlogP>
       <BlogCode>{`# Create a project with Vite (recommended)
 npm create vite@latest my-app -- --template react-ts
@@ -140,8 +140,8 @@ function ProductList({ products }: { products: Product[] }) {
   );
 }`}</BlogCode>
       <BlogCallout type="warn">
-        Never use the array index as <code>key</code> if the list can
-        be reordered or filtered. Use a unique stable identifier.
+        Never use the array index as <code>key</code> if the list can be
+        reordered or filtered. Use a unique stable identifier.
       </BlogCallout>
     </>
   );
@@ -221,9 +221,9 @@ function Dashboard({ data }: { data: number[] }) {
   );
 }`}</BlogCode>
       <BlogCallout type="tip">
-        <code>useMemo</code> and <code>useCallback</code> are optimizations: only
-        use them when you have measurable performance problems. Code without
-        them is simpler.
+        <code>useMemo</code> and <code>useCallback</code> are optimizations:
+        only use them when you have measurable performance problems. Code
+        without them is simpler.
       </BlogCallout>
     </>
   );
@@ -348,8 +348,7 @@ function SectionOptimizacion() {
       <BlogH3>React.memo</BlogH3>
       <BlogP>
         <code>React.memo</code> prevents a component from re-rendering if its
-        props have not changed. Useful for expensive child components to
-        render.
+        props have not changed. Useful for expensive child components to render.
       </BlogP>
       <BlogCode>{`import { memo, useState } from "react";
 
@@ -397,9 +396,9 @@ function List({ items }: { items: Item[] }) {
   );
 }`}</BlogCode>
       <BlogCallout type="warn">
-        <code>React.memo</code> does a shallow comparison of props. If you
-        pass new objects or functions on each render, memo will not help.
-        Combine it with <code>useCallback</code> and <code>useMemo</code>.
+        <code>React.memo</code> does a shallow comparison of props. If you pass
+        new objects or functions on each render, memo will not help. Combine it
+        with <code>useCallback</code> and <code>useMemo</code>.
       </BlogCallout>
     </>
   );
@@ -410,8 +409,8 @@ function SectionProyecto() {
     <>
       <BlogH2>Final Project: Stateful Dashboard</BlogH2>
       <BlogP>
-        Full dashboard with Context API for task management. Includes
-        filters, statistics, and localStorage persistence.
+        Full dashboard with Context API for task management. Includes filters,
+        statistics, and localStorage persistence.
       </BlogP>
       <BlogCode>{`// hooks/useTasks.ts
 import { useState, useEffect, useCallback } from "react";
@@ -537,8 +536,8 @@ export function Dashboard() {
   );
 }`}</BlogCode>
       <BlogCallout type="tip">
-        For larger projects, consider Zustand or Redux Toolkit instead
-        of Context API. They are more efficient and avoid unnecessary re-renders.
+        For larger projects, consider Zustand or Redux Toolkit instead of
+        Context API. They are more efficient and avoid unnecessary re-renders.
       </BlogCallout>
     </>
   );
@@ -617,8 +616,8 @@ function SEjercicios() {
     <>
       <BlogH2>React Exercises</BlogH2>
       <BlogP>
-        Practice React concepts with these exercises. Each one builds
-        on the previous to consolidate your learning.
+        Practice React concepts with these exercises. Each one builds on the
+        previous to consolidate your learning.
       </BlogP>
       <div className="space-y-3 mt-6">
         <ExerciseCard

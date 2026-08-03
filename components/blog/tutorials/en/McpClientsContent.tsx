@@ -55,8 +55,8 @@ export default function McpClientsContent() {
         el agente y los servidores se comparten.
       </BlogP>
       <BlogP>
-        In this guide we compare the six most popular MCP clients, analizando
-        su configuración, capacidades y caso de uso ideal.
+        In this guide we compare the six most popular MCP clients, analizando su
+        configuración, capacidades y caso de uso ideal.
       </BlogP>
 
       <BlogH2 id="opencode">OpenCode</BlogH2>

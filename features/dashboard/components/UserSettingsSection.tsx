@@ -433,9 +433,7 @@ export function UserSettingsSection({ tab, onTabChange }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">
-          Configuración
-        </h2>
+        <h2 className="text-lg font-semibold text-foreground">Configuración</h2>
         <p className="text-sm text-muted mt-0.5">
           Gestiona tu perfil y preferencias de cuenta
         </p>

@@ -89,7 +89,9 @@ export default function App({ Component, pageProps }: AppProps) {
     if (prevLocale.current !== locale) {
       setLangFade(true);
       const timer = setTimeout(() => setLangFade(false), 200);
+
       prevLocale.current = locale;
+
       return () => clearTimeout(timer);
     }
   }, [locale]);

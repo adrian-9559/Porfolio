@@ -5,14 +5,49 @@ import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useAuth } from "@/hooks/useAuth";
-import { allContent } from "@/lib/blog/registry";
+import { allContent, contentHref } from "@/lib/blog/registry";
 
 const servicesDef = (t: (k: string) => string) => [
-  { id: "repositories", label: t("profile.serviceRepos"), icon: "📂", desc: t("profile.serviceReposDesc"), href: "/dashboard?s=repositories", color: "from-sky-400 to-blue-500" },
-  { id: "agents", label: t("profile.serviceAgents"), icon: "🤖", desc: t("profile.serviceAgentsDesc"), href: "/dashboard?s=agents", color: "from-violet-400 to-purple-500" },
-  { id: "tricount", label: t("profile.serviceTricount"), icon: "💸", desc: t("profile.serviceTricountDesc"), href: "/dashboard?s=tricount", color: "from-emerald-400 to-green-500" },
-  { id: "friends", label: t("profile.serviceFriends"), icon: "👥", desc: t("profile.serviceFriendsDesc"), href: "/dashboard?s=friends", color: "from-pink-400 to-rose-500" },
-  { id: "notifications", label: t("profile.serviceNotifications"), icon: "🔔", desc: t("profile.serviceNotificationsDesc"), href: "/dashboard?s=notifications", color: "from-amber-400 to-orange-500" },
+  {
+    id: "repositories",
+    label: t("profile.serviceRepos"),
+    icon: "📂",
+    desc: t("profile.serviceReposDesc"),
+    href: "/dashboard?s=repositories",
+    color: "from-sky-400 to-blue-500",
+  },
+  {
+    id: "agents",
+    label: t("profile.serviceAgents"),
+    icon: "🤖",
+    desc: t("profile.serviceAgentsDesc"),
+    href: "/dashboard?s=agents",
+    color: "from-violet-400 to-purple-500",
+  },
+  {
+    id: "tricount",
+    label: t("profile.serviceTricount"),
+    icon: "💸",
+    desc: t("profile.serviceTricountDesc"),
+    href: "/dashboard?s=tricount",
+    color: "from-emerald-400 to-green-500",
+  },
+  {
+    id: "friends",
+    label: t("profile.serviceFriends"),
+    icon: "👥",
+    desc: t("profile.serviceFriendsDesc"),
+    href: "/dashboard?s=friends",
+    color: "from-pink-400 to-rose-500",
+  },
+  {
+    id: "notifications",
+    label: t("profile.serviceNotifications"),
+    icon: "🔔",
+    desc: t("profile.serviceNotificationsDesc"),
+    href: "/dashboard?s=notifications",
+    color: "from-amber-400 to-orange-500",
+  },
 ];
 
 const articles = allContent.filter((c) => c.type === "article").slice(0, 5);
@@ -43,7 +78,8 @@ export default function PerfilPage() {
     );
   }
 
-  const displayName = user?.profile?.full_name ?? user?.email ?? t("profile.fullName");
+  const displayName =
+    user?.profile?.full_name ?? user?.email ?? t("profile.fullName");
   const firstName = displayName.split(" ")[0];
   const initials = displayName
     .split(" ")
@@ -148,9 +184,7 @@ export default function PerfilPage() {
             >
               {t("profile.greeting", { name: firstName })}
             </h1>
-            <p className="text-sm text-muted mt-0.5">
-              {user?.email}
-            </p>
+            <p className="text-sm text-muted mt-0.5">{user?.email}</p>
             <p className="text-xs text-muted/60 mt-1">
               {t("profile.memberSince", { year: memberSince })}
             </p>
@@ -169,9 +203,7 @@ export default function PerfilPage() {
                   {s.icon}
                 </span>
                 <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
-                <p className="text-[10px] text-muted/60 mt-0.5">
-                  {s.label}
-                </p>
+                <p className="text-[10px] text-muted/60 mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>
@@ -218,7 +250,7 @@ export default function PerfilPage() {
             <ContentGroup
               color="text-accent"
               emoji="🎓"
-              href="/blog/tutoriales"
+              href="/campus"
               items={tutorials}
               title={t("profile.statTutorials")}
             />
@@ -276,14 +308,13 @@ function ContentGroup({
   color: string;
 }) {
   const { t } = useT();
+
   return (
     <div className="rounded-2xl border border-border bg-surface p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-1.5">
           <span>{emoji}</span>
-          <h3 className="text-sm font-bold text-foreground">
-            {title}
-          </h3>
+          <h3 className="text-sm font-bold text-foreground">{title}</h3>
         </div>
         <Link
           className={`text-xs font-medium ${color} hover:underline no-underline`}
@@ -297,7 +328,7 @@ function ContentGroup({
           <li key={item.id}>
             <Link
               className="text-xs text-[#3d3d3d] dark:text-[#c0c0c5] hover:text-foreground transition-colors no-underline line-clamp-1"
-              href={`/blog/${item.slug}`}
+              href={contentHref(item.type, item.slug)}
             >
               {item.title}
             </Link>

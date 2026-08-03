@@ -15,9 +15,7 @@ export default function DatabaseDocsPage() {
             >
               Docs
             </Link>
-            <span className="text-xs text-muted/60">
-              /
-            </span>
+            <span className="text-xs text-muted/60">/</span>
             <span className="text-xs text-foreground font-medium">
               Base de datos
             </span>

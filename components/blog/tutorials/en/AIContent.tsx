@@ -90,8 +90,7 @@ Examine my code and extract real patterns you use. The rules should be specific 
       },
       {
         title: "Spacing",
-        content:
-          "Base scale (4px), component margins, gap between sections",
+        content: "Base scale (4px), component margins, gap between sections",
       },
       {
         title: "Borders and shadows",
@@ -197,8 +196,7 @@ Review the project files, recent commits, and any TODO/FIXME to generate an accu
     sections: [
       {
         title: "Folder structure",
-        content:
-          "Project tree with description of each main directory",
+        content: "Project tree with description of each main directory",
       },
       {
         title: "Design patterns",
@@ -270,8 +268,7 @@ Examine my real codebase to extract the architecture as it is implemented, not a
       },
       {
         title: "Errors",
-        content:
-          "Common error codes, error format, expected messages",
+        content: "Common error codes, error format, expected messages",
       },
       {
         title: "Examples",
@@ -374,10 +371,10 @@ export default function AIContent() {
       <div className="h-px bg-black/8 dark:bg-white/8 mb-8" />
 
       <BlogP>
-        The difference between an AI that saves you time and one that gives you a
-        headache lies in how you communicate what you want. Just like a human
-        developer needs context —knowing what project they are working on,
-        what libraries you use, what conventions you follow— the AI needs it too.
+        The difference between an AI that saves you time and one that gives you
+        a headache lies in how you communicate what you want. Just like a human
+        developer needs context —knowing what project they are working on, what
+        libraries you use, what conventions you follow— the AI needs it too.
       </BlogP>
       <BlogP>
         This tutorial teaches you to create context files that all AI respects,
@@ -392,22 +389,22 @@ export default function AIContent() {
         prefer camelCase or snake_case, or what colors your brand has.
       </BlogP>
       <BlogP>
-        Context files (CLAUDE.md, AGENTS.md) solve this: they are
-        persistent instructions that the AI reads at the start of each session.
-        Once written, you do not have to repeat the same explanations every time.
+        Context files (CLAUDE.md, AGENTS.md) solve this: they are persistent
+        instructions that the AI reads at the start of each session. Once
+        written, you do not have to repeat the same explanations every time.
       </BlogP>
 
       <BlogCallout type="tip">
-        Most AI assistants (OpenCode, Claude Code, Cursor) automatically
-        read <strong>CLAUDE.md</strong> or <strong>AGENTS.md</strong>{" "}
-        from the project root. Just create the file and write the rules.
+        Most AI assistants (OpenCode, Claude Code, Cursor) automatically read{" "}
+        <strong>CLAUDE.md</strong> or <strong>AGENTS.md</strong> from the
+        project root. Just create the file and write the rules.
       </BlogCallout>
 
       <BlogH2>Step 1: The rules file (AGENTS.md / CLAUDE.md)</BlogH2>
       <BlogP>
-        This is the most important file. It defines <strong>how</strong> you want
-        the AI to work: what stack you use, what patterns you follow, what it
-        should not do.
+        This is the most important file. It defines <strong>how</strong> you
+        want the AI to work: what stack you use, what patterns you follow, what
+        it should not do.
       </BlogP>
 
       <BlogH3>Recommended structure</BlogH3>
@@ -425,10 +422,12 @@ export default function AIContent() {
           <strong>Global rules</strong> — rules the assistant must always follow
         </BlogLi>
         <BlogLi>
-          <strong>Architecture decisions</strong> — why one solution was chosen over another
+          <strong>Architecture decisions</strong> — why one solution was chosen
+          over another
         </BlogLi>
         <BlogLi>
-          <strong>Implemented modules</strong> — what is done and how it is organized
+          <strong>Implemented modules</strong> — what is done and how it is
+          organized
         </BlogLi>
       </BlogOl>
 
@@ -449,8 +448,8 @@ export default function AIContent() {
 6. No obvious comments — only non-obvious WHY`}</BlogCode>
 
       <BlogCallout type="info">
-        The more specific the rules, the better. "Use Tailwind" is worse
-        than "Colors always from CSS variables, never hardcoded values".
+        The more specific the rules, the better. "Use Tailwind" is worse than
+        "Colors always from CSS variables, never hardcoded values".
       </BlogCallout>
 
       <BlogH3>Best practices for rules</BlogH3>
@@ -463,19 +462,19 @@ export default function AIContent() {
       <BlogH3>How to update it</BlogH3>
       <BlogP>
         The AGENTS.md is not static. Every time the AI does something you do not
-        like —an incorrect pattern, a library it does not use— add a rule.
-        Over time, the file grows and the AI becomes more precise.
+        like —an incorrect pattern, a library it does not use— add a rule. Over
+        time, the file grows and the AI becomes more precise.
       </BlogP>
       <BlogCallout type="done">
-        Keep AGENTS.md updated. It is an investment: each new rule
-        prevents future errors.
+        Keep AGENTS.md updated. It is an investment: each new rule prevents
+        future errors.
       </BlogCallout>
 
       <BlogH2>Step 2: The design system (DESIGN.md)</BlogH2>
       <BlogP>
-        If your project has a user interface, you need a DESIGN.md. This
-        file unifies the color palette, typography, spacing, and
-        components so the AI generates visually coherent code.
+        If your project has a user interface, you need a DESIGN.md. This file
+        unifies the color palette, typography, spacing, and components so the AI
+        generates visually coherent code.
       </BlogP>
 
       <BlogH3>What to include</BlogH3>
@@ -550,8 +549,8 @@ export default function AIContent() {
         for text".
       </BlogP>
       <BlogP>
-        If you change your mind about a color later, update the DESIGN.md
-        and ask the AI to apply the change across all components.
+        If you change your mind about a color later, update the DESIGN.md and
+        ask the AI to apply the change across all components.
       </BlogP>
 
       <BlogH2>Step 3: Supplementary files</BlogH2>
@@ -691,8 +690,8 @@ export default function AIContent() {
                     </div>
                     <p className="text-xs text-[#1d1d1f] dark:text-white/90 leading-relaxed">
                       Copy this prompt and paste it into your AI assistant to
-                      generate the <strong>{file.name}</strong> file by analyzing
-                      your real project:
+                      generate the <strong>{file.name}</strong> file by
+                      analyzing your real project:
                     </p>
                     <div className="relative mt-3">
                       <pre className="bg-[#0d1117] rounded-xl p-4 overflow-x-auto text-xs leading-relaxed [&>code]:text-[#e6edf3] pr-12">
@@ -714,22 +713,21 @@ export default function AIContent() {
 
       <BlogH2>Step 4: How to talk to the AI</BlogH2>
       <BlogP>
-        Context files are the <strong>what</strong>, but you also need
-        the <strong>how</strong>. The way you ask things of the AI
-        determines the quality of the result.
+        Context files are the <strong>what</strong>, but you also need the{" "}
+        <strong>how</strong>. The way you ask things of the AI determines the
+        quality of the result.
       </BlogP>
 
       <BlogH3>Basic principles</BlogH3>
       <BlogUl>
         <BlogLi>
-          <strong>Be specific</strong> — "Add a save button" ← "Add
-          a save button in the top right corner of the form, primary color,
-          check icon, disabled while submitting"
+          <strong>Be specific</strong> — "Add a save button" ← "Add a save
+          button in the top right corner of the form, primary color, check icon,
+          disabled while submitting"
         </BlogLi>
         <BlogLi>
-          <strong>One thing at a time</strong> — AIs work better with
-          atomic tasks. "Create the login form" is better than "Build the
-          whole app"
+          <strong>One thing at a time</strong> — AIs work better with atomic
+          tasks. "Create the login form" is better than "Build the whole app"
         </BlogLi>
         <BlogLi>
           <strong>Give context</strong> — "Create a ProductCard component
@@ -738,8 +736,8 @@ export default function AIContent() {
         </BlogLi>
         <BlogLi>
           <strong>Correct and refine</strong> — If the AI generates something
-          incorrect, tell it. "The button should be outline, not primary" —
-          the AI learns from each correction
+          incorrect, tell it. "The button should be outline, not primary" — the
+          AI learns from each correction
         </BlogLi>
         <BlogLi>
           <strong>Use references</strong> — "Look at the file
@@ -750,22 +748,21 @@ export default function AIContent() {
       <BlogH3>What to avoid</BlogH3>
       <BlogUl>
         <BlogLi>
-          <strong>Open-ended tasks</strong> — "Make the app look better"
-          gives no useful direction
+          <strong>Open-ended tasks</strong> — "Make the app look better" gives
+          no useful direction
         </BlogLi>
         <BlogLi>
-          <strong>Conflicting instructions</strong> — "Be creative but
-          follow the rules to the letter" confuses the AI
+          <strong>Conflicting instructions</strong> — "Be creative but follow
+          the rules to the letter" confuses the AI
         </BlogLi>
         <BlogLi>
-          <strong>Changing topic constantly</strong> — Each new topic
-          partially resets the context. Finish one task before starting
-          another
+          <strong>Changing topic constantly</strong> — Each new topic partially
+          resets the context. Finish one task before starting another
         </BlogLi>
         <BlogLi>
-          <strong>Assuming it remembers</strong> — The AI has no memory
-          between sessions. Everything it needs to know must be in the
-          context files or the current message
+          <strong>Assuming it remembers</strong> — The AI has no memory between
+          sessions. Everything it needs to know must be in the context files or
+          the current message
         </BlogLi>
       </BlogUl>
 
@@ -782,8 +779,8 @@ export default function AIContent() {
 
       <BlogOl>
         <BlogLi>
-          <strong>Open the project</strong> — the AI reads AGENTS.md and DESIGN.md
-          automatically
+          <strong>Open the project</strong> — the AI reads AGENTS.md and
+          DESIGN.md automatically
         </BlogLi>
         <BlogLi>
           <strong>Give a concrete task</strong> — "Create the Navbar component
@@ -794,12 +791,12 @@ export default function AIContent() {
           review it
         </BlogLi>
         <BlogLi>
-          <strong>Correct if needed</strong> — "Change the hover color
-          to primary-600"
+          <strong>Correct if needed</strong> — "Change the hover color to
+          primary-600"
         </BlogLi>
         <BlogLi>
-          <strong>Update the state</strong> — mark the task as completed
-          in MEMORY.md
+          <strong>Update the state</strong> — mark the task as completed in
+          MEMORY.md
         </BlogLi>
         <BlogLi>
           <strong>Repeat</strong> — next task
@@ -808,18 +805,17 @@ export default function AIContent() {
 
       <BlogH3>Context management</BlogH3>
       <BlogP>
-        Each AI session has a token limit (typically 100k–200k). If
-        you work on a large project, the context fills up quickly. Strategies
-        to manage it:
+        Each AI session has a token limit (typically 100k–200k). If you work on
+        a large project, the context fills up quickly. Strategies to manage it:
       </BlogP>
       <BlogUl>
         <BlogLi>
-          <strong>Divide work into thematic sessions</strong> — one session
-          for backend, another for frontend
+          <strong>Divide work into thematic sessions</strong> — one session for
+          backend, another for frontend
         </BlogLi>
         <BlogLi>
-          <strong>Keep a MEMORY.md</strong> — summary of current state for
-          the AI to catch up quickly
+          <strong>Keep a MEMORY.md</strong> — summary of current state for the
+          AI to catch up quickly
         </BlogLi>
         <BlogLi>
           <strong>Use AGENTS.md for stable rules</strong> — only rules that do
@@ -850,45 +846,43 @@ export default function AIContent() {
           consistent tokens and dark mode
         </BlogLi>
         <BlogLi>
-          <strong>State files</strong> — project-state.md with completed
-          and pending tasks
+          <strong>State files</strong> — project-state.md with completed and
+          pending tasks
         </BlogLi>
       </BlogUl>
 
       <BlogP>
         Every time I start a new session with the AI, it already knows what
-        stack I use, how I structure the code, and what colors the brand has.
-        I do not have to repeat anything.
+        stack I use, how I structure the code, and what colors the brand has. I
+        do not have to repeat anything.
       </BlogP>
 
       <BlogCallout type="done">
-        The key is not having the most powerful AI, but knowing how to
-        direct it. With good context files, even a small model delivers
-        excellent results. Without context, even the largest model gets it
-        wrong.
+        The key is not having the most powerful AI, but knowing how to direct
+        it. With good context files, even a small model delivers excellent
+        results. Without context, even the largest model gets it wrong.
       </BlogCallout>
 
       <BlogH2>Summary</BlogH2>
       <BlogUl>
         <BlogLi>
-          Create an <strong>AGENTS.md</strong> or <strong>CLAUDE.md</strong> with
-          the project rules and stack
+          Create an <strong>AGENTS.md</strong> or <strong>CLAUDE.md</strong>{" "}
+          with the project rules and stack
         </BlogLi>
         <BlogLi>
           Create a <strong>DESIGN.md</strong> with design tokens (colors,
           typography, spacing, components)
         </BlogLi>
         <BlogLi>
-          Add supplementary files based on project size
-          (MEMORY.md, ARCHITECTURE.md, API.md)
+          Add supplementary files based on project size (MEMORY.md,
+          ARCHITECTURE.md, API.md)
         </BlogLi>
         <BlogLi>
-          Be specific in your instructions: a concrete task, enough
-          context, references to existing files
+          Be specific in your instructions: a concrete task, enough context,
+          references to existing files
         </BlogLi>
         <BlogLi>
-          Update context files constantly — each new rule
-          prevents future errors
+          Update context files constantly — each new rule prevents future errors
         </BlogLi>
         <BlogLi>
           Divide work into thematic sessions and manage the token limit

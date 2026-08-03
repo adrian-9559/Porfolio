@@ -16,9 +16,7 @@ export default function SettingsPage() {
           <h1 className="text-2xl font-semibold text-foreground">
             {t("settings.title")}
           </h1>
-          <p className="text-sm text-muted mt-1">
-            {t("settings.subtitle")}
-          </p>
+          <p className="text-sm text-muted mt-1">{t("settings.subtitle")}</p>
         </div>
         <SettingsProfile />
       </div>

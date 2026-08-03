@@ -157,9 +157,7 @@ export function UserNotificationsSection() {
       {loading && (
         <div className="flex items-center gap-2">
           <span className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
-          <span className="text-sm text-muted">
-            Cargando…
-          </span>
+          <span className="text-sm text-muted">Cargando…</span>
         </div>
       )}
       {error && (
@@ -186,9 +184,7 @@ export function UserNotificationsSection() {
       {/* List */}
       {filtered.length === 0 ? (
         <div className="rounded-2xl border border-border bg-surface py-16 text-center">
-          <p className="text-sm text-muted">
-            No hay notificaciones
-          </p>
+          <p className="text-sm text-muted">No hay notificaciones</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -227,9 +223,7 @@ export function UserNotificationsSection() {
                   <p className="text-sm font-medium text-foreground">
                     {n.title}
                   </p>
-                  <p className="text-xs text-muted mt-0.5">
-                    {n.body}
-                  </p>
+                  <p className="text-xs text-muted mt-0.5">{n.body}</p>
                 </div>
 
                 <div className="flex items-center gap-1 shrink-0">

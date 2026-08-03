@@ -1,10 +1,12 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { dataTableService, type DataTable } from "@/services/dataTableService";
+
 import { DataTableList } from "./DataTableList";
 import { DataTableGrid } from "./DataTableGrid";
 import { CsvImportModal } from "./CsvImportModal";
 import { DataTableMembersModal } from "./DataTableMembersModal";
+
+import { dataTableService, type DataTable } from "@/services/dataTableService";
 
 type View = "list" | "detail";
 
@@ -22,6 +24,7 @@ export function UserTablesSection() {
     setError(null);
     try {
       const data = await dataTableService.list();
+
       setTables(data);
     } catch (err: any) {
       setError(err?.message ?? "Error al cargar tablas");
@@ -70,7 +73,10 @@ export function UserTablesSection() {
         <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">
           Tablas dinámicas
         </h2>
-        <button onClick={() => setShowImport(true)} className="apple-btn-primary text-sm py-1.5 px-3">
+        <button
+          className="apple-btn-primary text-sm py-1.5 px-3"
+          onClick={() => setShowImport(true)}
+        >
           + Nueva tabla
         </button>
       </div>
@@ -78,18 +84,27 @@ export function UserTablesSection() {
       {error && (
         <div className="mb-4 p-4 rounded-xl bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 text-sm">
           {error}
-          <button onClick={fetchTables} className="ml-2 underline">Reintentar</button>
+          <button className="ml-2 underline" onClick={fetchTables}>
+            Reintentar
+          </button>
         </div>
       )}
 
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-16 rounded-xl bg-gray-100 dark:bg-[#1a1a1f] animate-pulse" />
+            <div
+              key={i}
+              className="h-16 rounded-xl bg-gray-100 dark:bg-[#1a1a1f] animate-pulse"
+            />
           ))}
         </div>
       ) : (
-        <DataTableList tables={tables} onOpen={openTable} onRefresh={fetchTables} />
+        <DataTableList
+          tables={tables}
+          onOpen={openTable}
+          onRefresh={fetchTables}
+        />
       )}
 
       {showImport && (

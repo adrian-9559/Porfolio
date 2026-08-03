@@ -3,8 +3,8 @@ import type { UserWithProfile } from "@/types/auth";
 
 import { useState } from "react";
 import { Button } from "@heroui/react";
-import { useT } from "@/hooks/useT";
 
+import { useT } from "@/hooks/useT";
 import { userService } from "@/services/userService";
 import { authService } from "@/services/authService";
 
@@ -37,7 +37,9 @@ export function AdminUserModal({ user, open, onClose }: Props) {
       await userService.updateProfile(user.id, { full_name: fullName, bio });
       setSuccess(t("admin.userModalSaved"));
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : t("admin.userModalSaveError"));
+      setError(
+        err instanceof Error ? err.message : t("admin.userModalSaveError"),
+      );
     } finally {
       setLoadingSave(false);
     }
@@ -52,7 +54,9 @@ export function AdminUserModal({ user, open, onClose }: Props) {
       setSuccess(t("admin.userModalConfirmSent"));
     } catch (err: unknown) {
       setError(
-        err instanceof Error ? err.message : t("admin.userModalConfirmSendError"),
+        err instanceof Error
+          ? err.message
+          : t("admin.userModalConfirmSendError"),
       );
     } finally {
       setLoadingConfirm(false);
@@ -67,7 +71,11 @@ export function AdminUserModal({ user, open, onClose }: Props) {
       await authService.adminConfirmEmail(user.id);
       setSuccess(t("admin.userModalConfirmedManually"));
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : t("admin.userModalConfirmManualError"));
+      setError(
+        err instanceof Error
+          ? err.message
+          : t("admin.userModalConfirmManualError"),
+      );
     } finally {
       setLoadingManualConfirm(false);
     }
@@ -150,7 +158,7 @@ export function AdminUserModal({ user, open, onClose }: Props) {
           )}
 
           {/* Perfil */}
-            <section className="flex flex-col gap-3">
+          <section className="flex flex-col gap-3">
             <h3 className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
               {t("admin.userModalProfile")}
             </h3>
@@ -170,7 +178,10 @@ export function AdminUserModal({ user, open, onClose }: Props) {
                 onChange={(e) => setBio(e.target.value)}
               />
             </div>
-            <ReadonlyField label={t("admin.userModalEmail")} value={user.email} />
+            <ReadonlyField
+              label={t("admin.userModalEmail")}
+              value={user.email}
+            />
             {user.profile?.created_at && (
               <ReadonlyField
                 label={t("admin.userModalRegDate")}
@@ -196,7 +207,9 @@ export function AdminUserModal({ user, open, onClose }: Props) {
                   </span>
                 ))
               ) : (
-                <span className="text-xs text-[#aeaeb2]">{t("admin.userModalNoRoles")}</span>
+                <span className="text-xs text-[#aeaeb2]">
+                  {t("admin.userModalNoRoles")}
+                </span>
               )}
             </div>
           </section>
@@ -224,7 +237,9 @@ export function AdminUserModal({ user, open, onClose }: Props) {
               variant="tertiary"
               onPress={handleChangePassword}
             >
-              {loadingPassword ? t("admin.userModalChanging") : t("admin.userModalChangePasswordBtn")}
+              {loadingPassword
+                ? t("admin.userModalChanging")
+                : t("admin.userModalChangePasswordBtn")}
             </Button>
           </section>
 
@@ -244,7 +259,9 @@ export function AdminUserModal({ user, open, onClose }: Props) {
                   variant="tertiary"
                   onPress={handleResendConfirmation}
                 >
-                  {loadingConfirm ? t("admin.userModalSending") : t("admin.userModalResendConfirm")}
+                  {loadingConfirm
+                    ? t("admin.userModalSending")
+                    : t("admin.userModalResendConfirm")}
                 </Button>
                 <Button
                   className="flex-1"
@@ -271,7 +288,9 @@ export function AdminUserModal({ user, open, onClose }: Props) {
             variant="primary"
             onPress={handleSave}
           >
-            {loadingSave ? t("admin.userModalSaving") : t("admin.userModalSave")}
+            {loadingSave
+              ? t("admin.userModalSaving")
+              : t("admin.userModalSave")}
           </Button>
         </div>
       </div>

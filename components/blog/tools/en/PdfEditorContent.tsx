@@ -136,9 +136,7 @@ export default function PdfEditorContent() {
       setEditPreviews(editUrls);
       setPdfPageSizes(sizes);
     } catch {
-      setError(
-        "Could not load the PDF. Make sure it is a valid PDF file.",
-      );
+      setError("Could not load the PDF. Make sure it is a valid PDF file.");
     } finally {
       setLoading(false);
     }
@@ -878,8 +876,8 @@ export default function PdfEditorContent() {
           PDF Editor
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Upload a PDF to edit its pages: add text, shapes, rotation, and
-          more. All in the browser.
+          Upload a PDF to edit its pages: add text, shapes, rotation, and more.
+          All in the browser.
         </p>
       </div>
 

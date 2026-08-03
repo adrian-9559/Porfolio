@@ -8,10 +8,9 @@ import {
   allContent,
   searchContent,
   filterContent,
-  getLatestContent,
   getContentByType,
   formatDate,
-  typeSlug,
+  contentHref,
   ContentMeta,
   ContentType,
 } from "@/lib/blog/registry";
@@ -22,17 +21,19 @@ import {
   type LearningPathId,
 } from "@/lib/blog/taxonomy";
 import { LevelBadge } from "@/components/blog/TaxonomyMeta";
+import { CampusPromoBanner } from "@/components/blog/CampusPromoBanner";
 import {
   IconArticle,
-  IconTutorial,
   IconTool,
   IconSearch,
   IconClose,
   IconExternal,
 } from "@/components/blog/shared";
 
+type BlogContentType = Exclude<ContentType, "tutorial">;
+
 const typeConfig: Record<
-  ContentType,
+  BlogContentType,
   {
     labelKey: string;
     icon: React.ReactNode;
@@ -54,16 +55,6 @@ const typeConfig: Record<
       "from-amber-50 via-orange-50 to-yellow-50 dark:from-amber-950/20 dark:via-orange-950/15 dark:to-yellow-950/10",
     icon: <IconArticle className="w-4 h-4" />,
   },
-  tutorial: {
-    labelKey: "blog.type.tutorials",
-    href: "/blog/tutoriales",
-    pill: "text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/50",
-    cardAccent: "from-blue-400 to-cyan-400",
-    iconBg: "bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400",
-    gradient:
-      "from-blue-50 via-cyan-50 to-sky-50 dark:from-blue-950/20 dark:via-cyan-950/15 dark:to-sky-950/10",
-    icon: <IconTutorial className="w-4 h-4" />,
-  },
   tool: {
     labelKey: "blog.type.tools",
     href: "/blog/herramientas",
@@ -77,6 +68,9 @@ const typeConfig: Record<
   },
 };
 
+const cfgFor = (type: ContentType) =>
+  typeConfig[type as BlogContentType];
+
 function ContentCard({
   item,
   showType = false,
@@ -85,12 +79,12 @@ function ContentCard({
   showType?: boolean;
 }) {
   const { t } = useT();
-  const cfg = typeConfig[item.type];
+  const cfg = cfgFor(item.type);
 
   return (
     <Link
       className="block group relative overflow-hidden rounded-2xl bg-surface border-border hover:border-black/15 dark:hover:border-white/12 hover:shadow-lg hover:shadow-black/8 dark:hover:shadow-black/30 transition-all duration-300 no-underline motion-safe:transition-all"
-      href={`/blog/${typeSlug(item.type)}/${item.slug}`}
+      href={contentHref(item.type, item.slug)}
     >
       <div
         aria-hidden="true"
@@ -115,9 +109,7 @@ function ContentCard({
             <span className="text-xs text-muted/60 font-medium">
               {item.category}
             </span>
-            <span className="text-xs text-muted/60">
-              · {item.readTime}
-            </span>
+            <span className="text-xs text-muted/60">· {item.readTime}</span>
           </div>
           {item.level && <LevelBadge level={item.level} size="xs" />}
         </div>
@@ -133,7 +125,7 @@ function ContentCard({
             {formatDate(item.publishedAt)}
           </span>
           <span
-            className={`text-xs font-semibold ${item.type === "article" ? "text-amber-600 dark:text-amber-400" : item.type === "tutorial" ? "text-blue-600 dark:text-blue-400" : "text-violet-600 dark:text-violet-400"} group-hover:translate-x-0.5 transition-transform motion-safe:transition-transform inline-block`}
+            className={`text-xs font-semibold ${item.type === "article" ? "text-amber-600 dark:text-amber-400" : "text-violet-600 dark:text-violet-400"} group-hover:translate-x-0.5 transition-transform motion-safe:transition-transform inline-block`}
           >
             {item.type === "tool" ? t("blog.exploreLink") : t("blog.readLink")}
           </span>
@@ -150,12 +142,20 @@ export default function BlogHome() {
     "all",
   );
   const [activePath, setActivePath] = useState<LearningPathId | "all">("all");
-  const latest = getLatestContent();
+  const latest = useMemo(
+    () =>
+      allContent
+        .filter((c) => c.type !== "tutorial")
+        .reduce((latestItem, item) =>
+          item.publishedAt > latestItem.publishedAt ? item : latestItem,
+        ),
+    [],
+  );
 
   const searchResults = useMemo(() => {
     if (!query.trim()) return [];
 
-    return searchContent(query);
+    return searchContent(query).filter((c) => c.type !== "tutorial");
   }, [query]);
 
   const isSearching = query.trim().length > 0;
@@ -167,11 +167,10 @@ export default function BlogHome() {
     return filterContent({
       level: activeLevel !== "all" ? activeLevel : undefined,
       learningPath: activePath !== "all" ? activePath : undefined,
-    });
+    }).filter((c) => c.type !== "tutorial");
   }, [activeLevel, activePath, isFiltering]);
 
   const articles = getContentByType("article").slice(0, 4);
-  const tutorials = getContentByType("tutorial").slice(0, 4);
   const tools = getContentByType("tool").slice(0, 4);
 
   return (
@@ -214,7 +213,9 @@ export default function BlogHome() {
               style={{ letterSpacing: "-0.04em", lineHeight: 1.05 }}
             >
               {t("blog.headerLine1")}
-              <span className="block hero-gradient-text">{t("blog.headerLine2")}</span>
+              <span className="block hero-gradient-text">
+                {t("blog.headerLine2")}
+              </span>
             </h1>
             <p className="text-base md:text-lg text-muted max-w-lg mx-auto leading-relaxed">
               {t("blog.subtitle")}
@@ -225,7 +226,7 @@ export default function BlogHome() {
         {/* ── Category stat cards ── */}
         <section
           aria-labelledby="categories-title"
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
           <h2 className="sr-only" id="categories-title">
             {t("blog.srCategories")}
@@ -249,9 +250,7 @@ export default function BlogHome() {
                 </span>
               </div>
               <p className={`font-bold text-base ${s.text}`}>{t(s.labelKey)}</p>
-              <p className="text-xs text-muted/60 mt-0.5">
-                {t(s.subKey)}
-              </p>
+              <p className="text-xs text-muted/60 mt-0.5">{t(s.subKey)}</p>
               <div className="mt-3 flex items-center gap-1">
                 <span
                   className={`text-xs font-semibold ${s.text} group-hover:translate-x-0.5 transition-transform inline-block motion-safe:transition-transform`}
@@ -266,6 +265,9 @@ export default function BlogHome() {
             </Link>
           ))}
         </section>
+
+        {/* ── Campus promo ── */}
+        <CampusPromoBanner />
 
         {/* ── Global search ── */}
         <section aria-labelledby="search-title" className="max-w-2xl mx-auto">
@@ -385,14 +387,14 @@ export default function BlogHome() {
                   role="listbox"
                 >
                   {searchResults.map((item) => {
-                    const cfg = typeConfig[item.type];
+                    const cfg = cfgFor(item.type);
 
                     return (
                       <Link
                         key={item.id}
                         aria-selected={false}
                         className="flex items-start gap-4 px-5 py-4 hover:bg-default transition-colors no-underline group"
-                        href={`/blog/${typeSlug(item.type)}/${item.slug}`}
+                        href={contentHref(item.type, item.slug)}
                         role="option"
                         onClick={() => setQuery("")}
                       >
@@ -446,12 +448,12 @@ export default function BlogHome() {
                     className="text-xs font-bold text-muted/60 uppercase tracking-widest"
                     id="filtered-title"
                   >
-                    {filteredContent.length} {filteredContent.length === 1 ? t("blog.result") : t("blog.results")}
+                    {filteredContent.length}{" "}
+                    {filteredContent.length === 1
+                      ? t("blog.result")
+                      : t("blog.results")}
                   </h2>
-                  <span
-                    aria-hidden="true"
-                    className="flex-1 h-px bg-default"
-                  />
+                  <span aria-hidden="true" className="flex-1 h-px bg-default" />
                   <button
                     className="text-xs font-semibold text-violet-600 dark:text-violet-400 hover:underline"
                     onClick={() => {
@@ -479,9 +481,7 @@ export default function BlogHome() {
                         />
                       </svg>
                     </div>
-                    <p className="text-sm text-muted">
-                      {t("blog.noContent")}
-                    </p>
+                    <p className="text-sm text-muted">{t("blog.noContent")}</p>
                   </div>
                 ) : (
                   <div
@@ -508,34 +508,29 @@ export default function BlogHome() {
                     <IconArticle className="w-3.5 h-3.5 text-amber-400" />
                     {t("blog.lastPublished")}
                   </h2>
-                  <span
-                    aria-hidden="true"
-                    className="flex-1 h-px bg-default"
-                  />
+                  <span aria-hidden="true" className="flex-1 h-px bg-default" />
                 </div>
                 <Link
-                  className={`block group relative overflow-hidden rounded-3xl bg-gradient-to-br ${typeConfig[latest.type].gradient} border ${
+                  className={`block group relative overflow-hidden rounded-3xl bg-gradient-to-br ${cfgFor(latest.type).gradient} border ${
                     latest.type === "article"
                       ? "border-amber-200 dark:border-amber-800/40"
-                      : latest.type === "tutorial"
-                        ? "border-blue-200 dark:border-blue-800/40"
-                        : "border-violet-200 dark:border-violet-800/40"
+                      : "border-violet-200 dark:border-violet-800/40"
                   } hover:shadow-2xl hover:scale-[1.005] transition-all duration-300 no-underline motion-safe:transition-all`}
-                  href={`/blog/${typeSlug(latest.type)}/${latest.slug}`}
+                  href={contentHref(latest.type, latest.slug)}
                 >
                   <div
                     aria-hidden="true"
-                    className={`h-1.5 w-full bg-gradient-to-r ${typeConfig[latest.type].cardAccent}`}
+                    className={`h-1.5 w-full bg-gradient-to-r ${cfgFor(latest.type).cardAccent}`}
                   />
                   <div className="p-7 md:p-9">
                     <div className="flex items-start justify-between gap-6">
                       <div className="space-y-4 flex-1">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${typeConfig[latest.type].pill}`}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${cfgFor(latest.type).pill}`}
                           >
-                            {typeConfig[latest.type].icon}
-                            {t(typeConfig[latest.type].labelKey)}
+                            {cfgFor(latest.type).icon}
+                            {t(cfgFor(latest.type).labelKey)}
                           </span>
                           <span
                             aria-hidden="true"
@@ -584,15 +579,13 @@ export default function BlogHome() {
                       </div>
                       <div
                         aria-hidden="true"
-                        className={`flex-shrink-0 w-14 h-14 rounded-2xl ${typeConfig[latest.type].iconBg} border ${
+                        className={`flex-shrink-0 w-14 h-14 rounded-2xl ${cfgFor(latest.type).iconBg} border ${
                           latest.type === "article"
                             ? "border-amber-200 dark:border-amber-800/40"
-                            : latest.type === "tutorial"
-                              ? "border-blue-200 dark:border-blue-800/40"
-                              : "border-violet-200 dark:border-violet-800/40"
+                            : "border-violet-200 dark:border-violet-800/40"
                         } flex items-center justify-center group-hover:scale-110 transition-transform duration-300 motion-safe:transition-transform`}
                       >
-                        {typeConfig[latest.type].icon}
+                        {cfgFor(latest.type).icon}
                       </div>
                     </div>
                   </div>
@@ -600,7 +593,7 @@ export default function BlogHome() {
               </section>
             )}
 
-            {/* Sections: Articles, Tutorials, Tools */}
+            {/* Sections: Articles, Tools */}
             {!isFiltering && articles.length > 0 && (
               <ContentSection
                 accentColor="amber"
@@ -610,18 +603,6 @@ export default function BlogHome() {
                 items={articles}
                 title={t("blog.type.articles")}
                 total={allContent.filter((c) => c.type === "article").length}
-              />
-            )}
-
-            {!isFiltering && tutorials.length > 0 && (
-              <ContentSection
-                accentColor="blue"
-                href="/blog/tutoriales"
-                icon={typeConfig.tutorial.icon}
-                iconBg={typeConfig.tutorial.iconBg}
-                items={tutorials}
-                title={t("blog.type.tutorials")}
-                total={allContent.filter((c) => c.type === "tutorial").length}
               />
             )}
 
@@ -725,19 +706,6 @@ const CATEGORY_STATS = [
     iconColor: "text-amber-600 dark:text-amber-400",
     subKey: "blog.categoryArticlesDesc",
     icon: <IconArticle className="w-5 h-5" />,
-  },
-  {
-    labelKey: "blog.type.tutorials",
-    href: "/blog/tutoriales",
-    countKey: "tutorial",
-    gradient: "from-blue-400 to-cyan-500",
-    bg: "from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/20",
-    border: "border-blue-200 dark:border-blue-800/40",
-    text: "text-blue-700 dark:text-blue-300",
-    iconBg: "bg-blue-100 dark:bg-blue-950/50",
-    iconColor: "text-blue-600 dark:text-blue-400",
-    subKey: "blog.categoryTutorialsDesc",
-    icon: <IconTutorial className="w-5 h-5" />,
   },
   {
     labelKey: "blog.type.tools",

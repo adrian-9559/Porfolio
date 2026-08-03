@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Input } from "@heroui/react";
+
 import {
   financesService,
   type FinancialBudget,
@@ -41,6 +42,7 @@ const MONTH_NAMES: Record<string, string> = {
 
 function fmtMonth(month: string): string {
   const parts = month.split("-");
+
   return `${MONTH_NAMES[parts[1]] ?? parts[1]} ${parts[0]}`;
 }
 
@@ -55,6 +57,7 @@ function fmtCurrency(amount: number): string {
 
 function fmtPercent(part: number, total: number): number {
   if (total === 0) return 0;
+
   return Math.min(Math.round((part / total) * 100), 100);
 }
 
@@ -101,7 +104,9 @@ export function UserFinancesSection() {
   const [showBudgetModal, setShowBudgetModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [showSubModal, setShowSubModal] = useState(false);
-  const [editingBudget, setEditingBudget] = useState<FinancialBudget | null>(null);
+  const [editingBudget, setEditingBudget] = useState<FinancialBudget | null>(
+    null,
+  );
   const [editingGoal, setEditingGoal] = useState<FinancialGoal | null>(null);
   const [editingSub, setEditingSub] = useState<Subscription | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -125,7 +130,9 @@ export function UserFinancesSection() {
 
   const [sfName, setSfName] = useState("");
   const [sfAmount, setSfAmount] = useState("");
-  const [sfFreq, setSfFreq] = useState<"monthly" | "yearly" | "weekly" | "quarterly">("monthly");
+  const [sfFreq, setSfFreq] = useState<
+    "monthly" | "yearly" | "weekly" | "quarterly"
+  >("monthly");
   const [sfNext, setSfNext] = useState("");
   const [sfCategory, setSfCategory] = useState("other");
   const [sfProvider, setSfProvider] = useState("");
@@ -136,12 +143,15 @@ export function UserFinancesSection() {
     setLoading(true);
     setError(null);
     try {
-      const [summaryData, budgetsData, goalsData, subsData] = await Promise.all([
-        financesService.getSummary(),
-        financesService.listBudgets(),
-        financesService.listGoals(),
-        financesService.listSubscriptions(),
-      ]);
+      const [summaryData, budgetsData, goalsData, subsData] = await Promise.all(
+        [
+          financesService.getSummary(),
+          financesService.listBudgets(),
+          financesService.listGoals(),
+          financesService.listSubscriptions(),
+        ],
+      );
+
       setSummary(summaryData);
       setBudgets(budgetsData);
       setGoals(goalsData);
@@ -178,6 +188,7 @@ export function UserFinancesSection() {
         period: bfPeriod,
         category_id: bfCategory || null,
       };
+
       if (editingBudget) {
         await financesService.updateBudget(editingBudget.id, payload);
       } else {
@@ -222,6 +233,7 @@ export function UserFinancesSection() {
         icon: gfIcon,
         color: gfColor,
       };
+
       if (editingGoal) {
         await financesService.updateGoal(editingGoal.id, payload);
       } else {
@@ -266,6 +278,7 @@ export function UserFinancesSection() {
         category: sfCategory,
         provider: sfProvider,
       };
+
       if (editingSub) {
         await financesService.updateSubscription(editingSub.id, payload);
       } else {
@@ -299,6 +312,7 @@ export function UserFinancesSection() {
   const handleConfirmDelete = async () => {
     if (!confirmDelete) return;
     const { id, type } = confirmDelete;
+
     setConfirmDelete(null);
     try {
       if (type === "budget") await financesService.deleteBudget(id);
@@ -324,7 +338,10 @@ export function UserFinancesSection() {
     return (
       <div className="p-6 text-center">
         <p className="text-red-500 mb-3">{error}</p>
-        <button onClick={fetchAll} className="apple-btn-primary text-sm py-2 px-4">
+        <button
+          className="apple-btn-primary text-sm py-2 px-4"
+          onClick={fetchAll}
+        >
           Reintentar
         </button>
       </div>
@@ -346,12 +363,12 @@ export function UserFinancesSection() {
         {TABS.map((t) => (
           <button
             key={t.id}
-            onClick={() => setTab(t.id)}
             className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
               tab === t.id
                 ? "bg-white dark:bg-[#1d1d1f] text-[#1d1d1f] dark:text-white shadow-sm"
                 : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
             }`}
+            onClick={() => setTab(t.id)}
           >
             {t.label}
           </button>
@@ -360,7 +377,12 @@ export function UserFinancesSection() {
 
       {/* ── Overview tab ───────────────────────────────────────────────────── */}
       {tab === "overview" && (
-        <OverviewTab summary={summary} budgets={budgets} goals={goals} subscriptions={subscriptions} />
+        <OverviewTab
+          budgets={budgets}
+          goals={goals}
+          subscriptions={subscriptions}
+          summary={summary}
+        />
       )}
 
       {/* ── Budgets tab ────────────────────────────────────────────────────── */}
@@ -368,8 +390,8 @@ export function UserFinancesSection() {
         <div>
           <div className="flex justify-end mb-4">
             <button
-              onClick={() => openBudgetForm()}
               className="apple-btn-primary text-sm py-1.5 px-3"
+              onClick={() => openBudgetForm()}
             >
               + Presupuesto
             </button>
@@ -385,6 +407,7 @@ export function UserFinancesSection() {
               {budgets.map((b) => {
                 const pct = fmtPercent(b.spent ?? 0, b.amount);
                 const over = (b.spent ?? 0) > b.amount;
+
                 return (
                   <div
                     key={b.id}
@@ -402,14 +425,14 @@ export function UserFinancesSection() {
                       </div>
                       <div className="flex gap-1">
                         <button
-                          onClick={() => openBudgetForm(b)}
                           className="text-xs text-[#6e6e73] hover:text-blue-500 px-1.5 py-0.5"
+                          onClick={() => openBudgetForm(b)}
                         >
                           Editar
                         </button>
                         <button
-                          onClick={() => handleDeleteBudget(b.id)}
                           className="text-xs text-[#6e6e73] hover:text-red-500 px-1.5 py-0.5"
+                          onClick={() => handleDeleteBudget(b.id)}
                         >
                           Eliminar
                         </button>
@@ -431,7 +454,9 @@ export function UserFinancesSection() {
                       <span>
                         {fmtCurrency(b.spent ?? 0)} de {fmtCurrency(b.amount)}
                       </span>
-                      <span className={over ? "text-red-500 font-semibold" : ""}>
+                      <span
+                        className={over ? "text-red-500 font-semibold" : ""}
+                      >
                         {pct}%
                       </span>
                     </div>
@@ -447,7 +472,10 @@ export function UserFinancesSection() {
       {tab === "goals" && (
         <div>
           <div className="flex justify-end mb-4">
-            <button onClick={() => openGoalForm()} className="apple-btn-primary text-sm py-1.5 px-3">
+            <button
+              className="apple-btn-primary text-sm py-1.5 px-3"
+              onClick={() => openGoalForm()}
+            >
               + Meta
             </button>
           </div>
@@ -462,6 +490,7 @@ export function UserFinancesSection() {
               {goals.map((g) => {
                 const pct = fmtPercent(g.current_amount, g.target_amount);
                 const achieved = g.achieved || pct >= 100;
+
                 return (
                   <div
                     key={g.id}
@@ -485,14 +514,14 @@ export function UserFinancesSection() {
                       </div>
                       <div className="flex gap-1">
                         <button
-                          onClick={() => openGoalForm(g)}
                           className="text-xs text-[#6e6e73] hover:text-blue-500 px-1.5 py-0.5"
+                          onClick={() => openGoalForm(g)}
                         >
                           Editar
                         </button>
                         <button
-                          onClick={() => handleDeleteGoal(g.id)}
                           className="text-xs text-[#6e6e73] hover:text-red-500 px-1.5 py-0.5"
+                          onClick={() => handleDeleteGoal(g.id)}
                         >
                           Eliminar
                         </button>
@@ -508,9 +537,14 @@ export function UserFinancesSection() {
                     </div>
                     <div className="flex justify-between text-xs text-[#6e6e73] dark:text-[#86868b]">
                       <span>
-                        {fmtCurrency(g.current_amount)} de {fmtCurrency(g.target_amount)}
+                        {fmtCurrency(g.current_amount)} de{" "}
+                        {fmtCurrency(g.target_amount)}
                       </span>
-                      <span className={achieved ? "text-emerald-500 font-semibold" : ""}>
+                      <span
+                        className={
+                          achieved ? "text-emerald-500 font-semibold" : ""
+                        }
+                      >
                         {achieved ? "\u2713 Completado" : `${pct}%`}
                       </span>
                     </div>
@@ -527,8 +561,8 @@ export function UserFinancesSection() {
         <div>
           <div className="flex justify-end mb-4">
             <button
-              onClick={() => openSubForm()}
               className="apple-btn-primary text-sm py-1.5 px-3"
+              onClick={() => openSubForm()}
             >
               + Suscripci\u00F3n
             </button>
@@ -547,6 +581,7 @@ export function UserFinancesSection() {
                 const daysUntil = Math.ceil(
                   (nextDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24),
                 );
+
                 return (
                   <div
                     key={s.id}
@@ -569,7 +604,8 @@ export function UserFinancesSection() {
                           </div>
                           <div className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5">
                             {s.provider && `${s.provider} \u00B7 `}
-                            {fmtCurrency(s.amount)}/{FREQ_LABELS[s.frequency] ?? s.frequency}
+                            {fmtCurrency(s.amount)}/
+                            {FREQ_LABELS[s.frequency] ?? s.frequency}
                           </div>
                         </div>
                       </div>
@@ -593,25 +629,25 @@ export function UserFinancesSection() {
                           </div>
                         </div>
                         <button
-                          onClick={() => toggleSubActive(s)}
                           className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-medium transition-all ${
                             s.active
                               ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
                               : "bg-gray-100 dark:bg-[#1a1a1f] text-[#6e6e73]"
                           }`}
                           title={s.active ? "Desactivar" : "Activar"}
+                          onClick={() => toggleSubActive(s)}
                         >
                           {s.active ? "\u2713" : "\u2715"}
                         </button>
                         <button
-                          onClick={() => openSubForm(s)}
                           className="text-xs text-[#6e6e73] hover:text-blue-500 px-1.5 py-0.5"
+                          onClick={() => openSubForm(s)}
                         >
                           Editar
                         </button>
                         <button
-                          onClick={() => handleDeleteSub(s.id)}
                           className="text-xs text-[#6e6e73] hover:text-red-500 px-1.5 py-0.5"
+                          onClick={() => handleDeleteSub(s.id)}
                         >
                           Eliminar
                         </button>
@@ -638,10 +674,10 @@ export function UserFinancesSection() {
                   Nombre
                 </label>
                 <Input
+                  disabled={submitting}
                   placeholder="Ej: Ocio mensual"
                   value={bfName}
                   onChange={(e) => setBfName(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div>
@@ -649,18 +685,20 @@ export function UserFinancesSection() {
                   Cantidad
                 </label>
                 <Input
+                  disabled={submitting}
                   placeholder="0.00"
                   type="number"
                   value={bfAmount}
                   onChange={(e) => setBfAmount(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <select
-                value={bfPeriod}
-                onChange={(e) => setBfPeriod(e.target.value as "monthly" | "yearly")}
                 className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-[#1d1d1f] dark:text-white text-sm"
                 disabled={submitting}
+                value={bfPeriod}
+                onChange={(e) =>
+                  setBfPeriod(e.target.value as "monthly" | "yearly")
+                }
               >
                 <option value="monthly">Mensual</option>
                 <option value="yearly">Anual</option>
@@ -668,20 +706,24 @@ export function UserFinancesSection() {
             </div>
             <div className="flex justify-end gap-3 mt-6">
               <button
+                className="apple-btn-secondary text-sm py-2 px-4"
                 onClick={() => {
                   setShowBudgetModal(false);
                   setEditingBudget(null);
                 }}
-                className="apple-btn-secondary text-sm py-2 px-4"
               >
                 Cancelar
               </button>
               <button
-                onClick={handleSaveBudget}
-                disabled={submitting || !bfName.trim() || !bfAmount}
                 className="apple-btn-primary text-sm py-2 px-4"
+                disabled={submitting || !bfName.trim() || !bfAmount}
+                onClick={handleSaveBudget}
               >
-                {submitting ? "Guardando..." : editingBudget ? "Guardar cambios" : "Crear"}
+                {submitting
+                  ? "Guardando..."
+                  : editingBudget
+                    ? "Guardar cambios"
+                    : "Crear"}
               </button>
             </div>
           </div>
@@ -701,10 +743,10 @@ export function UserFinancesSection() {
                   Nombre
                 </label>
                 <Input
+                  disabled={submitting}
                   placeholder="Ej: Viaje a Jap\u00F3n"
                   value={gfName}
                   onChange={(e) => setGfName(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div>
@@ -712,11 +754,11 @@ export function UserFinancesSection() {
                   Cantidad objetivo
                 </label>
                 <Input
+                  disabled={submitting}
                   placeholder="0.00"
                   type="number"
                   value={gfTarget}
                   onChange={(e) => setGfTarget(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div>
@@ -724,11 +766,11 @@ export function UserFinancesSection() {
                   Ahorrado actualmente
                 </label>
                 <Input
+                  disabled={submitting}
                   placeholder="0.00"
                   type="number"
                   value={gfCurrent}
                   onChange={(e) => setGfCurrent(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div>
@@ -736,46 +778,57 @@ export function UserFinancesSection() {
                   Fecha l\u00EDmite (opcional)
                 </label>
                 <Input
+                  disabled={submitting}
                   type="date"
                   value={gfDate}
                   onChange={(e) => setGfDate(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div className="flex gap-2">
-                {["target", "home", "car", "travel", "education", "savings", "gift", "health"].map(
-                  (icon) => (
-                    <button
-                      key={icon}
-                      onClick={() => setGfIcon(icon)}
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-all ${
-                        gfIcon === icon
-                          ? "bg-blue-100 dark:bg-blue-900/30 ring-2 ring-blue-500"
-                          : "bg-gray-100 dark:bg-[#1a1a1f] hover:bg-gray-200 dark:hover:bg-[#2a2a2f]"
-                      }`}
-                    >
-                      {GOAL_ICONS[icon] ?? "\u{1F3AF}"}
-                    </button>
-                  ),
-                )}
+                {[
+                  "target",
+                  "home",
+                  "car",
+                  "travel",
+                  "education",
+                  "savings",
+                  "gift",
+                  "health",
+                ].map((icon) => (
+                  <button
+                    key={icon}
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-all ${
+                      gfIcon === icon
+                        ? "bg-blue-100 dark:bg-blue-900/30 ring-2 ring-blue-500"
+                        : "bg-gray-100 dark:bg-[#1a1a1f] hover:bg-gray-200 dark:hover:bg-[#2a2a2f]"
+                    }`}
+                    onClick={() => setGfIcon(icon)}
+                  >
+                    {GOAL_ICONS[icon] ?? "\u{1F3AF}"}
+                  </button>
+                ))}
               </div>
             </div>
             <div className="flex justify-end gap-3 mt-6">
               <button
+                className="apple-btn-secondary text-sm py-2 px-4"
                 onClick={() => {
                   setShowGoalModal(false);
                   setEditingGoal(null);
                 }}
-                className="apple-btn-secondary text-sm py-2 px-4"
               >
                 Cancelar
               </button>
               <button
-                onClick={handleSaveGoal}
-                disabled={submitting || !gfName.trim() || !gfTarget}
                 className="apple-btn-primary text-sm py-2 px-4"
+                disabled={submitting || !gfName.trim() || !gfTarget}
+                onClick={handleSaveGoal}
               >
-                {submitting ? "Guardando..." : editingGoal ? "Guardar cambios" : "Crear"}
+                {submitting
+                  ? "Guardando..."
+                  : editingGoal
+                    ? "Guardar cambios"
+                    : "Crear"}
               </button>
             </div>
           </div>
@@ -787,7 +840,9 @@ export function UserFinancesSection() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-white dark:bg-[#1a1a1f] rounded-2xl p-6 max-w-md mx-4 shadow-2xl w-full">
             <h3 className="text-lg font-semibold text-[#1d1d1f] dark:text-white mb-4">
-              {editingSub ? "Editar suscripci\u00F3n" : "Nueva suscripci\u00F3n"}
+              {editingSub
+                ? "Editar suscripci\u00F3n"
+                : "Nueva suscripci\u00F3n"}
             </h3>
             <div className="space-y-3">
               <div>
@@ -795,10 +850,10 @@ export function UserFinancesSection() {
                   Nombre
                 </label>
                 <Input
+                  disabled={submitting}
                   placeholder="Ej: Netflix"
                   value={sfName}
                   onChange={(e) => setSfName(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div className="flex gap-2">
@@ -808,11 +863,11 @@ export function UserFinancesSection() {
                       Importe
                     </label>
                     <Input
+                      disabled={submitting}
                       placeholder="0.00"
                       type="number"
                       value={sfAmount}
                       onChange={(e) => setSfAmount(e.target.value)}
-                      disabled={submitting}
                     />
                   </div>
                 </div>
@@ -821,12 +876,18 @@ export function UserFinancesSection() {
                     Per\u00EDodo
                   </label>
                   <select
-                    value={sfFreq}
-                    onChange={(e) =>
-                      setSfFreq(e.target.value as "monthly" | "yearly" | "weekly" | "quarterly")
-                    }
                     className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-[#1d1d1f] dark:text-white text-sm"
                     disabled={submitting}
+                    value={sfFreq}
+                    onChange={(e) =>
+                      setSfFreq(
+                        e.target.value as
+                          | "monthly"
+                          | "yearly"
+                          | "weekly"
+                          | "quarterly",
+                      )
+                    }
                   >
                     <option value="monthly">/mes</option>
                     <option value="yearly">/a\u00F1o</option>
@@ -840,10 +901,10 @@ export function UserFinancesSection() {
                   Pr\u00F3ximo cobro
                 </label>
                 <Input
+                  disabled={submitting}
                   type="date"
                   value={sfNext}
                   onChange={(e) => setSfNext(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div>
@@ -851,17 +912,17 @@ export function UserFinancesSection() {
                   Proveedor (opcional)
                 </label>
                 <Input
+                  disabled={submitting}
                   placeholder="Spotify AB"
                   value={sfProvider}
                   onChange={(e) => setSfProvider(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <select
-                value={sfCategory}
-                onChange={(e) => setSfCategory(e.target.value)}
                 className="w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-[#1d1d1f] dark:text-white text-sm"
                 disabled={submitting}
+                value={sfCategory}
+                onChange={(e) => setSfCategory(e.target.value)}
               >
                 <option value="streaming">Streaming</option>
                 <option value="hosting">Hosting</option>
@@ -873,20 +934,24 @@ export function UserFinancesSection() {
             </div>
             <div className="flex justify-end gap-3 mt-6">
               <button
+                className="apple-btn-secondary text-sm py-2 px-4"
                 onClick={() => {
                   setShowSubModal(false);
                   setEditingSub(null);
                 }}
-                className="apple-btn-secondary text-sm py-2 px-4"
               >
                 Cancelar
               </button>
               <button
-                onClick={handleSaveSub}
-                disabled={submitting || !sfName.trim() || !sfAmount || !sfNext}
                 className="apple-btn-primary text-sm py-2 px-4"
+                disabled={submitting || !sfName.trim() || !sfAmount || !sfNext}
+                onClick={handleSaveSub}
               >
-                {submitting ? "Guardando..." : editingSub ? "Guardar cambios" : "Crear"}
+                {submitting
+                  ? "Guardando..."
+                  : editingSub
+                    ? "Guardar cambios"
+                    : "Crear"}
               </button>
             </div>
           </div>
@@ -906,14 +971,14 @@ export function UserFinancesSection() {
             </p>
             <div className="flex justify-end gap-3">
               <button
-                onClick={() => setConfirmDelete(null)}
                 className="apple-btn-secondary text-sm py-2 px-4"
+                onClick={() => setConfirmDelete(null)}
               >
                 Cancelar
               </button>
               <button
-                onClick={handleConfirmDelete}
                 className="apple-btn-primary text-sm py-2 px-4 !bg-red-500 hover:!bg-red-600"
+                onClick={handleConfirmDelete}
               >
                 Eliminar
               </button>
@@ -951,24 +1016,24 @@ function OverviewTab({
       {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <SummaryCard
+          color="text-blue-500"
           label="Presupuestos activos"
           value={String(summary?.activeBudgets ?? 0)}
-          color="text-blue-500"
         />
         <SummaryCard
+          color="text-emerald-500"
           label="Metas de ahorro"
           value={String(summary?.activeGoals ?? 0)}
-          color="text-emerald-500"
         />
         <SummaryCard
+          color="text-purple-500"
           label="Suscripciones"
           value={`${activeSubs}${activeSubs < subscriptions.length ? `/${subscriptions.length}` : ""}`}
-          color="text-purple-500"
         />
         <SummaryCard
+          color="text-amber-500"
           label="Suscripciones/mes"
           value={fmtCurrency(totalMonthlySubs)}
-          color="text-amber-500"
         />
       </div>
 
@@ -981,8 +1046,12 @@ function OverviewTab({
           <div className="flex items-end gap-3 h-32">
             {summary.monthlySpending.map((m) => {
               const height = (m.total / maxSpending) * 100;
+
               return (
-                <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
+                <div
+                  key={m.month}
+                  className="flex-1 flex flex-col items-center gap-1"
+                >
                   <span className="text-[10px] text-[#6e6e73] dark:text-[#86868b]">
                     {fmtCurrency(m.total)}
                   </span>
@@ -1012,6 +1081,7 @@ function OverviewTab({
             {budgets.slice(0, 4).map((b) => {
               const pct = fmtPercent(b.spent ?? 0, b.amount);
               const over = (b.spent ?? 0) > b.amount;
+
               return (
                 <div key={b.id}>
                   <div className="flex justify-between text-xs text-[#1d1d1f] dark:text-white mb-1">
@@ -1042,12 +1112,14 @@ function OverviewTab({
           <div className="space-y-3">
             {goals.slice(0, 4).map((g) => {
               const pct = fmtPercent(g.current_amount, g.target_amount);
+
               return (
                 <div key={g.id}>
                   <div className="flex justify-between text-xs text-[#1d1d1f] dark:text-white mb-1">
                     <span>{g.name}</span>
                     <span>
-                      {fmtCurrency(g.current_amount)} / {fmtCurrency(g.target_amount)}
+                      {fmtCurrency(g.current_amount)} /{" "}
+                      {fmtCurrency(g.target_amount)}
                     </span>
                   </div>
                   <div className="h-1.5 rounded-full bg-gray-100 dark:bg-[#1a1a1f] overflow-hidden">
@@ -1078,7 +1150,9 @@ function SummaryCard({
   return (
     <div className="p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
       <div className={`text-2xl font-bold ${color} mb-1`}>{value}</div>
-      <div className="text-[11px] text-[#6e6e73] dark:text-[#86868b]">{label}</div>
+      <div className="text-[11px] text-[#6e6e73] dark:text-[#86868b]">
+        {label}
+      </div>
     </div>
   );
 }

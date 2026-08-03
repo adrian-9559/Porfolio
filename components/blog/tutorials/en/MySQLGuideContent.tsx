@@ -29,8 +29,7 @@ function ExerciseCard({
 }) {
   const [open, setOpen] = useState(false);
   const levelColor = {
-    Easy:
-      "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
+    Easy: "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
     Intermediate:
       "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
     Hard: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
@@ -189,9 +188,7 @@ sudo systemctl start mysql`}</BlogCode>
 
       <BlogH2 id="first-commands">First Commands</BlogH2>
 
-      <BlogP>
-        Connect to the MySQL server as root and start exploring:
-      </BlogP>
+      <BlogP>Connect to the MySQL server as root and start exploring:</BlogP>
 
       <BlogCode>{`mysql -u root -p
 -- It will prompt for the password you set
@@ -209,9 +206,8 @@ SHOW TABLES;
 DESCRIBE table_name;`}</BlogCode>
 
       <BlogCallout type="warn">
-        <strong>Never use root in production.</strong> Always create a
-        dedicated user with the minimum privileges required for each
-        application.
+        <strong>Never use root in production.</strong> Always create a dedicated
+        user with the minimum privileges required for each application.
       </BlogCallout>
 
       <BlogH2 id="data-types">MySQL Data Types</BlogH2>
@@ -223,8 +219,7 @@ DESCRIBE table_name;`}</BlogCode>
 
       <BlogUl>
         <BlogLi>
-          <strong>Numeric:</strong>{" "}
-          <BlogInlineCode>INT</BlogInlineCode>,{" "}
+          <strong>Numeric:</strong> <BlogInlineCode>INT</BlogInlineCode>,{" "}
           <BlogInlineCode>BIGINT</BlogInlineCode>,{" "}
           <BlogInlineCode>DECIMAL(10,2)</BlogInlineCode>,{" "}
           <BlogInlineCode>FLOAT</BlogInlineCode>,{" "}
@@ -239,8 +234,7 @@ DESCRIBE table_name;`}</BlogCode>
           <BlogInlineCode>ENUM('a','b')</BlogInlineCode>
         </BlogLi>
         <BlogLi>
-          <strong>Date/Time:</strong>{" "}
-          <BlogInlineCode>DATETIME</BlogInlineCode>,{" "}
+          <strong>Date/Time:</strong> <BlogInlineCode>DATETIME</BlogInlineCode>,{" "}
           <BlogInlineCode>TIMESTAMP</BlogInlineCode>,{" "}
           <BlogInlineCode>DATE</BlogInlineCode>,{" "}
           <BlogInlineCode>TIME</BlogInlineCode>,{" "}
@@ -266,8 +260,8 @@ DESCRIBE table_name;`}</BlogCode>
       <BlogH2 id="create-table">CREATE TABLE with MySQL specifics</BlogH2>
 
       <BlogP>
-        Creating tables in MySQL includes storage-engine-specific options.
-        Here is a complete example:
+        Creating tables in MySQL includes storage-engine-specific options. Here
+        is a complete example:
       </BlogP>
 
       <BlogCode>{`CREATE TABLE productos (
@@ -286,9 +280,9 @@ DESCRIBE table_name;`}</BlogCode>
 
       <BlogUl>
         <BlogLi>
-          <strong>InnoDB</strong> — the default engine since MySQL 5.5.
-            Supports transactions (ACID), foreign keys, row-level locking, and
-            crash recovery. Recommended for most use cases.
+          <strong>InnoDB</strong> — the default engine since MySQL 5.5. Supports
+          transactions (ACID), foreign keys, row-level locking, and crash
+          recovery. Recommended for most use cases.
         </BlogLi>
         <BlogLi>
           <strong>MyISAM</strong> — older engine, no transactions or FKs, but
@@ -308,11 +302,10 @@ DESCRIBE table_name;`}</BlogCode>
       </BlogP>
 
       <BlogCallout type="tip">
-        <strong>Best practices when creating tables:</strong> always use
-        InnoDB + utf8mb4. Explicitly define{" "}
-        <BlogInlineCode>NOT NULL</BlogInlineCode> on required fields and set
-        sensible defaults. This prevents surprises and improves query
-        performance.
+        <strong>Best practices when creating tables:</strong> always use InnoDB
+        + utf8mb4. Explicitly define <BlogInlineCode>NOT NULL</BlogInlineCode>{" "}
+        on required fields and set sensible defaults. This prevents surprises
+        and improves query performance.
       </BlogCallout>
 
       <BlogH2 id="example-schema">Complete Example Schema</BlogH2>
@@ -383,9 +376,9 @@ LIMIT 10;`}</BlogCode>
 
       <BlogUl>
         <BlogLi>
-          <strong>MySQL Workbench</strong> — the official Oracle tool.
-            Includes ER modeling, server administration, and a query editor.
-            Free and cross-platform.
+          <strong>MySQL Workbench</strong> — the official Oracle tool. Includes
+          ER modeling, server administration, and a query editor. Free and
+          cross-platform.
         </BlogLi>
         <BlogLi>
           <strong>TablePlus</strong> — a modern client with a clean interface.
@@ -412,11 +405,10 @@ LIMIT 10;`}</BlogCode>
 
       <div className="space-y-3" id="exercises">
         <ExerciseCard
-          num={1}
-          title="Create database and table"
-          level="Easy"
           description="Create a database called 'blog' and inside it a table 'articulos' with fields: id (auto-increment integer), titulo (VARCHAR 200), contenido (TEXT), publicado (BOOLEAN default FALSE), and creado_en (TIMESTAMP)."
           hint="Use CREATE DATABASE, then USE, then CREATE TABLE. For BOOLEAN use TINYINT(1) or BOOL."
+          level="Easy"
+          num={1}
           solution={`CREATE DATABASE blog;
 USE blog;
 
@@ -427,28 +419,28 @@ CREATE TABLE articulos (
   publicado BOOL DEFAULT FALSE,
   creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`}
+          title="Create database and table"
         />
 
         <ExerciseCard
-          num={2}
-          title="INSERT with real data"
-          level="Easy"
           description="Insert at least 3 articles into the 'articulos' table from the previous exercise. Vary the values: one published, one not, and one with an explicit date."
           hint="Use INSERT INTO articulos (col1, col2) VALUES (val1, val2). For explicit dates use 'YYYY-MM-DD HH:MM:SS'."
+          level="Easy"
+          num={2}
           solution={`INSERT INTO articulos (titulo, contenido, publicado, creado_en) VALUES
   ('Introduction to MySQL', 'Article content...', TRUE, DEFAULT),
   ('NoSQL Databases', 'Content...', FALSE, DEFAULT),
   ('History of SQL', 'Content...', TRUE, '2024-01-15 10:00:00');
 
 SELECT * FROM articulos;`}
+          title="INSERT with real data"
         />
 
         <ExerciseCard
-          num={3}
-          title="SELECT with 3-table JOIN"
-          level="Intermediate"
           description="Using the e-commerce schema (usuarios, pedidos, detalle_pedidos, productos), get the user name, product name, quantity, and unit price for all delivered orders."
           hint="You need JOINs across all 4 tables. Filter by estado = 'entregado' in the pedidos table."
+          level="Intermediate"
+          num={3}
           solution={`SELECT u.nombre AS usuario, pr.nombre AS producto,
        dp.cantidad, dp.precio_unitario
 FROM usuarios u
@@ -456,41 +448,43 @@ JOIN pedidos p ON u.id = p.usuario_id
 JOIN detalle_pedidos dp ON p.id = dp.pedido_id
 JOIN productos pr ON dp.producto_id = pr.id
 WHERE p.estado = 'entregado';`}
+          title="SELECT with 3-table JOIN"
         />
 
         <ExerciseCard
-          num={4}
-          title="Subquery with EXISTS"
-          level="Intermediate"
           description="Find all users who have placed at least one order. Use EXISTS instead of JOIN to practice correlated subqueries."
           hint="The subquery must reference the outer query's user id. EXISTS returns TRUE if the subquery returns any rows."
+          level="Intermediate"
+          num={4}
           solution={`SELECT u.id, u.nombre, u.email
 FROM usuarios u
 WHERE EXISTS (
   SELECT 1 FROM pedidos p WHERE p.usuario_id = u.id
 );`}
+          title="Subquery with EXISTS"
         />
 
         <ExerciseCard
-          num={5}
-          title="GROUP BY with ROLLUP"
-          level="Hard"
           description="Group sales by product category and show the total units sold, including a grand total subtotal using ROLLUP. Order the results."
           hint="ROLLUP is added after GROUP BY. With GROUP BY categoria, ROLLUP adds an extra row with the grand total where categoria is NULL."
+          level="Hard"
+          num={5}
           solution={`SELECT
   COALESCE(pr.categoria, 'TOTAL') AS categoria,
   SUM(dp.cantidad) AS unidades_vendidas
 FROM detalle_pedidos dp
 JOIN productos pr ON dp.producto_id = pr.id
 GROUP BY pr.categoria WITH ROLLUP;`}
+          title="GROUP BY with ROLLUP"
         />
 
         <ExerciseCard
-          num={6}
-          title="Export data with INTO OUTFILE"
-          level="Hard"
           description="Export the 'productos' table data to a CSV file on the server. The file should have comma-separated fields and each row on a new line. Then try importing it back with LOAD DATA INFILE."
-          hint={"INTO OUTFILE requires the FILE privilege. Specify FIELDS TERMINATED BY ',' and ENCLOSED BY '\"'. The path must be absolute and writable by the MySQL user."}
+          hint={
+            "INTO OUTFILE requires the FILE privilege. Specify FIELDS TERMINATED BY ',' and ENCLOSED BY '\"'. The path must be absolute and writable by the MySQL user."
+          }
+          level="Hard"
+          num={6}
           solution={`-- Export
 SELECT * FROM productos
 INTO OUTFILE '/tmp/productos_export.csv'
@@ -505,6 +499,7 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\\n'
 IGNORE 1 ROWS;`}
+          title="Export data with INTO OUTFILE"
         />
       </div>
 

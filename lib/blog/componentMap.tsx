@@ -52,6 +52,17 @@ import MongoDBGuideContent from "@/components/blog/tutorials/MongoDBGuideContent
 import SupabaseGuideContent from "@/components/blog/tutorials/SupabaseGuideContent";
 import SQLBuilderDocContent from "@/components/blog/tutorials/SQLBuilderDocContent";
 
+// New tutorials — ES
+import AngularContent from "@/components/blog/tutorials/AngularContent";
+import VueContent from "@/components/blog/tutorials/VueContent";
+import TailwindContent from "@/components/blog/tutorials/TailwindContent";
+import DockerContent from "@/components/blog/tutorials/DockerContent";
+import CICDContent from "@/components/blog/tutorials/CICDContent";
+import KubernetesContent from "@/components/blog/tutorials/KubernetesContent";
+import GoContent from "@/components/blog/tutorials/GoContent";
+import RustContent from "@/components/blog/tutorials/RustContent";
+import NestJsContent from "@/components/blog/tutorials/NestJsContent";
+
 // Tutorials — EN
 import SvgContentEn from "@/components/blog/tutorials/en/SvgContent";
 import DatabaseContentEn from "@/components/blog/tutorials/en/DatabaseContent";
@@ -101,6 +112,17 @@ import MongoDBGuideContentEn from "@/components/blog/tutorials/en/MongoDBGuideCo
 import SupabaseGuideContentEn from "@/components/blog/tutorials/en/SupabaseGuideContent";
 import SQLBuilderDocContentEn from "@/components/blog/tutorials/en/SQLBuilderDocContent";
 
+// New tutorials — EN
+import AngularContentEn from "@/components/blog/tutorials/en/AngularContent";
+import VueContentEn from "@/components/blog/tutorials/en/VueContent";
+import TailwindContentEn from "@/components/blog/tutorials/en/TailwindContent";
+import DockerContentEn from "@/components/blog/tutorials/en/DockerContent";
+import CICDContentEn from "@/components/blog/tutorials/en/CICDContent";
+import KubernetesContentEn from "@/components/blog/tutorials/en/KubernetesContent";
+import GoContentEn from "@/components/blog/tutorials/en/GoContent";
+import RustContentEn from "@/components/blog/tutorials/en/RustContent";
+import NestJsContentEn from "@/components/blog/tutorials/en/NestJsContent";
+
 // Tools — ES
 import PasswordContent from "@/components/blog/tools/PasswordContent";
 import JsonFormatterContent from "@/components/blog/tools/JsonFormatterContent";
@@ -143,10 +165,16 @@ const PdfEditorContentEn = dynamic(
   { ssr: false },
 );
 
-const contentMap: Record<string, { es: React.ComponentType; en: React.ComponentType }> = {
+const contentMap: Record<
+  string,
+  { es: React.ComponentType; en: React.ComponentType }
+> = {
   svg: { es: SvgContent, en: SvgContentEn },
   database: { es: DatabaseContent, en: DatabaseContentEn },
-  "frontend-hosting": { es: FrontendHostingContent, en: FrontendHostingContentEn },
+  "frontend-hosting": {
+    es: FrontendHostingContent,
+    en: FrontendHostingContentEn,
+  },
   "backend-hosting": { es: BackendHostingContent, en: BackendHostingContentEn },
   typescript: { es: TypeScriptContent, en: TypeScriptContentEn },
   "c-lang": { es: CLangContent, en: CLangContentEn },
@@ -157,7 +185,10 @@ const contentMap: Record<string, { es: React.ComponentType; en: React.ComponentT
   "java-poo": { es: JavaPooContent, en: JavaPooContentEn },
   "java-spring": { es: JavaSpringContent, en: JavaSpringContentEn },
   "html-css": { es: HtmlCssContent, en: HtmlCssContentEn },
-  "testing-frontend": { es: TestingFrontendContent, en: TestingFrontendContentEn },
+  "testing-frontend": {
+    es: TestingFrontendContent,
+    en: TestingFrontendContentEn,
+  },
   "react-framework": { es: ReactContent, en: ReactContentEn },
   "node-express": { es: NodeExpressContent, en: NodeExpressContentEn },
   "nextjs-framework": { es: NextJsContent, en: NextJsContentEn },
@@ -171,19 +202,34 @@ const contentMap: Record<string, { es: React.ComponentType; en: React.ComponentT
   "crear-mcp": { es: CreateMcpContent, en: CreateMcpContentEn },
   "clientes-mcp": { es: McpClientsContent, en: McpClientsContentEn },
   "seguridad-mcp": { es: McpSecurityContent, en: McpSecurityContentEn },
-  "frameworks-agentes": { es: AgentFrameworksContent, en: AgentFrameworksContentEn },
-  "plugins-ia-editor": { es: AiEditorPluginsContent, en: AiEditorPluginsContentEn },
+  "frameworks-agentes": {
+    es: AgentFrameworksContent,
+    en: AgentFrameworksContentEn,
+  },
+  "plugins-ia-editor": {
+    es: AiEditorPluginsContent,
+    en: AiEditorPluginsContentEn,
+  },
   "ollama-mcp": { es: OllamaMcpContent, en: OllamaMcpContentEn },
   "rag-con-mcp": { es: RagMcpContent, en: RagMcpContentEn },
-  "agentes-paralelo": { es: ParallelAgentsContent, en: ParallelAgentsContentEn },
+  "agentes-paralelo": {
+    es: ParallelAgentsContent,
+    en: ParallelAgentsContentEn,
+  },
   "opencode-models": { es: OpenCodeModelsContent, en: OpenCodeModelsContentEn },
   "vscode-config": { es: VSCodeConfigContent, en: VSCodeConfigContentEn },
-  "vscode-extensions": { es: VSCodeExtensionsContent, en: VSCodeExtensionsContentEn },
+  "vscode-extensions": {
+    es: VSCodeExtensionsContent,
+    en: VSCodeExtensionsContentEn,
+  },
   "database-intro": { es: DatabaseIntroContent, en: DatabaseIntroContentEn },
   "sql-vs-nosql": { es: SQLvsNoSQLContent, en: SQLvsNoSQLContentEn },
   "sql-basics": { es: SQLBasicsContent, en: SQLBasicsContentEn },
   "mysql-guide": { es: MySQLGuideContent, en: MySQLGuideContentEn },
-  "postgresql-guide": { es: PostgreSQLGuideContent, en: PostgreSQLGuideContentEn },
+  "postgresql-guide": {
+    es: PostgreSQLGuideContent,
+    en: PostgreSQLGuideContentEn,
+  },
   "mongodb-guide": { es: MongoDBGuideContent, en: MongoDBGuideContentEn },
   "supabase-guide": { es: SupabaseGuideContent, en: SupabaseGuideContentEn },
   password: { es: PasswordContent, en: PasswordContentEn },
@@ -191,19 +237,39 @@ const contentMap: Record<string, { es: React.ComponentType; en: React.ComponentT
   base64: { es: Base64Content, en: Base64ContentEn },
   "regex-tester": { es: RegexTesterContent, en: RegexTesterContentEn },
   "color-tool": { es: ColorToolContent, en: ColorToolContentEn },
-  "palette-generator": { es: PaletteGeneratorContent, en: PaletteGeneratorContentEn },
+  "palette-generator": {
+    es: PaletteGeneratorContent,
+    en: PaletteGeneratorContentEn,
+  },
   "qr-generator": { es: QrGeneratorContent, en: QrGeneratorContentEn },
   "uuid-generator": { es: UuidGeneratorContent, en: UuidGeneratorContentEn },
-  "timestamp-converter": { es: TimestampConverterContent, en: TimestampConverterContentEn },
+  "timestamp-converter": {
+    es: TimestampConverterContent,
+    en: TimestampConverterContentEn,
+  },
   "case-converter": { es: CaseConverterContent, en: CaseConverterContentEn },
   "diff-checker": { es: DiffCheckerContent, en: DiffCheckerContentEn },
   "pdf-editor": { es: PdfEditorContent, en: PdfEditorContentEn },
   "sql-builder": { es: SQLBuilderContent, en: SQLBuilderContentEn },
   "sql-builder-guide": { es: SQLBuilderDocContent, en: SQLBuilderDocContentEn },
+  angular: { es: AngularContent, en: AngularContentEn },
+  vue: { es: VueContent, en: VueContentEn },
+  "tailwind-css": { es: TailwindContent, en: TailwindContentEn },
+  docker: { es: DockerContent, en: DockerContentEn },
+  "ci-cd": { es: CICDContent, en: CICDContentEn },
+  kubernetes: { es: KubernetesContent, en: KubernetesContentEn },
+  go: { es: GoContent, en: GoContentEn },
+  rust: { es: RustContent, en: RustContentEn },
+  nestjs: { es: NestJsContent, en: NestJsContentEn },
 };
 
-export function getContentComponent(id: string, locale: Locale): React.ComponentType | null {
+export function getContentComponent(
+  id: string,
+  locale: Locale,
+): React.ComponentType | null {
   const entry = contentMap[id];
+
   if (!entry) return null;
+
   return entry[locale] ?? entry.es;
 }

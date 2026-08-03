@@ -59,8 +59,8 @@ export default function SQLvsNoSQLContent() {
       </h1>
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
-        Comparativa completa entre bases de datos relacionales y no relacionales:
-        diferencias, ventajas y cuándo usar cada una.
+        Comparativa completa entre bases de datos relacionales y no
+        relacionales: diferencias, ventajas y cuándo usar cada una.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -71,7 +71,8 @@ export default function SQLvsNoSQLContent() {
         Las bases de datos SQL (Structured Query Language) son el estándar
         tradicional. Organizan los datos en tablas con filas y columnas, donde
         cada tabla representa una entidad y las relaciones entre tablas se
-        definen mediante claves foráneas (<BlogInlineCode>FOREIGN KEY</BlogInlineCode>).
+        definen mediante claves foráneas (
+        <BlogInlineCode>FOREIGN KEY</BlogInlineCode>).
       </BlogP>
 
       <BlogH3>Esquema fijo</BlogH3>
@@ -99,23 +100,23 @@ CREATE TABLE orders (
 
       <BlogH3>Transacciones ACID</BlogH3>
       <BlogP>
-        Las bases de datos relacionales cumplen las propiedades ACID, lo que
-        las hace ideales para sistemas donde la integridad de los datos es
-        crítica:
+        Las bases de datos relacionales cumplen las propiedades ACID, lo que las
+        hace ideales para sistemas donde la integridad de los datos es crítica:
       </BlogP>
 
       <BlogUl>
         <BlogLi>
-          <strong>Atomicity:</strong> cada transacción se ejecuta completamente o
-          no se ejecuta. No hay estados intermedios.
+          <strong>Atomicity:</strong> cada transacción se ejecuta completamente
+          o no se ejecuta. No hay estados intermedios.
         </BlogLi>
         <BlogLi>
-          <strong>Consistency:</strong> las transacciones llevan la base de datos
-          de un estado válido a otro, respetando todas las restricciones.
+          <strong>Consistency:</strong> las transacciones llevan la base de
+          datos de un estado válido a otro, respetando todas las restricciones.
         </BlogLi>
         <BlogLi>
-          <strong>Isolation:</strong> las transacciones simultáneas no se afectan
-          entre sí. El resultado es el mismo que si se ejecutaran secuencialmente.
+          <strong>Isolation:</strong> las transacciones simultáneas no se
+          afectan entre sí. El resultado es el mismo que si se ejecutaran
+          secuencialmente.
         </BlogLi>
         <BlogLi>
           <strong>Durability:</strong> una vez confirmada, la transacción
@@ -184,14 +185,14 @@ db.users.insertOne({
       <BlogH3>BASE en lugar de ACID</BlogH3>
       <BlogP>
         La mayoría de sistemas NoSQL siguen el modelo BASE (Basically Available,
-        Soft state, Eventually consistent), que relaja la consistencia
-        inmediata a cambio de disponibilidad y tolerancia a particiones:
+        Soft state, Eventually consistent), que relaja la consistencia inmediata
+        a cambio de disponibilidad y tolerancia a particiones:
       </BlogP>
 
       <BlogUl>
         <BlogLi>
-          <strong>Basically Available:</strong> el sistema responde siempre, incluso
-          si algunos nodos fallan.
+          <strong>Basically Available:</strong> el sistema responde siempre,
+          incluso si algunos nodos fallan.
         </BlogLi>
         <BlogLi>
           <strong>Soft State:</strong> el estado puede cambiar sin entrada
@@ -402,9 +403,7 @@ db.users.insertOne({
         problema dentro del mismo sistema.
       </BlogP>
 
-      <BlogP>
-        Un ejemplo típico de arquitectura políglota:
-      </BlogP>
+      <BlogP>Un ejemplo típico de arquitectura políglota:</BlogP>
 
       <BlogUl>
         <BlogLi>
@@ -466,9 +465,9 @@ app.get('/products/:id', async (req, res) => {
 });`}</BlogCode>
 
       <BlogCallout type="done">
-        <strong>Regla práctica:</strong> SQL para lo que requiere consistencia
-        y relaciones. NoSQL para lo que requiere escalabilidad y flexibilidad.
-        La mayoría de proyectos necesitan ambos.
+        <strong>Regla práctica:</strong> SQL para lo que requiere consistencia y
+        relaciones. NoSQL para lo que requiere escalabilidad y flexibilidad. La
+        mayoría de proyectos necesitan ambos.
       </BlogCallout>
     </article>
   );

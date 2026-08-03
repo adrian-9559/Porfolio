@@ -660,13 +660,33 @@ export const LEARNING_PATHS: LearningPath[] = [
     steps: [
       { categoryId: "html", label: "HTML", labelKey: "blog.category.html" },
       { categoryId: "css", label: "CSS", labelKey: "blog.category.css" },
-      { categoryId: "javascript", label: "JavaScript", labelKey: "blog.category.javascript" },
-      { categoryId: "typescript", label: "TypeScript", labelKey: "blog.category.typescript" },
+      {
+        categoryId: "javascript",
+        label: "JavaScript",
+        labelKey: "blog.category.javascript",
+      },
+      {
+        categoryId: "typescript",
+        label: "TypeScript",
+        labelKey: "blog.category.typescript",
+      },
       { categoryId: "react", label: "React", labelKey: "blog.category.react" },
-      { categoryId: "nodejs", label: "Node.js", labelKey: "blog.category.nodejs" },
+      {
+        categoryId: "nodejs",
+        label: "Node.js",
+        labelKey: "blog.category.nodejs",
+      },
       { categoryId: "sql", label: "SQL", labelKey: "blog.category.sql" },
-      { categoryId: "rest-api", label: "APIs REST", labelKey: "blog.category.rest-apis" },
-      { categoryId: "clean-architecture", label: "Arquitectura", labelKey: "blog.category.clean-architecture" },
+      {
+        categoryId: "rest-api",
+        label: "APIs REST",
+        labelKey: "blog.category.rest-apis",
+      },
+      {
+        categoryId: "clean-architecture",
+        label: "Arquitectura",
+        labelKey: "blog.category.clean-architecture",
+      },
     ],
   },
   {
@@ -678,14 +698,42 @@ export const LEARNING_PATHS: LearningPath[] = [
     icon: "🔧",
     color: "from-emerald-500 to-teal-600",
     steps: [
-      { categoryId: "javascript", label: "JavaScript", labelKey: "blog.category.javascript" },
-      { categoryId: "typescript", label: "TypeScript", labelKey: "blog.category.typescript" },
-      { categoryId: "nodejs", label: "Node.js", labelKey: "blog.category.nodejs" },
-      { categoryId: "express", label: "Express", labelKey: "blog.category.express" },
+      {
+        categoryId: "javascript",
+        label: "JavaScript",
+        labelKey: "blog.category.javascript",
+      },
+      {
+        categoryId: "typescript",
+        label: "TypeScript",
+        labelKey: "blog.category.typescript",
+      },
+      {
+        categoryId: "nodejs",
+        label: "Node.js",
+        labelKey: "blog.category.nodejs",
+      },
+      {
+        categoryId: "express",
+        label: "Express",
+        labelKey: "blog.category.express",
+      },
       { categoryId: "sql", label: "SQL", labelKey: "blog.category.sql" },
-      { categoryId: "supabase", label: "Supabase", labelKey: "blog.category.supabase" },
-      { categoryId: "security", label: "Seguridad", labelKey: "blog.category.security" },
-      { categoryId: "clean-architecture", label: "Arquitectura", labelKey: "blog.category.clean-architecture" },
+      {
+        categoryId: "supabase",
+        label: "Supabase",
+        labelKey: "blog.category.supabase",
+      },
+      {
+        categoryId: "security",
+        label: "Seguridad",
+        labelKey: "blog.category.security",
+      },
+      {
+        categoryId: "clean-architecture",
+        label: "Arquitectura",
+        labelKey: "blog.category.clean-architecture",
+      },
     ],
   },
   {
@@ -699,10 +747,23 @@ export const LEARNING_PATHS: LearningPath[] = [
     steps: [
       { categoryId: "html", label: "HTML", labelKey: "blog.category.html" },
       { categoryId: "css", label: "CSS", labelKey: "blog.category.css" },
-      { categoryId: "javascript", label: "JavaScript", labelKey: "blog.category.javascript" },
-      { categoryId: "typescript", label: "TypeScript", labelKey: "blog.category.typescript" },
+      {
+        categoryId: "javascript",
+        label: "JavaScript",
+        labelKey: "blog.category.javascript",
+      },
+      {
+        categoryId: "typescript",
+        label: "TypeScript",
+        labelKey: "blog.category.typescript",
+      },
       { categoryId: "react", label: "React", labelKey: "blog.category.react" },
-      { categoryId: "optimización", label: "Optimización", labelKey: "blog.step.optimization", optional: true },
+      {
+        categoryId: "optimización",
+        label: "Optimización",
+        labelKey: "blog.step.optimization",
+        optional: true,
+      },
     ],
   },
   {
@@ -714,12 +775,29 @@ export const LEARNING_PATHS: LearningPath[] = [
     icon: "🤖",
     color: "from-fuchsia-500 to-purple-600",
     steps: [
-      { categoryId: "python", label: "Python", labelKey: "blog.category.python" },
+      {
+        categoryId: "python",
+        label: "Python",
+        labelKey: "blog.category.python",
+      },
       { categoryId: "rest-api", label: "APIs", labelKey: "blog.step.apis" },
-      { categoryId: "prompt-engineering", label: "Prompt Engineering", labelKey: "blog.category.prompt-engineering" },
-      { categoryId: "ai-agents", label: "AI Agents", labelKey: "blog.category.ai-agents" },
+      {
+        categoryId: "prompt-engineering",
+        label: "Prompt Engineering",
+        labelKey: "blog.category.prompt-engineering",
+      },
+      {
+        categoryId: "ai-agents",
+        label: "AI Agents",
+        labelKey: "blog.category.ai-agents",
+      },
       { categoryId: "llms", label: "LLMs", labelKey: "blog.category.llms" },
-      { categoryId: "automatización", label: "Automatización", labelKey: "blog.step.automation", optional: true },
+      {
+        categoryId: "automatización",
+        label: "Automatización",
+        labelKey: "blog.step.automation",
+        optional: true,
+      },
     ],
   },
   {
@@ -733,8 +811,16 @@ export const LEARNING_PATHS: LearningPath[] = [
     steps: [
       { categoryId: "linux", label: "Linux", labelKey: "blog.category.linux" },
       { categoryId: "git", label: "Git", labelKey: "blog.category.git" },
-      { categoryId: "docker", label: "Docker", labelKey: "blog.category.docker" },
-      { categoryId: "kubernetes", label: "Kubernetes", labelKey: "blog.category.kubernetes" },
+      {
+        categoryId: "docker",
+        label: "Docker",
+        labelKey: "blog.category.docker",
+      },
+      {
+        categoryId: "kubernetes",
+        label: "Kubernetes",
+        labelKey: "blog.category.kubernetes",
+      },
       { categoryId: "ci-cd", label: "CI/CD", labelKey: "blog.category.cicd" },
     ],
   },
@@ -748,7 +834,9 @@ export function getLevelLabelKey(level: DifficultyLevel): string {
   return LEVELS.find((l) => l.id === level)?.labelKey ?? "blog.level.beginner";
 }
 export function getLevelDescKey(level: DifficultyLevel): string {
-  return LEVELS.find((l) => l.id === level)?.descKey ?? "blog.level.beginnerDesc";
+  return (
+    LEVELS.find((l) => l.id === level)?.descKey ?? "blog.level.beginnerDesc"
+  );
 }
 
 // ── Content relationship types ────────────────────────────────────────────────

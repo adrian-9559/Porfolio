@@ -3,13 +3,8 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-import BlogLayout from "@/layouts/blog";
-import {
-  getContentByType,
-  formatDate,
-  typeSlug,
-  ContentMeta,
-} from "@/lib/blog/registry";
+import CampusLayout from "@/layouts/campus";
+import { getContentByType, formatDate, ContentMeta } from "@/lib/blog/registry";
 import { getContentComponent } from "@/lib/blog/componentMap";
 import {
   TaxonomyMetaStrip,
@@ -35,7 +30,7 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
   const Component = getContentComponent(meta.id, locale);
 
   return (
-    <BlogLayout
+    <CampusLayout
       seo={{
         title: meta.title,
         description: meta.description,
@@ -60,7 +55,7 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
               keywords: meta.tags?.join(", "),
               mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": `${siteConfig.url}/blog/${typeSlug(meta.type)}/${meta.slug}`,
+                "@id": `${siteConfig.url}/campus/tutoriales/${meta.slug}`,
               },
             }),
           }}
@@ -76,16 +71,16 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
         >
           <Link
             className="hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
-            href="/blog"
+            href="/"
           >
-            {t("blog.breadcrumb")}
+            Home
           </Link>
           <span aria-hidden="true">/</span>
           <Link
             className="hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
-            href="/blog/tutoriales"
+            href="/campus"
           >
-            {t("blog.type.tutorials")}
+            Campus
           </Link>
           <span aria-hidden="true">/</span>
           <span
@@ -122,7 +117,8 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
               ·
             </span>
             <span className="text-sm text-[#aeaeb2] dark:text-[#636366]">
-              {meta.readTime}{t("blog.readTimeSuffix")}
+              {meta.readTime}
+              {t("blog.readTimeSuffix")}
             </span>
           </div>
           <TaxonomyMetaStrip meta={meta} />
@@ -171,7 +167,7 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
         >
           <Link
             className="inline-flex items-center gap-2 text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
-            href="/blog/tutoriales"
+            href="/campus"
           >
             <IconChevronLeft className="w-4 h-4" />
             {t("blog.allTutorials")}
@@ -180,15 +176,15 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
             {prevMeta && (
               <Link
                 className="text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline truncate max-w-[180px]"
-                href={`/blog/tutoriales/${prevMeta.slug}`}
+                href={`/campus/tutoriales/${prevMeta.slug}`}
               >
                 ← {prevMeta.title}
               </Link>
             )}
             {nextMeta && (
               <Link
-                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors no-underline truncate max-w-[180px]"
-                href={`/blog/tutoriales/${nextMeta.slug}`}
+                className="text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors no-underline truncate max-w-[180px]"
+                href={`/campus/tutoriales/${nextMeta.slug}`}
               >
                 {nextMeta.title} →
               </Link>
@@ -196,7 +192,7 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
           </div>
         </nav>
       </div>
-    </BlogLayout>
+    </CampusLayout>
   );
 }
 

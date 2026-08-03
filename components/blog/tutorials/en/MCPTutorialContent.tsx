@@ -10,7 +10,7 @@ import {
   BlogP,
   BlogUl,
 } from "@/components/blog/shared";
-import { getContentByTag, typeSlug } from "@/lib/blog/registry";
+import { getContentByTag, contentHref } from "@/lib/blog/registry";
 
 export default function MCPTutorialContent() {
   const mcps = getContentByTag("mcp");
@@ -33,9 +33,9 @@ export default function MCPTutorialContent() {
         How to install MCP for AI agents
       </h1>
       <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-8">
-        Complete guide to the Model Context Protocol (MCP): what it is, how it works, and
-        how to configure MCP servers in OpenCode, Claude Code, and Cursor.
-        Includes 20 ready-to-use servers.
+        Complete guide to the Model Context Protocol (MCP): what it is, how it
+        works, and how to configure MCP servers in OpenCode, Claude Code, and
+        Cursor. Includes 20 ready-to-use servers.
       </p>
 
       <div className="h-px bg-black/8 dark:bg-white/8 mb-8" />
@@ -43,16 +43,16 @@ export default function MCPTutorialContent() {
       <BlogH2>What is MCP?</BlogH2>
       <BlogP>
         <strong>Model Context Protocol (MCP)</strong> is an open protocol
-        standardized by Anthropic that allows AI assistants
-        to connect with external tools — databases, file
-        systems, APIs, browsers — through a single contract.
+        standardized by Anthropic that allows AI assistants to connect with
+        external tools — databases, file systems, APIs, browsers — through a
+        single contract.
       </BlogP>
       <BlogP>
-        Think of MCP as <strong>USB-C for AI</strong>: a universal
-        connector where each MCP server is a peripheral that gives
-        superpowers to the assistant. Instead of each AI implementing its own
-        integration with GitHub, Postgres, or the file system, MCP unifies
-        everything under a single protocol.
+        Think of MCP as <strong>USB-C for AI</strong>: a universal connector
+        where each MCP server is a peripheral that gives superpowers to the
+        assistant. Instead of each AI implementing its own integration with
+        GitHub, Postgres, or the file system, MCP unifies everything under a
+        single protocol.
       </BlogP>
 
       <BlogH2>How it works</BlogH2>
@@ -63,9 +63,8 @@ export default function MCPTutorialContent() {
           Cursor, etc.) that connects to servers
         </BlogLi>
         <BlogLi>
-          <strong>MCP Server</strong> — a process that exposes tools,
-          resources, and resource templates that the
-          AI can use
+          <strong>MCP Server</strong> — a process that exposes tools, resources,
+          and resource templates that the AI can use
         </BlogLi>
         <BlogLi>
           <strong>Protocol</strong> — communication via JSON-RPC over stdio
@@ -74,27 +73,28 @@ export default function MCPTutorialContent() {
       </BlogUl>
       <BlogP>
         Each MCP server declares what tools it offers. For example, the
-        <strong> filesystem</strong> server exposes tools like <code>read_file</code>,
-        <code>write_file</code>, <code>list_directory</code>. The AI decides
-        when to call them based on the task.
+        <strong> filesystem</strong> server exposes tools like{" "}
+        <code>read_file</code>,<code>write_file</code>,{" "}
+        <code>list_directory</code>. The AI decides when to call them based on
+        the task.
       </BlogP>
 
       <BlogH3>Types of servers</BlogH3>
       <BlogUl>
         <BlogLi>
-          <strong>Local (stdio)</strong> — run as child processes. The
-          most common. E.g.: filesystem, github, sqlite
+          <strong>Local (stdio)</strong> — run as child processes. The most
+          common. E.g.: filesystem, github, sqlite
         </BlogLi>
         <BlogLi>
-          <strong>Remote (HTTP+SSE)</strong> — cloud servers
-          you connect to via URL. E.g.: Supabase, Stripe, Slack
+          <strong>Remote (HTTP+SSE)</strong> — cloud servers you connect to via
+          URL. E.g.: Supabase, Stripe, Slack
         </BlogLi>
       </BlogUl>
 
       <BlogH2>Installation in OpenCode</BlogH2>
       <BlogP>
-        OpenCode configures MCPs in the <code>opencode.json</code> file at
-        the project root. Each server is defined as an object with
+        OpenCode configures MCPs in the <code>opencode.json</code> file at the
+        project root. Each server is defined as an object with
         <code>command</code>, <code>args</code>, and <code>env</code>:
       </BlogP>
 
@@ -123,13 +123,12 @@ export default function MCPTutorialContent() {
       <BlogUl>
         <BlogLi>
           <strong>Local (recommended)</strong> — in the project's
-          <code>opencode.json</code>. MCPs are available
-          only in that project
+          <code>opencode.json</code>. MCPs are available only in that project
         </BlogLi>
         <BlogLi>
           <strong>Global</strong> — in
-          <code>~/.config/opencode/opencode.json</code>. MCPs are
-          available in all projects
+          <code>~/.config/opencode/opencode.json</code>. MCPs are available in
+          all projects
         </BlogLi>
       </BlogUl>
 
@@ -156,8 +155,9 @@ export default function MCPTutorialContent() {
 
       <BlogCallout type="tip">
         Most MCP servers are installed with
-        <code>npx -y @modelcontextprotocol/server-xxxx</code>. You don't need
-        to install anything manually. npx downloads and runs the package on the fly.
+        <code>npx -y @modelcontextprotocol/server-xxxx</code>. You don't need to
+        install anything manually. npx downloads and runs the package on the
+        fly.
       </BlogCallout>
 
       <BlogH2>Security and permissions</BlogH2>
@@ -187,22 +187,21 @@ export default function MCPTutorialContent() {
       <BlogH2>Troubleshooting</BlogH2>
       <BlogUl>
         <BlogLi>
-          <strong>MCP not showing up:</strong> verify that the command exists and
-          that the args are correct. Try running the command manually in
+          <strong>MCP not showing up:</strong> verify that the command exists
+          and that the args are correct. Try running the command manually in
           your terminal
         </BlogLi>
         <BlogLi>
-          <strong>Connection error:</strong> local servers
-          communicate via stdio. If the process fails to start, the MCP won't be
-          available
+          <strong>Connection error:</strong> local servers communicate via
+          stdio. If the process fails to start, the MCP won't be available
         </BlogLi>
         <BlogLi>
           <strong>Invalid token:</strong> verify that the environment variables
           are spelled correctly and that the tokens haven't expired
         </BlogLi>
         <BlogLi>
-          <strong>Logs:</strong> check the server output. Most
-          write errors to stderr that the client captures
+          <strong>Logs:</strong> check the server output. Most write errors to
+          stderr that the client captures
         </BlogLi>
       </BlogUl>
 
@@ -210,14 +209,14 @@ export default function MCPTutorialContent() {
       <BlogP>
         Once configured, open OpenCode and ask something like
         <em>"List the files in the current directory"</em> (uses filesystem) or
-        <em>"Search my repo for issues tagged as bug"</em> (uses GitHub). If
-        the assistant responds with real data, the MCP is working.
+        <em>"Search my repo for issues tagged as bug"</em> (uses GitHub). If the
+        assistant responds with real data, the MCP is working.
       </BlogP>
 
       <BlogCallout type="done">
-        MCP is the standard that is unifying the ecosystem of tools
-        for AI. Learning to configure it gives you access to a growing ecosystem
-        of ready-to-use servers.
+        MCP is the standard that is unifying the ecosystem of tools for AI.
+        Learning to configure it gives you access to a growing ecosystem of
+        ready-to-use servers.
       </BlogCallout>
 
       {mcps.length > 0 && (
@@ -232,7 +231,7 @@ export default function MCPTutorialContent() {
               <li key={m.slug}>
                 <Link
                   className="flex items-center gap-3 px-5 py-3 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors no-underline group"
-                  href={`/blog/${typeSlug(m.type)}/${m.slug}`}
+                  href={contentHref(m.type, m.slug)}
                 >
                   <span
                     aria-hidden="true"

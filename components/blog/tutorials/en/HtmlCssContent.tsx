@@ -62,9 +62,8 @@ function SectionIntro() {
 </body>
 </html>`}</BlogCode>
       <BlogCallout type="tip">
-        The <code>!DOCTYPE html</code> tells the browser to use standards
-        mode. Without it, the browser uses "quirks mode" which renders
-        unpredictably.
+        The <code>!DOCTYPE html</code> tells the browser to use standards mode.
+        Without it, the browser uses "quirks mode" which renders unpredictably.
       </BlogCallout>
     </>
   );
@@ -75,8 +74,8 @@ function SectionHtml() {
     <>
       <BlogH2>Essential HTML</BlogH2>
       <BlogP>
-        HTML (HyperText Markup Language) uses tags to structure
-        content. Each tag can have attributes.
+        HTML (HyperText Markup Language) uses tags to structure content. Each
+        tag can have attributes.
       </BlogP>
       <BlogCode>{`<!-- Document structure -->
 <!DOCTYPE html>
@@ -123,8 +122,8 @@ function SectionSemantica() {
     <>
       <BlogH2>Semantic HTML</BlogH2>
       <BlogP>
-        Semantic tags describe the meaning of content, not just
-        its appearance. They improve accessibility, SEO, and maintainability.
+        Semantic tags describe the meaning of content, not just its appearance.
+        They improve accessibility, SEO, and maintainability.
       </BlogP>
       <BlogCode>{`<!-- Semantic page structure -->
 <body>
@@ -159,8 +158,8 @@ function SectionSemantica() {
     </footer>
 </body>`}</BlogCode>
       <BlogCallout type="tip">
-        Use <code>&lt;div&gt;</code> only when no suitable semantic tag
-        exists. Think: is this navigation, an article, a section, a sidebar?
+        Use <code>&lt;div&gt;</code> only when no suitable semantic tag exists.
+        Think: is this navigation, an article, a section, a sidebar?
       </BlogCallout>
     </>
   );
@@ -171,8 +170,8 @@ function SectionCss() {
     <>
       <BlogH2>Basic CSS</BlogH2>
       <BlogP>
-        CSS (Cascading Style Sheets) controls presentation: colors,
-        typography, spacing, layout, and animations.
+        CSS (Cascading Style Sheets) controls presentation: colors, typography,
+        spacing, layout, and animations.
       </BlogP>
       <BlogCode>{`/* Selectors */
 element      { }         /* all <p> elements */
@@ -258,8 +257,8 @@ function SectionFlexbox() {
     <>
       <BlogH2>Flexbox</BlogH2>
       <BlogP>
-        Flexbox distributes space in one dimension (row or column). Ideal for
-        UI components, navigation bars, centering, and alignment.
+        Flexbox distributes space in one dimension (row or column). Ideal for UI
+        components, navigation bars, centering, and alignment.
       </BlogP>
       <BlogCode>{`/* Flex container */
 .container {
@@ -321,8 +320,8 @@ function SectionGrid() {
     <>
       <BlogH2>CSS Grid</BlogH2>
       <BlogP>
-        Grid works in two dimensions (rows and columns simultaneously).
-        Ideal for full page layouts and galleries.
+        Grid works in two dimensions (rows and columns simultaneously). Ideal
+        for full page layouts and galleries.
       </BlogP>
       <BlogCode>{`/* Basic grid */
 .grid {
@@ -357,7 +356,8 @@ function SectionGrid() {
       <BlogCallout type="tip">
         Use <code>auto-fit</code> or <code>auto-fill</code> with
         <code>minmax()</code> to create responsive grids without a single media
-        query. <code>auto-fill</code> creates empty tracks, <code>auto-fit</code>
+        query. <code>auto-fill</code> creates empty tracks,{" "}
+        <code>auto-fit</code>
         collapses them.
       </BlogCallout>
     </>
@@ -369,9 +369,8 @@ function SectionResponsive() {
     <>
       <BlogH2>Responsive design</BlogH2>
       <BlogP>
-        Responsive design adapts the interface to any screen size.
-        It's based on three pillars: flexible grid, fluid images, and media
-        queries.
+        Responsive design adapts the interface to any screen size. It's based on
+        three pillars: flexible grid, fluid images, and media queries.
       </BlogP>
       <BlogH3>Media queries</BlogH3>
       <BlogCode>{`/* Mobile-first — start with base styles (mobile) */
@@ -426,8 +425,8 @@ function SectionProyecto() {
     <>
       <BlogH2>Project: responsive profile card</BlogH2>
       <BlogP>
-        Build this profile card that adapts to any screen.
-        It combines Flexbox, Grid, CSS variables, and responsive design.
+        Build this profile card that adapts to any screen. It combines Flexbox,
+        Grid, CSS variables, and responsive design.
       </BlogP>
       <BlogCode>{`<!-- index.html -->
 <!DOCTYPE html>

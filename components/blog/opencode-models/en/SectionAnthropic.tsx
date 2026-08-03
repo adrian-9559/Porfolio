@@ -42,11 +42,11 @@ export function SectionAnthropic() {
 
       <BlogH3>What is Claude</BlogH3>
       <BlogP>
-        Anthropic is the company behind <strong>Claude</strong>, a family
-        of models known for excellent reasoning, clean code generation, and
-        long context handling. Claude stands out for its focus on{" "}
-        <strong>safety and structured writing</strong>, making it the
-        favorite choice for many developers in complex engineering tasks.
+        Anthropic is the company behind <strong>Claude</strong>, a family of
+        models known for excellent reasoning, clean code generation, and long
+        context handling. Claude stands out for its focus on{" "}
+        <strong>safety and structured writing</strong>, making it the favorite
+        choice for many developers in complex engineering tasks.
       </BlogP>
 
       <CapabilitiesCard
@@ -70,8 +70,8 @@ export function SectionAnthropic() {
 
       <Step number={1} title="Configure your API Key">
         <BlogP>
-          Run <BlogInlineCode>/connect</BlogInlineCode>, select
-          Anthropic, and choose between OAuth (Claude Pro/Max) or manual API key:
+          Run <BlogInlineCode>/connect</BlogInlineCode>, select Anthropic, and
+          choose between OAuth (Claude Pro/Max) or manual API key:
         </BlogP>
         <BlogCode>{`{
   "provider": {
@@ -87,8 +87,8 @@ export function SectionAnthropic() {
 
       <Step number={2} title="Configure main and small model">
         <BlogP>
-          OpenCode allows using a{" "}
-          <BlogInlineCode>small_model</BlogInlineCode> for secondary tasks:
+          OpenCode allows using a <BlogInlineCode>small_model</BlogInlineCode>{" "}
+          for secondary tasks:
         </BlogP>
         <BlogCode>{`{
   "model": "anthropic/claude-sonnet-4-5",
@@ -98,8 +98,8 @@ export function SectionAnthropic() {
 
       <Step number={3} title="Adjust the thinking budget">
         <BlogP>
-          Claude supports <strong>extended thinking</strong> for deep
-          reasoning. Configure the token budget:
+          Claude supports <strong>extended thinking</strong> for deep reasoning.
+          Configure the token budget:
         </BlogP>
         <BlogCode>{`{
   "provider": {
@@ -124,14 +124,12 @@ export function SectionAnthropic() {
       <BlogH3>Use cases</BlogH3>
       <BlogUl>
         <BlogLi>
-          <strong>Software architecture:</strong> system design,
-          project planning, trade-off analysis, and technical
-          documentation
+          <strong>Software architecture:</strong> system design, project
+          planning, trade-off analysis, and technical documentation
         </BlogLi>
         <BlogLi>
           <strong>Complex debugging:</strong> analysis of long stack traces,
-          root cause detection in projects with multiple abstraction
-          layers
+          root cause detection in projects with multiple abstraction layers
         </BlogLi>
         <BlogLi>
           <strong>Technical documentation:</strong> generates API docs,

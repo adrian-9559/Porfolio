@@ -3,16 +3,21 @@
 import { useMemo } from "react";
 import Link from "next/link";
 
-import BlogLayout from "@/layouts/blog";
+import CampusLayout from "@/layouts/campus";
 import { getGuides, guideTotalMinutes } from "@/lib/blog/registry";
 import { LEVELS } from "@/lib/blog/taxonomy";
 import { IconBook, IconClock } from "@/components/blog/shared";
+import GuideTree from "@/components/blog/GuideTree";
 import { useT } from "@/hooks/useT";
 
 const allGuides = getGuides();
 
-function levelLabel(level: string, t: (k: string, p?: Record<string, string | number>) => string): string {
+function levelLabel(
+  level: string,
+  t: (k: string, p?: Record<string, string | number>) => string,
+): string {
   const l = LEVELS.find((l) => l.id === level);
+
   return l ? t(l.labelKey) : level;
 }
 
@@ -23,9 +28,13 @@ function GuideCard({ guide }: { guide: (typeof allGuides)[number] }) {
 
   return (
     <Link
-      className="block group p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/15 dark:hover:border-white/15 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
-      href={`/blog/tutoriales/guias/${guide.slug}`}
+      className="block group relative overflow-hidden p-6 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-emerald-300/60 dark:hover:border-emerald-700/60 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
+      href={`/campus/guias/${guide.slug}`}
     >
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-400"
+      />
       <div className="flex items-center gap-2 mb-3">
         <span
           aria-hidden="true"
@@ -46,7 +55,7 @@ function GuideCard({ guide }: { guide: (typeof allGuides)[number] }) {
         )}
       </div>
 
-      <h2 className="font-bold text-base text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug mb-2 motion-safe:transition-colors">
+      <h2 className="font-bold text-base text-[#1d1d1f] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug mb-2 motion-safe:transition-colors">
         {guide.title}
       </h2>
       <p className="text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed line-clamp-3 mb-4">
@@ -57,23 +66,28 @@ function GuideCard({ guide }: { guide: (typeof allGuides)[number] }) {
         <div className="flex items-center gap-1.5 text-xs text-[#aeaeb2] dark:text-[#636366]">
           <IconBook className="w-3.5 h-3.5" />
           <span>
-            {count} {count === 1 ? t("blog.tutorialSingular") : t("blog.tutorialPlural")}
+            {count}{" "}
+            {count === 1
+              ? t("blog.tutorialSingular")
+              : t("blog.tutorialPlural")}
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-[#aeaeb2] dark:text-[#636366]">
           <IconClock className="w-3.5 h-3.5" />
-          <span>~{totalMin} {t("blog.minutesAbbr")}</span>
+          <span>
+            ~{totalMin} {t("blog.minutesAbbr")}
+          </span>
         </div>
         <div className="flex-1" />
-        <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 group-hover:translate-x-0.5 transition-transform motion-safe:transition-transform">
-          {t("blog.viewPathLink")}
+        <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform motion-safe:transition-transform">
+          {t("campus.viewPath")}
         </span>
       </div>
     </Link>
   );
 }
 
-export default function GuiasPage() {
+export default function CampusGuidesPage() {
   const { t } = useT();
   const guides = useMemo(() => allGuides, []);
 
@@ -83,10 +97,10 @@ export default function GuiasPage() {
   );
 
   return (
-    <BlogLayout
+    <CampusLayout
       seo={{
-        title: t("meta.blogGuides.title"),
-        description: t("meta.blogGuides.desc"),
+        title: t("meta.campusGuides.title"),
+        description: t("meta.campusGuides.desc"),
       }}
     >
       <div className="space-y-10 py-4">
@@ -94,9 +108,9 @@ export default function GuiasPage() {
           <nav aria-label="Breadcrumb" className="flex items-center gap-2">
             <Link
               className="text-xs text-[#aeaeb2] dark:text-[#636366] hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
-              href="/blog"
+              href="/"
             >
-              {t("blog.breadcrumb")}
+              Home
             </Link>
             <span
               aria-hidden="true"
@@ -106,9 +120,9 @@ export default function GuiasPage() {
             </span>
             <Link
               className="text-xs text-[#aeaeb2] dark:text-[#636366] hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
-              href="/blog/tutoriales"
+              href="/campus"
             >
-              {t("blog.type.tutorials")}
+              Campus
             </Link>
             <span
               aria-hidden="true"
@@ -120,7 +134,7 @@ export default function GuiasPage() {
               aria-current="page"
               className="text-xs font-medium text-[#1d1d1f] dark:text-white"
             >
-              {t("blog.guides")}
+              {t("nav.campusGuides")}
             </span>
           </nav>
           <div className="flex items-center gap-4">
@@ -150,8 +164,12 @@ export default function GuiasPage() {
             aria-hidden="true"
             className="w-1 h-1 rounded-full bg-black/10 dark:bg-white/10"
           />
-          <span>{totalTutorials} {t("blog.tutorialsOrganized")}</span>
+          <span>
+            {totalTutorials} {t("blog.tutorialsOrganized")}
+          </span>
         </div>
+
+        <GuideTree />
 
         {guides.length === 0 ? (
           <div className="text-center py-20">
@@ -172,6 +190,6 @@ export default function GuiasPage() {
           </div>
         )}
       </div>
-    </BlogLayout>
+    </CampusLayout>
   );
 }

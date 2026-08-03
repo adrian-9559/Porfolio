@@ -41,9 +41,7 @@ export default function ConfiguracionPage() {
             >
               {t("profile.title")}
             </Link>
-            <span className="text-xs text-muted/60">
-              /
-            </span>
+            <span className="text-xs text-muted/60">/</span>
             <span className="text-xs text-foreground font-medium">
               {t("settings.title")}
             </span>
@@ -54,9 +52,7 @@ export default function ConfiguracionPage() {
           >
             {t("settings.title")}
           </h1>
-          <p className="text-sm text-muted mt-1">
-            {t("settings.subtitle")}
-          </p>
+          <p className="text-sm text-muted mt-1">{t("settings.subtitle")}</p>
         </div>
 
         {/* Tabs */}
@@ -144,9 +140,7 @@ function PerfilTab() {
         <h2 className="text-base font-bold text-foreground mb-1">
           {t("settings.profileInfo")}
         </h2>
-        <p className="text-xs text-muted">
-          {t("settings.profileInfoDesc")}
-        </p>
+        <p className="text-xs text-muted">{t("settings.profileInfoDesc")}</p>
       </div>
 
       {/* Avatar */}
@@ -271,9 +265,17 @@ function SeguridadTab() {
 
         <div className="space-y-3">
           {[
-            { label: t("settings.currentPassword"), val: current, set: setCurrent },
+            {
+              label: t("settings.currentPassword"),
+              val: current,
+              set: setCurrent,
+            },
             { label: t("settings.newPassword"), val: newPwd, set: setNewPwd },
-            { label: t("settings.confirmNewPassword"), val: confirm, set: setConfirm },
+            {
+              label: t("settings.confirmNewPassword"),
+              val: confirm,
+              set: setConfirm,
+            },
           ].map((f) => (
             <Field key={f.label} label={f.label}>
               <input
@@ -306,9 +308,7 @@ function SeguridadTab() {
         <h2 className="text-base font-bold text-foreground mb-1">
           {t("settings.activeSessions")}
         </h2>
-        <p className="text-xs text-muted mb-4">
-          {t("settings.sessionsDesc")}
-        </p>
+        <p className="text-xs text-muted mb-4">{t("settings.sessionsDesc")}</p>
         <div className="rounded-xl border border-border divide-y divide-black/5 dark:divide-white/5">
           {SESSIONS.map((s, i) => (
             <div key={i} className="flex items-center gap-4 px-4 py-3">
@@ -388,12 +388,8 @@ function PreferenciasTab() {
   }) => (
     <div className="flex items-start justify-between gap-4 py-3 border-b border-black/6 dark:border-white/6 last:border-0">
       <div>
-        <p className="text-sm font-medium text-foreground">
-          {label}
-        </p>
-        <p className="text-xs text-muted mt-0.5">
-          {desc}
-        </p>
+        <p className="text-sm font-medium text-foreground">{label}</p>
+        <p className="text-xs text-muted mt-0.5">{desc}</p>
       </div>
       <button
         className={`w-10 h-6 rounded-full transition-colors flex-shrink-0 relative ${val ? "bg-blue-600" : "bg-black/15 dark:bg-white/15"}`}
@@ -412,9 +408,7 @@ function PreferenciasTab() {
         <h2 className="text-base font-bold text-foreground mb-1">
           {t("user.tabPreferences")}
         </h2>
-        <p className="text-xs text-muted">
-          {t("settings.appearanceDesc")}
-        </p>
+        <p className="text-xs text-muted">{t("settings.appearanceDesc")}</p>
       </div>
 
       <div>

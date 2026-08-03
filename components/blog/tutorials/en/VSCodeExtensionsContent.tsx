@@ -64,10 +64,10 @@ const EXTENSIONS = {
 function ExtensionCard({ name, id }: { name: string; id: string }) {
   return (
     <a
-      href={`https://marketplace.visualstudio.com/items?itemName=${id}`}
-      target="_blank"
-      rel="noopener noreferrer"
       className="flex items-center justify-between px-4 py-3 rounded-xl border border-black/8 dark:border-white/8 hover:bg-black/3 dark:hover:bg-white/3 transition-colors no-underline group"
+      href={`https://marketplace.visualstudio.com/items?itemName=${id}`}
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <span className="text-sm font-medium text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
         {name}
@@ -84,38 +84,68 @@ export default function VSCodeExtensionsContentEn() {
     <article className="max-w-3xl">
       <div className="flex items-center gap-2 text-xs text-[#aeaeb2] dark:text-[#636366] mb-4">
         <span className="flex items-center gap-1">
-          <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+          <svg
+            aria-hidden="true"
+            className="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+            />
           </svg>
           Article
         </span>
         <span className="w-1 h-1 rounded-full bg-[#aeaeb2]" />
         <span className="flex items-center gap-1">
-          <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+          <svg
+            aria-hidden="true"
+            className="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+            />
           </svg>
           10 min
         </span>
       </div>
 
-      <h1 className="text-3xl md:text-4xl font-bold text-[#1d1d1f] dark:text-white mb-3" style={{ letterSpacing: "-0.03em" }}>
+      <h1
+        className="text-3xl md:text-4xl font-bold text-[#1d1d1f] dark:text-white mb-3"
+        style={{ letterSpacing: "-0.03em" }}
+      >
         Essential VS Code Extensions
       </h1>
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
-        VS Code is amazing on its own, but extensions are what turn it into a custom-built editor. Here are the ones every developer should know about, organized by category.
+        VS Code is amazing on its own, but extensions are what turn it into a
+        custom-built editor. Here are the ones every developer should know
+        about, organized by category.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
 
       <BlogCallout type="tip">
-        VS Code can slow down with too many active extensions. Only install what you use, and disable per project using profiles or <BlogInlineCode>extensions.json</BlogInlineCode>.
+        VS Code can slow down with too many active extensions. Only install what
+        you use, and disable per project using profiles or{" "}
+        <BlogInlineCode>extensions.json</BlogInlineCode>.
       </BlogCallout>
 
       <BlogH2 id="linting">Linting and formatting</BlogH2>
 
       <BlogP>
-        The foundation of clean, consistent code. These extensions save you from team debates and silly bugs.
+        The foundation of clean, consistent code. These extensions save you from
+        team debates and silly bugs.
       </BlogP>
 
       {EXTENSIONS.linting.map((e) => (
@@ -123,13 +153,19 @@ export default function VSCodeExtensionsContentEn() {
       ))}
 
       <BlogP>
-        <BlogInlineCode>ESLint</BlogInlineCode> and <BlogInlineCode>Prettier</BlogInlineCode> are the industry standard. <BlogInlineCode>Biome</BlogInlineCode> is a modern alternative that unifies linting and formatting in a single, much faster tool. <BlogInlineCode>Stylelint</BlogInlineCode> is essential if you work with CSS, SCSS, or Tailwind.
+        <BlogInlineCode>ESLint</BlogInlineCode> and{" "}
+        <BlogInlineCode>Prettier</BlogInlineCode> are the industry standard.{" "}
+        <BlogInlineCode>Biome</BlogInlineCode> is a modern alternative that
+        unifies linting and formatting in a single, much faster tool.{" "}
+        <BlogInlineCode>Stylelint</BlogInlineCode> is essential if you work with
+        CSS, SCSS, or Tailwind.
       </BlogP>
 
       <BlogH2 id="git">Git and version control</BlogH2>
 
       <BlogP>
-        VS Code's built-in Git integration is decent, but these extensions take it to another level.
+        VS Code's built-in Git integration is decent, but these extensions take
+        it to another level.
       </BlogP>
 
       {EXTENSIONS.git.map((e) => (
@@ -137,13 +173,18 @@ export default function VSCodeExtensionsContentEn() {
       ))}
 
       <BlogP>
-        <BlogInlineCode>GitLens</BlogInlineCode> is the most powerful: inline blame, repo exploration, visual branch comparison. It can be resource-intensive, but it is worth every bit. <BlogInlineCode>Git Graph</BlogInlineCode> is lightweight and gives you a beautiful visual history view.
+        <BlogInlineCode>GitLens</BlogInlineCode> is the most powerful: inline
+        blame, repo exploration, visual branch comparison. It can be
+        resource-intensive, but it is worth every bit.{" "}
+        <BlogInlineCode>Git Graph</BlogInlineCode> is lightweight and gives you
+        a beautiful visual history view.
       </BlogP>
 
       <BlogH2 id="languages">Languages and frameworks</BlogH2>
 
       <BlogP>
-        VS Code already has good native support, but these extensions add specific IntelliSense, snippets, and integrated tools.
+        VS Code already has good native support, but these extensions add
+        specific IntelliSense, snippets, and integrated tools.
       </BlogP>
 
       {EXTENSIONS.languages.map((e) => (
@@ -151,13 +192,18 @@ export default function VSCodeExtensionsContentEn() {
       ))}
 
       <BlogP>
-        <BlogInlineCode>Tailwind CSS IntelliSense</BlogInlineCode> is practically mandatory if you use Tailwind. It provides class autocompletion, color previews, and linting. <BlogInlineCode>Thunder Client</BlogInlineCode> is a lightweight Postman alternative right inside your editor.
+        <BlogInlineCode>Tailwind CSS IntelliSense</BlogInlineCode> is
+        practically mandatory if you use Tailwind. It provides class
+        autocompletion, color previews, and linting.{" "}
+        <BlogInlineCode>Thunder Client</BlogInlineCode> is a lightweight Postman
+        alternative right inside your editor.
       </BlogP>
 
       <BlogH2 id="productivity">Productivity</BlogH2>
 
       <BlogP>
-        The daily drivers. Small extensions that make a huge difference in your workflow.
+        The daily drivers. Small extensions that make a huge difference in your
+        workflow.
       </BlogP>
 
       {EXTENSIONS.productivity.map((e) => (
@@ -165,12 +211,32 @@ export default function VSCodeExtensionsContentEn() {
       ))}
 
       <BlogUl>
-        <BlogLi><strong>Error Lens</strong> — Shows errors and warnings inline, right next to your code. No more hovering every line.</BlogLi>
-        <BlogLi><strong>Import Cost</strong> — Tells you the size of each import. Essential for keeping bundles lean.</BlogLi>
-        <BlogLi><strong>Pretty TypeScript Errors</strong> — Transforms TypeScript errors into human-readable messages. One of the best extensions of the past year.</BlogLi>
-        <BlogLi><strong>indent-rainbow</strong> — Colorizes indentation. Sounds trivial, but makes nested code much easier to read.</BlogLi>
-        <BlogLi><strong>GitHub Copilot</strong> — AI-powered autocomplete. Needs no introduction.</BlogLi>
-        <BlogLi><strong>Continue.dev</strong> — Open-source Copilot alternative. Use local models (Ollama) and cloud, with contextual chat and code generation.</BlogLi>
+        <BlogLi>
+          <strong>Error Lens</strong> — Shows errors and warnings inline, right
+          next to your code. No more hovering every line.
+        </BlogLi>
+        <BlogLi>
+          <strong>Import Cost</strong> — Tells you the size of each import.
+          Essential for keeping bundles lean.
+        </BlogLi>
+        <BlogLi>
+          <strong>Pretty TypeScript Errors</strong> — Transforms TypeScript
+          errors into human-readable messages. One of the best extensions of the
+          past year.
+        </BlogLi>
+        <BlogLi>
+          <strong>indent-rainbow</strong> — Colorizes indentation. Sounds
+          trivial, but makes nested code much easier to read.
+        </BlogLi>
+        <BlogLi>
+          <strong>GitHub Copilot</strong> — AI-powered autocomplete. Needs no
+          introduction.
+        </BlogLi>
+        <BlogLi>
+          <strong>Continue.dev</strong> — Open-source Copilot alternative. Use
+          local models (Ollama) and cloud, with contextual chat and code
+          generation.
+        </BlogLi>
       </BlogUl>
 
       <BlogH2 id="themes">Themes and aesthetics</BlogH2>
@@ -184,13 +250,17 @@ export default function VSCodeExtensionsContentEn() {
       ))}
 
       <BlogP>
-        <BlogInlineCode>Catppuccin</BlogInlineCode> is the current community favorite: four styles (latte, frappé, macchiato, mocha) with a balanced color palette. <BlogInlineCode>Tokyo Night</BlogInlineCode> is ideal if you like blueish tones and neon accents.
+        <BlogInlineCode>Catppuccin</BlogInlineCode> is the current community
+        favorite: four styles (latte, frappé, macchiato, mocha) with a balanced
+        color palette. <BlogInlineCode>Tokyo Night</BlogInlineCode> is ideal if
+        you like blueish tones and neon accents.
       </BlogP>
 
       <BlogH2 id="utilities">Utilities</BlogH2>
 
       <BlogP>
-        Extensions that do not fit a single category but end up being used more than you would expect.
+        Extensions that do not fit a single category but end up being used more
+        than you would expect.
       </BlogP>
 
       {EXTENSIONS.utilities.map((e) => (
@@ -198,11 +268,27 @@ export default function VSCodeExtensionsContentEn() {
       ))}
 
       <BlogUl>
-        <BlogLi><strong>Live Share</strong> — Real-time pair programming. Share your editor with another developer and edit together.</BlogLi>
-        <BlogLi><strong>CodeSnap</strong> — Beautiful code screenshots for social media or documentation.</BlogLi>
-        <BlogLi><strong>Paste JSON as Code</strong> — Paste JSON and generate TypeScript interfaces, C# classes, and more.</BlogLi>
-        <BlogLi><strong>Peacock</strong> — Change the sidebar color per project. Very useful when you have multiple VS Code windows open.</BlogLi>
-        <BlogLi><strong>Remote - SSH / Containers</strong> — Remote work for devs: open projects on remote servers or Docker containers as if they were local.</BlogLi>
+        <BlogLi>
+          <strong>Live Share</strong> — Real-time pair programming. Share your
+          editor with another developer and edit together.
+        </BlogLi>
+        <BlogLi>
+          <strong>CodeSnap</strong> — Beautiful code screenshots for social
+          media or documentation.
+        </BlogLi>
+        <BlogLi>
+          <strong>Paste JSON as Code</strong> — Paste JSON and generate
+          TypeScript interfaces, C# classes, and more.
+        </BlogLi>
+        <BlogLi>
+          <strong>Peacock</strong> — Change the sidebar color per project. Very
+          useful when you have multiple VS Code windows open.
+        </BlogLi>
+        <BlogLi>
+          <strong>Remote - SSH / Containers</strong> — Remote work for devs:
+          open projects on remote servers or Docker containers as if they were
+          local.
+        </BlogLi>
       </BlogUl>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -210,19 +296,35 @@ export default function VSCodeExtensionsContentEn() {
       <BlogH2 id="anti">Extensions to avoid</BlogH2>
 
       <BlogP>
-        Not everything that shines is gold. Some popular extensions have better alternatives or are simply abandoned:
+        Not everything that shines is gold. Some popular extensions have better
+        alternatives or are simply abandoned:
       </BlogP>
 
       <BlogUl>
-        <BlogLi><strong>Bracket Pair Colorizer</strong> — Now native in VS Code. Uninstall it.</BlogLi>
-        <BlogLi><strong>Path Autocomplete</strong> — Also native since VS Code 1.44.</BlogLi>
-        <BlogLi><strong>npm Intellisense</strong> — VS Code already does this automatically with imports.</BlogLi>
-        <BlogLi><strong>Beautify</strong> — Deprecated. Use Prettier.</BlogLi>
-        <BlogLi><strong>Tslint</strong> — Deprecated. Migrate to ESLint with @typescript-eslint.</BlogLi>
+        <BlogLi>
+          <strong>Bracket Pair Colorizer</strong> — Now native in VS Code.
+          Uninstall it.
+        </BlogLi>
+        <BlogLi>
+          <strong>Path Autocomplete</strong> — Also native since VS Code 1.44.
+        </BlogLi>
+        <BlogLi>
+          <strong>npm Intellisense</strong> — VS Code already does this
+          automatically with imports.
+        </BlogLi>
+        <BlogLi>
+          <strong>Beautify</strong> — Deprecated. Use Prettier.
+        </BlogLi>
+        <BlogLi>
+          <strong>Tslint</strong> — Deprecated. Migrate to ESLint with
+          @typescript-eslint.
+        </BlogLi>
       </BlogUl>
 
       <BlogCallout type="info">
-        VS Code keeps adding more native features. Before installing an extension, ask yourself if you really need it or if it is already built-in.
+        VS Code keeps adding more native features. Before installing an
+        extension, ask yourself if you really need it or if it is already
+        built-in.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -230,7 +332,8 @@ export default function VSCodeExtensionsContentEn() {
       <BlogH2 id="by-role">Recommendations by role</BlogH2>
 
       <BlogP>
-        Not every extension is for everyone. Here is the ideal combo for your role:
+        Not every extension is for everyone. Here is the ideal combo for your
+        role:
       </BlogP>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -271,7 +374,8 @@ export default function VSCodeExtensionsContentEn() {
       </div>
 
       <BlogP>
-        Start with the essentials for your role and add more as needed. Less is more: every extension is a background process.
+        Start with the essentials for your role and add more as needed. Less is
+        more: every extension is a background process.
       </BlogP>
     </article>
   );

@@ -7,7 +7,7 @@ import BlogLayout from "@/layouts/blog";
 import {
   getContentByType,
   formatDate,
-  typeSlug,
+  contentHref,
   ContentMeta,
 } from "@/lib/blog/registry";
 import { getContentComponent } from "@/lib/blog/componentMap";
@@ -58,7 +58,7 @@ export default function HerramientaPage({ meta, prevMeta, nextMeta }: Props) {
               keywords: meta.tags?.join(", "),
               mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": `${siteConfig.url}/blog/${typeSlug(meta.type)}/${meta.slug}`,
+                "@id": `${siteConfig.url}${contentHref(meta.type, meta.slug)}`,
               },
             }),
           }}

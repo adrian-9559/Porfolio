@@ -40,12 +40,11 @@ export function SectionOpenAI() {
 
       <BlogH3>What is OpenAI</BlogH3>
       <BlogP>
-        OpenAI is the company behind the <strong>GPT</strong>{" "}
-        (Generative Pre-trained Transformer) models. Their models are multimodal
-        (text + images), with advanced reasoning capabilities,
-        code generation, and long context understanding. They are the most
-        popular choice for tasks requiring a balance between creativity and
-        precision.
+        OpenAI is the company behind the <strong>GPT</strong> (Generative
+        Pre-trained Transformer) models. Their models are multimodal (text +
+        images), with advanced reasoning capabilities, code generation, and long
+        context understanding. They are the most popular choice for tasks
+        requiring a balance between creativity and precision.
       </BlogP>
 
       <BlogH3>Model types</BlogH3>
@@ -106,8 +105,8 @@ export function SectionOpenAI() {
 
       <Step number={1} title="Configure your API Key">
         <BlogP>
-          OpenCode connects to OpenAI via API key or OAuth authentication
-          with ChatGPT Plus/Pro:
+          OpenCode connects to OpenAI via API key or OAuth authentication with
+          ChatGPT Plus/Pro:
         </BlogP>
         <BlogCode>{`{
   "provider": {
@@ -122,16 +121,15 @@ export function SectionOpenAI() {
 
       <Step number={2} title="Select a model">
         <BlogP>
-          Run <BlogInlineCode>/connect</BlogInlineCode> to authenticate,
-          then <BlogInlineCode>/models</BlogInlineCode> to see the available
-          models.
+          Run <BlogInlineCode>/connect</BlogInlineCode> to authenticate, then{" "}
+          <BlogInlineCode>/models</BlogInlineCode> to see the available models.
         </BlogP>
       </Step>
 
       <Step number={3} title="Adjust reasoning">
         <BlogP>
-          OpenAI supports <BlogInlineCode>reasoningEffort</BlogInlineCode> levels,
-          which you can adjust depending on the task:
+          OpenAI supports <BlogInlineCode>reasoningEffort</BlogInlineCode>{" "}
+          levels, which you can adjust depending on the task:
         </BlogP>
         <BlogCode>{`{
   "provider": {

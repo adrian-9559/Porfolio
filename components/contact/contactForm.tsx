@@ -1,6 +1,7 @@
 "use client";
 import { Input, TextArea } from "@heroui/react";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { contactService } from "@/services/notificationService";
 import { ApiError } from "@/services/apiClient";
@@ -12,7 +13,9 @@ export default function ContactForm() {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -21,9 +24,8 @@ export default function ContactForm() {
     setErrorMsg("");
 
     try {
-      const fullMessage = subject
-        ? `[${subject}]\n\n${message}`
-        : message;
+      const fullMessage = subject ? `[${subject}]\n\n${message}` : message;
+
       await contactService.submit({ name, email, message: fullMessage });
       setStatus("success");
       setName("");
@@ -32,7 +34,9 @@ export default function ContactForm() {
       setMessage("");
     } catch (err) {
       setStatus("error");
-      setErrorMsg(err instanceof ApiError ? err.message : "Error al enviar el mensaje");
+      setErrorMsg(
+        err instanceof ApiError ? err.message : "Error al enviar el mensaje",
+      );
     }
   };
 
@@ -73,10 +77,10 @@ export default function ContactForm() {
               <Input
                 required
                 className="w-full"
+                disabled={status === "loading"}
                 placeholder={t("contact.namePlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                disabled={status === "loading"}
               />
             </div>
             <div className="space-y-1.5">
@@ -86,11 +90,11 @@ export default function ContactForm() {
               <Input
                 required
                 className="w-full"
+                disabled={status === "loading"}
                 placeholder={t("contact.emailPlaceholder")}
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={status === "loading"}
               />
             </div>
           </div>
@@ -102,10 +106,10 @@ export default function ContactForm() {
             <Input
               required
               className="w-full"
+              disabled={status === "loading"}
               placeholder={t("contact.subjectPlaceholder")}
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              disabled={status === "loading"}
             />
           </div>
 
@@ -116,18 +120,18 @@ export default function ContactForm() {
             <TextArea
               required
               className="w-full min-h-[120px]"
+              disabled={status === "loading"}
               placeholder={t("contact.messagePlaceholder")}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              disabled={status === "loading"}
             />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               className="apple-btn-primary flex-1 justify-center text-sm py-3 disabled:opacity-50"
-              type="submit"
               disabled={status === "loading"}
+              type="submit"
             >
               {status === "loading" ? "Enviando..." : t("contact.sendBtn")}
             </button>

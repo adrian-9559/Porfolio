@@ -17,6 +17,7 @@ import {
   parseISO,
 } from "date-fns";
 import { es } from "date-fns/locale";
+
 import {
   calendarService,
   type UserEvent,
@@ -96,6 +97,7 @@ export function UserCalendarSection() {
     setError(null);
     try {
       const data = await calendarService.listEvents(dateFrom, dateTo);
+
       setEvents(data);
     } catch (err: any) {
       setError(err?.message ?? "Error al cargar eventos");
@@ -163,6 +165,7 @@ export function UserCalendarSection() {
         event_time: formTime || null,
         color: formColor,
       };
+
       if (editingEvent) {
         await calendarService.updateEvent(editingEvent.id, payload);
       } else {
@@ -193,6 +196,7 @@ export function UserCalendarSection() {
 
   const renderEventsInCell = (day: Date) => {
     const dayEvents = eventsForDay(day);
+
     if (dayEvents.length === 0) return null;
 
     const visible = dayEvents.slice(0, 3);
@@ -203,13 +207,13 @@ export function UserCalendarSection() {
         {visible.map((e) => (
           <button
             key={e.id}
+            className={`w-full text-left text-[10px] leading-tight truncate rounded px-1 py-0.5 text-white ${
+              EVENT_COLORS[e.color] ?? "bg-blue-500"
+            }`}
             onClick={(ev) => {
               ev.stopPropagation();
               openEdit(e);
             }}
-            className={`w-full text-left text-[10px] leading-tight truncate rounded px-1 py-0.5 text-white ${
-              EVENT_COLORS[e.color] ?? "bg-blue-500"
-            }`}
           >
             {e.event_time && `${e.event_time} `}
             {e.title}
@@ -238,7 +242,10 @@ export function UserCalendarSection() {
     return (
       <div className="p-6 text-center">
         <p className="text-red-500 mb-3">{error}</p>
-        <button onClick={fetchEvents} className="apple-btn-primary text-sm py-2 px-4">
+        <button
+          className="apple-btn-primary text-sm py-2 px-4"
+          onClick={fetchEvents}
+        >
           Reintentar
         </button>
       </div>
@@ -260,10 +267,18 @@ export function UserCalendarSection() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <button
-            onClick={prevMonth}
             className="w-8 h-8 rounded-xl flex items-center justify-center text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
+            onClick={prevMonth}
           >
-            <svg fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 16 16" width="16">
+            <svg
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="1.5"
+              viewBox="0 0 16 16"
+              width="16"
+            >
               <path d="M10 3L5 8l5 5" />
             </svg>
           </button>
@@ -271,17 +286,25 @@ export function UserCalendarSection() {
             {monthLabel}
           </h3>
           <button
-            onClick={nextMonth}
             className="w-8 h-8 rounded-xl flex items-center justify-center text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
+            onClick={nextMonth}
           >
-            <svg fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 16 16" width="16">
+            <svg
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="1.5"
+              viewBox="0 0 16 16"
+              width="16"
+            >
               <path d="M6 3l5 5-5 5" />
             </svg>
           </button>
         </div>
         <button
-          onClick={goToday}
           className="apple-btn-secondary text-sm py-1.5 px-3"
+          onClick={goToday}
         >
           Hoy
         </button>
@@ -309,12 +332,12 @@ export function UserCalendarSection() {
           return (
             <button
               key={dateStr}
-              onClick={() => openCreate(dateStr)}
               className={`min-h-[100px] p-1.5 border-r border-b border-black/8 dark:border-white/8 text-left transition-colors ${
                 inMonth
                   ? "bg-white dark:bg-[#111116]"
                   : "bg-gray-50/50 dark:bg-[#0d0d11]"
               } hover:bg-blue-50/40 dark:hover:bg-blue-950/10`}
+              onClick={() => openCreate(dateStr)}
             >
               <span
                 className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium ${
@@ -353,10 +376,10 @@ export function UserCalendarSection() {
                   T\u00EDtulo
                 </label>
                 <Input
+                  disabled={submitting}
                   placeholder="Ej: Reuni\u00F3n equipo"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div>
@@ -364,11 +387,11 @@ export function UserCalendarSection() {
                   Descripci\u00F3n
                 </label>
                 <TextArea
+                  disabled={submitting}
                   placeholder="A\u00F1adir detalles..."
+                  rows={2}
                   value={formDesc}
                   onChange={(e) => setFormDesc(e.target.value)}
-                  rows={2}
-                  disabled={submitting}
                 />
               </div>
               <div className="flex gap-2">
@@ -377,10 +400,10 @@ export function UserCalendarSection() {
                     Fecha
                   </label>
                   <Input
+                    disabled={submitting}
                     type="date"
                     value={formDate}
                     onChange={(e) => setFormDate(e.target.value)}
-                    disabled={submitting}
                   />
                 </div>
                 <div className="flex-1">
@@ -388,10 +411,10 @@ export function UserCalendarSection() {
                     Hora
                   </label>
                   <Input
+                    disabled={submitting}
                     type="time"
                     value={formTime}
                     onChange={(e) => setFormTime(e.target.value)}
-                    disabled={submitting}
                   />
                 </div>
               </div>
@@ -400,10 +423,10 @@ export function UserCalendarSection() {
                   Fecha fin (opcional)
                 </label>
                 <Input
+                  disabled={submitting}
                   type="date"
                   value={formEndDate}
                   onChange={(e) => setFormEndDate(e.target.value)}
-                  disabled={submitting}
                 />
               </div>
               <div>
@@ -414,13 +437,13 @@ export function UserCalendarSection() {
                   {COLOR_OPTIONS.map((c) => (
                     <button
                       key={c}
-                      onClick={() => setFormColor(c)}
                       className={`w-7 h-7 rounded-full transition-all ${
                         formColor === c
                           ? "ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#1a1a1f] ring-[#1d1d1f] dark:ring-white"
                           : ""
                       }`}
                       style={{ backgroundColor: c }}
+                      onClick={() => setFormColor(c)}
                     />
                   ))}
                 </div>
@@ -428,29 +451,29 @@ export function UserCalendarSection() {
             </div>
             <div className="flex justify-end gap-3 mt-6">
               <button
+                className="apple-btn-secondary text-sm py-2 px-4"
                 onClick={() => {
                   setShowModal(false);
                   setEditingEvent(null);
                 }}
-                className="apple-btn-secondary text-sm py-2 px-4"
               >
                 Cancelar
               </button>
               {editingEvent && (
                 <button
+                  className="apple-btn-secondary text-sm py-2 px-4 !text-red-500"
                   onClick={() => {
                     setShowModal(false);
                     setConfirmDelete(editingEvent.id);
                   }}
-                  className="apple-btn-secondary text-sm py-2 px-4 !text-red-500"
                 >
                   Eliminar
                 </button>
               )}
               <button
-                onClick={handleSave}
-                disabled={submitting || !formTitle.trim() || !formDate}
                 className="apple-btn-primary text-sm py-2 px-4"
+                disabled={submitting || !formTitle.trim() || !formDate}
+                onClick={handleSave}
               >
                 {submitting
                   ? "Guardando..."
@@ -472,14 +495,14 @@ export function UserCalendarSection() {
             </p>
             <div className="flex justify-end gap-3">
               <button
-                onClick={() => setConfirmDelete(null)}
                 className="apple-btn-secondary text-sm py-2 px-4"
+                onClick={() => setConfirmDelete(null)}
               >
                 Cancelar
               </button>
               <button
-                onClick={handleDelete}
                 className="apple-btn-primary text-sm py-2 px-4 !bg-red-500 hover:!bg-red-600"
+                onClick={handleDelete}
               >
                 Eliminar
               </button>

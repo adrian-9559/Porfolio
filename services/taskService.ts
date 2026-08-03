@@ -70,8 +70,7 @@ export const taskService = {
   listTasks: (listId: string) =>
     apiFetch<Task[]>(`${BASE}/task-lists/${listId}/tasks`),
 
-  getTask: (taskId: string) =>
-    apiFetch<Task>(`${BASE}/tasks/${taskId}`),
+  getTask: (taskId: string) => apiFetch<Task>(`${BASE}/tasks/${taskId}`),
 
   createTask: (
     listId: string,

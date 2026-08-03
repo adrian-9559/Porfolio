@@ -45,8 +45,8 @@ function SectionIntro() {
       <BlogP>
         Python is a high-level, interpreted, dynamically typed programming
         language. Its philosophy emphasizes code readability with a clear and
-        expressive syntax. It is the most used language in data science, AI,
-        and automation.
+        expressive syntax. It is the most used language in data science, AI, and
+        automation.
       </BlogP>
       <BlogCode>{`# Hello world in Python
 print("Hello, world!")
@@ -61,8 +61,8 @@ x = 42        # int
 x = "text"   # now str
 x = [1, 2, 3] # now list`}</BlogCode>
       <BlogCallout type="tip">
-        Python uses indentation to define code blocks. The standard (PEP
-        8) recommends 4 spaces, never mixing tabs with spaces.
+        Python uses indentation to define code blocks. The standard (PEP 8)
+        recommends 4 spaces, never mixing tabs with spaces.
       </BlogCallout>
       <BlogH3>Installation and virtual environments</BlogH3>
       <BlogCode>{`# Create virtual environment
@@ -366,8 +366,8 @@ for animal in animals:
     print(animal.speak())`}</BlogCode>
       <BlogCallout type="tip">
         In Python, protocols (duck typing) and abstract classes from the
-        <code>abc</code> module are preferred over rigid interfaces from
-        other languages.
+        <code>abc</code> module are preferred over rigid interfaces from other
+        languages.
       </BlogCallout>
     </>
   );
@@ -472,9 +472,9 @@ function SectionProyecto() {
     <>
       <BlogH2>Final Project: CSV Analyzer</BlogH2>
       <BlogP>
-        A script that reads a CSV sales file and generates detailed
-        statistics: total by category, best-selling product, mean and median
-        prices, and a summary exported to JSON.
+        A script that reads a CSV sales file and generates detailed statistics:
+        total by category, best-selling product, mean and median prices, and a
+        summary exported to JSON.
       </BlogP>
       <BlogCode>{`# csv_analyzer.py
 import csv
@@ -579,8 +579,8 @@ Croissant,bakery,1.20,25
 # python csv_analyzer.py sales.csv -o result.json`}</BlogCode>
       <BlogCallout type="tip">
         Add <code>pandas</code> for more advanced data analysis.{" "}
-        <code>df = pd.read_csv("sales.csv")</code> loads the CSV as a
-        DataFrame with built-in statistical functions.
+        <code>df = pd.read_csv("sales.csv")</code> loads the CSV as a DataFrame
+        with built-in statistical functions.
       </BlogCallout>
     </>
   );
@@ -603,11 +603,11 @@ function ExerciseCard({
 }) {
   const [open, setOpen] = useState(false);
   const levelColor = {
-    "Básico":
+    Básico:
       "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
-    "Intermedio":
+    Intermedio:
       "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-    "Avanzado": "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
+    Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
   }[level];
 
   return (
@@ -655,8 +655,8 @@ function SEjercicios() {
     <>
       <BlogH2>Python Exercises</BlogH2>
       <BlogP>
-        Put into practice what you've learned with these progressive exercises. Try
-        to solve them before looking at the solution.
+        Put into practice what you've learned with these progressive exercises.
+        Try to solve them before looking at the solution.
       </BlogP>
       <div className="space-y-3 mt-6">
         <ExerciseCard

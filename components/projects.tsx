@@ -1,6 +1,7 @@
 "use client";
 import { LogoGithub, ArrowUpRightFromSquare } from "@gravity-ui/icons";
 import Link from "next/link";
+
 import { useT } from "@/hooks/useT";
 
 interface Project {

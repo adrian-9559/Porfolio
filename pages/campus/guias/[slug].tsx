@@ -3,12 +3,13 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-import BlogLayout from "@/layouts/blog";
+import CampusLayout from "@/layouts/campus";
 import {
   getGuides,
   getGuideBySlug,
   resolveCurriculumMeta,
   guideTotalMinutes,
+  contentHref,
   ContentMeta,
 } from "@/lib/blog/registry";
 import { LEVELS } from "@/lib/blog/taxonomy";
@@ -28,15 +29,20 @@ interface Props {
   totalMinutes: number;
 }
 
-function levelLabel(level: string, t: (k: string, p?: Record<string, string | number>) => string): string {
+function levelLabel(
+  level: string,
+  t: (k: string, p?: Record<string, string | number>) => string,
+): string {
   const l = LEVELS.find((l) => l.id === level);
+
   return l ? t(l.labelKey) : level;
 }
 
 export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
   const { t } = useT();
+
   return (
-    <BlogLayout
+    <CampusLayout
       seo={{
         title: guide.title,
         description: guide.description,
@@ -61,7 +67,7 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
               keywords: guide.tags?.join(", "),
               mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": `${siteConfig.url}/blog/tutoriales/guias/${guide.slug}`,
+                "@id": `${siteConfig.url}/campus/guias/${guide.slug}`,
               },
             }),
           }}
@@ -76,23 +82,23 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
         >
           <Link
             className="hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
-            href="/blog"
+            href="/"
           >
-            {t("blog.breadcrumb")}
+            Home
           </Link>
           <span aria-hidden="true">/</span>
           <Link
             className="hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
-            href="/blog/tutoriales"
+            href="/campus"
           >
-            {t("blog.type.tutorials")}
+            Campus
           </Link>
           <span aria-hidden="true">/</span>
           <Link
             className="hover:text-[#6e6e73] dark:hover:text-[#86868b] transition-colors no-underline"
-            href="/blog/tutoriales/guias"
+            href="/campus/guias"
           >
-            {t("blog.guides")}
+            {t("nav.campusGuides")}
           </Link>
           <span aria-hidden="true">/</span>
           <span
@@ -143,12 +149,16 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
               <IconBook className="w-4 h-4" />
               <span>
                 {curriculum.length}{" "}
-                {curriculum.length === 1 ? t("blog.tutorialSingular") : t("blog.tutorialPlural")}
+                {curriculum.length === 1
+                  ? t("blog.tutorialSingular")
+                  : t("blog.tutorialPlural")}
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <IconClock className="w-4 h-4" />
-              <span>~{totalMinutes} {t("blog.estimatedMinutes")}</span>
+              <span>
+                ~{totalMinutes} {t("blog.estimatedMinutes")}
+              </span>
             </div>
           </div>
         </header>
@@ -171,7 +181,7 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
                     className={`absolute left-0 top-1 w-[38px] h-[38px] rounded-full flex items-center justify-center text-sm font-bold border-2 z-10 bg-white dark:bg-[#111116] ${
                       step.optional
                         ? "border-amber-300 dark:border-amber-700 text-amber-500 dark:text-amber-400"
-                        : "border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
+                        : "border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400"
                     }`}
                   >
                     {idx + 1}
@@ -179,8 +189,8 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
 
                   {/* Card */}
                   <Link
-                    className="block p-5 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/15 dark:hover:border-white/15 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
-                    href={`/blog/tutoriales/${step.slug}`}
+                    className="block p-5 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-emerald-300/60 dark:hover:border-emerald-700/60 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
+                    href={contentHref(step.type, step.slug)}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
@@ -199,7 +209,7 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
                             </span>
                           )}
                         </div>
-                        <h3 className="font-semibold text-sm text-[#1d1d1f] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors motion-safe:transition-colors">
+                        <h3 className="font-semibold text-sm text-[#1d1d1f] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors motion-safe:transition-colors">
                           {step.title}
                         </h3>
                         <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1 leading-relaxed line-clamp-2">
@@ -222,7 +232,7 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
         <div className="pt-8 border-t border-black/8 dark:border-white/8 mt-10 flex items-center justify-between gap-4 flex-wrap">
           <Link
             className="inline-flex items-center gap-2 text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
-            href="/blog/tutoriales/guias"
+            href="/campus/guias"
           >
             <IconChevronLeft className="w-4 h-4" />
             {t("blog.allGuides")}
@@ -231,12 +241,15 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
             <IconCheck className="w-3 h-3" />
             <span>
               {curriculum.length}{" "}
-              {curriculum.length === 1 ? t("blog.tutorialSingular") : t("blog.tutorialPlural")} {t("blog.recommendedOrder")}
+              {curriculum.length === 1
+                ? t("blog.tutorialSingular")
+                : t("blog.tutorialPlural")}{" "}
+              {t("blog.recommendedOrder")}
             </span>
           </div>
         </div>
       </div>
-    </BlogLayout>
+    </CampusLayout>
   );
 }
 

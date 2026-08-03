@@ -63,10 +63,21 @@ function quickAccessItems(t: (k: string) => string): {
       id: "repositories",
       label: t("dashboard.quickRepos"),
       desc: t("dashboard.quickReposDesc"),
-      color: "from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20 border-blue-200 dark:border-blue-800/40",
+      color:
+        "from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20 border-blue-200 dark:border-blue-800/40",
       icon: (
-        <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+        <svg
+          className="w-5 h-5 text-blue-600 dark:text-blue-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+          />
         </svg>
       ),
     },
@@ -74,11 +85,22 @@ function quickAccessItems(t: (k: string) => string): {
       id: "agents",
       label: t("dashboard.quickAgents"),
       desc: t("dashboard.quickAgentsDesc"),
-      color: "from-violet-50 to-violet-100 dark:from-violet-950/20 dark:to-violet-900/20 border-violet-200 dark:border-violet-800/40",
+      color:
+        "from-violet-50 to-violet-100 dark:from-violet-950/20 dark:to-violet-900/20 border-violet-200 dark:border-violet-800/40",
       icon: (
-        <svg className="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="w-5 h-5 text-violet-600 dark:text-violet-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <rect height="13" rx="2" strokeWidth={1.5} width="20" x="2" y="6" />
-          <path d="M8 14h.01M16 14h.01M12 3v3M9 11h6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+          <path
+            d="M8 14h.01M16 14h.01M12 3v3M9 11h6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+          />
         </svg>
       ),
     },
@@ -86,11 +108,22 @@ function quickAccessItems(t: (k: string) => string): {
       id: "tricount",
       label: t("dashboard.quickTricount"),
       desc: t("dashboard.quickTricountDesc"),
-      color: "from-emerald-50 to-emerald-100 dark:from-emerald-950/20 dark:to-emerald-900/20 border-emerald-200 dark:border-emerald-800/40",
+      color:
+        "from-emerald-50 to-emerald-100 dark:from-emerald-950/20 dark:to-emerald-900/20 border-emerald-200 dark:border-emerald-800/40",
       icon: (
-        <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="w-5 h-5 text-emerald-600 dark:text-emerald-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <rect height="14" rx="2" strokeWidth={1.5} width="22" x="1" y="6" />
-          <path d="M1 10h22M7 15h.01M12 15h3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+          <path
+            d="M1 10h22M7 15h.01M12 15h3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+          />
         </svg>
       ),
     },
@@ -98,11 +131,27 @@ function quickAccessItems(t: (k: string) => string): {
       id: "finances",
       label: "Panel financiero",
       desc: "Presupuestos, metas y suscripciones",
-      color: "from-cyan-50 to-cyan-100 dark:from-cyan-950/20 dark:to-cyan-900/20 border-cyan-200 dark:border-cyan-800/40",
+      color:
+        "from-cyan-50 to-cyan-100 dark:from-cyan-950/20 dark:to-cyan-900/20 border-cyan-200 dark:border-cyan-800/40",
       icon: (
-        <svg className="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M3 17l4-4 3 3 6-6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
-          <path d="M14 10h7v7" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+        <svg
+          className="w-5 h-5 text-cyan-600 dark:text-cyan-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M3 17l4-4 3 3 6-6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+          />
+          <path
+            d="M14 10h7v7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+          />
           <path d="M21 3L3 21" strokeLinecap="round" strokeWidth={1.5} />
         </svg>
       ),
@@ -111,10 +160,21 @@ function quickAccessItems(t: (k: string) => string): {
       id: "notifications",
       label: t("dashboard.quickNotifications"),
       desc: t("dashboard.quickNotificationsDesc"),
-      color: "from-amber-50 to-amber-100 dark:from-amber-950/20 dark:to-amber-900/20 border-amber-200 dark:border-amber-800/40",
+      color:
+        "from-amber-50 to-amber-100 dark:from-amber-950/20 dark:to-amber-900/20 border-amber-200 dark:border-amber-800/40",
       icon: (
-        <svg className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M15 17H20L18 9.42A6 6 0 006 9.42L4 17h5m6 0v1a3 3 0 01-6 0v-1m6 0H9" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+        <svg
+          className="w-5 h-5 text-amber-600 dark:text-amber-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15 17H20L18 9.42A6 6 0 006 9.42L4 17h5m6 0v1a3 3 0 01-6 0v-1m6 0H9"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+          />
         </svg>
       ),
     },
@@ -141,7 +201,11 @@ export function UserDashboardHome({ onNavigate }: Props) {
 
   const hour = new Date().getHours();
   const greetingKey =
-    hour < 13 ? "dashboard.greetingMorning" : hour < 20 ? "dashboard.greetingAfternoon" : "dashboard.greetingEvening";
+    hour < 13
+      ? "dashboard.greetingMorning"
+      : hour < 20
+        ? "dashboard.greetingAfternoon"
+        : "dashboard.greetingEvening";
   const greeting = t(greetingKey);
   const QUICK_ACCESS = quickAccessItems(t);
 

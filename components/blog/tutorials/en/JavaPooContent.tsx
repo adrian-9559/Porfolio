@@ -54,11 +54,11 @@ function ExerciseCard({
   const [open, setOpen] = useState(false);
   const levelColor =
     {
-      "Básico":
+      Básico:
         "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
-      "Intermedio":
+      Intermedio:
         "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-      "Avanzado": "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
+      Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
     }[level] ??
     "bg-blue-100 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400";
 
@@ -109,16 +109,16 @@ function SectionIntro() {
     <>
       <BlogH2>OOP in Java: beyond the basics</BlogH2>
       <BlogP>
-        Java is a purely object-oriented language (with some
-        primitives). All code lives inside classes, and every object is an
-        instance of a class. This tutorial assumes you already know basic Java
-        syntax and dives into the pillars of OOP.
+        Java is a purely object-oriented language (with some primitives). All
+        code lives inside classes, and every object is an instance of a class.
+        This tutorial assumes you already know basic Java syntax and dives into
+        the pillars of OOP.
       </BlogP>
       <BlogP>The four pillars of OOP in Java are:</BlogP>
       <BlogUl>
         <BlogLi>
-          <strong>Encapsulation</strong> — hide internal state and expose
-          only what's necessary
+          <strong>Encapsulation</strong> — hide internal state and expose only
+          what's necessary
         </BlogLi>
         <BlogLi>
           <strong>Inheritance</strong> — reuse and extend behavior between
@@ -147,9 +147,9 @@ function SectionEncapsulacion() {
     <>
       <BlogH2>Encapsulation</BlogH2>
       <BlogP>
-        Encapsulation protects the internal state of an object using
-        access modifiers and exposes a public API through getter/setter
-        methods or domain methods.
+        Encapsulation protects the internal state of an object using access
+        modifiers and exposes a public API through getter/setter methods or
+        domain methods.
       </BlogP>
       <BlogH3>Access modifiers</BlogH3>
       <BlogCode>{`public class Employee {
@@ -172,9 +172,9 @@ function SectionEncapsulacion() {
     }
 }`}</BlogCode>
       <BlogCallout type="tip">
-        Never directly return a reference to a mutable array or list
-        from a getter. Use <code>Collections.unmodifiableList()</code> or a
-        defensive copy.
+        Never directly return a reference to a mutable array or list from a
+        getter. Use <code>Collections.unmodifiableList()</code> or a defensive
+        copy.
       </BlogCallout>
     </>
   );
@@ -186,8 +186,8 @@ function SectionHerencia() {
       <BlogH2>Inheritance</BlogH2>
       <BlogP>
         Java supports single class inheritance with <code>extends</code>. A
-        subclass inherits all <code>public</code> and{" "}
-        <code>protected</code> members from its superclass.
+        subclass inherits all <code>public</code> and <code>protected</code>{" "}
+        members from its superclass.
       </BlogP>
       <BlogCode>{`public abstract class Vehicle {
     private final String licensePlate;
@@ -233,8 +233,8 @@ function SectionInterfaces() {
     <>
       <BlogH2>Interfaces</BlogH2>
       <BlogP>
-        Interfaces define contracts that classes implement. Since Java
-        8 they can have <code>default</code> and <code>static</code> methods. Since
+        Interfaces define contracts that classes implement. Since Java 8 they
+        can have <code>default</code> and <code>static</code> methods. Since
         Java 9 they have <code>private</code> methods.
       </BlogP>
       <BlogCode>{`// Modern interface with default method
@@ -265,9 +265,9 @@ public interface Processor<T, R> {
 // Usage with lambdas
 Processor<String, Integer> counter = s -> s.length();`}</BlogCode>
       <BlogCallout type="tip">
-        A class can implement multiple interfaces but only extend one
-        class. Interfaces with <code>default</code> methods allow evolving
-        APIs without breaking existing implementations.
+        A class can implement multiple interfaces but only extend one class.
+        Interfaces with <code>default</code> methods allow evolving APIs without
+        breaking existing implementations.
       </BlogCallout>
     </>
   );
@@ -278,8 +278,8 @@ function SectionPolimorfismo() {
     <>
       <BlogH2>Polymorphism</BlogH2>
       <BlogP>
-        Polymorphism allows objects of different classes to respond to the
-        same message in different ways. In Java there are two types:
+        Polymorphism allows objects of different classes to respond to the same
+        message in different ways. In Java there are two types:
       </BlogP>
       <BlogH3>Subtype polymorphism (override)</BlogH3>
       <BlogCode>{`List<Vehicle> fleet = List.of(
@@ -317,8 +317,8 @@ function SectionRecords() {
       <BlogH2>Records and sealed classes</BlogH2>
       <BlogH3>Records (Java 14+ preview, 16 stable)</BlogH3>
       <BlogP>
-        Records are immutable classes that automatically generate
-        constructor, getters, equals, hashCode, and toString.
+        Records are immutable classes that automatically generate constructor,
+        getters, equals, hashCode, and toString.
       </BlogP>
       <BlogCode>{`// One line — generates EVERYTHING
 public record Person(String name, int age) {}
@@ -345,8 +345,8 @@ public record Coordinate(double lat, double lon) {
 }`}</BlogCode>
       <BlogH3>Sealed classes (Java 17+)</BlogH3>
       <BlogP>
-        Sealed classes restrict which subclasses can extend them.
-        This allows modeling closed domains like an enum but with subclasses.
+        Sealed classes restrict which subclasses can extend them. This allows
+        modeling closed domains like an enum but with subclasses.
       </BlogP>
       <BlogCode>{`// Sealed — only these three classes can extend Shape
 public sealed abstract class Shape permits Circle, Rectangle, Triangle {
@@ -416,9 +416,7 @@ function SectionEjercicios() {
   return (
     <>
       <BlogH2>Exercises</BlogH2>
-      <BlogP>
-        Practice OOP concepts with these progressive exercises.
-      </BlogP>
+      <BlogP>Practice OOP concepts with these progressive exercises.</BlogP>
       <div className="space-y-3">
         <ExerciseCard
           description="Create a `Drawable` interface with a `draw()` method. Implement `Circle` and `Rectangle`. Then create a `Canvas` class that holds a list of `Drawable` and draws them all."

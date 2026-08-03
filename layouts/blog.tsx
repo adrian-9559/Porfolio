@@ -10,7 +10,7 @@ import { Head } from "./head";
 import { Navbar } from "@/components/navbar";
 import { useT } from "@/hooks/useT";
 import { siteConfig } from "@/config/site";
-import { allContent, typeSlug, allGuides } from "@/lib/blog/registry";
+import { allContent, typeSlug } from "@/lib/blog/registry";
 import { CATEGORY_GROUPS } from "@/lib/blog/taxonomy";
 import {
   IconSearch,
@@ -18,9 +18,8 @@ import {
   IconHome,
   IconChevronRight,
   IconArticle,
-  IconTutorial,
   IconTool,
-  IconBook,
+  IconGraduation,
 } from "@/components/blog/shared";
 
 // ── Sidebar data model ────────────────────────────────────────────────────────
@@ -80,17 +79,14 @@ function FolderIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
 }
 
 function buildNav(t: (key: string) => string): NavGroup[] {
-  const tutorials = allContent.filter((c) => c.type === "tutorial");
   const articles = allContent.filter((c) => c.type === "article");
   const tools = allContent.filter((c) => c.type === "tool");
 
-  const allLearning = [...tutorials, ...articles];
-
   const groups: NavGroup[] = [];
 
-  // 1. Category groups from taxonomy (tutorials + articles grouped by category)
+  // 1. Category groups from taxonomy (articles only)
   for (const catGroup of CATEGORY_GROUPS) {
-    const items = allLearning.filter((c) =>
+    const items = articles.filter((c) =>
       catGroup.categories.includes(c.categoryId),
     );
 
@@ -113,25 +109,7 @@ function buildNav(t: (key: string) => string): NavGroup[] {
     });
   }
 
-  // 2. Guides section
-  if (allGuides.length > 0) {
-    groups.push({
-      id: "guias",
-      label: t("nav.blogGuides"),
-      href: "/blog/tutoriales/guias",
-      color: "text-amber-500",
-      icon: <IconBook className="w-3.5 h-3.5" />,
-      items: allGuides.map((g) => ({
-        id: g.id,
-        label: g.title,
-        href: `/blog/tutoriales/guias/${g.slug}`,
-        color: g.categoryColor,
-      })),
-      defaultOpen: true,
-    });
-  }
-
-  // 3. Tools section
+  // 2. Tools section
   if (tools.length > 0) {
     groups.push({
       id: "herramientas",
@@ -195,12 +173,10 @@ function Chevron({ open }: { open: boolean }) {
 function itemTypeIcon(href: string): React.ReactNode {
   if (href.startsWith("/blog/articulos/"))
     return <IconArticle className="w-3 h-3" />;
-  if (href.startsWith("/blog/tutoriales/guias/"))
-    return <IconBook className="w-3 h-3" />;
-  if (href.startsWith("/blog/tutoriales/"))
-    return <IconTutorial className="w-3 h-3" />;
+  if (href.startsWith("/blog/herramientas/"))
+    return <IconTool className="w-3 h-3" />;
 
-  return <IconTool className="w-3 h-3" />;
+  return null;
 }
 
 // ── Sidebar item ──────────────────────────────────────────────────────────────
@@ -316,9 +292,7 @@ function TopGroup({
         <Chevron open={open} />
         <span
           className={`text-[10px] font-semibold uppercase tracking-wider flex-1 text-left ${
-            isGroupActive
-              ? "text-accent"
-              : "text-muted/60"
+            isGroupActive ? "text-accent" : "text-muted/60"
           }`}
         >
           {group.label}
@@ -380,6 +354,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
   const results =
     q.trim().length > 0
       ? allContent
+          .filter((c) => c.type !== "tutorial")
           .filter(
             (c) =>
               c.title.toLowerCase().includes(q.toLowerCase()) ||
@@ -440,9 +415,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
                   className={`w-6 h-6 rounded-md flex-shrink-0 flex items-center justify-center ${
                     item.type === "article"
                       ? "bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400"
-                      : item.type === "tutorial"
-                        ? "bg-blue-100 dark:bg-blue-950/50 text-accent"
-                        : "bg-violet-100 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400"
+                      : "bg-violet-100 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400"
                   }`}
                 >
                   {item.type === "article" ? (
@@ -455,21 +428,6 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
                     >
                       <path
                         d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                      />
-                    </svg>
-                  ) : item.type === "tutorial" ? (
-                    <svg
-                      aria-hidden="true"
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M12 14l9-5-9-5-9 5 9 5z"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
@@ -607,6 +565,24 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
                   />
                 ))}
               </div>
+
+              <Link
+                href="/campus"
+                onClick={() => setMobileOpen(false)}
+                {...(currentPath === "/campus"
+                  ? { "aria-current": "page" as const }
+                  : {})}
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all no-underline mt-1 motion-safe:transition-all ${
+                  currentPath === "/campus"
+                    ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300"
+                    : "text-muted hover:text-foreground hover:bg-default"
+                }`}
+              >
+                <span className="flex-shrink-0 text-emerald-500">
+                  <IconGraduation className="w-4 h-4" />
+                </span>
+                {t("nav.campus")}
+              </Link>
             </nav>
           </aside>
 

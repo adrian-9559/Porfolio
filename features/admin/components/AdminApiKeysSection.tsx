@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
 
 import {
   SectionHeader,
@@ -13,6 +12,7 @@ import {
   relativeTime,
 } from "./AdminShared";
 
+import { useT } from "@/hooks/useT";
 import { adminService, AdminApiKey } from "@/services/adminService";
 import { apiFetch } from "@/services/apiClient";
 
@@ -111,7 +111,9 @@ function CreateModal({
               disabled={loading}
               type="submit"
             >
-              {loading ? t("admin.apiKeyGenerating") : t("admin.apiKeyGenerateBtn")}
+              {loading
+                ? t("admin.apiKeyGenerating")
+                : t("admin.apiKeyGenerateBtn")}
             </button>
           </div>
         </form>
@@ -340,7 +342,11 @@ export function AdminApiKeysSection() {
           <Spinner />
         ) : filtered.length === 0 ? (
           <EmptyState
-            sub={search ? t("admin.apiKeyNoKeysSearch") : t("admin.apiKeyNoKeysHint")}
+            sub={
+              search
+                ? t("admin.apiKeyNoKeysSearch")
+                : t("admin.apiKeyNoKeysHint")
+            }
             text={t("admin.apiKeyNoKeys")}
           />
         ) : (
@@ -359,7 +365,11 @@ export function AdminApiKeysSection() {
                     </p>
                     <Badge
                       color={k.is_active ? "green" : "red"}
-                      label={k.is_active ? t("admin.apiKeyBadgeActive") : t("admin.apiKeyBadgeRevoked")}
+                      label={
+                        k.is_active
+                          ? t("admin.apiKeyBadgeActive")
+                          : t("admin.apiKeyBadgeRevoked")
+                      }
                     />
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
@@ -373,7 +383,9 @@ export function AdminApiKeysSection() {
                         className={`text-[10px] font-medium px-1.5 py-0.5 rounded transition-colors ${copied === k.id ? "text-emerald-600 dark:text-emerald-400" : "text-[#aeaeb2] hover:text-[#6e6e73] dark:hover:text-[#86868b]"}`}
                         onClick={() => copyPrefix(k.id, k.key_prefix)}
                       >
-                        {copied === k.id ? t("admin.apiKeyCopiedPrefix") : t("admin.apiKeyCopyPrefix")}
+                        {copied === k.id
+                          ? t("admin.apiKeyCopiedPrefix")
+                          : t("admin.apiKeyCopyPrefix")}
                       </button>
                     )}
                     <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
@@ -383,11 +395,15 @@ export function AdminApiKeysSection() {
                 </div>
                 <div className="text-right shrink-0 hidden sm:block">
                   <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-                    {t("admin.apiKeyCreated", { time: relativeTime(k.created_at) })}
+                    {t("admin.apiKeyCreated", {
+                      time: relativeTime(k.created_at),
+                    })}
                   </p>
                   {k.last_used_at ? (
                     <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-                      {t("admin.apiKeyUsed", { time: relativeTime(k.last_used_at) })}
+                      {t("admin.apiKeyUsed", {
+                        time: relativeTime(k.last_used_at),
+                      })}
                     </p>
                   ) : (
                     <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
@@ -425,7 +441,11 @@ export function AdminApiKeysSection() {
                         </svg>
                       )
                     }
-                    title={revealed.has(k.id) ? t("admin.apiKeyHide") : t("admin.apiKeyReveal")}
+                    title={
+                      revealed.has(k.id)
+                        ? t("admin.apiKeyHide")
+                        : t("admin.apiKeyReveal")
+                    }
                     onClick={() => toggleReveal(k.id)}
                   />
                   {k.is_active && (

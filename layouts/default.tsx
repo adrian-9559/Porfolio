@@ -13,6 +13,7 @@ interface DefaultLayoutProps {
 
 export default function DefaultLayout({ children, seo }: DefaultLayoutProps) {
   const { t } = useT();
+
   return (
     <div className="relative flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Head {...seo} />

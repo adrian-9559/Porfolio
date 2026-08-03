@@ -31,19 +31,31 @@ interface McpEntry {
 }
 
 const categoryMeta: Record<Category, { label: string; color: string }> = {
-  "files-storage": { label: "Files Archivos y Storage Storage", color: "bg-amber-500" },
+  "files-storage": {
+    label: "Files Archivos y Storage Storage",
+    color: "bg-amber-500",
+  },
   "source-control": { label: "Version Control", color: "bg-blue-600" },
-  browsers: { label: "Browsers Navegadores y Automatización Automation", color: "bg-green-600" },
+  browsers: {
+    label: "Browsers Navegadores y Automatización Automation",
+    color: "bg-green-600",
+  },
   databases: { label: "Databases", color: "bg-purple-500" },
   payments: { label: "Payments", color: "bg-indigo-500" },
   communication: { label: "Communication", color: "bg-sky-500" },
-  search: { label: "Search Búsqueda y Contenido Web Web Content", color: "bg-teal-500" },
+  search: {
+    label: "Search Búsqueda y Contenido Web Web Content",
+    color: "bg-teal-500",
+  },
   memory: { label: "Memory Memoria y Contexto Context", color: "bg-pink-500" },
   "project-management": {
     label: "Project Management",
     color: "bg-orange-500",
   },
-  "cloud-devops": { label: "Cloud Cloud y DevOps DevOps", color: "bg-cyan-600" },
+  "cloud-devops": {
+    label: "Cloud Cloud y DevOps DevOps",
+    color: "bg-cyan-600",
+  },
   monitoring: { label: "Monitoring", color: "bg-rose-500" },
   design: { label: "Design", color: "bg-violet-500" },
   media: { label: "Audio Audio y Medios Media", color: "bg-emerald-600" },
@@ -530,8 +542,8 @@ export default function MCPServersContent() {
         {mcpServers.length} MCP servers to supercharge your AI
       </h1>
       <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-8">
-        Catalog of MCP servers grouped by category. Cada uno con su
-        paquete npm, descripción, caso de uso y configuración.
+        Catalog of MCP servers grouped by category. Cada uno con su paquete npm,
+        descripción, caso de uso y configuración.
       </p>
 
       <div className="h-px bg-black/8 dark:bg-white/8 mb-8" />

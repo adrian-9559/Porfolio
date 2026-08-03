@@ -211,9 +211,7 @@ export function UserAgentsSection() {
                   <p className="text-sm font-medium text-foreground">
                     {p.label}
                   </p>
-                  <p className="text-xs text-muted mt-0.5">
-                    {p.desc}
-                  </p>
+                  <p className="text-xs text-muted mt-0.5">{p.desc}</p>
                 </button>
               ))}
             </div>
@@ -457,9 +455,7 @@ export function UserAgentsSection() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-1">
                   Input
                 </p>
-                <p className="text-xs text-muted truncate">
-                  {ex.input}
-                </p>
+                <p className="text-xs text-muted truncate">{ex.input}</p>
               </div>
               <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-blue-400 mb-1">
@@ -486,9 +482,7 @@ export function UserAgentsSection() {
       )}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">
-            Agentes IA
-          </h2>
+          <h2 className="text-lg font-semibold text-foreground">Agentes IA</h2>
           <p className="text-sm text-muted mt-0.5">
             Crea y gestiona tus asistentes inteligentes personalizados
           </p>
@@ -538,15 +532,11 @@ export function UserAgentsSection() {
       {loading ? (
         <div className="rounded-2xl border border-border bg-surface py-16 text-center">
           <div className="w-6 h-6 rounded-full border-2 border-black/20 dark:border-white/20 border-t-blue-500 animate-spin mx-auto" />
-          <p className="text-sm text-muted mt-3">
-            Cargando agentes...
-          </p>
+          <p className="text-sm text-muted mt-3">Cargando agentes...</p>
         </div>
       ) : agents.length === 0 ? (
         <div className="rounded-2xl border border-border bg-surface py-16 text-center">
-          <p className="text-sm text-muted">
-            No tienes agentes creados
-          </p>
+          <p className="text-sm text-muted">No tienes agentes creados</p>
           <p className="text-xs text-muted/60 mt-1">
             Crea tu primer agente personalizado
           </p>
@@ -598,10 +588,7 @@ export function UserAgentsSection() {
                         </span>
                       )}
                       {agent.tools.slice(0, 2).map((t) => (
-                        <span
-                          key={t}
-                          className="text-xs text-muted/60"
-                        >
+                        <span key={t} className="text-xs text-muted/60">
                           {t}
                         </span>
                       ))}

@@ -196,9 +196,9 @@ db.users.insertOne({
           input due to data propagation.
         </BlogLi>
         <BlogLi>
-          <strong>Eventually Consistent:</strong> data propagates asynchronously;
-          if no new writes occur, all nodes will converge to the same state over
-          time.
+          <strong>Eventually Consistent:</strong> data propagates
+          asynchronously; if no new writes occur, all nodes will converge to the
+          same state over time.
         </BlogLi>
       </BlogUl>
 
@@ -360,9 +360,7 @@ db.users.insertOne({
 
       <BlogH3>Choose NoSQL when…</BlogH3>
       <BlogUl>
-        <BlogLi>
-          The data schema is variable or constantly evolving.
-        </BlogLi>
+        <BlogLi>The data schema is variable or constantly evolving.</BlogLi>
         <BlogLi>
           You need to scale horizontally to handle large data volumes (IoT,
           logs, social networks).
@@ -381,10 +379,10 @@ db.users.insertOne({
       </BlogUl>
 
       <BlogCallout type="warn">
-        <strong>Beware of dogmatism.</strong> Choosing NoSQL "because it's
-        cool" when your project is basically a CRUD with simple relationships
-        adds unnecessary complexity. And choosing SQL for a telemetry system
-        with millions of writes per second is equally problematic.
+        <strong>Beware of dogmatism.</strong> Choosing NoSQL "because it's cool"
+        when your project is basically a CRUD with simple relationships adds
+        unnecessary complexity. And choosing SQL for a telemetry system with
+        millions of writes per second is equally problematic.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -397,9 +395,7 @@ db.users.insertOne({
         problem within the same system.
       </BlogP>
 
-      <BlogP>
-        A typical polyglot architecture:
-      </BlogP>
+      <BlogP>A typical polyglot architecture:</BlogP>
 
       <BlogUl>
         <BlogLi>
@@ -460,8 +456,8 @@ app.get('/products/:id', async (req, res) => {
 
       <BlogCallout type="done">
         <strong>Rule of thumb:</strong> SQL for what requires consistency and
-        relationships. NoSQL for what requires scalability and flexibility.
-        Most projects need both.
+        relationships. NoSQL for what requires scalability and flexibility. Most
+        projects need both.
       </BlogCallout>
     </article>
   );

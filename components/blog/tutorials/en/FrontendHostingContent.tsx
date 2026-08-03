@@ -126,11 +126,7 @@ const platforms = [
       "No registration required",
       "Ideal for quick demos",
     ],
-    cons: [
-      "Static sites only",
-      "No native CI/CD",
-      "No serverless functions",
-    ],
+    cons: ["Static sites only", "No native CI/CD", "No serverless functions"],
   },
 ];
 
@@ -222,8 +218,8 @@ export default function FrontendHostingContent() {
             ⚡ Quick rule
           </p>
           <p className="text-sm text-violet-700 dark:text-violet-400">
-            For Next.js → Vercel. For everything else static → Cloudflare
-            Pages (unlimited free bandwidth). For quick demos → Surge.
+            For Next.js → Vercel. For everything else static → Cloudflare Pages
+            (unlimited free bandwidth). For quick demos → Surge.
           </p>
         </div>
       </div>
@@ -373,9 +369,9 @@ export default function FrontendHostingContent() {
         </h3>
         <p className="text-sm text-[#3d3d3d] dark:text-[#c0c0c5] leading-relaxed">
           For personal projects and portfolios I use <strong>Vercel</strong> if
-          there's Next.js and <strong>Cloudflare Pages</strong> for everything else.
-          Both have excellent DX and the free plan is more than enough
-          for real projects.
+          there's Next.js and <strong>Cloudflare Pages</strong> for everything
+          else. Both have excellent DX and the free plan is more than enough for
+          real projects.
         </p>
       </div>
     </article>

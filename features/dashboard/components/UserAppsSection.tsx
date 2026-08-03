@@ -116,13 +116,9 @@ function AppCard({ app, latest }: AppCardProps) {
           {app.icon_emoji ?? "📱"}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-foreground">
-            {app.name}
-          </p>
+          <p className="text-sm font-semibold text-foreground">{app.name}</p>
           {app.description && (
-            <p className="text-xs text-muted truncate">
-              {app.description}
-            </p>
+            <p className="text-xs text-muted truncate">{app.description}</p>
           )}
           {!app.description && (
             <p className="text-xs text-muted">
@@ -317,9 +313,7 @@ export function UserAppsSection() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">
-          Apps
-        </h2>
+        <h2 className="text-lg font-semibold text-foreground">Apps</h2>
         <p className="text-sm text-muted mt-0.5">
           Descarga las aplicaciones disponibles.
         </p>

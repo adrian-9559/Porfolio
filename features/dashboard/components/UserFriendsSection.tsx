@@ -142,18 +142,14 @@ function FriendsTab({
             <p className="text-sm font-semibold text-foreground truncate">
               {f.full_name ?? f.email}
             </p>
-            <p className="text-xs text-muted mt-0.5 truncate">
-              {f.email}
-            </p>
+            <p className="text-xs text-muted mt-0.5 truncate">{f.email}</p>
             <p className="text-xs text-muted/60 mt-0.5">
               Amigos desde {formatDate(f.created_at)}
             </p>
           </div>
           {confirmId === f.id ? (
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-xs text-muted">
-                ¿Eliminar?
-              </span>
+              <span className="text-xs text-muted">¿Eliminar?</span>
               <button
                 className="bg-danger hover:bg-danger/80 disabled:opacity-60 text-danger-foreground text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
                 disabled={deleting === f.id}
@@ -239,9 +235,7 @@ function ReceivedTab({
                 {name}
               </p>
               {email && (
-                <p className="text-xs text-muted mt-0.5 truncate">
-                  {email}
-                </p>
+                <p className="text-xs text-muted mt-0.5 truncate">{email}</p>
               )}
               <p className="text-xs text-muted/60 mt-0.5">
                 {formatDate(req.created_at)}
@@ -304,9 +298,7 @@ function SentTab({
                 {name}
               </p>
               {email && (
-                <p className="text-xs text-muted mt-0.5 truncate">
-                  {email}
-                </p>
+                <p className="text-xs text-muted mt-0.5 truncate">{email}</p>
               )}
               <p className="text-xs text-muted/60 mt-0.5">
                 {formatDate(req.created_at)}
@@ -417,9 +409,7 @@ function SearchTab({ onRequestSent }: { onRequestSent: () => void }) {
             <p className="text-sm font-semibold text-foreground truncate">
               {result.full_name ?? result.email}
             </p>
-            <p className="text-xs text-muted mt-0.5 truncate">
-              {result.email}
-            </p>
+            <p className="text-xs text-muted mt-0.5 truncate">{result.email}</p>
           </div>
           {result.relationship !== "none" ? (
             <span className="flex-shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-default text-muted">
@@ -520,9 +510,7 @@ export function UserFriendsSection() {
     <section className="flex flex-col gap-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">
-            Amigos
-          </h2>
+          <h2 className="text-lg font-semibold text-foreground">Amigos</h2>
           <p className="text-sm text-muted mt-0.5">
             Gestiona tus contactos y solicitudes de amistad
           </p>
@@ -536,9 +524,7 @@ export function UserFriendsSection() {
             key={m.label}
             className="rounded-2xl border border-border bg-surface p-4 text-center"
           >
-            <p className="text-2xl font-semibold text-foreground">
-              {m.value}
-            </p>
+            <p className="text-2xl font-semibold text-foreground">{m.value}</p>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mt-1">
               {m.label}
             </p>

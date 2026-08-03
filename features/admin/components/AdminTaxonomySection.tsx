@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 
-import { allContent, typeSlug } from "@/lib/blog/registry";
+import { allContent, contentHref } from "@/lib/blog/registry";
 import {
   CATEGORIES,
   CATEGORY_GROUPS,
@@ -448,7 +448,7 @@ function RelationshipsView() {
                     {fromContent ? (
                       <Link
                         className="text-xs text-blue-600 dark:text-blue-400 hover:underline no-underline"
-                        href={`/blog/${typeSlug(fromContent.type)}/${fromContent.slug}`}
+                        href={contentHref(fromContent.type, fromContent.slug)}
                       >
                         {fromContent.title}
                       </Link>
@@ -469,7 +469,7 @@ function RelationshipsView() {
                     {toContent ? (
                       <Link
                         className="text-xs text-blue-600 dark:text-blue-400 hover:underline no-underline"
-                        href={`/blog/${typeSlug(toContent.type)}/${toContent.slug}`}
+                        href={contentHref(toContent.type, toContent.slug)}
                       >
                         {toContent.title}
                       </Link>

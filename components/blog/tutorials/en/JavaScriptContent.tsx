@@ -54,11 +54,11 @@ function ExerciseCard({
 }) {
   const [open, setOpen] = useState(false);
   const levelColor = {
-    "Básico":
+    Básico:
       "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
-    "Intermedio":
+    Intermedio:
       "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-    "Avanzado": "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
+    Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
   }[level];
 
   return (
@@ -81,7 +81,9 @@ function ExerciseCard({
           >
             {level}
           </span>
-          <span className="text-[#aeaeb2] text-xs">{open ? "\u25b2" : "\u25bc"}</span>
+          <span className="text-[#aeaeb2] text-xs">
+            {open ? "\u25b2" : "\u25bc"}
+          </span>
         </div>
       </button>
       {open && (
@@ -106,8 +108,8 @@ function SEjercicios() {
     <>
       <BlogH2>JavaScript Exercises</BlogH2>
       <BlogP>
-        Practice what you've learned with these progressive exercises. Try
-        to solve them on your own before looking at the solution.
+        Practice what you've learned with these progressive exercises. Try to
+        solve them on your own before looking at the solution.
       </BlogP>
       <div className="space-y-3 mt-6">
         <ExerciseCard
@@ -244,13 +246,13 @@ function SectionIntro() {
     <>
       <BlogH2>Introduction to JavaScript</BlogH2>
       <BlogP>
-        JavaScript is the only native programming language of the web
-        browser. Together with HTML and CSS it forms the trinity of frontend development,
+        JavaScript is the only native programming language of the web browser.
+        Together with HTML and CSS it forms the trinity of frontend development,
         but it also runs on the server thanks to Node.js.
       </BlogP>
       <BlogP>
-        It is an interpreted, dynamically typed, multi-paradigm language:
-        it supports imperative, object-oriented, and functional programming.
+        It is an interpreted, dynamically typed, multi-paradigm language: it
+        supports imperative, object-oriented, and functional programming.
       </BlogP>
       <BlogCode>{`// Your first JavaScript program
 console.log("Hello, world!");
@@ -260,14 +262,14 @@ let name = "Ana";
 const age = 28;
 console.log(\`Hello, \${name}. You are \${age} years old.\`);`}</BlogCode>
       <BlogCallout type="tip">
-        Open your browser's DevTools (F12) and use the console to execute
-        JS snippets instantly.
+        Open your browser's DevTools (F12) and use the console to execute JS
+        snippets instantly.
       </BlogCallout>
       <BlogH3>Where does it run?</BlogH3>
       <BlogP>
         In the browser JS accesses the DOM, handles events, and makes HTTP
-        requests. In Node.js it accesses the file system, creates HTTP servers, and
-        much more.
+        requests. In Node.js it accesses the file system, creates HTTP servers,
+        and much more.
       </BlogP>
       <BlogCode>{`// In the browser
 document.title = "My page";
@@ -286,10 +288,9 @@ function SectionFundamentos() {
       <BlogH2>Language Fundamentals</BlogH2>
       <BlogH3>var, let and const</BlogH3>
       <BlogP>
-        <code>var</code> has function scope and hoisting.{" "}
-        <code>let</code> and <code>const</code> have block scope. Always prefer{" "}
-        <code>const</code> and use <code>let</code> only when you need to
-        reassign.
+        <code>var</code> has function scope and hoisting. <code>let</code> and{" "}
+        <code>const</code> have block scope. Always prefer <code>const</code>{" "}
+        and use <code>let</code> only when you need to reassign.
       </BlogP>
       <BlogCode>{`var x = 1;         // function scope, hoisting
 let y = 2;         // block scope
@@ -351,8 +352,8 @@ function SectionFunciones() {
       <BlogH2>Functions</BlogH2>
       <BlogH3>Declaration vs expression vs arrow</BlogH3>
       <BlogP>
-        Declared functions are hoisted. Expressions and arrows are not. Arrow functions
-        don't have their own <code>this</code>.
+        Declared functions are hoisted. Expressions and arrows are not. Arrow
+        functions don't have their own <code>this</code>.
       </BlogP>
       <BlogCode>{`// Declaration (hoisting)
 function greet(name) {
@@ -385,8 +386,8 @@ console.log(greet("Ana", "Good morning")); // "Good morning, Ana!"
 console.log(sumAll(1, 2, 3, 4));  // 10`}</BlogCode>
       <BlogH3>Closures</BlogH3>
       <BlogP>
-        A closure is a function that remembers the scope in which it was created,
-        even after that scope has finished executing.
+        A closure is a function that remembers the scope in which it was
+        created, even after that scope has finished executing.
       </BlogP>
       <BlogCode>{`function createCounter() {
   let count = 0;
@@ -418,7 +419,8 @@ function SectionArraysObjetos() {
       <BlogH3>Array methods</BlogH3>
       <BlogP>
         Functional array methods (<code>map</code>, <code>filter</code>,{" "}
-        <code>reduce</code>) are fundamental and don't mutate the original array.
+        <code>reduce</code>) are fundamental and don't mutate the original
+        array.
       </BlogP>
       <BlogCode>{`const nums = [1, 2, 3, 4, 5, 6];
 
@@ -514,8 +516,8 @@ document.querySelector("form").addEventListener("submit", (e) => {
   console.log(Object.fromEntries(data));
 });`}</BlogCode>
       <BlogCallout type="tip">
-        Event delegation attaches a single listener to the parent instead of
-        one per child. It's more efficient with dynamic lists.
+        Event delegation attaches a single listener to the parent instead of one
+        per child. It's more efficient with dynamic lists.
       </BlogCallout>
     </>
   );
@@ -527,8 +529,8 @@ function SectionAsync() {
       <BlogH2>Asynchrony in JavaScript</BlogH2>
       <BlogH3>Promises</BlogH3>
       <BlogP>
-        A Promise represents a value that may be available now, in the
-        future, or never. It has three states: pending, fulfilled, and rejected.
+        A Promise represents a value that may be available now, in the future,
+        or never. It has three states: pending, fulfilled, and rejected.
       </BlogP>
       <BlogCode>{`const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
@@ -568,8 +570,8 @@ async function getMultipleUsers() {
   console.log(u1.name, u2.name);
 }`}</BlogCode>
       <BlogCallout type="warn">
-        Always wrap <code>await</code> in a <code>try/catch</code> block
-        to handle network or server errors.
+        Always wrap <code>await</code> in a <code>try/catch</code> block to
+        handle network or server errors.
       </BlogCallout>
     </>
   );
@@ -633,9 +635,9 @@ function SectionProyecto() {
     <>
       <BlogH2>Final Project: Weather App</BlogH2>
       <BlogP>
-        We build a mini weather application using the Open-Meteo API
-        (free, no API key required). Shows current temperature, description, and an
-        icon based on conditions.
+        We build a mini weather application using the Open-Meteo API (free, no
+        API key required). Shows current temperature, description, and an icon
+        based on conditions.
       </BlogP>
       <BlogCode>{`// weather-app.js - Weather app with Fetch API
 

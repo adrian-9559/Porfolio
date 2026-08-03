@@ -39,6 +39,7 @@ function GraphView({
   loading: boolean;
 }) {
   const { t } = useT();
+
   if (loading) {
     return (
       <div className="flex justify-center py-12">
@@ -49,9 +50,7 @@ function GraphView({
   if (commits.length === 0) {
     return (
       <div className="rounded-2xl border border-border bg-surface py-16 text-center">
-        <p className="text-sm text-muted">
-          {t("repositories.graphNoData")}
-        </p>
+        <p className="text-sm text-muted">{t("repositories.graphNoData")}</p>
       </div>
     );
   }
@@ -353,11 +352,7 @@ export function UserRepositoriesSection() {
       setBranches(b);
       setCommits(c);
     } catch (err) {
-      setDetailError(
-        err instanceof Error
-          ? err.message
-          : t("common.error"),
-      );
+      setDetailError(err instanceof Error ? err.message : t("common.error"));
     } finally {
       setDetailLoading(false);
     }
@@ -615,9 +610,7 @@ export function UserRepositoriesSection() {
           <div className="rounded-2xl border border-border bg-surface divide-y divide-border">
             {branches.length === 0 ? (
               <div className="py-16 text-center">
-                <p className="text-sm text-muted">
-                  No hay ramas disponibles.
-                </p>
+                <p className="text-sm text-muted">No hay ramas disponibles.</p>
               </div>
             ) : (
               branches.map((branch) => (
@@ -684,13 +677,13 @@ export function UserRepositoriesSection() {
             setAddError("");
           }}
         >
-                  <span>←</span>
-                  <span>{t("repositories.title")}</span>
-                </button>
+          <span>←</span>
+          <span>{t("repositories.title")}</span>
+        </button>
 
-                <div className="rounded-2xl border border-border bg-surface p-5">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-4">
-                    {t("repositories.add")}
+        <div className="rounded-2xl border border-border bg-surface p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 mb-4">
+            {t("repositories.add")}
           </p>
 
           <form className="flex flex-col gap-4" onSubmit={handleAdd}>
@@ -863,7 +856,7 @@ export function UserRepositoriesSection() {
               repositoryService
                 .list()
                 .then(setRepos)
-      .catch(() => setError(t("repositories.loading")))
+                .catch(() => setError(t("repositories.loading")))
                 .finally(() => setLoading(false));
             }}
           >

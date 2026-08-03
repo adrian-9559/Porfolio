@@ -7,7 +7,8 @@ export function ReadingProgress() {
 
   useEffect(() => {
     const onScroll = () => {
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
       const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
 
       setProgress(Math.min(1, Math.max(0, ratio)));

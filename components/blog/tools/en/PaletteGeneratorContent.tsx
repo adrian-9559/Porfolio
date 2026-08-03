@@ -832,8 +832,8 @@ export default function PaletteGeneratorContent() {
       {activeTab === "palette" && (
         <div>
           <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mb-4">
-            Click any color to change its value. Click the color block
-            to open the native picker, or the HEX to edit manually.
+            Click any color to change its value. Click the color block to open
+            the native picker, or the HEX to edit manually.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {colors.map((c) => (

@@ -219,9 +219,7 @@ function AddRepoModal({
 
   const field = (label: string, children: React.ReactNode) => (
     <div className="flex flex-col gap-1">
-      <label className="text-xs font-medium text-muted">
-        {label}
-      </label>
+      <label className="text-xs font-medium text-muted">{label}</label>
       {children}
     </div>
   );
@@ -480,9 +478,7 @@ function RepoDashboard({
                 key={s.label}
                 className="bg-surface border-border/20 rounded-2xl px-4 py-4"
               >
-                <p className="text-xs text-muted mb-1">
-                  {s.label}
-                </p>
+                <p className="text-xs text-muted mb-1">{s.label}</p>
                 <p className="text-sm font-semibold text-foreground">
                   {s.value}
                 </p>
@@ -629,9 +625,7 @@ function RepoDashboard({
                       <p className="text-xs text-muted">
                         {c.author.name} &lt;{c.author.email}&gt;
                       </p>
-                      <span className="text-muted/60">
-                        ·
-                      </span>
+                      <span className="text-muted/60">·</span>
                       <p className="text-xs text-muted">
                         {relativeTime(c.date)}
                       </p>
@@ -721,9 +715,7 @@ function RepoDashboard({
                 key={s.label}
                 className="bg-surface border-border/20 rounded-2xl px-4 py-4"
               >
-                <p className="text-xs text-muted mb-1">
-                  {s.label}
-                </p>
+                <p className="text-xs text-muted mb-1">{s.label}</p>
                 <p className="text-2xl font-semibold text-foreground">
                   {s.value}
                 </p>
@@ -785,9 +777,7 @@ function RepoDashboard({
                     key={m.month}
                     className="flex items-center gap-4 px-5 py-3 border-b border-border/20 last:border-0"
                   >
-                    <p className="text-sm text-muted w-20">
-                      {m.month}
-                    </p>
+                    <p className="text-sm text-muted w-20">{m.month}</p>
                     <div className="flex-1 h-1.5 rounded-full bg-default">
                       <div
                         className="h-full rounded-full bg-blue-500"

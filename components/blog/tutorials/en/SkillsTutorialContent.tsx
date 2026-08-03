@@ -11,7 +11,7 @@ import {
   BlogP,
   BlogUl,
 } from "@/components/blog/shared";
-import { getContentByTag, typeSlug } from "@/lib/blog/registry";
+import { getContentByTag, contentHref } from "@/lib/blog/registry";
 
 export default function SkillsTutorialContent() {
   const skills = getContentByTag("skills");
@@ -34,41 +34,41 @@ export default function SkillsTutorialContent() {
         How to use Skills in OpenCode
       </h1>
       <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-8">
-        Complete guide to the Skills system: what they are, how to load them, how
-        to create them, and how to get the most out of them in your projects.
+        Complete guide to the Skills system: what they are, how to load them,
+        how to create them, and how to get the most out of them in your
+        projects.
       </p>
 
       <div className="h-px bg-black/8 dark:bg-white/8 mb-8" />
 
       <BlogH2>What are Skills?</BlogH2>
       <BlogP>
-        <strong>Skills</strong> are reusable instructions that give
-        the AI expert knowledge about a specific task. They are like knowledge
-        plugins: you load a skill and the AI immediately knows how to design
-        a banner, write a test, audit security, or generate a
-        presentation.
+        <strong>Skills</strong> are reusable instructions that give the AI
+        expert knowledge about a specific task. They are like knowledge plugins:
+        you load a skill and the AI immediately knows how to design a banner,
+        write a test, audit security, or generate a presentation.
       </BlogP>
       <BlogP>
-        Each skill is a <code>SKILL.md</code> file with detailed
-        instructions, examples, references, and in some cases auxiliary scripts.
-        When activated, the skill content is injected into the agent's prompt,
-        giving it specialized context without you having to explain anything.
+        Each skill is a <code>SKILL.md</code> file with detailed instructions,
+        examples, references, and in some cases auxiliary scripts. When
+        activated, the skill content is injected into the agent's prompt, giving
+        it specialized context without you having to explain anything.
       </BlogP>
 
       <BlogH2>Architecture</BlogH2>
       <BlogP>Skills follow a modular structure:</BlogP>
       <BlogUl>
         <BlogLi>
-          <strong>SKILL.md</strong> — the main file with instructions,
-          examples, and references
+          <strong>SKILL.md</strong> — the main file with instructions, examples,
+          and references
         </BlogLi>
         <BlogLi>
-          <strong>scripts/</strong> — optional, contains auxiliary tools
-          (BM25 search, validation)
+          <strong>scripts/</strong> — optional, contains auxiliary tools (BM25
+          search, validation)
         </BlogLi>
         <BlogLi>
-          <strong>data/</strong> — optional, CSV datasets with design
-          patterns, strategies, etc.
+          <strong>data/</strong> — optional, CSV datasets with design patterns,
+          strategies, etc.
         </BlogLi>
         <BlogLi>
           <strong>assets/</strong> — optional, images, templates, static
@@ -81,9 +81,8 @@ export default function SkillsTutorialContent() {
 
       <BlogH3>1. From chat (tool call)</BlogH3>
       <BlogP>
-        Use the <code>skill</code> tool directly in the conversation.
-        The agent will load the skill and have it available for the rest of the
-        session:
+        Use the <code>skill</code> tool directly in the conversation. The agent
+        will load the skill and have it available for the rest of the session:
       </BlogP>
       <BlogCode>{`# The agent automatically detects when to activate a skill
 # But you can also ask explicitly:
@@ -94,8 +93,8 @@ export default function SkillsTutorialContent() {
 
       <BlogH3>2. From the system (AGENTS.md / CLAUDE.md)</BlogH3>
       <BlogP>
-        You can reference skills in your project's instructions file.
-        When the AI starts, it will load the skills automatically:
+        You can reference skills in your project's instructions file. When the
+        AI starts, it will load the skills automatically:
       </BlogP>
       <BlogCode>{`# In AGENTS.md or CLAUDE.md:
 Use the frontend-design skill for any UI task.
@@ -111,12 +110,12 @@ Use the supabase skill when working with the database.`}</BlogCode>
       <BlogP>Each skill has a clear section structure:</BlogP>
       <BlogUl>
         <BlogLi>
-          <strong>Metadata</strong> — name, short description, when to
-          activate it
+          <strong>Metadata</strong> — name, short description, when to activate
+          it
         </BlogLi>
         <BlogLi>
-          <strong>Instructions</strong> — step-by-step guide on how to execute the
-          task
+          <strong>Instructions</strong> — step-by-step guide on how to execute
+          the task
         </BlogLi>
         <BlogLi>
           <strong>Examples</strong> — real use cases with code
@@ -126,8 +125,8 @@ Use the supabase skill when working with the database.`}</BlogCode>
           resources
         </BlogLi>
         <BlogLi>
-          <strong>Scripts</strong> — auxiliary tools (search,
-          validation, generation)
+          <strong>Scripts</strong> — auxiliary tools (search, validation,
+          generation)
         </BlogLi>
       </BlogUl>
 
@@ -142,16 +141,15 @@ Use the supabase skill when working with the database.`}</BlogCode>
           <code>.agents/skills/my-skill/</code>
         </BlogLi>
         <BlogLi>
-          Create the <code>SKILL.md</code> file with the
-          instructions
+          Create the <code>SKILL.md</code> file with the instructions
         </BlogLi>
         <BlogLi>
           (Optional) Add scripts or datasets in subfolders
           <code>scripts/</code> and <code>data/</code>
         </BlogLi>
         <BlogLi>
-          The skill is available instantly — just mention it in the chat or
-          in AGENTS.md
+          The skill is available instantly — just mention it in the chat or in
+          AGENTS.md
         </BlogLi>
       </BlogOl>
 
@@ -183,8 +181,7 @@ Example code
 
       <BlogH2>Where Skills are stored</BlogH2>
       <BlogP>
-        Skills can be in three locations, each with a different
-        purpose:
+        Skills can be in three locations, each with a different purpose:
       </BlogP>
       <BlogUl>
         <BlogLi>
@@ -208,16 +205,15 @@ Example code
       </BlogUl>
       <BlogP>
         This hierarchy allows having general skills (like design or Supabase)
-        always available, and project-specific skills (like "how to
-        deploy this app" or "team conventions") only in the relevant
-        repo.
+        always available, and project-specific skills (like "how to deploy this
+        app" or "team conventions") only in the relevant repo.
       </BlogP>
 
       <BlogH2>Reusing across skills</BlogH2>
       <BlogP>
         If you have overlapping skills (e.g., <strong>design</strong> and
-        <strong>banner-design</strong> share a token system), you can
-        reference one from another in the SKILL.md:
+        <strong>banner-design</strong> share a token system), you can reference
+        one from another in the SKILL.md:
       </BlogP>
       <BlogCode>{`## Dependencies
 This skill complements \`design\`.
@@ -228,10 +224,9 @@ Load \`ui-styling\` if you need frontend code.`}</BlogCode>
       </BlogP>
 
       <BlogCallout type="done">
-        Skills are the most efficient way to share specialized
-        knowledge with the AI. Instead of explaining context every time,
-        you encapsulate reusable expertise in files that the AI loads on
-        demand.
+        Skills are the most efficient way to share specialized knowledge with
+        the AI. Instead of explaining context every time, you encapsulate
+        reusable expertise in files that the AI loads on demand.
       </BlogCallout>
 
       {skills.length > 0 && (
@@ -246,7 +241,7 @@ Load \`ui-styling\` if you need frontend code.`}</BlogCode>
               <li key={s.slug}>
                 <Link
                   className="flex items-center gap-3 px-5 py-3 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors no-underline group"
-                  href={`/blog/${typeSlug(s.type)}/${s.slug}`}
+                  href={contentHref(s.type, s.slug)}
                 >
                   <span
                     aria-hidden="true"

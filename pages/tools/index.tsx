@@ -57,13 +57,13 @@ const TOOLS_INFO: Record<
 };
 
 const categoryToKey: Record<string, string> = {
-  "Todas": "tools.filterCategoryAll",
-  "Prompts": "tools.catPrompts",
-  "Tokens": "tools.catTokens",
-  "Contexto": "tools.catContext",
-  "Instrucciones": "tools.catInstructions",
+  Todas: "tools.filterCategoryAll",
+  Prompts: "tools.catPrompts",
+  Tokens: "tools.catTokens",
+  Contexto: "tools.catContext",
+  Instrucciones: "tools.catInstructions",
   "JSON / API": "tools.catJsonApi",
-  "Seguridad": "tools.catSecurity",
+  Seguridad: "tools.catSecurity",
 };
 
 export default function ToolsPage() {
@@ -91,18 +91,9 @@ export default function ToolsPage() {
     <>
       <Head>
         <title>{t("meta.tools.title")}</title>
-        <meta
-          content={t("meta.tools.desc")}
-          name="description"
-        />
-        <meta
-          content={t("meta.tools.title")}
-          property="og:title"
-        />
-        <meta
-          content={t("meta.tools.desc")}
-          property="og:description"
-        />
+        <meta content={t("meta.tools.desc")} name="description" />
+        <meta content={t("meta.tools.title")} property="og:title" />
+        <meta content={t("meta.tools.desc")} property="og:description" />
         <meta content="summary_large_image" name="twitter:card" />
       </Head>
 
@@ -118,9 +109,7 @@ export default function ToolsPage() {
             <h1 className="text-4xl font-bold text-foreground mb-3">
               {t("tools.header")}
             </h1>
-            <p className="text-lg text-muted max-w-xl">
-              {t("tools.subtitle")}
-            </p>
+            <p className="text-lg text-muted max-w-xl">{t("tools.subtitle")}</p>
           </div>
 
           {/* Search + filter */}
@@ -167,9 +156,7 @@ export default function ToolsPage() {
           {/* Grid */}
           {filtered.length === 0 && (
             <div className="text-center py-20">
-              <p className="text-muted">
-                {t("tools.noResults", { search })}
-              </p>
+              <p className="text-muted">{t("tools.noResults", { search })}</p>
             </div>
           )}
 
@@ -268,9 +255,7 @@ export default function ToolsPage() {
             <h3 className="text-base font-semibold text-foreground mb-2">
               {t("tools.apiTitle")}
             </h3>
-            <p className="text-sm text-muted mb-4">
-              {t("tools.apiDesc")}
-            </p>
+            <p className="text-sm text-muted mb-4">{t("tools.apiDesc")}</p>
             <pre className="bg-[#0d1117] rounded-xl p-4 text-xs text-[#e6edf3] overflow-x-auto">
               <code>{`{
   "original":      "texto original",

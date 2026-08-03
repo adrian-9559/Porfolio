@@ -115,7 +115,12 @@ const NAV: {
     group: "herramientas",
   },
   { id: "skills", labelKey: "skills", icon: <IcoSkills />, group: "sistema" },
-  { id: "services", labelKey: "services", icon: <IcoServices />, group: "sistema" },
+  {
+    id: "services",
+    labelKey: "services",
+    icon: <IcoServices />,
+    group: "sistema",
+  },
   { id: "logs", labelKey: "logs", icon: <IcoLogs />, group: "sistema" },
   { id: "docs", labelKey: "docs", icon: <IcoDocs />, group: "sistema" },
 ];
@@ -348,7 +353,13 @@ function IcoMail() {
 }
 function IcoServices() {
   return (
-    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 16 16">
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
       <circle cx="8" cy="4" r="2.5" />
       <path d="M4 14c0-2.5 1.5-4 4-4s4 1.5 4 4" />
       <path d="M13 7.5a5.5 5.5 0 00-5-2.5M3 7.5a5.5 5.5 0 015-2.5" />

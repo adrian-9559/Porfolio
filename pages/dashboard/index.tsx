@@ -33,22 +33,94 @@ type Section =
   | "settings-security"
   | "settings-session";
 
-function navItems(t: (k: string) => string): { id: Section; label: string; icon: React.ReactNode; group: string }[] {
+function navItems(
+  t: (k: string) => string,
+): { id: Section; label: string; icon: React.ReactNode; group: string }[] {
   return [
-    { id: "home", label: t("dashboard.sidebarInicio"), icon: <IcoHome />, group: "general" },
-    { id: "repositories", label: t("dashboard.sidebarRepos"), icon: <IcoGit />, group: "herramientas" },
-    { id: "agents", label: t("dashboard.sidebarAgents"), icon: <IcoBot />, group: "herramientas" },
-    { id: "notifications", label: t("dashboard.sidebarNotifications"), icon: <IcoBell />, group: "herramientas" },
-    { id: "friends", label: t("dashboard.sidebarFriends"), icon: <IcoFriends />, group: "herramientas" },
-    { id: "apps", label: t("dashboard.sidebarApps"), icon: <IcoApps />, group: "herramientas" },
-    { id: "tasks", label: t("dashboard.sidebarTasks"), icon: <IcoTasks />, group: "herramientas" },
-    { id: "calendar", label: t("dashboard.sidebarCalendar"), icon: <IcoCalendar />, group: "herramientas" },
-    { id: "tables", label: t("dashboard.sidebarTables"), icon: <IcoTable />, group: "herramientas" },
-    { id: "tricount", label: t("dashboard.sidebarTricount"), icon: <IcoMoney />, group: "finanzas" },
-    { id: "finances", label: t("dashboard.sidebarFinancesPanel"), icon: <IcoChart />, group: "finanzas" },
-    { id: "settings-profile", label: t("dashboard.sidebarProfile"), icon: <IcoUser />, group: "configuracion" },
-    { id: "settings-security", label: t("dashboard.sidebarSecurity"), icon: <IcoLock />, group: "configuracion" },
-    { id: "settings-session", label: t("dashboard.sidebarSession"), icon: <IcoSession />, group: "configuracion" },
+    {
+      id: "home",
+      label: t("dashboard.sidebarInicio"),
+      icon: <IcoHome />,
+      group: "general",
+    },
+    {
+      id: "repositories",
+      label: t("dashboard.sidebarRepos"),
+      icon: <IcoGit />,
+      group: "herramientas",
+    },
+    {
+      id: "agents",
+      label: t("dashboard.sidebarAgents"),
+      icon: <IcoBot />,
+      group: "herramientas",
+    },
+    {
+      id: "notifications",
+      label: t("dashboard.sidebarNotifications"),
+      icon: <IcoBell />,
+      group: "herramientas",
+    },
+    {
+      id: "friends",
+      label: t("dashboard.sidebarFriends"),
+      icon: <IcoFriends />,
+      group: "herramientas",
+    },
+    {
+      id: "apps",
+      label: t("dashboard.sidebarApps"),
+      icon: <IcoApps />,
+      group: "herramientas",
+    },
+    {
+      id: "tasks",
+      label: t("dashboard.sidebarTasks"),
+      icon: <IcoTasks />,
+      group: "herramientas",
+    },
+    {
+      id: "calendar",
+      label: t("dashboard.sidebarCalendar"),
+      icon: <IcoCalendar />,
+      group: "herramientas",
+    },
+    {
+      id: "tables",
+      label: t("dashboard.sidebarTables"),
+      icon: <IcoTable />,
+      group: "herramientas",
+    },
+    {
+      id: "tricount",
+      label: t("dashboard.sidebarTricount"),
+      icon: <IcoMoney />,
+      group: "finanzas",
+    },
+    {
+      id: "finances",
+      label: t("dashboard.sidebarFinancesPanel"),
+      icon: <IcoChart />,
+      group: "finanzas",
+    },
+    {
+      id: "settings-profile",
+      label: t("dashboard.sidebarProfile"),
+      icon: <IcoUser />,
+      group: "configuracion",
+    },
+    {
+      id: "settings-security",
+      label: t("dashboard.sidebarSecurity"),
+      icon: <IcoLock />,
+      group: "configuracion",
+    },
+    {
+      id: "settings-session",
+      label: t("dashboard.sidebarSession"),
+      icon: <IcoSession />,
+      group: "configuracion",
+    },
   ];
 }
 
@@ -77,7 +149,6 @@ export default function DashboardPage() {
     if (typeof q === "string" && NAV.some((n) => n.id === q)) {
       setSection(q as Section);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.section]);
 
   if (loadingAuth || !isAuthenticated) {
@@ -337,8 +408,14 @@ function IcoCalendar() {
 }
 function IcoTable() {
   return (
-    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 16 16">
-      <rect x="1.5" y="1.5" width="13" height="13" rx="1.5" />
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <rect height="13" rx="1.5" width="13" x="1.5" y="1.5" />
       <path d="M1.5 5.5h13M5.5 1.5v13M10.5 1.5v13" />
     </svg>
   );
@@ -369,9 +446,9 @@ function IcoTasks() {
       strokeWidth="1.5"
       viewBox="0 0 16 16"
     >
-      <rect x="1.5" y="1.5" width="13" height="3.5" rx="1" />
-      <rect x="1.5" y="6.5" width="13" height="3.5" rx="1" />
-      <rect x="1.5" y="11.5" width="13" height="3.5" rx="1" />
+      <rect height="3.5" rx="1" width="13" x="1.5" y="1.5" />
+      <rect height="3.5" rx="1" width="13" x="1.5" y="6.5" />
+      <rect height="3.5" rx="1" width="13" x="1.5" y="11.5" />
       <path d="M4 3.5h8M4 8.5h8M4 13.5h8" />
     </svg>
   );

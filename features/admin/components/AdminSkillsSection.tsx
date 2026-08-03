@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import { SectionHeader, Card } from "./AdminShared";
+
 import { useT } from "@/hooks/useT";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -37,7 +39,8 @@ interface Plugin {
 const SKILLS: Skill[] = [
   {
     name: "banner-design",
-    description: "Design banners for social media, ads, website heroes, creative assets, and print. Multiple art direction options with AI-generated visuals.",
+    description:
+      "Design banners for social media, ads, website heroes, creative assets, and print. Multiple art direction options with AI-generated visuals.",
     category: "design",
     files: [
       { path: ".opencode/skills/banner-design/SKILL.md", scope: "global" },
@@ -46,7 +49,8 @@ const SKILLS: Skill[] = [
   },
   {
     name: "brand",
-    description: "Brand voice, visual identity, messaging frameworks, asset management, brand consistency.",
+    description:
+      "Brand voice, visual identity, messaging frameworks, asset management, brand consistency.",
     category: "design",
     files: [
       { path: ".opencode/skills/brand/SKILL.md", scope: "global" },
@@ -55,7 +59,8 @@ const SKILLS: Skill[] = [
   },
   {
     name: "design",
-    description: "Comprehensive design skill: brand identity, design tokens, UI styling, logo generation (55 styles), corporate identity program, HTML presentations, banner design, icon design, social photos.",
+    description:
+      "Comprehensive design skill: brand identity, design tokens, UI styling, logo generation (55 styles), corporate identity program, HTML presentations, banner design, icon design, social photos.",
     category: "design",
     files: [
       { path: ".opencode/skills/design/SKILL.md", scope: "global" },
@@ -64,7 +69,8 @@ const SKILLS: Skill[] = [
   },
   {
     name: "design-system",
-    description: "Token architecture, component specifications, and slide generation. Three-layer tokens (primitive → semantic → component).",
+    description:
+      "Token architecture, component specifications, and slide generation. Three-layer tokens (primitive → semantic → component).",
     category: "design",
     files: [
       { path: ".opencode/skills/design-system/SKILL.md", scope: "global" },
@@ -73,7 +79,8 @@ const SKILLS: Skill[] = [
   },
   {
     name: "slides",
-    description: "Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies.",
+    description:
+      "Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies.",
     category: "design",
     files: [
       { path: ".opencode/skills/slides/SKILL.md", scope: "global" },
@@ -82,7 +89,8 @@ const SKILLS: Skill[] = [
   },
   {
     name: "ui-styling",
-    description: "Create beautiful, accessible user interfaces with Tailwind CSS, shadcn/ui components, and canvas-based visual designs.",
+    description:
+      "Create beautiful, accessible user interfaces with Tailwind CSS, shadcn/ui components, and canvas-based visual designs.",
     category: "design",
     files: [
       { path: ".opencode/skills/ui-styling/SKILL.md", scope: "global" },
@@ -91,7 +99,8 @@ const SKILLS: Skill[] = [
   },
   {
     name: "ui-ux-pro-max",
-    description: "UI/UX design intelligence with searchable database — 67 styles, 161 color palettes, 57 font pairings, 99 UX guidelines, 25 chart types across 22 technology stacks.",
+    description:
+      "UI/UX design intelligence with searchable database — 67 styles, 161 color palettes, 57 font pairings, 99 UX guidelines, 25 chart types across 22 technology stacks.",
     category: "design",
     files: [
       { path: ".opencode/skills/ui-ux-pro-max/SKILL.md", scope: "global" },
@@ -100,39 +109,67 @@ const SKILLS: Skill[] = [
   },
   {
     name: "frontend-design",
-    description: "Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.",
+    description:
+      "Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.",
     category: "frontend",
     files: [
       { path: ".agents/skills/frontend-design/SKILL.md", scope: "root" },
-      { path: "frontend/apps/web/.agents/skills/frontend-design/SKILL.md", scope: "web" },
-      { path: "frontend/apps/Partimos/.agents/skills/frontend-design/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/web/.agents/skills/frontend-design/SKILL.md",
+        scope: "web",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/frontend-design/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "accessibility",
-    description: "Audit and improve web accessibility following WCAG 2.2 guidelines.",
+    description:
+      "Audit and improve web accessibility following WCAG 2.2 guidelines.",
     category: "frontend",
     files: [
-      { path: "frontend/apps/web/.agents/skills/accessibility/SKILL.md", scope: "web" },
-      { path: "frontend/apps/Partimos/.agents/skills/accessibility/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/web/.agents/skills/accessibility/SKILL.md",
+        scope: "web",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/accessibility/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "vercel-react-best-practices",
-    description: "React and Next.js performance optimization guidelines from Vercel Engineering.",
+    description:
+      "React and Next.js performance optimization guidelines from Vercel Engineering.",
     category: "frontend",
     files: [
-      { path: "frontend/apps/web/.agents/skills/react-best-practices/SKILL.md", scope: "web" },
-      { path: "frontend/apps/Partimos/.agents/skills/react-best-practices/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/web/.agents/skills/react-best-practices/SKILL.md",
+        scope: "web",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/react-best-practices/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "vercel-composition-patterns",
-    description: "React composition patterns that scale. Use when refactoring components with boolean prop proliferation.",
+    description:
+      "React composition patterns that scale. Use when refactoring components with boolean prop proliferation.",
     category: "frontend",
     files: [
-      { path: "frontend/apps/web/.agents/skills/composition-patterns/SKILL.md", scope: "web" },
-      { path: "frontend/apps/Partimos/.agents/skills/composition-patterns/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/web/.agents/skills/composition-patterns/SKILL.md",
+        scope: "web",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/composition-patterns/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
@@ -141,192 +178,297 @@ const SKILLS: Skill[] = [
     category: "frontend",
     files: [
       { path: "frontend/apps/web/.agents/skills/seo/SKILL.md", scope: "web" },
-      { path: "frontend/apps/Partimos/.agents/skills/seo/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/seo/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "tailwind-css-patterns",
-    description: "Comprehensive Tailwind CSS utility-first styling patterns including responsive design, layout utilities, flexbox, grid, spacing, typography, colors.",
+    description:
+      "Comprehensive Tailwind CSS utility-first styling patterns including responsive design, layout utilities, flexbox, grid, spacing, typography, colors.",
     category: "frontend",
     files: [
-      { path: "frontend/apps/web/.agents/skills/tailwind-css-patterns/SKILL.md", scope: "web" },
+      {
+        path: "frontend/apps/web/.agents/skills/tailwind-css-patterns/SKILL.md",
+        scope: "web",
+      },
     ],
   },
   {
     name: "next-best-practices",
-    description: "Next.js best practices — file conventions, RSC boundaries, data patterns, async APIs, metadata, error handling, route handlers, image/font optimization.",
+    description:
+      "Next.js best practices — file conventions, RSC boundaries, data patterns, async APIs, metadata, error handling, route handlers, image/font optimization.",
     category: "frontend",
     files: [
-      { path: "frontend/apps/web/.agents/skills/next-best-practices/SKILL.md", scope: "web" },
+      {
+        path: "frontend/apps/web/.agents/skills/next-best-practices/SKILL.md",
+        scope: "web",
+      },
     ],
   },
   {
     name: "next-cache-components",
-    description: "Next.js 16 Cache Components — PPR, use cache directive, cacheLife, cacheTag, updateTag.",
+    description:
+      "Next.js 16 Cache Components — PPR, use cache directive, cacheLife, cacheTag, updateTag.",
     category: "frontend",
     files: [
-      { path: "frontend/apps/web/.agents/skills/next-cache-components/SKILL.md", scope: "web" },
+      {
+        path: "frontend/apps/web/.agents/skills/next-cache-components/SKILL.md",
+        scope: "web",
+      },
     ],
   },
   {
     name: "next-upgrade",
-    description: "Upgrade Next.js to the latest version following official migration guides and codemods.",
+    description:
+      "Upgrade Next.js to the latest version following official migration guides and codemods.",
     category: "frontend",
     files: [
-      { path: "frontend/apps/web/.agents/skills/next-upgrade/SKILL.md", scope: "web" },
+      {
+        path: "frontend/apps/web/.agents/skills/next-upgrade/SKILL.md",
+        scope: "web",
+      },
     ],
   },
   {
     name: "building-native-ui",
-    description: "Complete guide for building beautiful apps with Expo Router. Covers fundamentals, styling, components, navigation, animations, patterns, and native tabs.",
+    description:
+      "Complete guide for building beautiful apps with Expo Router. Covers fundamentals, styling, components, navigation, animations, patterns, and native tabs.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/building-native-ui/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/building-native-ui/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "sleek-design-mobile-apps",
-    description: "Design mobile apps, create screens, build UI, and interact with Sleek projects.",
+    description:
+      "Design mobile apps, create screens, build UI, and interact with Sleek projects.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/design-mobile-apps/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/design-mobile-apps/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "expo-api-routes",
-    description: "Guidelines for creating API routes in Expo Router with EAS Hosting.",
+    description:
+      "Guidelines for creating API routes in Expo Router with EAS Hosting.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/expo-api-routes/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/expo-api-routes/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "expo-cicd-workflows",
-    description: "Helps understand and write EAS workflow YAML files for Expo projects.",
+    description:
+      "Helps understand and write EAS workflow YAML files for Expo projects.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/expo-cicd-workflows/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/expo-cicd-workflows/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "expo-deployment",
-    description: "Deploying Expo apps to iOS App Store, Android Play Store, web hosting, and API routes.",
+    description:
+      "Deploying Expo apps to iOS App Store, Android Play Store, web hosting, and API routes.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/expo-deployment/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/expo-deployment/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "expo-dev-client",
-    description: "Build and distribute Expo development clients locally or via TestFlight.",
+    description:
+      "Build and distribute Expo development clients locally or via TestFlight.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/expo-dev-client/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/expo-dev-client/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "expo-tailwind-setup",
-    description: "Set up Tailwind CSS v4 in Expo with react-native-css and NativeWind v5 for universal styling.",
+    description:
+      "Set up Tailwind CSS v4 in Expo with react-native-css and NativeWind v5 for universal styling.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/expo-tailwind-setup/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/expo-tailwind-setup/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "native-data-fetching",
-    description: "Implement and debug network requests, API calls, or data fetching. Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.",
+    description:
+      "Implement and debug network requests, API calls, or data fetching. Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/native-data-fetching/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/native-data-fetching/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "upgrading-expo",
-    description: "Guidelines for upgrading Expo SDK versions and fixing dependency issues.",
+    description:
+      "Guidelines for upgrading Expo SDK versions and fixing dependency issues.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/upgrading-expo/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/upgrading-expo/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "use-dom",
-    description: "Use Expo DOM components to run web code in a webview on native and as-is on web.",
+    description:
+      "Use Expo DOM components to run web code in a webview on native and as-is on web.",
     category: "mobile",
     files: [
-      { path: "frontend/apps/Partimos/.agents/skills/use-dom/SKILL.md", scope: "mobile" },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/use-dom/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "nodejs-backend-patterns",
-    description: "Build production-ready Node.js backend services with Express/Fastify, implementing middleware patterns, error handling, authentication, database integration, and API design best practices.",
+    description:
+      "Build production-ready Node.js backend services with Express/Fastify, implementing middleware patterns, error handling, authentication, database integration, and API design best practices.",
     category: "backend",
     files: [
-      { path: "backend/.agents/skills/nodejs-backend-patterns/SKILL.md", scope: "backend" },
-      { path: "frontend/apps/web/.agents/skills/nodejs-backend-patterns/SKILL.md", scope: "web" },
-      { path: "frontend/apps/Partimos/.agents/skills/nodejs-backend-patterns/SKILL.md", scope: "mobile" },
+      {
+        path: "backend/.agents/skills/nodejs-backend-patterns/SKILL.md",
+        scope: "backend",
+      },
+      {
+        path: "frontend/apps/web/.agents/skills/nodejs-backend-patterns/SKILL.md",
+        scope: "web",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/nodejs-backend-patterns/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "nodejs-best-practices",
-    description: "Node.js development principles and decision-making. Framework selection, async patterns, security, and architecture.",
+    description:
+      "Node.js development principles and decision-making. Framework selection, async patterns, security, and architecture.",
     category: "backend",
     files: [
-      { path: "backend/.agents/skills/nodejs-best-practices/SKILL.md", scope: "backend" },
-      { path: "frontend/apps/web/.agents/skills/nodejs-best-practices/SKILL.md", scope: "web" },
-      { path: "frontend/apps/Partimos/.agents/skills/nodejs-best-practices/SKILL.md", scope: "mobile" },
+      {
+        path: "backend/.agents/skills/nodejs-best-practices/SKILL.md",
+        scope: "backend",
+      },
+      {
+        path: "frontend/apps/web/.agents/skills/nodejs-best-practices/SKILL.md",
+        scope: "web",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/nodejs-best-practices/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "nodejs-express-server",
-    description: "Build production-ready Express.js servers with middleware, authentication, routing, and database integration.",
+    description:
+      "Build production-ready Express.js servers with middleware, authentication, routing, and database integration.",
     category: "backend",
     files: [
-      { path: "backend/.agents/skills/nodejs-express-server/SKILL.md", scope: "backend" },
+      {
+        path: "backend/.agents/skills/nodejs-express-server/SKILL.md",
+        scope: "backend",
+      },
     ],
   },
   {
     name: "typescript-advanced-types",
-    description: "Master TypeScript advanced type system including generics, conditional types, mapped types, template literals, and utility types.",
+    description:
+      "Master TypeScript advanced type system including generics, conditional types, mapped types, template literals, and utility types.",
     category: "backend",
     files: [
-      { path: "backend/.agents/skills/typescript-advanced-types/SKILL.md", scope: "backend" },
-      { path: "frontend/apps/web/.agents/skills/typescript-advanced-types/SKILL.md", scope: "web" },
-      { path: "frontend/apps/Partimos/.agents/skills/typescript-advanced-types/SKILL.md", scope: "mobile" },
+      {
+        path: "backend/.agents/skills/typescript-advanced-types/SKILL.md",
+        scope: "backend",
+      },
+      {
+        path: "frontend/apps/web/.agents/skills/typescript-advanced-types/SKILL.md",
+        scope: "web",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/typescript-advanced-types/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "zod",
-    description: "Zod schema validation best practices for type safety, parsing, and error handling.",
+    description:
+      "Zod schema validation best practices for type safety, parsing, and error handling.",
     category: "backend",
-    files: [
-      { path: "backend/.agents/skills/zod/SKILL.md", scope: "backend" },
-    ],
+    files: [{ path: "backend/.agents/skills/zod/SKILL.md", scope: "backend" }],
   },
   {
     name: "supabase-postgres-best-practices",
-    description: "Postgres performance optimization and best practices from Supabase.",
+    description:
+      "Postgres performance optimization and best practices from Supabase.",
     category: "database",
     files: [
-      { path: "backend/.agents/skills/supabase-postgres-best-practices/SKILL.md", scope: "backend" },
-      { path: "frontend/apps/Partimos/.agents/skills/supabase-postgres-best-practices/SKILL.md", scope: "mobile" },
+      {
+        path: "backend/.agents/skills/supabase-postgres-best-practices/SKILL.md",
+        scope: "backend",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/supabase-postgres-best-practices/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "bash-defensive-patterns",
-    description: "Master defensive Bash programming techniques for production-grade scripts. Use when writing robust shell scripts, CI/CD pipelines, or system utilities requiring fault tolerance and safety.",
+    description:
+      "Master defensive Bash programming techniques for production-grade scripts. Use when writing robust shell scripts, CI/CD pipelines, or system utilities requiring fault tolerance and safety.",
     category: "tools",
     files: [
-      { path: ".agents/skills/bash-defensive-patterns/SKILL.md", scope: "root" },
-      { path: "frontend/apps/Partimos/.agents/skills/bash-defensive-patterns/SKILL.md", scope: "mobile" },
+      {
+        path: ".agents/skills/bash-defensive-patterns/SKILL.md",
+        scope: "root",
+      },
+      {
+        path: "frontend/apps/Partimos/.agents/skills/bash-defensive-patterns/SKILL.md",
+        scope: "mobile",
+      },
     ],
   },
   {
     name: "graphify",
-    description: "Use for any question about a codebase, its architecture, file relationships, or project content. Turns any input into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools.",
+    description:
+      "Use for any question about a codebase, its architecture, file relationships, or project content. Turns any input into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools.",
     category: "tools",
-    files: [
-      { path: ".claude/skills/graphify/SKILL.md", scope: "claude" },
-    ],
+    files: [{ path: ".claude/skills/graphify/SKILL.md", scope: "claude" }],
   },
 ];
 
@@ -341,37 +483,46 @@ const PLUGINS: Plugin[] = [
     name: "@heroui/react-mcp",
     description: "HeroUI v3 React component documentation MCP server",
     type: "mcp",
-    details: "Documentado en docs/heroui/web/guides/mcp-server.md — no configurado aún",
+    details:
+      "Documentado en docs/heroui/web/guides/mcp-server.md — no configurado aún",
   },
   {
     name: "codegraph",
-    description: "CodeGraph — SQLite knowledge graph indexer for code intelligence",
+    description:
+      "CodeGraph — SQLite knowledge graph indexer for code intelligence",
     type: "mcp",
-    details: "Activo vía MCP. Indexa símbolos, edges y archivos del workspace en .codegraph/",
+    details:
+      "Activo vía MCP. Indexa símbolos, edges y archivos del workspace en .codegraph/",
   },
   {
     name: "context7",
-    description: "Context7 — up-to-date library/framework documentation fetcher",
+    description:
+      "Context7 — up-to-date library/framework documentation fetcher",
     type: "mcp",
-    details: "Activo vía MCP. Resuelve IDs de librerías y consulta docs actualizados",
+    details:
+      "Activo vía MCP. Resuelve IDs de librerías y consulta docs actualizados",
   },
   {
     name: "heroui-react",
     description: "HeroUI v3 React MCP — documentación de componentes React",
     type: "mcp",
-    details: "Activo vía MCP. get_docs, list_components, get_component_docs, get_theme_variables",
+    details:
+      "Activo vía MCP. get_docs, list_components, get_component_docs, get_theme_variables",
   },
   {
     name: "heroui-native",
-    description: "HeroUI Native Beta MCP — documentación de componentes React Native",
+    description:
+      "HeroUI Native Beta MCP — documentación de componentes React Native",
     type: "mcp",
-    details: "Activo vía MCP. get_docs, list_components, get_component_docs, get_theme_variables",
+    details:
+      "Activo vía MCP. get_docs, list_components, get_component_docs, get_theme_variables",
   },
   {
     name: "Claude Preview",
     description: "Claude Preview MCP — preview_start",
     type: "mcp",
-    details: "Configurado en .claude/settings.local.json con permiso mcp__Claude_Preview__preview_start",
+    details:
+      "Configurado en .claude/settings.local.json con permiso mcp__Claude_Preview__preview_start",
   },
   {
     name: "Supabase MCP",
@@ -381,9 +532,11 @@ const PLUGINS: Plugin[] = [
   },
   {
     name: "PreToolUse Hook (Bash guard)",
-    description: "Intercepta llamadas Bash (grep/rg/find) y Read/Glob para redirigir a graphify query primero",
+    description:
+      "Intercepta llamadas Bash (grep/rg/find) y Read/Glob para redirigir a graphify query primero",
     type: "hook",
-    details: "Configurado en .claude/settings.json — evita lectura directa cuando hay grafo disponible",
+    details:
+      "Configurado en .claude/settings.json — evita lectura directa cuando hay grafo disponible",
   },
 ];
 
@@ -400,13 +553,20 @@ const CATEGORIES: { key: Category | "all"; label: string; icon: string }[] = [
 ];
 
 const CATEGORY_COLORS: Record<Category, string> = {
-  design: "bg-fuchsia-50 dark:bg-fuchsia-950/30 text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-200 dark:border-fuchsia-800/40",
-  frontend: "bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/40",
-  mobile: "bg-orange-50 dark:bg-orange-950/30 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/40",
-  backend: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/40",
-  database: "bg-violet-50 dark:bg-violet-950/30 text-violet-700 dark:text-violet-400 border-violet-200 dark:border-violet-800/40",
-  tools: "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/40",
-  plugins: "bg-gray-50 dark:bg-gray-800/30 text-gray-700 dark:text-gray-400 border-gray-200 dark:border-gray-700/40",
+  design:
+    "bg-fuchsia-50 dark:bg-fuchsia-950/30 text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-200 dark:border-fuchsia-800/40",
+  frontend:
+    "bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/40",
+  mobile:
+    "bg-orange-50 dark:bg-orange-950/30 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/40",
+  backend:
+    "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/40",
+  database:
+    "bg-violet-50 dark:bg-violet-950/30 text-violet-700 dark:text-violet-400 border-violet-200 dark:border-violet-800/40",
+  tools:
+    "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/40",
+  plugins:
+    "bg-gray-50 dark:bg-gray-800/30 text-gray-700 dark:text-gray-400 border-gray-200 dark:border-gray-700/40",
 };
 
 const SCOPE_LABELS: Record<string, string> = {
@@ -434,14 +594,17 @@ export function AdminSkillsSection() {
 
   const catCounts = CATEGORIES.map((c) => ({
     ...c,
-    count: c.key === "all" ? SKILLS.length : SKILLS.filter((s) => s.category === c.key).length,
+    count:
+      c.key === "all"
+        ? SKILLS.length
+        : SKILLS.filter((s) => s.category === c.key).length,
   }));
 
   return (
     <div className="flex flex-col gap-5">
       <SectionHeader
-        title="Skills & Plugins"
         desc={`${SKILLS.length} skills · ${PLUGINS.length} plugins/MCPs · inventario completo del agente`}
+        title="Skills & Plugins"
       />
 
       {/* Stats bar */}

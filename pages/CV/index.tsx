@@ -7,9 +7,21 @@ import { educationData } from "@/lib/education/data";
 
 const statDefs = [
   { value: "3+", labelKey: "cv.yearsExp", color: "from-blue-500 to-cyan-400" },
-  { value: "800h", labelKey: "cv.practiceHours", color: "from-violet-500 to-purple-400" },
-  { value: "15+", labelKey: "cv.projects", color: "from-emerald-500 to-teal-400" },
-  { value: "20+", labelKey: "cv.technologies", color: "from-orange-500 to-amber-400" },
+  {
+    value: "800h",
+    labelKey: "cv.practiceHours",
+    color: "from-violet-500 to-purple-400",
+  },
+  {
+    value: "15+",
+    labelKey: "cv.projects",
+    color: "from-emerald-500 to-teal-400",
+  },
+  {
+    value: "20+",
+    labelKey: "cv.technologies",
+    color: "from-orange-500 to-amber-400",
+  },
 ];
 
 export default function ResumePage() {
@@ -77,9 +89,7 @@ export default function ResumePage() {
                 <h3 className="text-2xl font-bold text-foreground">
                   {t("cv.education")}
                 </h3>
-                <p className="text-sm text-muted/60 mt-1">
-                  {t("cv.hint")}
-                </p>
+                <p className="text-sm text-muted/60 mt-1">{t("cv.hint")}</p>
               </div>
             </div>
 
@@ -126,13 +136,17 @@ export default function ResumePage() {
                             <div className="flex items-center gap-2 flex-shrink-0">
                               {edu.url && (
                                 <button
+                                  aria-label="Abrir repositorio"
                                   className="flex items-center justify-center w-6 h-6 rounded-lg text-muted/60 hover:text-accent hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors cursor-pointer"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
-                                    window.open(edu.url!, '_blank', 'noopener,noreferrer');
+                                    window.open(
+                                      edu.url!,
+                                      "_blank",
+                                      "noopener,noreferrer",
+                                    );
                                   }}
-                                  aria-label="Abrir repositorio"
                                 >
                                   <svg
                                     className="w-3.5 h-3.5"
@@ -184,7 +198,9 @@ export default function ResumePage() {
                             ))}
                             {edu.technologies.length > 5 && (
                               <span className="px-2 py-0.5 rounded-md text-[10px] font-medium text-muted/60">
-                                {t("cv.moreTags", { n: edu.technologies.length - 5 })}
+                                {t("cv.moreTags", {
+                                  n: edu.technologies.length - 5,
+                                })}
                               </span>
                             )}
                           </div>

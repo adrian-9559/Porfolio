@@ -190,8 +190,8 @@ export default function SvgContent() {
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
           A curated selection of the best platforms to find icons, logos,
-          illustrations, and SVG patterns. Organized by category so you can
-          find what you need fast.
+          illustrations, and SVG patterns. Organized by category so you can find
+          what you need fast.
         </p>
       </div>
 

@@ -20,7 +20,8 @@ export function useT(): UseTReturn {
   const setLocale = useLocaleStore((s) => s.setLocale);
 
   const t = useCallback(
-    (key: string, params?: Record<string, string | number>) => translate(key, locale, params),
+    (key: string, params?: Record<string, string | number>) =>
+      translate(key, locale, params),
     [locale],
   );
 

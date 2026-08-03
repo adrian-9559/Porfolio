@@ -71,8 +71,8 @@ export default function DatabaseContent() {
           Best platforms to host databases
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Modern and accessible options to host your database in the cloud,
-          from personal projects to production applications.
+          Modern and accessible options to host your database in the cloud, from
+          personal projects to production applications.
         </p>
       </div>
 

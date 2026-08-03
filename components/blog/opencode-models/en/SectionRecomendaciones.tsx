@@ -352,8 +352,8 @@ export function SectionRecomendaciones() {
 
       <BlogH2>Provider scores</BlogH2>
       <BlogP>
-        Each provider evaluated across 5 key areas. More colored bars
-        means better performance:
+        Each provider evaluated across 5 key areas. More colored bars means
+        better performance:
       </BlogP>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 my-6">
         {providers.map((p) => (

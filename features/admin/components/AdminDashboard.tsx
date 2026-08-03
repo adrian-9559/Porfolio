@@ -1,11 +1,21 @@
 import type { UserWithProfile } from "@/types/auth";
 
 import { useEffect, useState } from "react";
+
+import {
+  SectionHeader,
+  Card,
+  Spinner,
+  relativeTime,
+  Badge,
+} from "./AdminShared";
+
 import { useT } from "@/hooks/useT";
-
-import { SectionHeader, Card, Spinner, relativeTime, Badge } from "./AdminShared";
-
-import { adminService, AdminStats, SystemHealth } from "@/services/adminService";
+import {
+  adminService,
+  AdminStats,
+  SystemHealth,
+} from "@/services/adminService";
 import { userService } from "@/services/userService";
 
 export { SectionHeader };
@@ -81,7 +91,10 @@ export function AdminDashboard() {
 
   return (
     <div className="flex flex-col gap-5">
-      <SectionHeader desc={t("admin.dashboardDesc")} title={t("admin.dashboard")} />
+      <SectionHeader
+        desc={t("admin.dashboardDesc")}
+        title={t("admin.dashboard")}
+      />
 
       {loading ? (
         <Card>
@@ -114,21 +127,33 @@ export function AdminDashboard() {
               </h3>
               {health && (
                 <Badge
-                  color={health.status === "ok" && health.db?.ok !== false ? "green" : "red"}
-                  label={health.status === "ok" && health.db?.ok !== false ? t("admin.healthOk") : t("admin.healthDegraded")}
+                  color={
+                    health.status === "ok" && health.db?.ok !== false
+                      ? "green"
+                      : "red"
+                  }
+                  label={
+                    health.status === "ok" && health.db?.ok !== false
+                      ? t("admin.healthOk")
+                      : t("admin.healthDegraded")
+                  }
                 />
               )}
             </div>
             <div className="px-5 py-3.5 flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {healthError ? (
-                <p className="text-[#6e6e73] dark:text-[#86868b]">{t("admin.healthUnavailable")}</p>
+                <p className="text-[#6e6e73] dark:text-[#86868b]">
+                  {t("admin.healthUnavailable")}
+                </p>
               ) : health ? (
                 <>
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">
                       {t("admin.healthEnv")}
                     </p>
-                    <p className="text-[#1d1d1f] dark:text-white">{health.env}</p>
+                    <p className="text-[#1d1d1f] dark:text-white">
+                      {health.env}
+                    </p>
                   </div>
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366]">

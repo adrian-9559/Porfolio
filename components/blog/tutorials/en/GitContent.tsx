@@ -78,9 +78,9 @@ function SectionIntro() {
     <>
       <BlogH2>What is Git?</BlogH2>
       <BlogP>
-        Git es un <strong>distributed version control system</strong>{" "}
-        created by Linus Torvalds in 2005 to manage the Linux kernel. Hoy
-        it is the de facto standard in software development.
+        Git es un <strong>distributed version control system</strong> created by
+        Linus Torvalds in 2005 to manage the Linux kernel. Hoy it is the de
+        facto standard in software development.
       </BlogP>
       <BlogP>
         A diferencia de los sistemas centralizados (SVN, CVS), en Git cada

@@ -189,8 +189,8 @@ export function SectionLocalModels() {
 
       <BlogP>
         <strong>Don't confuse the runtime with the model.</strong> Ollama runs
-        models, but the models are independent files. Here is everything
-        you need to know about the local model ecosystem.
+        models, but the models are independent files. Here is everything you
+        need to know about the local model ecosystem.
       </BlogP>
 
       <Divider />
@@ -297,19 +297,18 @@ export function SectionLocalModels() {
       <BlogH3>Memory, context, and quantization</BlogH3>
       <BlogUl>
         <BlogLi>
-          <strong>Context:</strong> local models support 8k–128k tokens.
-          More context requires more VRAM. Qwen 3 Coder reaches 128k
-          but consumes significant memory
+          <strong>Context:</strong> local models support 8k–128k tokens. More
+          context requires more VRAM. Qwen 3 Coder reaches 128k but consumes
+          significant memory
         </BlogLi>
         <BlogLi>
-          <strong>Quantization (Q4, Q8):</strong> reduces model size by
-          50–75% with minimal quality loss. Ollama downloads quantized
-          versions automatically
+          <strong>Quantization (Q4, Q8):</strong> reduces model size by 50–75%
+          with minimal quality loss. Ollama downloads quantized versions
+          automatically
         </BlogLi>
         <BlogLi>
-          <strong>Tool calling:</strong> not all local models call
-          tools correctly. The best: Qwen 3 Coder, DeepSeek Coder,
-          Llama 3
+          <strong>Tool calling:</strong> not all local models call tools
+          correctly. The best: Qwen 3 Coder, DeepSeek Coder, Llama 3
         </BlogLi>
         <BlogLi>
           <strong>Persistence:</strong> OpenCode manages the conversation
@@ -322,9 +321,8 @@ export function SectionLocalModels() {
 
       <BlogH3>Vision support</BlogH3>
       <BlogP>
-        Not all local models support images. Only specific
-        versions marked as <strong>"Vision"</strong> or{" "}
-        <strong>"Multimodal"</strong>:
+        Not all local models support images. Only specific versions marked as{" "}
+        <strong>"Vision"</strong> or <strong>"Multimodal"</strong>:
       </BlogP>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4">
         {[
@@ -362,9 +360,9 @@ export function SectionLocalModels() {
       </div>
 
       <BlogCallout type="warn">
-        For reliable tool-calling locally, choose <strong>Qwen 3 Coder</strong> or{" "}
-        <strong>DeepSeek Coder</strong>. Both work quantized on GPUs with
-        8 GB VRAM.
+        For reliable tool-calling locally, choose <strong>Qwen 3 Coder</strong>{" "}
+        or <strong>DeepSeek Coder</strong>. Both work quantized on GPUs with 8
+        GB VRAM.
       </BlogCallout>
     </>
   );

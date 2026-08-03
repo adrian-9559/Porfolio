@@ -1,7 +1,6 @@
 import type { Role } from "@/types/auth";
 
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
 
 import {
   SectionHeader,
@@ -14,6 +13,7 @@ import {
   Icons,
 } from "./AdminShared";
 
+import { useT } from "@/hooks/useT";
 import { roleService } from "@/services/roleService";
 
 export function AdminRoles() {
@@ -153,7 +153,9 @@ export function AdminRoles() {
                     <>
                       {confirmDeleteId === r.id ? (
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs text-[#6e6e73]">{t("admin.deleteRoleConfirm")}</span>
+                          <span className="text-xs text-[#6e6e73]">
+                            {t("admin.deleteRoleConfirm")}
+                          </span>
                           <button
                             className="px-2 py-1 rounded-lg text-xs font-medium bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-100 transition-colors"
                             onClick={() => handleDelete(r.id)}

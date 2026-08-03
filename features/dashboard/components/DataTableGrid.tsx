@@ -2,8 +2,16 @@
 import type { SortDescriptor } from "@heroui/react";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Table, TableLayout, Virtualizer, Pagination, Button, Input, Chip } from "@heroui/react";
-import { TrashBin, Plus, ArrowShapeLeft, Xmark } from "@gravity-ui/icons";
+import {
+  Table,
+  TableLayout,
+  Virtualizer,
+  Pagination,
+  Button,
+  Input,
+  Chip,
+} from "@heroui/react";
+import { TrashBin, Plus, ArrowShapeLeft } from "@gravity-ui/icons";
 
 import {
   dataTableService,
@@ -20,7 +28,10 @@ interface Props {
   onShowMembers: () => void;
 }
 
-const COLUMN_TYPE_COLOR: Record<ColumnType, "default" | "accent" | "success" | "warning" | "danger"> = {
+const COLUMN_TYPE_COLOR: Record<
+  ColumnType,
+  "default" | "accent" | "success" | "warning" | "danger"
+> = {
   text: "default",
   number: "accent",
   boolean: "accent",
@@ -37,12 +48,18 @@ const PAGE_SIZE = 50;
 
 function formatCellValue(val: string | undefined | null): string {
   if (val === null || val === undefined) return "";
+
   return String(val);
 }
 
 type SaveStatus = "idle" | "saving" | "saved";
 
-export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props) {
+export function DataTableGrid({
+  tableId,
+  tables,
+  onBack,
+  onShowMembers,
+}: Props) {
   const table = tables.find((t) => t.id === tableId) ?? null;
 
   const [columns, setColumns] = useState<DataTableColumn[]>([]);
@@ -60,7 +77,9 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [confirmDeleteRow, setConfirmDeleteRow] = useState<string | null>(null);
   const [search, setSearch] = useState("");
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor | undefined>();
+  const [sortDescriptor, setSortDescriptor] = useState<
+    SortDescriptor | undefined
+  >();
   const saveTimers = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const searchTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -73,6 +92,7 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
       setError(null);
       const effectiveSearch = opts?.search ?? search;
       const effectivePage = opts?.page ?? page;
+
       try {
         const [detail, rowsData] = await Promise.all([
           dataTableService.getById(tableId),
@@ -82,6 +102,7 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
             search: effectiveSearch || undefined,
           }),
         ]);
+
         setColumns(detail.columns);
         setRows(rowsData.rows);
         setTotal(rowsData.total);
@@ -91,18 +112,16 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
         setLoading(false);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [tableId],
   );
 
   useEffect(() => {
     fetchData({ page: 1, search: "" });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableId]);
 
   useEffect(() => {
     if (!virtualized) fetchData({ page });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const handleSearchChange = (value: string) => {
@@ -127,13 +146,16 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
       const bv = b.cells[colId] ?? "";
       const col = columns.find((c) => c.id === colId);
       let cmp: number;
+
       if (col?.type === "number") {
         cmp = (Number(av) || 0) - (Number(bv) || 0);
       } else {
         cmp = av.localeCompare(bv);
       }
+
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
+
     return sorted;
   }, [rows, sortDescriptor, columns]);
 
@@ -159,21 +181,29 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
 
   // ── Cell editing ───────────────────────────────────────────────────
 
-  const debouncedSaveCell = (rowId: string, columnId: string, value: string) => {
+  const debouncedSaveCell = (
+    rowId: string,
+    columnId: string,
+    value: string,
+  ) => {
     const key = `${rowId}-${columnId}`;
     const existing = saveTimers.current.get(key);
+
     if (existing) clearTimeout(existing);
 
     setSaveStatus("saving");
     const timer = setTimeout(async () => {
       try {
-        await dataTableService.updateCells(tableId, rowId, [{ columnId, value }]);
+        await dataTableService.updateCells(tableId, rowId, [
+          { columnId, value },
+        ]);
         setSaveStatus("saved");
         setTimeout(() => setSaveStatus("idle"), 1500);
       } catch {
         setSaveStatus("idle");
       }
     }, 600);
+
     saveTimers.current.set(key, timer);
   };
 
@@ -261,7 +291,7 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
     return (
       <div className="p-12 text-center">
         <p className="text-danger mb-3">{error}</p>
-        <Button variant="secondary" size="sm" onPress={() => fetchData()}>
+        <Button size="sm" variant="secondary" onPress={() => fetchData()}>
           Reintentar
         </Button>
       </div>
@@ -279,7 +309,11 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
       <Table.Collection items={tableColumns}>
         {(col) => {
           if (col.id === "__index") {
-            return <Table.Cell className="text-center text-xs text-muted">{index + 1}</Table.Cell>;
+            return (
+              <Table.Cell className="text-center text-xs text-muted">
+                {index + 1}
+              </Table.Cell>
+            );
           }
           if (col.id === "__actions") {
             return (
@@ -287,9 +321,9 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
                 <Button
                   isIconOnly
                   aria-label="Eliminar fila"
-                  variant="ghost"
-                  size="sm"
                   className="text-muted hover:text-danger"
+                  size="sm"
+                  variant="ghost"
                   onPress={() => setConfirmDeleteRow(row.id)}
                 >
                   <TrashBin className="w-3.5 h-3.5" />
@@ -298,13 +332,22 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
             );
           }
           const columnDef = columns.find((c) => c.id === col.id);
+
           return (
             <Table.Cell>
               <input
-                value={formatCellValue(row.cells[col.id])}
-                onChange={(e) => handleCellChange(row.id, col.id, e.target.value)}
-                type={columnDef?.type === "number" ? "number" : columnDef?.type === "date" ? "date" : "text"}
                 className="w-full min-w-[110px] bg-transparent px-2 py-1.5 text-sm text-foreground rounded-lg border border-transparent hover:border-border focus:border-accent focus:outline-none transition-colors"
+                type={
+                  columnDef?.type === "number"
+                    ? "number"
+                    : columnDef?.type === "date"
+                      ? "date"
+                      : "text"
+                }
+                value={formatCellValue(row.cells[col.id])}
+                onChange={(e) =>
+                  handleCellChange(row.id, col.id, e.target.value)
+                }
               />
             </Table.Cell>
           );
@@ -318,21 +361,30 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
       {/* ── Header ────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <div className="flex items-center gap-3">
-          <Button isIconOnly aria-label="Volver" variant="ghost" size="sm" onPress={onBack}>
+          <Button
+            isIconOnly
+            aria-label="Volver"
+            size="sm"
+            variant="ghost"
+            onPress={onBack}
+          >
             <ArrowShapeLeft className="w-4 h-4" />
           </Button>
 
           {nameEditing ? (
             <input
               autoFocus
+              className="text-xl font-bold bg-transparent border-b-2 border-accent text-foreground outline-none"
               value={nameDraft}
-              onChange={(e) => setNameDraft(e.target.value)}
               onBlur={handleNameBlur}
+              onChange={(e) => setNameDraft(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleNameBlur();
-                if (e.key === "Escape") { setNameDraft(table?.name ?? ""); setNameEditing(false); }
+                if (e.key === "Escape") {
+                  setNameDraft(table?.name ?? "");
+                  setNameEditing(false);
+                }
               }}
-              className="text-xl font-bold bg-transparent border-b-2 border-accent text-foreground outline-none"
             />
           ) : (
             <h2
@@ -348,10 +400,20 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
 
           {table && (
             <Chip
+              color={
+                table.role === "owner"
+                  ? "success"
+                  : table.role === "editor"
+                    ? "accent"
+                    : "default"
+              }
               size="sm"
-              color={table.role === "owner" ? "success" : table.role === "editor" ? "accent" : "default"}
             >
-              {table.role === "owner" ? "Propietario" : table.role === "editor" ? "Editor" : "Espectador"}
+              {table.role === "owner"
+                ? "Propietario"
+                : table.role === "editor"
+                  ? "Editor"
+                  : "Espectador"}
             </Chip>
           )}
         </div>
@@ -370,14 +432,22 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
             </span>
           )}
 
-          <Button variant="secondary" size="sm" onPress={onShowMembers}>
+          <Button size="sm" variant="secondary" onPress={onShowMembers}>
             Compartir
           </Button>
-          <Button variant="secondary" size="sm" onPress={() => setShowAddColumn(true)}>
+          <Button
+            size="sm"
+            variant="secondary"
+            onPress={() => setShowAddColumn(true)}
+          >
             <Plus className="w-3.5 h-3.5" />
             Columna
           </Button>
-          <Button variant="danger-soft" size="sm" onPress={() => setShowDeleteConfirm(true)}>
+          <Button
+            size="sm"
+            variant="danger-soft"
+            onPress={() => setShowDeleteConfirm(true)}
+          >
             Eliminar
           </Button>
         </div>
@@ -386,11 +456,11 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
       {/* ── Search + row count ──────────────────────────────────────────── */}
       <div className="flex items-center justify-between gap-3 mb-3">
         <Input
-          value={search}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder="Buscar en la tabla…"
           className="max-w-xs"
+          placeholder="Buscar en la tabla…"
+          value={search}
           variant="secondary"
+          onChange={(e) => handleSearchChange(e.target.value)}
         />
         <p className="text-xs text-muted whitespace-nowrap">
           {total} fila{total !== 1 ? "s" : ""}
@@ -403,19 +473,19 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
         <div className="mb-4 flex gap-2 items-center p-3 rounded-xl bg-default border border-border">
           <input
             autoFocus
+            className="flex-1 text-sm rounded-lg border border-border bg-surface px-3 py-1.5 text-foreground"
+            placeholder="Nombre de la columna"
             value={newColName}
             onChange={(e) => setNewColName(e.target.value)}
-            placeholder="Nombre de la columna"
-            className="flex-1 text-sm rounded-lg border border-border bg-surface px-3 py-1.5 text-foreground"
             onKeyDown={(e) => {
               if (e.key === "Enter") handleAddColumn();
               if (e.key === "Escape") setShowAddColumn(false);
             }}
           />
           <select
+            className="text-sm rounded-lg border border-border bg-surface px-2 py-1.5 text-foreground"
             value={newColType}
             onChange={(e) => setNewColType(e.target.value as ColumnType)}
-            className="text-sm rounded-lg border border-border bg-surface px-2 py-1.5 text-foreground"
           >
             <option value="text">Texto</option>
             <option value="number">Número</option>
@@ -424,10 +494,18 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
             <option value="email">Email</option>
             <option value="url">URL</option>
           </select>
-          <Button size="sm" isDisabled={!newColName.trim()} onPress={handleAddColumn}>
+          <Button
+            isDisabled={!newColName.trim()}
+            size="sm"
+            onPress={handleAddColumn}
+          >
             Añadir
           </Button>
-          <Button size="sm" variant="secondary" onPress={() => setShowAddColumn(false)}>
+          <Button
+            size="sm"
+            variant="secondary"
+            onPress={() => setShowAddColumn(false)}
+          >
             Cancelar
           </Button>
         </div>
@@ -437,14 +515,22 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
       {columns.length === 0 ? (
         <div className="p-12 text-center">
           <p className="text-muted mb-3">Esta tabla no tiene columnas.</p>
-          <Button onPress={() => setShowAddColumn(true)}>Añadir primera columna</Button>
+          <Button onPress={() => setShowAddColumn(true)}>
+            Añadir primera columna
+          </Button>
         </div>
       ) : virtualized ? (
-        <Virtualizer layout={TableLayout} layoutOptions={{ headingHeight: 42, rowHeight: 42 }}>
+        <Virtualizer
+          layout={TableLayout}
+          layoutOptions={{ headingHeight: 42, rowHeight: 42 }}
+        >
           <Table>
             <Table.ScrollContainer>
-              <Table.Content aria-label={table?.name ?? "Tabla"} className="h-[520px] overflow-auto">
-                <Table.Header columns={tableColumns} className="h-full w-full">
+              <Table.Content
+                aria-label={table?.name ?? "Tabla"}
+                className="h-[520px] overflow-auto"
+              >
+                <Table.Header className="h-full w-full" columns={tableColumns}>
                   {(col) =>
                     col.id === "__index" || col.id === "__actions" ? (
                       <Table.Column
@@ -458,7 +544,10 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
                         <div className="flex items-center gap-1.5">
                           {col.name}
                           {"type" in col && (
-                            <Chip size="sm" color={COLUMN_TYPE_COLOR[col.type as ColumnType]}>
+                            <Chip
+                              color={COLUMN_TYPE_COLOR[col.type as ColumnType]}
+                              size="sm"
+                            >
                               {(col as any).type}
                             </Chip>
                           )}
@@ -485,14 +574,19 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
               <Table.Header columns={tableColumns}>
                 {(col) =>
                   col.id === "__index" || col.id === "__actions" ? (
-                    <Table.Column isRowHeader={col.id === "__index"}>{col.name}</Table.Column>
+                    <Table.Column isRowHeader={col.id === "__index"}>
+                      {col.name}
+                    </Table.Column>
                   ) : (
                     <Table.Column allowsSorting id={col.id}>
                       {({ sortDirection }) => (
                         <span className="flex items-center gap-1.5 cursor-pointer select-none">
                           {col.name}
                           {"type" in col && (
-                            <Chip size="sm" color={COLUMN_TYPE_COLOR[col.type as ColumnType]}>
+                            <Chip
+                              color={COLUMN_TYPE_COLOR[col.type as ColumnType]}
+                              size="sm"
+                            >
                               {(col as any).type}
                             </Chip>
                           )}
@@ -510,7 +604,9 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
               <Table.Body
                 items={sortedRows}
                 renderEmptyState={() => (
-                  <div className="px-3 py-8 text-center text-sm text-muted">Sin datos</div>
+                  <div className="px-3 py-8 text-center text-sm text-muted">
+                    Sin datos
+                  </div>
                 )}
               >
                 {(row) => renderRow(row, sortedRows.indexOf(row))}
@@ -536,7 +632,9 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
                   <Pagination.Item>
                     <Pagination.Next
                       isDisabled={page === totalPages}
-                      onPress={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      onPress={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
                     >
                       Siguiente
                       <Pagination.NextIcon />
@@ -551,7 +649,7 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
 
       {/* ── Add row ─────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between mt-4">
-        <Button variant="secondary" size="sm" onPress={handleAddRow}>
+        <Button size="sm" variant="secondary" onPress={handleAddRow}>
           <Plus className="w-3.5 h-3.5" />
           Añadir fila
         </Button>
@@ -565,10 +663,18 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
               ¿Eliminar esta fila? Los datos no se pueden recuperar.
             </p>
             <div className="flex justify-end gap-3">
-              <Button variant="secondary" size="sm" onPress={() => setConfirmDeleteRow(null)}>
+              <Button
+                size="sm"
+                variant="secondary"
+                onPress={() => setConfirmDeleteRow(null)}
+              >
                 Cancelar
               </Button>
-              <Button variant="danger" size="sm" onPress={() => handleDeleteRow(confirmDeleteRow)}>
+              <Button
+                size="sm"
+                variant="danger"
+                onPress={() => handleDeleteRow(confirmDeleteRow)}
+              >
                 Eliminar
               </Button>
             </div>
@@ -584,10 +690,14 @@ export function DataTableGrid({ tableId, tables, onBack, onShowMembers }: Props)
               ¿Eliminar esta tabla? Todos los datos se perderán.
             </p>
             <div className="flex justify-end gap-3">
-              <Button variant="secondary" size="sm" onPress={() => setShowDeleteConfirm(false)}>
+              <Button
+                size="sm"
+                variant="secondary"
+                onPress={() => setShowDeleteConfirm(false)}
+              >
                 Cancelar
               </Button>
-              <Button variant="danger" size="sm" onPress={handleDeleteTable}>
+              <Button size="sm" variant="danger" onPress={handleDeleteTable}>
                 Eliminar tabla
               </Button>
             </div>

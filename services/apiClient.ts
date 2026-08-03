@@ -1,5 +1,6 @@
-import { env } from "@/config/env";
 import { tokenStore } from "./tokenStore";
+
+import { env } from "@/config/env";
 
 // ── Error type ────────────────────────────────────────────────────────────────
 
@@ -23,6 +24,7 @@ let _refreshing: Promise<string | null> | null = null;
 
 async function refreshTokens(): Promise<string | null> {
   const refresh = tokenStore.getRefresh();
+
   if (!refresh) return null;
 
   try {
@@ -41,6 +43,7 @@ async function refreshTokens(): Promise<string | null> {
     // the next attempt can still use them instead of forcing a re-login.
     if (res.status === 401 || res.status === 403) {
       tokenStore.clear();
+
       return null;
     }
 
@@ -50,11 +53,13 @@ async function refreshTokens(): Promise<string | null> {
 
     if (body.success && body.data?.accessToken) {
       tokenStore.set(body.data.accessToken, body.data.refreshToken ?? refresh);
+
       return body.data.accessToken;
     }
   } catch {}
 
   tokenStore.clear();
+
   return null;
 }
 

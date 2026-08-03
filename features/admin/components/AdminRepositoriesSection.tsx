@@ -2,7 +2,6 @@ import type { Provider } from "@/services/repositoryService";
 import type { AdminRepository } from "@/services/adminService";
 
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
 
 import {
   Badge,
@@ -14,6 +13,7 @@ import {
   Spinner,
 } from "./AdminShared";
 
+import { useT } from "@/hooks/useT";
 import { adminService } from "@/services/adminService";
 
 type AdminRepo = AdminRepository;
@@ -85,7 +85,10 @@ export function AdminRepositoriesSection() {
   return (
     <div className="flex flex-col gap-5">
       <SectionHeader
-        desc={t("admin.reposCount", { n: repos.length, s: repos.length !== 1 ? "s" : "" })}
+        desc={t("admin.reposCount", {
+          n: repos.length,
+          s: repos.length !== 1 ? "s" : "",
+        })}
         title={t("admin.reposTitle")}
       />
 

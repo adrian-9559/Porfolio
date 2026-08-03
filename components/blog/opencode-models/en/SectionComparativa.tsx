@@ -110,8 +110,8 @@ export function SectionComparativa() {
       </div>
 
       <BlogP>
-        Each provider has different strengths. This table helps you
-        quickly compare the options available in OpenCode.
+        Each provider has different strengths. This table helps you quickly
+        compare the options available in OpenCode.
       </BlogP>
 
       <div className="overflow-x-auto my-6">

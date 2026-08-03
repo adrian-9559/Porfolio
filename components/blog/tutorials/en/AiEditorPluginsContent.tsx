@@ -59,9 +59,8 @@ export default function AiEditorPluginsContent() {
       </h1>
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
-        Complete guide to AI-powered extensions and editors.
-        Comparison, pricing, features, and recommendations based on
-        your profile.
+        Complete guide to AI-powered extensions and editors. Comparison,
+        pricing, features, and recommendations based on your profile.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -69,53 +68,51 @@ export default function AiEditorPluginsContent() {
       <BlogH2 id="categories">Plugin Categories</BlogH2>
 
       <BlogP>
-        The AI plugin ecosystem for code editors can be divided
-        into four main categories based on their core functionality. Understanding
-        these categories helps you choose the right tool for each workflow.
+        The AI plugin ecosystem for code editors can be divided into four main
+        categories based on their core functionality. Understanding these
+        categories helps you choose the right tool for each workflow.
       </BlogP>
 
       <BlogH3>Autocomplete</BlogH3>
       <BlogP>
-        The most established category. They analyze the context of the open file and
-        project to suggest the next line or block of code in real
-        time. They use small language models (SLMs) specifically trained
-        for code, making them extremely fast.
-        Examples: GitHub Copilot, Tabnine, Supermaven, Codeium.
+        The most established category. They analyze the context of the open file
+        and project to suggest the next line or block of code in real time. They
+        use small language models (SLMs) specifically trained for code, making
+        them extremely fast. Examples: GitHub Copilot, Tabnine, Supermaven,
+        Codeium.
       </BlogP>
 
       <BlogH3>Chat in Editor</BlogH3>
       <BlogP>
-        Add a chat panel inside the IDE where you can ask questions
-        about your codebase, request refactors, or get explanations. They usually
-        integrate with large models like GPT-4, Claude, or Gemini and often
-        can read files, selections, and the project tree. Examples:
-        Continue.dev, Cody, GitHub Copilot Chat.
+        Add a chat panel inside the IDE where you can ask questions about your
+        codebase, request refactors, or get explanations. They usually integrate
+        with large models like GPT-4, Claude, or Gemini and often can read
+        files, selections, and the project tree. Examples: Continue.dev, Cody,
+        GitHub Copilot Chat.
       </BlogP>
 
       <BlogH3>Autonomous Agents</BlogH3>
       <BlogP>
         The most recent and powerful category. These plugins don't just suggest
-        code — they can run commands, read and write files,
-        manage terminals, and orchestrate multi-step workflows on their own.
-        They use the MCP (Model Context Protocol) to connect to
-        external tools. Examples: Cline, GitHub Copilot Agent Mode,
-        Claude Code.
+        code — they can run commands, read and write files, manage terminals,
+        and orchestrate multi-step workflows on their own. They use the MCP
+        (Model Context Protocol) to connect to external tools. Examples: Cline,
+        GitHub Copilot Agent Mode, Claude Code.
       </BlogP>
 
       <BlogH3>Code Review</BlogH3>
       <BlogP>
         They integrate with pull request workflows and review code
-        automatically. They detect bugs, code smells, security issues, and
-        style problems. Some work as local assistants and others as CI/CD
-        actions. Examples: Cody Review, CodeRabbit, Copilot Code Review.
+        automatically. They detect bugs, code smells, security issues, and style
+        problems. Some work as local assistants and others as CI/CD actions.
+        Examples: Cody Review, CodeRabbit, Copilot Code Review.
       </BlogP>
 
       <BlogH2 id="comparison-table">Comparison Table</BlogH2>
 
       <BlogP>
         Quick overview of the main AI plugins and editors currently on the
-        market. The table includes tool type, backend model, and MCP
-        support.
+        market. The table includes tool type, backend model, and MCP support.
       </BlogP>
 
       <div className="overflow-x-auto my-6">
@@ -254,16 +251,16 @@ export default function AiEditorPluginsContent() {
       <BlogH2 id="continue">Continue.dev</BlogH2>
 
       <BlogP>
-        Continue.dev is the leading open-source reference in the AI plugin
-        space for editors. Unlike closed solutions, it lets you
-        choose exactly which model you want to use and how it connects to your
-        environment. It runs locally or against external APIs.
+        Continue.dev is the leading open-source reference in the AI plugin space
+        for editors. Unlike closed solutions, it lets you choose exactly which
+        model you want to use and how it connects to your environment. It runs
+        locally or against external APIs.
       </BlogP>
 
       <BlogP>
-        Its strength is native MCP support: you can add any MCP
-        server to your configuration and Continue will automatically use it
-        in chat and agent flows. The configuration lives in{" "}
+        Its strength is native MCP support: you can add any MCP server to your
+        configuration and Continue will automatically use it in chat and agent
+        flows. The configuration lives in{" "}
         <BlogInlineCode>~/.continue/config.json</BlogInlineCode>:
       </BlogP>
 
@@ -293,23 +290,23 @@ export default function AiEditorPluginsContent() {
 
       <BlogP>
         It is compatible with Ollama, OpenAI, Anthropic, Google Gemini, Azure
-        OpenAI, and dozens more providers. The community maintains a
-        growing collection of ready-to-use MCPs.
+        OpenAI, and dozens more providers. The community maintains a growing
+        collection of ready-to-use MCPs.
       </BlogP>
 
       <BlogH2 id="cline">Cline</BlogH2>
 
       <BlogP>
-        Cline (formerly Claude Dev) brought the autonomous agent concept to VS Code.
-        Unlike a traditional chat, Cline can plan and execute complex
-        tasks: read files, write modifications, run tests, make commits, and even deploy.
+        Cline (formerly Claude Dev) brought the autonomous agent concept to VS
+        Code. Unlike a traditional chat, Cline can plan and execute complex
+        tasks: read files, write modifications, run tests, make commits, and
+        even deploy.
       </BlogP>
 
       <BlogP>
-        Its architecture has been MCP-based from day one. Every tool
-        Cline needs (filesystem, terminal, browser, database)
-        is configured as an independent MCP server. The configuration
-        is defined in{" "}
+        Its architecture has been MCP-based from day one. Every tool Cline needs
+        (filesystem, terminal, browser, database) is configured as an
+        independent MCP server. The configuration is defined in{" "}
         <BlogInlineCode>.vscode/cline_mcp_settings.json</BlogInlineCode>:
       </BlogP>
 
@@ -337,33 +334,32 @@ export default function AiEditorPluginsContent() {
       </BlogP>
 
       <BlogCallout type="warn">
-        <strong>Watch out for costs.</strong> Being an autonomous agent,
-        Cline can consume many tokens in a single session if you don't limit
-        the model or set a budget. Always review changes before
-        accepting them.
+        <strong>Watch out for costs.</strong> Being an autonomous agent, Cline
+        can consume many tokens in a single session if you don't limit the model
+        or set a budget. Always review changes before accepting them.
       </BlogCallout>
 
       <BlogH2 id="copilot">GitHub Copilot</BlogH2>
 
       <BlogP>
-        GitHub Copilot is the most widely used AI plugin for editors in the world.
-        It started as an autocomplete based on Codex (OpenAI) and has evolved
-        to include chat, code review and, since 2025, an agent mode with
+        GitHub Copilot is the most widely used AI plugin for editors in the
+        world. It started as an autocomplete based on Codex (OpenAI) and has
+        evolved to include chat, code review and, since 2025, an agent mode with
         MCP support in preview.
       </BlogP>
 
       <BlogP>
-        Its main advantage is deep integration with the GitHub
-        ecosystem: it understands issues, pull requests, Actions, and the full
-        repository context. It works on VS Code, JetBrains, Xcode, Neovim, and Azure
-        Data Studio.
+        Its main advantage is deep integration with the GitHub ecosystem: it
+        understands issues, pull requests, Actions, and the full repository
+        context. It works on VS Code, JetBrains, Xcode, Neovim, and Azure Data
+        Studio.
       </BlogP>
 
       <BlogP>
-        Copilot's Agent Mode (VS Code Insiders) is the direct response to
-        Cline: it allows Copilot to run terminals, read/write files, and
-        orchestrate multi-step tasks. It is currently in public preview with
-        limited MCP support.
+        Copilot's Agent Mode (VS Code Insiders) is the direct response to Cline:
+        it allows Copilot to run terminals, read/write files, and orchestrate
+        multi-step tasks. It is currently in public preview with limited MCP
+        support.
       </BlogP>
 
       <BlogH3>Editions</BlogH3>
@@ -377,8 +373,8 @@ export default function AiEditorPluginsContent() {
           code review.
         </BlogLi>
         <BlogLi>
-          <strong>Copilot Business/Enterprise</strong> — $19 and
-          $39/user/month, security policies, IP indemnity.
+          <strong>Copilot Business/Enterprise</strong> — $19 and $39/user/month,
+          security policies, IP indemnity.
         </BlogLi>
       </BlogUl>
 
@@ -387,33 +383,33 @@ export default function AiEditorPluginsContent() {
       <BlogP>
         Supermaven is the fastest autocomplete plugin on the market. Its
         proprietary model is optimized for minimal latency and a context of up
-        to 1 million tokens, allowing it to understand all the code
-        in a large project without losing performance.
+        to 1 million tokens, allowing it to understand all the code in a large
+        project without losing performance.
       </BlogP>
 
       <BlogP>
-        Unlike Copilot, Supermaven has no chat or agent mode. It is a
-        pure autocomplete tool, but it does it exceptionally well:
-        suggestions appear in milliseconds, even in huge monorepos.
+        Unlike Copilot, Supermaven has no chat or agent mode. It is a pure
+        autocomplete tool, but it does it exceptionally well: suggestions appear
+        in milliseconds, even in huge monorepos.
       </BlogP>
 
       <BlogP>
-        It is available for VS Code, JetBrains, and soon Neovim. Its price
-        is $7/mo for the Pro plan and $19/mo for the Teams plan. It does not support
-        MCP or external models.
+        It is available for VS Code, JetBrains, and soon Neovim. Its price is
+        $7/mo for the Pro plan and $19/mo for the Teams plan. It does not
+        support MCP or external models.
       </BlogP>
 
       <BlogCallout type="tip">
         If you already use Copilot or Continue for chat and agent, Supermaven as
-        an autocomplete add-on is an unbeatable combination. Both
-        coexist without conflicts in VS Code.
+        an autocomplete add-on is an unbeatable combination. Both coexist
+        without conflicts in VS Code.
       </BlogCallout>
 
       <BlogH2 id="which-to-choose">Which one to choose?</BlogH2>
 
       <BlogP>
-        There is no single answer. The choice depends on your profile,
-        budget, and workflow. Here is a quick guide:
+        There is no single answer. The choice depends on your profile, budget,
+        and workflow. Here is a quick guide:
       </BlogP>
 
       <div className="overflow-x-auto my-6">
@@ -485,12 +481,11 @@ export default function AiEditorPluginsContent() {
 
       <BlogCallout type="tip">
         <strong>Personal recommendation:</strong> start with{" "}
-        <strong>Continue.dev + Ollama</strong> (free, local, private). If
-        you need more autocomplete speed, add{" "}
-        <strong>Supermaven</strong>. If you work on a team with GitHub,{" "}
-        <strong>Copilot Pro</strong> is the undisputed standard. And for
-        heavy automation, <strong>Cline</strong> has no rival. All
-        coexist in VS Code without issues.
+        <strong>Continue.dev + Ollama</strong> (free, local, private). If you
+        need more autocomplete speed, add <strong>Supermaven</strong>. If you
+        work on a team with GitHub, <strong>Copilot Pro</strong> is the
+        undisputed standard. And for heavy automation, <strong>Cline</strong>{" "}
+        has no rival. All coexist in VS Code without issues.
       </BlogCallout>
     </article>
   );

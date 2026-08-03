@@ -54,11 +54,11 @@ function ExerciseCard({
   const [open, setOpen] = useState(false);
   const levelColor =
     {
-      "Básico":
+      Básico:
         "bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400",
-      "Intermedio":
+      Intermedio:
         "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-      "Avanzado": "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
+      Avanzado: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400",
     }[level] ??
     "bg-blue-100 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400";
 
@@ -109,9 +109,9 @@ function SectionIntro() {
     <>
       <BlogH2>What is Spring Boot?</BlogH2>
       <BlogP>
-        Spring Boot is a Java framework that simplifies building
-        enterprise applications. It starts an embedded server (Tomcat, Jetty,
-        Undertow) with auto-configuration and minimal manual setup.
+        Spring Boot is a Java framework that simplifies building enterprise
+        applications. It starts an embedded server (Tomcat, Jetty, Undertow)
+        with auto-configuration and minimal manual setup.
       </BlogP>
       <BlogUl>
         <BlogLi>
@@ -119,8 +119,8 @@ function SectionIntro() {
           classpath and configures beans automatically
         </BlogLi>
         <BlogLi>
-          <strong>Embedded server</strong> — runs your app without deploying to an
-          external server
+          <strong>Embedded server</strong> — runs your app without deploying to
+          an external server
         </BlogLi>
         <BlogLi>
           <strong>Starter dependencies</strong> — pre-configured dependencies
@@ -214,8 +214,8 @@ function SectionController() {
     <>
       <BlogH2>REST Controllers</BlogH2>
       <BlogP>
-        Controllers handle HTTP requests. <code>@RestController</code>{" "}
-        combines <code>@Controller</code> + <code>@ResponseBody</code>.
+        Controllers handle HTTP requests. <code>@RestController</code> combines{" "}
+        <code>@Controller</code> + <code>@ResponseBody</code>.
       </BlogP>
       <BlogCode>{`@RestController
 @RequestMapping("/api/users")
@@ -249,8 +249,8 @@ public class UserController {
     }
 }`}</BlogCode>
       <BlogCallout type="tip">
-        Use <code>@Valid</code> on input DTOs so Spring automatically
-        validates constraints before executing the controller method.
+        Use <code>@Valid</code> on input DTOs so Spring automatically validates
+        constraints before executing the controller method.
       </BlogCallout>
     </>
   );
@@ -261,8 +261,8 @@ function SectionService() {
     <>
       <BlogH2>Service layer</BlogH2>
       <BlogP>
-        The service layer contains business logic. Controllers
-        delegate to services, which in turn use repositories.
+        The service layer contains business logic. Controllers delegate to
+        services, which in turn use repositories.
       </BlogP>
       <BlogCode>{`@Service
 public class UserService {
@@ -294,14 +294,13 @@ public class UserService {
     }
 }`}</BlogCode>
       <BlogCallout type="warn">
-        Do not put business logic in controllers. Controllers only
-        orchestrate: receive the request, call the service, and return the
-        response.
+        Do not put business logic in controllers. Controllers only orchestrate:
+        receive the request, call the service, and return the response.
       </BlogCallout>
       <BlogH3>Dependency injection</BlogH3>
       <BlogP>
-        Spring manages the bean lifecycle. Constructor injection is the
-        safest and most testable approach.
+        Spring manages the bean lifecycle. Constructor injection is the safest
+        and most testable approach.
       </BlogP>
       <BlogCode>{`// Spring automatically injects dependencies declared in the constructor
 @Service
@@ -327,8 +326,8 @@ function SectionJpa() {
     <>
       <BlogH2>JPA and repositories</BlogH2>
       <BlogP>
-        Spring Data JPA provides automatic repository
-        implementations. You only define the interface.
+        Spring Data JPA provides automatic repository implementations. You only
+        define the interface.
       </BlogP>
       <BlogCode>{`// JPA Entity
 @Entity
@@ -428,9 +427,8 @@ function SectionDto() {
     <>
       <BlogH2>DTOs and validation</BlogH2>
       <BlogP>
-        Never expose JPA entities directly in endpoints. Use DTOs
-        (Data Transfer Objects) to separate internal representation from the public
-        API.
+        Never expose JPA entities directly in endpoints. Use DTOs (Data Transfer
+        Objects) to separate internal representation from the public API.
       </BlogP>
       <BlogCode>{`// Input DTO with validation
 public record CreateUserRequest(
@@ -455,9 +453,9 @@ public record UserResponse(
     }
 }`}</BlogCode>
       <BlogCallout type="warn">
-        Do not return JPA entities directly. They can include lazy
-        relationships that throw <code>LazyInitializationException</code>, or expose
-        sensitive data like hashed passwords.
+        Do not return JPA entities directly. They can include lazy relationships
+        that throw <code>LazyInitializationException</code>, or expose sensitive
+        data like hashed passwords.
       </BlogCallout>
       <BlogH3>Global error handling</BlogH3>
       <BlogCode>{`@RestControllerAdvice

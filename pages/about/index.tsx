@@ -10,7 +10,12 @@ const TIMELINE_KEYS = [
 ];
 
 const STAT_VALUE_KEYS = ["3+", "15+", "20+", "800h"];
-const STAT_LABEL_KEYS = ["about.yearsExp", "about.projects", "about.techs", "about.hours"];
+const STAT_LABEL_KEYS = [
+  "about.yearsExp",
+  "about.projects",
+  "about.techs",
+  "about.hours",
+];
 
 export default function AboutPage() {
   const { t } = useT();
@@ -63,15 +68,9 @@ export default function AboutPage() {
               <div className="space-y-3">
                 <h2 className="text-2xl font-bold">{t("about.myStory")}</h2>
                 <div className="space-y-4 text-muted leading-relaxed text-sm">
-                  <p>
-                    {t("about.storyP1")}
-                  </p>
-                  <p>
-                    {t("about.storyP2")}
-                  </p>
-                  <p>
-                    {t("about.storyP3")}
-                  </p>
+                  <p>{t("about.storyP1")}</p>
+                  <p>{t("about.storyP2")}</p>
+                  <p>{t("about.storyP3")}</p>
                 </div>
               </div>
 
@@ -105,12 +104,30 @@ export default function AboutPage() {
             </div>
 
             <div className="lg:col-span-2 space-y-3">
-              <h2 className="text-2xl font-bold">{t("about.specialization")}</h2>
+              <h2 className="text-2xl font-bold">
+                {t("about.specialization")}
+              </h2>
               {[
-                { labelKey: "about.specFrontend", itemsKey: "about.specFrontendItems", color: "bg-blue-500" },
-                { labelKey: "about.specBackend", itemsKey: "about.specBackendItems", color: "bg-emerald-500" },
-                { labelKey: "about.specDB", itemsKey: "about.specDBItems", color: "bg-orange-500" },
-                { labelKey: "about.specDevOps", itemsKey: "about.specDevOpsItems", color: "bg-violet-500" },
+                {
+                  labelKey: "about.specFrontend",
+                  itemsKey: "about.specFrontendItems",
+                  color: "bg-blue-500",
+                },
+                {
+                  labelKey: "about.specBackend",
+                  itemsKey: "about.specBackendItems",
+                  color: "bg-emerald-500",
+                },
+                {
+                  labelKey: "about.specDB",
+                  itemsKey: "about.specDBItems",
+                  color: "bg-orange-500",
+                },
+                {
+                  labelKey: "about.specDevOps",
+                  itemsKey: "about.specDevOpsItems",
+                  color: "bg-violet-500",
+                },
               ].map((s, i) => (
                 <div
                   key={i}

@@ -100,9 +100,9 @@ export default function DatabaseIntroContent() {
       <BlogH3>CRUD</BlogH3>
       <BlogP>
         El acrónimo CRUD (Create, Read, Update, Delete) representa las cuatro
-        operaciones fundamentales sobre cualquier conjunto de datos persistentes.
-        Toda base de datos, sin importar su tipo, implementa estas operaciones
-        como mínimo. En SQL se traducen en{" "}
+        operaciones fundamentales sobre cualquier conjunto de datos
+        persistentes. Toda base de datos, sin importar su tipo, implementa estas
+        operaciones como mínimo. En SQL se traducen en{" "}
         <BlogInlineCode>INSERT</BlogInlineCode>,{" "}
         <BlogInlineCode>SELECT</BlogInlineCode>,{" "}
         <BlogInlineCode>UPDATE</BlogInlineCode> y{" "}
@@ -127,8 +127,8 @@ DELETE FROM usuarios WHERE id = 1;`}</BlogCode>
       <BlogP>
         Los datos sobreviven al ciclo de vida del programa que los creó. Esto
         parece obvio, pero es la diferencia fundamental entre almacenar datos en
-        memoria RAM (volátil) y hacerlo en disco (persistente). Una base de datos
-        garantiza que los datos sigan ahí cuando el servidor se reinicie.
+        memoria RAM (volátil) y hacerlo en disco (persistente). Una base de
+        datos garantiza que los datos sigan ahí cuando el servidor se reinicie.
       </BlogP>
 
       <BlogH3>Control de concurrencia</BlogH3>
@@ -142,11 +142,11 @@ DELETE FROM usuarios WHERE id = 1;`}</BlogCode>
 
       <BlogH3>Integridad de datos</BlogH3>
       <BlogP>
-        Las bases de datos imponen restricciones (constraints) que garantizan que
-        los datos sean válidos: tipos de datos, valores únicos, claves foráneas
-        que referencian registros existentes, valores por defecto y validaciones
-        personalizadas. Estas reglas evitan que datos inconsistentes entren al
-        sistema.
+        Las bases de datos imponen restricciones (constraints) que garantizan
+        que los datos sean válidos: tipos de datos, valores únicos, claves
+        foráneas que referencian registros existentes, valores por defecto y
+        validaciones personalizadas. Estas reglas evitan que datos
+        inconsistentes entren al sistema.
       </BlogP>
 
       <BlogH3>Seguridad</BlogH3>
@@ -159,10 +159,10 @@ DELETE FROM usuarios WHERE id = 1;`}</BlogCode>
 
       <BlogH3>Backup y recuperación</BlogH3>
       <BlogP>
-        Los DBMS modernos incluyen herramientas para realizar copias de seguridad
-        (backups) periódicas y mecanismos de recuperación ante fallos. Esto
-        asegura que incluso ante un corte eléctrico o un error de hardware, los
-        datos no se pierdan y puedan restaurarse a un estado consistente.
+        Los DBMS modernos incluyen herramientas para realizar copias de
+        seguridad (backups) periódicas y mecanismos de recuperación ante fallos.
+        Esto asegura que incluso ante un corte eléctrico o un error de hardware,
+        los datos no se pierdan y puedan restaurarse a un estado consistente.
       </BlogP>
 
       <BlogCallout type="tip">
@@ -184,8 +184,9 @@ DELETE FROM usuarios WHERE id = 1;`}</BlogCode>
       <BlogP>
         Donde realmente viven los datos. En el modelo relacional, cada tabla
         representa una entidad (usuarios, productos, pedidos) y cada fila una
-        instancia de esa entidad. Las columnas definen los atributos. En bases de
-        datos NoSQL, las colecciones agrupan documentos con estructura flexible.
+        instancia de esa entidad. Las columnas definen los atributos. En bases
+        de datos NoSQL, las colecciones agrupan documentos con estructura
+        flexible.
       </BlogP>
 
       <BlogH3>Índices</BlogH3>
@@ -209,19 +210,19 @@ DELETE FROM usuarios WHERE id = 1;`}</BlogCode>
       <BlogH3>Transacciones</BlogH3>
       <BlogP>
         Una transacción agrupa varias operaciones en una unidad atómica: o se
-        ejecutan todas o no se ejecuta ninguna. Por ejemplo, al transferir dinero
-        entre cuentas, el débito y el crédito deben ocurrir juntos. Si una falla,
-        la transacción se revierte (rollback) y los datos vuelven al estado
-        anterior.
+        ejecutan todas o no se ejecuta ninguna. Por ejemplo, al transferir
+        dinero entre cuentas, el débito y el crédito deben ocurrir juntos. Si
+        una falla, la transacción se revierte (rollback) y los datos vuelven al
+        estado anterior.
       </BlogP>
 
       <BlogH3>Esquemas</BlogH3>
       <BlogP>
         Definen la estructura de los datos: qué tablas existen, qué columnas
-        tiene cada una, qué tipos de datos aceptan, qué restricciones se aplican.
-        En SQL el esquema es fijo y se define antes de insertar datos (schema-on-
-        write). En NoSQL el esquema suele ser implícito y flexible (schema-on-
-        read).
+        tiene cada una, qué tipos de datos aceptan, qué restricciones se
+        aplican. En SQL el esquema es fijo y se define antes de insertar datos
+        (schema-on- write). En NoSQL el esquema suele ser implícito y flexible
+        (schema-on- read).
       </BlogP>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -236,9 +237,9 @@ DELETE FROM usuarios WHERE id = 1;`}</BlogCode>
       <BlogUl>
         <BlogLi>
           <strong>Años 1960 — Sistemas jerárquicos y de red:</strong> los
-          primeros sistemas como IMS (IBM) organizaban los datos en árboles. Eran
-          rápidos pero rígidos: cambiar la estructura requería reescribir las
-          aplicaciones.
+          primeros sistemas como IMS (IBM) organizaban los datos en árboles.
+          Eran rápidos pero rígidos: cambiar la estructura requería reescribir
+          las aplicaciones.
         </BlogLi>
         <BlogLi>
           <strong>1970 — Modelo relacional:</strong> Edgar F. Codd, investigador
@@ -250,8 +251,8 @@ DELETE FROM usuarios WHERE id = 1;`}</BlogCode>
         </BlogLi>
         <BlogLi>
           <strong>Años 1980 — SQL y bases de datos comerciales:</strong> Oracle,
-          DB2 y SQL Server popularizaron SQL como lenguaje estándar. Las bases de
-          datos relacionales se convirtieron en el estándar de la industria.
+          DB2 y SQL Server popularizaron SQL como lenguaje estándar. Las bases
+          de datos relacionales se convirtieron en el estándar de la industria.
         </BlogLi>
         <BlogLi>
           <strong>Años 2000 — NoSQL:</strong> el crecimiento de internet, los
@@ -309,9 +310,9 @@ WHERE emp.dept_id = dept.id;
 
       <BlogH3>Column-family</BlogH3>
       <BlogP>
-        Almacenan datos en columnas en lugar de filas, optimizadas para consultas
-        analíticas sobre grandes volúmenes. Populares en Big Data. Ejemplos:
-        Apache Cassandra, HBase, ScyllaDB.
+        Almacenan datos en columnas en lugar de filas, optimizadas para
+        consultas analíticas sobre grandes volúmenes. Populares en Big Data.
+        Ejemplos: Apache Cassandra, HBase, ScyllaDB.
       </BlogP>
 
       <BlogH3>Grafos</BlogH3>

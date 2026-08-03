@@ -263,11 +263,31 @@ const NODES: FlowNode[] = [
     routes: [{ path: "/dashboard/repositories" }],
     endpoints: [
       { method: "GET", path: "/api/repositories", desc: "Repos del usuario" },
-      { method: "POST", path: "/api/repositories", desc: "Conectar nuevo repo" },
-      { method: "GET", path: "/api/repositories/:id/branches", desc: "Ramas del repo" },
-      { method: "GET", path: "/api/repositories/:id/commits", desc: "Commits (?branch=)" },
-      { method: "GET", path: "/api/repositories/:id/graph", desc: "Grafo SVG de commits" },
-      { method: "GET", path: "/api/repositories/:id/analytics", desc: "Analytics de actividad" },
+      {
+        method: "POST",
+        path: "/api/repositories",
+        desc: "Conectar nuevo repo",
+      },
+      {
+        method: "GET",
+        path: "/api/repositories/:id/branches",
+        desc: "Ramas del repo",
+      },
+      {
+        method: "GET",
+        path: "/api/repositories/:id/commits",
+        desc: "Commits (?branch=)",
+      },
+      {
+        method: "GET",
+        path: "/api/repositories/:id/graph",
+        desc: "Grafo SVG de commits",
+      },
+      {
+        method: "GET",
+        path: "/api/repositories/:id/analytics",
+        desc: "Analytics de actividad",
+      },
     ],
     tech: ["GitHub REST API v3", "SVG commit graph", "React state"],
     features: [
@@ -287,9 +307,21 @@ const NODES: FlowNode[] = [
     routes: [{ path: "/dashboard/escote" }],
     endpoints: [
       { method: "GET", path: "/api/tricount/groups", desc: "Listar grupos" },
-      { method: "POST", path: "/api/tricount/groups/:id/expenses", desc: "Crear gasto" },
-      { method: "GET", path: "/api/tricount/groups/:id/balances", desc: "Balances del grupo" },
-      { method: "GET", path: "/api/tricount/insights", desc: "Insights globales de gasto" },
+      {
+        method: "POST",
+        path: "/api/tricount/groups/:id/expenses",
+        desc: "Crear gasto",
+      },
+      {
+        method: "GET",
+        path: "/api/tricount/groups/:id/balances",
+        desc: "Balances del grupo",
+      },
+      {
+        method: "GET",
+        path: "/api/tricount/insights",
+        desc: "Insights globales de gasto",
+      },
     ],
     tech: ["React + HeroUI", "Supabase RLS", "Algoritmo de liquidación"],
     features: [
@@ -313,17 +345,33 @@ const NODES: FlowNode[] = [
     endpoints: [
       { method: "GET", path: "/api/friends", desc: "Lista de amigos" },
       { method: "GET", path: "/api/friends/search", desc: "Buscar usuarios" },
-      { method: "POST", path: "/api/friends/request", desc: "Enviar solicitud" },
-      { method: "POST", path: "/api/friends/accept", desc: "Aceptar solicitud" },
-      { method: "POST", path: "/api/friends/reject", desc: "Rechazar solicitud" },
-      { method: "GET", path: "/api/friends/requests/received", desc: "Solicitudes recibidas" },
-      { method: "GET", path: "/api/friends/requests/sent", desc: "Solicitudes enviadas" },
+      {
+        method: "POST",
+        path: "/api/friends/request",
+        desc: "Enviar solicitud",
+      },
+      {
+        method: "POST",
+        path: "/api/friends/accept",
+        desc: "Aceptar solicitud",
+      },
+      {
+        method: "POST",
+        path: "/api/friends/reject",
+        desc: "Rechazar solicitud",
+      },
+      {
+        method: "GET",
+        path: "/api/friends/requests/received",
+        desc: "Solicitudes recibidas",
+      },
+      {
+        method: "GET",
+        path: "/api/friends/requests/sent",
+        desc: "Solicitudes enviadas",
+      },
     ],
-    tech: [
-      "Supabase RLS",
-      "QR exchange",
-      "Notificaciones automáticas",
-    ],
+    tech: ["Supabase RLS", "QR exchange", "Notificaciones automáticas"],
   },
   {
     id: "mod-qr",
@@ -335,9 +383,21 @@ const NODES: FlowNode[] = [
       "Intercambio de amistad mediante código QR. Genera un token único que otro usuario puede escanear para enviar solicitud.",
     routes: [{ path: "/dashboard/friends" }],
     endpoints: [
-      { method: "GET", path: "/api/qr/friend-token", desc: "Obtener token QR del usuario" },
-      { method: "POST", path: "/api/qr/friend-token/revoke", desc: "Revocar y regenerar token" },
-      { method: "POST", path: "/api/qr/friend-exchange", desc: "Intercambiar token → solicitud" },
+      {
+        method: "GET",
+        path: "/api/qr/friend-token",
+        desc: "Obtener token QR del usuario",
+      },
+      {
+        method: "POST",
+        path: "/api/qr/friend-token/revoke",
+        desc: "Revocar y regenerar token",
+      },
+      {
+        method: "POST",
+        path: "/api/qr/friend-exchange",
+        desc: "Intercambiar token → solicitud",
+      },
     ],
   },
   {
@@ -350,7 +410,11 @@ const NODES: FlowNode[] = [
       "Datos de mercado en tiempo real: forex, cripto (BTC, ETH), materias primas (oro) e índices (S&P 500, AAPL). Público, sin auth.",
     routes: [{ path: "API pública" }],
     endpoints: [
-      { method: "GET", path: "/api/markets/latest", desc: "Últimos precios (cache 30s)" },
+      {
+        method: "GET",
+        path: "/api/markets/latest",
+        desc: "Últimos precios (cache 30s)",
+      },
     ],
     tech: ["API pública", "Cache 30s", "Sin autenticación"],
   },
@@ -364,10 +428,26 @@ const NODES: FlowNode[] = [
       "Integración con Google Drive para almacenamiento de builds APK/AAB. OAuth con refresh token, carpeta configurable.",
     routes: [{ path: "/admin" }],
     endpoints: [
-      { method: "GET", path: "/api/admin/google-drive/auth-url", desc: "URL de autorización OAuth" },
-      { method: "GET", path: "/api/admin/google-drive/status", desc: "Estado de la conexión" },
-      { method: "POST", path: "/api/admin/google-drive/folder", desc: "Configurar carpeta destino" },
-      { method: "DELETE", path: "/api/admin/google-drive/disconnect", desc: "Desconectar cuenta" },
+      {
+        method: "GET",
+        path: "/api/admin/google-drive/auth-url",
+        desc: "URL de autorización OAuth",
+      },
+      {
+        method: "GET",
+        path: "/api/admin/google-drive/status",
+        desc: "Estado de la conexión",
+      },
+      {
+        method: "POST",
+        path: "/api/admin/google-drive/folder",
+        desc: "Configurar carpeta destino",
+      },
+      {
+        method: "DELETE",
+        path: "/api/admin/google-drive/disconnect",
+        desc: "Desconectar cuenta",
+      },
     ],
     tech: ["Google Drive API v3", "OAuth 2.0", "Refresh token automático"],
   },
@@ -1090,9 +1170,17 @@ export function AppFlowDiagram() {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {[
-                { icon: "🏠", label: "Inicio", desc: "Resumen + accesos rápidos" },
+                {
+                  icon: "🏠",
+                  label: "Inicio",
+                  desc: "Resumen + accesos rápidos",
+                },
                 { icon: "👥", label: "Grupos", desc: "Gestión Tricount móvil" },
-                { icon: "📊", label: "Insights", desc: "Estadísticas de gasto (mock)" },
+                {
+                  icon: "📊",
+                  label: "Insights",
+                  desc: "Estadísticas de gasto (mock)",
+                },
                 { icon: "🤝", label: "Amigos", desc: "Social + QR exchange" },
                 { icon: "🔔", label: "Avisos", desc: "Notificaciones push" },
                 { icon: "⚙️", label: "Perfil", desc: "Preferencias + tema" },
@@ -1114,7 +1202,14 @@ export function AppFlowDiagram() {
               ))}
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {["Expo SDK 54", "Expo Router 4", "Zustand", "React Query", "SecureStore", "Reanimated"].map((t) => (
+              {[
+                "Expo SDK 54",
+                "Expo Router 4",
+                "Zustand",
+                "React Query",
+                "SecureStore",
+                "Reanimated",
+              ].map((t) => (
                 <span
                   key={t}
                   className="text-[11px] px-2 py-1 rounded-full border border-sky-200 dark:border-sky-800/40 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-400 font-medium"

@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
+
 import { SectionHeader, Card, Spinner } from "./AdminShared";
+
 import { useT } from "@/hooks/useT";
 import { adminService, ServiceHealth } from "@/services/adminService";
 
 function fmtUptime(s: number): string {
   if (s < 60) return `${s}s`;
   if (s < 3600) return `${Math.floor(s / 60)}m ${s % 60}s`;
-  if (s < 86400) return `${Math.floor(s / 3600)}h ${Math.floor((s % 3600) / 60)}m`;
+  if (s < 86400)
+    return `${Math.floor(s / 3600)}h ${Math.floor((s % 3600) / 60)}m`;
+
   return `${Math.floor(s / 86400)}d ${Math.floor((s % 86400) / 3600)}h`;
 }
 
@@ -55,8 +59,8 @@ export function AdminToolsHealthSection() {
   return (
     <div className="flex flex-col gap-5">
       <SectionHeader
-        title={t("admin.services")}
         desc={t("admin.servicesDesc")}
+        title={t("admin.services")}
       />
 
       {loading && (
@@ -88,10 +92,7 @@ export function AdminToolsHealthSection() {
       {!loading && !error && services.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((svc) => (
-            <Card
-              key={svc.key}
-              className="p-5 flex flex-col gap-0"
-            >
+            <Card key={svc.key} className="p-5 flex flex-col gap-0">
               {/* Header */}
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2 min-w-0">

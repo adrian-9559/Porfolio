@@ -691,10 +691,8 @@ function GroupCard({
         <div className="px-4 pb-3 flex items-center gap-2 border-t border-black/5 dark:border-white/5 pt-3">
           <p className="text-xs text-muted flex-1">
             ¿Eliminar el grupo{" "}
-            <span className="font-semibold text-foreground">
-              {group.name}
-            </span>
-            ? Esta acción no se puede deshacer.
+            <span className="font-semibold text-foreground">{group.name}</span>?
+            Esta acción no se puede deshacer.
           </p>
           <button
             className="text-xs px-3 py-1.5 rounded-lg border border-border/30 hover:bg-default text-muted transition-colors"
@@ -810,9 +808,7 @@ function AddMemberModal({
                     <p className="text-sm font-medium text-foreground truncate">
                       {label}
                     </p>
-                    <p className="text-xs text-muted truncate">
-                      {f.email}
-                    </p>
+                    <p className="text-xs text-muted truncate">{f.email}</p>
                   </div>
                   <button
                     className="flex-shrink-0 bg-accent hover:bg-blue-700 disabled:opacity-60 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
@@ -967,9 +963,7 @@ function GroupDetail({
           {group.members.map((m) => (
             <div key={m} className="flex items-center gap-2">
               <Avatar name={m} />
-              <span className="text-sm text-foreground">
-                {m}
-              </span>
+              <span className="text-sm text-foreground">{m}</span>
             </div>
           ))}
         </div>
@@ -1011,9 +1005,7 @@ function GroupDetail({
         <div className="flex flex-col gap-3">
           {group.expenses.length === 0 && !showAddExpense && (
             <div className="rounded-2xl border border-border bg-surface p-8 text-center">
-              <p className="text-sm text-muted">
-                No hay gastos aún
-              </p>
+              <p className="text-sm text-muted">No hay gastos aún</p>
             </div>
           )}
           {group.expenses.map((expense) => {
@@ -1173,9 +1165,7 @@ function GroupDetail({
               Transferencias simplificadas
             </p>
             {debts.length === 0 ? (
-              <p className="text-sm text-muted">
-                Todo saldado ✓
-              </p>
+              <p className="text-sm text-muted">Todo saldado ✓</p>
             ) : (
               <div className="flex flex-col gap-2">
                 {debts.map((d, i) => (
@@ -1379,9 +1369,7 @@ export function UserTricountSection() {
       {/* Content */}
       {loadingGroups ? (
         <div className="rounded-2xl border border-border bg-surface p-8 text-center">
-          <p className="text-sm text-muted">
-            Cargando grupos…
-          </p>
+          <p className="text-sm text-muted">Cargando grupos…</p>
         </div>
       ) : selectedGroup ? (
         <GroupDetail

@@ -336,8 +336,8 @@ export default function SkillsCatalogContent() {
         {skills.length} Skills to supercharge your AI
       </h1>
       <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-8">
-        Catalog of OpenCode skills grouped by category. Each skill
-        includes description, use case, and how to activate it.
+        Catalog of OpenCode skills grouped by category. Each skill includes
+        description, use case, and how to activate it.
       </p>
 
       <div className="h-px bg-black/8 dark:bg-white/8 mb-8" />
