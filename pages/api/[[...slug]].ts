@@ -24,7 +24,6 @@ const ROOT_PREFIXES = new Set([
   "api-keys",
   "admin",
   "health",
-  "analytics",
 ]);
 
 export const config = { api: { bodyParser: false } };
