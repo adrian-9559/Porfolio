@@ -7,7 +7,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
  */
 
 const BACKEND = (
-  process.env.BACKEND_API_URL ?? "http://localhost:3001"
+  process.env.BACKEND_API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"
 ).replace(/\/$/, "");
 const API_KEY = process.env.BACKEND_API_KEY ?? "";
 const IS_PROD = process.env.NODE_ENV === "production";

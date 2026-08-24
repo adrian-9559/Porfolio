@@ -3,6 +3,7 @@ import type { HeadProps } from "./head";
 import { Head } from "./head";
 
 import { Navbar } from "@/components/navbar";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { useT } from "@/hooks/useT";
 import { siteConfig } from "@/config/site";
 
@@ -17,6 +18,7 @@ export default function DefaultLayout({ children, seo }: DefaultLayoutProps) {
   return (
     <div className="relative flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Head {...seo} />
+      <AnalyticsTracker />
       <Navbar />
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 md:py-12">

@@ -18,6 +18,7 @@ import { AdminFriendshipsSection } from "@/features/admin/components/AdminFriend
 import { AdminAppsSection } from "@/features/admin/components/AdminAppsSection";
 import { AdminSkillsSection } from "@/features/admin/components/AdminSkillsSection";
 import { AdminToolsHealthSection } from "@/features/admin/components/AdminToolsHealthSection";
+import AdminTrafficSection from "@/features/admin/components/AdminTrafficSection";
 
 type Section =
   | "dashboard"
@@ -34,7 +35,8 @@ type Section =
   | "skills"
   | "services"
   | "logs"
-  | "docs";
+  | "docs"
+  | "traffic";
 
 const NAV_LABELS: Record<string, string> = {
   dashboard: "admin.dashboard",
@@ -115,6 +117,12 @@ const NAV: {
     group: "herramientas",
   },
   { id: "skills", labelKey: "skills", icon: <IcoSkills />, group: "sistema" },
+  {
+    id: "traffic",
+    labelKey: "traffic",
+    icon: <IcoTraffic />,
+    group: "sistema",
+  },
   {
     id: "services",
     labelKey: "services",
@@ -242,6 +250,7 @@ export default function AdminPage() {
             {section === "services" && <AdminToolsHealthSection />}
             {section === "logs" && <AdminLogsSection />}
             {section === "docs" && <AdminDocsSection />}
+            {section === "traffic" && <AdminTrafficSection />}
           </div>
         </div>
       </div>
@@ -468,6 +477,20 @@ function IcoApps() {
       <rect height="5" rx="1" width="5" x="9.5" y="1.5" />
       <rect height="5" rx="1" width="5" x="1.5" y="9.5" />
       <rect height="5" rx="1" width="5" x="9.5" y="9.5" />
+    </svg>
+  );
+}
+function IcoTraffic() {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <path d="M1 13l3-4 3 2 4-6 3 4" />
+      <path d="M1 3h14" />
     </svg>
   );
 }
