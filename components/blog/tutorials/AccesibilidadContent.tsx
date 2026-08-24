@@ -127,9 +127,9 @@ export default function AccesibilidadContent() {
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
         La accesibilidad hace que tu web funcione para todas las personas,
         incluidas las que usan lectores de pantalla, navegan solo con teclado o
-        tienen baja visión. Este tutorial cubre los principios WCAG 2.2, el
-        HTML semántico, ARIA, formularios, teclado, contraste y cómo testearlo
-        todo. Prerequisito: HTML y CSS básicos.
+        tienen baja visión. Este tutorial cubre los principios WCAG 2.2, el HTML
+        semántico, ARIA, formularios, teclado, contraste y cómo testearlo todo.
+        Prerequisito: HTML y CSS básicos.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -137,8 +137,8 @@ export default function AccesibilidadContent() {
       <BlogH2 id="fundamentos">Fundamentos</BlogH2>
 
       <BlogP>
-        La accesibilidad (a11y) es diseñar y construir productos que puedan
-        usar todas las personas, con o sin discapacidad. No es un extra: es un
+        La accesibilidad (a11y) es diseñar y construir productos que puedan usar
+        todas las personas, con o sin discapacidad. No es un extra: es un
         requisito de calidad y, en muchos países, una obligación legal.
       </BlogP>
 
@@ -197,16 +197,16 @@ export default function AccesibilidadContent() {
       </BlogUl>
 
       <BlogP>
-        Cada criterio tiene un nivel de conformidad:{" "}
-        <strong>A</strong> (mínimo), <strong>AA</strong> (objetivo habitual) y{" "}
-        <strong>AAA</strong> (máximo, difícil de cumplir en todo). La mayoría
-        de las webs apuntan a AA.
+        Cada criterio tiene un nivel de conformidad: <strong>A</strong>{" "}
+        (mínimo), <strong>AA</strong> (objetivo habitual) y <strong>AAA</strong>{" "}
+        (máximo, difícil de cumplir en todo). La mayoría de las webs apuntan a
+        AA.
       </BlogP>
 
       <BlogCallout type="tip">
         No persigas AAA en todo: algunos criterios AAA (como el contraste
-        extremo) degradan la experiencia de otros usuarios. El objetivo
-        realista y estándar es AA.
+        extremo) degradan la experiencia de otros usuarios. El objetivo realista
+        y estándar es AA.
       </BlogCallout>
 
       <BlogH2 id="html-semantico">HTML semántico</BlogH2>
@@ -221,10 +221,11 @@ export default function AccesibilidadContent() {
       <BlogH3 id="landmarks">Landmarks</BlogH3>
 
       <BlogP>
-        Los landmarks son regiones que permiten saltar directamente a ellas.
-        Los elementos <BlogInlineCode>header</BlogInlineCode>,{" "}
-        <BlogInlineCode>nav</BlogInlineCode>, <BlogInlineCode>main</BlogInlineCode>{" "}
-        y <BlogInlineCode>footer</BlogInlineCode> crean landmarks automáticos:
+        Los landmarks son regiones que permiten saltar directamente a ellas. Los
+        elementos <BlogInlineCode>header</BlogInlineCode>,{" "}
+        <BlogInlineCode>nav</BlogInlineCode>,{" "}
+        <BlogInlineCode>main</BlogInlineCode> y{" "}
+        <BlogInlineCode>footer</BlogInlineCode> crean landmarks automáticos:
       </BlogP>
 
       <BlogCode>{`<header>Logo y título del sitio</header>
@@ -250,8 +251,8 @@ export default function AccesibilidadContent() {
         <BlogInlineCode>h1</BlogInlineCode> por página, luego{" "}
         <BlogInlineCode>h2</BlogInlineCode>, <BlogInlineCode>h3</BlogInlineCode>{" "}
         en orden. Saltar de <BlogInlineCode>h2</BlogInlineCode> a{" "}
-        <BlogInlineCode>h4</BlogInlineCode> confunde a los usuarios de lector
-        de pantalla que navegan por encabezados.
+        <BlogInlineCode>h4</BlogInlineCode> confunde a los usuarios de lector de
+        pantalla que navegan por encabezados.
       </BlogP>
 
       <BlogCallout type="warn">
@@ -266,8 +267,9 @@ export default function AccesibilidadContent() {
       <BlogP>
         Un elemento clicable debe ser un <BlogInlineCode>button</BlogInlineCode>{" "}
         o un <BlogInlineCode>a</BlogInlineCode>, no un{" "}
-        <BlogInlineCode>div</BlogInlineCode> con <BlogInlineCode>onClick</BlogInlineCode>.{" "}
-        El <BlogInlineCode>button</BlogInlineCode> nativo es enfocable, activable
+        <BlogInlineCode>div</BlogInlineCode> con{" "}
+        <BlogInlineCode>onClick</BlogInlineCode>. El{" "}
+        <BlogInlineCode>button</BlogInlineCode> nativo es enfocable, activable
         con Enter y Espacio, y lo anuncia el lector de pantalla:
       </BlogP>
 
@@ -275,15 +277,15 @@ export default function AccesibilidadContent() {
 <div onClick={handleClick}>Abrir menú</div>
 
 {/* Bien: el button nativo trae teclado y semántica */}
-<button onClick={handleClick}>Abrir menú</button>`}</Code>
+<button onClick={handleClick}>Abrir menú</button>`}</BlogCode>
 
       <BlogH3 id="listas">Listas</BlogH3>
 
       <BlogP>
-        Usa <BlogInlineCode>ul</BlogInlineCode>/<BlogInlineCode>ol</BlogInlineCode>{" "}
-        para listas reales. El lector de pantalla anuncia "lista de N
-        elementos", lo que ayuda a entender la estructura. Un menú de
-        navegación es una lista de enlaces.
+        Usa <BlogInlineCode>ul</BlogInlineCode>/
+        <BlogInlineCode>ol</BlogInlineCode> para listas reales. El lector de
+        pantalla anuncia "lista de N elementos", lo que ayuda a entender la
+        estructura. Un menú de navegación es una lista de enlaces.
       </BlogP>
 
       <BlogH3 id="label">label</BlogH3>
@@ -296,7 +298,7 @@ export default function AccesibilidadContent() {
       </BlogP>
 
       <BlogCode>{`<label htmlFor="email">Correo electrónico</label>
-<input id="email" type="email" name="email" />`}</Code>
+<input id="email" type="email" name="email" />`}</BlogCode>
 
       <BlogCallout type="info">
         El <BlogInlineCode>placeholder</BlogInlineCode> no sustituye al{" "}
@@ -307,8 +309,8 @@ export default function AccesibilidadContent() {
       <BlogH2 id="aria">ARIA</BlogH2>
 
       <BlogP>
-        ARIA (Accessible Rich Internet Applications) añade semántica a
-        elementos que el HTML no puede expresar. Su regla de oro:{" "}
+        ARIA (Accessible Rich Internet Applications) añade semántica a elementos
+        que el HTML no puede expresar. Su regla de oro:{" "}
         <strong>no uses ARIA si el HTML nativo ya lo hace</strong>.
       </BlogP>
 
@@ -317,17 +319,18 @@ export default function AccesibilidadContent() {
         necesitas, úsalo. Un <BlogInlineCode>button</BlogInlineCode> real es
         mejor que un <BlogInlineCode>div</BlogInlineCode> con{" "}
         <BlogInlineCode>role="button"</BlogInlineCode>. ARIA no añade
-        comportamiento: solo semántica. Si lo usas, debes implementar el
-        teclado y el estado tú mismo.
+        comportamiento: solo semántica. Si lo usas, debes implementar el teclado
+        y el estado tú mismo.
       </BlogCallout>
 
       <BlogH3 id="aria-label">aria-label y aria-labelledby</BlogH3>
 
       <BlogP>
         <BlogInlineCode>aria-label</BlogInlineCode> da un nombre accesible a un
-        elemento sin texto visible. <BlogInlineCode>aria-labelledby</BlogInlineCode>{" "}
-        referencia el <BlogInlineCode>id</BlogInlineCode> de otro elemento que
-        sirve de nombre:
+        elemento sin texto visible.{" "}
+        <BlogInlineCode>aria-labelledby</BlogInlineCode> referencia el{" "}
+        <BlogInlineCode>id</BlogInlineCode> de otro elemento que sirve de
+        nombre:
       </BlogP>
 
       <BlogCode>{`{/* aria-label: nombre para un icono sin texto */}
@@ -338,7 +341,7 @@ export default function AccesibilidadContent() {
 {/* aria-labelledby: el título del diálogo es su nombre */}
 <div role="dialog" aria-labelledby="dialog-title">
   <h2 id="dialog-title">Confirmar borrado</h2>
-</div>`}</Code>
+</div>`}</BlogCode>
 
       <BlogH3 id="aria-describedby">aria-describedby</BlogH3>
 
@@ -350,7 +353,7 @@ export default function AccesibilidadContent() {
 
       <BlogCode>{`<label htmlFor="pass">Contraseña</label>
 <input id="pass" type="password" aria-describedby="pass-hint" />
-<p id="pass-hint">Mínimo 8 caracteres, con un número.</p>`}</Code>
+<p id="pass-hint">Mínimo 8 caracteres, con un número.</p>`}</BlogCode>
 
       <BlogH3 id="roles">Roles</BlogH3>
 
@@ -378,21 +381,21 @@ export default function AccesibilidadContent() {
 
 <button aria-pressed={active} onClick={() => setActive(!active)}>
   Negrita
-</button>`}</Code>
+</button>`}</BlogCode>
 
       <BlogH3 id="aria-live">Regiones vivas: aria-live</BlogH3>
 
       <BlogP>
-        <BlogInlineCode>aria-live</BlogInlineCode> anuncia cambios dinámicos
-        sin que el usuario tenga el foco. Es esencial para notificaciones,
-        errores de validación y resultados de búsqueda:
+        <BlogInlineCode>aria-live</BlogInlineCode> anuncia cambios dinámicos sin
+        que el usuario tenga el foco. Es esencial para notificaciones, errores
+        de validación y resultados de búsqueda:
       </BlogP>
 
       <BlogCode>{`{/* polite: anuncia cuando el usuario está inactivo */}
 <div aria-live="polite">{statusMessage}</div>
 
 {/* assertive: interrumpe para anunciar de inmediato */}
-<div role="alert">{errorMessage}</div>`}</Code>
+<div role="alert">{errorMessage}</div>`}</BlogCode>
 
       <BlogCallout type="warn">
         Usa <BlogInlineCode>aria-live="assertive"</BlogInlineCode> con
@@ -417,7 +420,7 @@ export default function AccesibilidadContent() {
       </BlogP>
 
       <BlogCode>{`<label htmlFor="nombre">Nombre *</label>
-<input id="nombre" name="nombre" required aria-required="true" />`}</Code>
+<input id="nombre" name="nombre" required aria-required="true" />`}</BlogCode>
 
       <BlogH3 id="errores">Mensajes de error vinculados</BlogH3>
 
@@ -434,7 +437,7 @@ export default function AccesibilidadContent() {
   aria-invalid={!!error}
   aria-describedby={error ? "email-error" : undefined}
 />
-{error && <p id="email-error" role="alert">{error}</p>}`}</Code>
+{error && <p id="email-error" role="alert">{error}</p>}`}</BlogCode>
 
       <BlogCallout type="tip">
         No uses solo el color para indicar el error: añade un icono y un texto.
@@ -458,16 +461,16 @@ export default function AccesibilidadContent() {
 
       <BlogUl>
         <BlogLi>
-          <strong>0:</strong> el elemento entra en el orden natural (para
-          hacer enfocable un elemento no enfocable).
+          <strong>0:</strong> el elemento entra en el orden natural (para hacer
+          enfocable un elemento no enfocable).
         </BlogLi>
         <BlogLi>
-          <strong>-1:</strong> enfocable por script pero no por Tab (para
-          mover el foco a un modal o error).
+          <strong>-1:</strong> enfocable por script pero no por Tab (para mover
+          el foco a un modal o error).
         </BlogLi>
         <BlogLi>
-          <strong>&gt; 0:</strong> evítalo. Rompe el orden natural del
-          documento y es difícil de mantener.
+          <strong>&gt; 0:</strong> evítalo. Rompe el orden natural del documento
+          y es difícil de mantener.
         </BlogLi>
       </BlogUl>
 
@@ -503,20 +506,19 @@ export function Modal({ open, onClose, title }: ModalProps) {
       <button ref={closeRef} onClick={onClose}>Cerrar</button>
     </div>
   );
-}`}</Code>
+}`}</BlogCode>
 
       <BlogH3 id="skip-links">Skip links</BlogH3>
 
       <BlogP>
-        Un skip link permite saltar la navegación e ir directo al contenido.
-        Es el primer enlace de la página, normalmente oculto hasta recibir
-        foco:
+        Un skip link permite saltar la navegación e ir directo al contenido. Es
+        el primer enlace de la página, normalmente oculto hasta recibir foco:
       </BlogP>
 
       <BlogCode>{`<a href="#main" className="sr-only focus:not-sr-only">
   Saltar al contenido
 </a>
-<main id="main">…</main>`}</Code>
+<main id="main">…</main>`}</BlogCode>
 
       <BlogH3 id="focus-visible">:focus-visible</BlogH3>
 
@@ -531,7 +533,7 @@ button:focus { outline: none; }
 
 /* Bien: solo oculta el anillo cuando se usa el ratón */
 button:focus:not(:focus-visible) { outline: none; }
-button:focus-visible { outline: 2px solid #2563eb; }`}</Code>
+button:focus-visible { outline: 2px solid #2563eb; }`}</BlogCode>
 
       <BlogCallout type="warn">
         Nunca elimines el <BlogInlineCode>outline</BlogInlineCode> sin
@@ -541,9 +543,7 @@ button:focus-visible { outline: 2px solid #2563eb; }`}</Code>
 
       <BlogH2 id="contraste">Contraste y color</BlogH2>
 
-      <BlogP>
-        El contraste entre texto y fondo debe cumplir ratios WCAG:
-      </BlogP>
+      <BlogP>El contraste entre texto y fondo debe cumplir ratios WCAG:</BlogP>
 
       <BlogUl>
         <BlogLi>
@@ -566,8 +566,8 @@ button:focus-visible { outline: 2px solid #2563eb; }`}</Code>
       <BlogH3 id="reduced-motion">prefers-reduced-motion</BlogH3>
 
       <BlogP>
-        Respeta la preferencia del usuario de reducir movimiento. La media
-        query <BlogInlineCode>prefers-reduced-motion</BlogInlineCode> permite
+        Respeta la preferencia del usuario de reducir movimiento. La media query{" "}
+        <BlogInlineCode>prefers-reduced-motion</BlogInlineCode> permite
         desactivar animaciones:
       </BlogP>
 
@@ -577,7 +577,7 @@ button:focus-visible { outline: 2px solid #2563eb; }`}</Code>
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}`}</Code>
+}`}</BlogCode>
 
       <BlogCallout type="info">
         El movimiento excesivo puede provocar mareos o convulsiones en personas
@@ -596,12 +596,12 @@ button:focus-visible { outline: 2px solid #2563eb; }`}</Code>
 
       <BlogUl>
         <BlogLi>
-          <strong>axe-core:</strong> el motor de detección más usado. Se
-          integra en DevTools y en tests.
+          <strong>axe-core:</strong> el motor de detección más usado. Se integra
+          en DevTools y en tests.
         </BlogLi>
         <BlogLi>
-          <strong>Lighthouse a11y:</strong> auditoría de accesibilidad dentro
-          de Lighthouse.
+          <strong>Lighthouse a11y:</strong> auditoría de accesibilidad dentro de
+          Lighthouse.
         </BlogLi>
         <BlogLi>
           <strong>jest-axe:</strong> ejecuta axe en tests de componentes.
@@ -621,15 +621,15 @@ expect.extend(toHaveNoViolations);
 it("no tiene violaciones de accesibilidad", async () => {
   const { container } = render(<LoginForm />);
   expect(await axe(container)).toHaveNoViolations();
-});`}</Code>
+});`}</BlogCode>
 
       <BlogH3 id="manual">Pruebas manuales</BlogH3>
 
       <BlogP>
-        La prueba manual más valiosa: navega toda la app solo con teclado. Si
-        no puedes completar una tarea sin ratón, hay un problema. También
-        prueba con un lector de pantalla (VoiceOver en macOS, NVDA en Windows)
-        y con zoom al 200%.
+        La prueba manual más valiosa: navega toda la app solo con teclado. Si no
+        puedes completar una tarea sin ratón, hay un problema. También prueba
+        con un lector de pantalla (VoiceOver en macOS, NVDA en Windows) y con
+        zoom al 200%.
       </BlogP>
 
       <BlogCallout type="tip">
@@ -727,7 +727,7 @@ button:focus-visible { outline: 2px solid #2563eb; }`}
 
         <ExerciseCard
           description="Crea una región aria-live que anuncie el resultado de una búsqueda sin que el usuario tenga el foco en ella."
-          hint="aria-live="polite" en un contenedor que se actualiza con el resultado."
+          hint='aria-live="polite" en un contenedor que se actualiza con el resultado.'
           level="Avanzado"
           num={5}
           solution={`import { useState } from "react";
@@ -769,8 +769,8 @@ export function SearchResults() {
         La accesibilidad no es una lista de requisitos: es una forma de pensar
         el producto. Empieza por el HTML semántico, añade ARIA solo donde hace
         falta, respeta el teclado y el contraste, y automatiza el testing para
-        que los errores no vuelvan. Al final, una web accesible es una web
-        mejor para todos.
+        que los errores no vuelvan. Al final, una web accesible es una web mejor
+        para todos.
       </BlogP>
     </article>
   );

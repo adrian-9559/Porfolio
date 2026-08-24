@@ -134,14 +134,16 @@ export default function DockerContent() {
       <BlogH2 id="que-es-docker">¿Qué es Docker?</BlogH2>
 
       <BlogP>
-        Docker es una plataforma para desarrollar, enviar y ejecutar aplicaciones
-        en contenedores. Un contenedor es un proceso aislado que comparte el
-        kernel del sistema operativo anfitrión pero tiene su propio sistema de
-        archivos, red y espacio de procesos. Eso lo hace mucho más ligero que
-        una máquina virtual.
+        Docker es una plataforma para desarrollar, enviar y ejecutar
+        aplicaciones en contenedores. Un contenedor es un proceso aislado que
+        comparte el kernel del sistema operativo anfitrión pero tiene su propio
+        sistema de archivos, red y espacio de procesos. Eso lo hace mucho más
+        ligero que una máquina virtual.
       </BlogP>
 
-      <BlogH3 id="contenedores-vs-vm">Contenedores vs máquinas virtuales</BlogH3>
+      <BlogH3 id="contenedores-vs-vm">
+        Contenedores vs máquinas virtuales
+      </BlogH3>
 
       <BlogP>
         Una VM virtualiza el hardware y ejecuta un sistema operativo completo
@@ -173,13 +175,13 @@ export default function DockerContent() {
       <BlogH3 id="daemon">El daemon y el CLI</BlogH3>
 
       <BlogP>
-        Docker tiene dos piezas: el <strong>daemon</strong>{" "}
-        (<BlogInlineCode>dockerd</BlogInlineCode>), un servicio en segundo plano
+        Docker tiene dos piezas: el <strong>daemon</strong> (
+        <BlogInlineCode>dockerd</BlogInlineCode>), un servicio en segundo plano
         que gestiona imágenes, contenedores, redes y volúmenes; y el{" "}
         <strong>cliente</strong> (<BlogInlineCode>docker</BlogInlineCode>), la
         CLI con la que le das órdenes. Al escribir{" "}
-        <BlogInlineCode>docker run</BlogInlineCode>, el cliente envía la petición
-        al daemon vía una API REST local.
+        <BlogInlineCode>docker run</BlogInlineCode>, el cliente envía la
+        petición al daemon vía una API REST local.
       </BlogP>
 
       <BlogP>
@@ -227,8 +229,9 @@ docker info
       <BlogH2 id="primeros-comandos">Primeros comandos</BlogH2>
 
       <BlogP>
-        Descarga una imagen sin ejecutarla con <BlogInlineCode>pull</BlogInlineCode>{" "}
-        y ejecútala de forma interactiva con <BlogInlineCode>run -it</BlogInlineCode>:
+        Descarga una imagen sin ejecutarla con{" "}
+        <BlogInlineCode>pull</BlogInlineCode> y ejecútala de forma interactiva
+        con <BlogInlineCode>run -it</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`# Descargar la imagen de Ubuntu
@@ -242,9 +245,7 @@ root@a1b2c3:/# exit
 # Ejecutar y eliminar al salir
 docker run --rm -it ubuntu:24.04 echo "hola desde un contenedor"`}</BlogCode>
 
-      <BlogP>
-        Gestiona los contenedores en ejecución y detenidos:
-      </BlogP>
+      <BlogP>Gestiona los contenedores en ejecución y detenidos:</BlogP>
 
       <BlogCode>{`docker ps          # contenedores en ejecución
 docker ps -a      # también los detenidos
@@ -317,16 +318,17 @@ CMD python app.py             # shell: envuelto en /bin/sh -c`}</BlogCode>
 
       <BlogCallout type="warn">
         Prefiere siempre la forma exec (array JSON). En la forma shell, el
-        proceso real queda envuelto por <BlogInlineCode>/bin/sh -c</BlogInlineCode>,
-        así las señales (CTRL+C, SIGTERM) no llegan al proceso y Docker debe
-        esperar un timeout antes de forzar el cierre.
+        proceso real queda envuelto por{" "}
+        <BlogInlineCode>/bin/sh -c</BlogInlineCode>, así las señales (CTRL+C,
+        SIGTERM) no llegan al proceso y Docker debe esperar un timeout antes de
+        forzar el cierre.
       </BlogCallout>
 
       <BlogP>
         La selección de la imagen base importa: las variantes{" "}
         <BlogInlineCode>-alpine</BlogInlineCode> o{" "}
-        <BlogInlineCode>-slim</BlogInlineCode> reducen decenas de megabytes y
-        la superficie de ataque, a cambio de alguna librería que quizá debas
+        <BlogInlineCode>-slim</BlogInlineCode> reducen decenas de megabytes y la
+        superficie de ataque, a cambio de alguna librería que quizá debas
         instalar tú mismo.
       </BlogP>
 
@@ -350,8 +352,8 @@ dist
         Jamás copies <BlogInlineCode>.env</BlogInlineCode> dentro de la imagen:
         las capas se quedan guardadas y cualquiera con acceso al registro puede
         extraer los secretos. Los valores de entorno se inyectan en tiempo de
-        ejecución con <BlogInlineCode>--env-file</BlogInlineCode> o con
-        secretos de tu proveedor.
+        ejecución con <BlogInlineCode>--env-file</BlogInlineCode> o con secretos
+        de tu proveedor.
       </BlogCallout>
 
       <BlogH2 id="build-tag">Construir y etiquetar</BlogH2>
@@ -493,8 +495,8 @@ docker pull miusuario/mi-api:v1
 docker run -d -p 3000:3000 miusuario/mi-api:v1`}</BlogCode>
 
       <BlogP>
-        Usa tags inmutables por versión (<BlogInlineCode>v1.2.3</BlogInlineCode>){" "}
-        en producción y reserva <BlogInlineCode>latest</BlogInlineCode> para
+        Usa tags inmutables por versión (<BlogInlineCode>v1.2.3</BlogInlineCode>
+        ) en producción y reserva <BlogInlineCode>latest</BlogInlineCode> para
         desarrollo. Si un despliegue falla, así puedes volver a la versión
         exacta anterior.
       </BlogP>

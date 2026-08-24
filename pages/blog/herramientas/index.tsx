@@ -1,155 +1,79 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
-import { Select, Label, ListBox } from "@heroui/react";
 
-import BlogLayout from "@/layouts/blog";
-import {
-  getContentByType,
-  getCategoriesByType,
-  getTagsByType,
-  formatDate,
-  ContentMeta,
-} from "@/lib/blog/registry";
-import { getCategory } from "@/lib/blog/taxonomy";
-import {
-  IconTool,
-  IconSearch,
-  IconClose,
-  FilterBar,
-} from "@/components/blog/shared";
+import DefaultLayout from "@/layouts/default";
+import { getContentByType } from "@/lib/blog/registry";
+import { TOOL_GROUPS } from "@/lib/blog/toolGroups";
 import { useT } from "@/hooks/useT";
 
 const allTools = getContentByType("tool");
 
-function ToolCard({ item }: { item: ContentMeta }) {
-  const { t } = useT();
-
-  return (
-    <Link
-      className="block group p-6 rounded-2xl bg-surface border-border hover:border-black/15 dark:hover:border-white/15 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all"
-      href={`/blog/herramientas/${item.slug}`}
-    >
-      <div className="flex items-start justify-between gap-3 mb-4">
-        <div
-          className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${item.categoryColor} bg-opacity-15`}
-        >
-          <IconTool
-            className={`w-5 h-5 ${item.categoryColor.replace("bg-", "text-").replace("-400", "-600").replace("-500", "-600")}`}
-          />
-        </div>
-        <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-violet-50 dark:bg-violet-950/30 text-violet-700 dark:text-violet-300">
-          {t("blog.type.tool")}
-        </span>
-      </div>
-      <h2 className="font-bold text-base text-foreground group-hover:text-accent transition-colors leading-snug mb-2 line-clamp-2 motion-safe:transition-colors">
-        {item.title}
-      </h2>
-      <p className="text-sm text-muted leading-relaxed line-clamp-3 mb-4">
-        {item.description}
-      </p>
-      {item.tags && (
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {item.tags.map((tag) => (
-            <span key={tag} className="tag-chip">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-      <div className="flex items-center justify-between pt-3 border-t border-black/6 dark:border-white/6">
-        <span className="text-xs text-muted/60">
-          {formatDate(item.publishedAt)}
-        </span>
-        <div className="flex items-center gap-2">
-          {item.featured && (
-            <span className="text-[10px] font-bold text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/30 px-1.5 py-0.5 rounded">
-              {t("blog.featured")}
-            </span>
-          )}
-          <span className="text-xs font-semibold text-violet-600 dark:text-violet-400 group-hover:translate-x-0.5 transition-transform motion-safe:transition-transform">
-            {t("blog.useToolLink")}
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
-}
+const GROUP_ICONS: Record<string, React.ReactNode> = {
+  colores: (
+    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.1 0 2-.9 2-2 0-.51-.2-.98-.54-1.34-.33-.35-.53-.82-.53-1.32 0-1.1.9-2 2-2h2.36c3.08 0 5.64-2.56 5.64-5.72C22.93 5.68 18.17 2 12 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <circle cx="7.5" cy="11.5" fill="currentColor" r="1.5" />
+      <circle cx="10.5" cy="7.5" fill="currentColor" r="1.5" />
+      <circle cx="15.5" cy="7.5" fill="currentColor" r="1.5" />
+      <circle cx="18" cy="11.5" fill="currentColor" r="1.5" />
+    </svg>
+  ),
+  texto: (
+    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M4 7V4h16v3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M9 20h6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M12 4v16" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
+  ),
+  datos: (
+    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M12 22V11" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M20 6.5L12 11 4 6.5" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
+  ),
+  documentos: (
+    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M14 2v6h6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
+  ),
+  generadores: (
+    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M8 9l-3 3 3 3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M16 9l3 3-3 3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M14 4l-4 16" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
+  ),
+  sql: (
+    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M4 17l6-5-6-5" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path d="M12 19h8" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
+  ),
+};
 
 export default function HerramientasPage() {
   const { t } = useT();
-  const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [activeTag, setActiveTag] = useState("all");
-  const [sortBy, setSortBy] = useState("newest");
 
-  const toolCats = useMemo(() => getCategoriesByType("tool"), []);
-  const allToolTags = useMemo(() => getTagsByType("tool"), []);
-  const toolTags = useMemo(() => allToolTags.slice(0, 12), [allToolTags]);
-  const catMeta = useMemo(
+  const groupsWithCount = useMemo(
     () =>
-      toolCats
-        .map((c) => getCategory(c))
-        .filter((c): c is NonNullable<typeof c> => c != null),
-    [toolCats],
-  );
-  const categoryOptions = useMemo(
-    () => [
-      { id: "all", labelKey: "blog.filterAllFeminine" },
-      ...toolCats.map((c) => ({
-        id: c,
-        labelKey: getCategory(c)?.labelKey ?? c,
+      TOOL_GROUPS.map((group) => ({
+        ...group,
+        count: group.toolIds.length,
       })),
-    ],
-    [toolCats],
+    [],
   );
-  const tagOptions = useMemo(
-    () => [
-      { id: "all", labelKey: "blog.filterAll" },
-      ...toolTags.map((t) => ({ id: t, labelKey: t })),
-    ],
-    [toolTags],
-  );
-
-  const results = useMemo(() => {
-    let items = allTools;
-
-    if (activeCategory !== "all")
-      items = items.filter((c) => c.categoryId === activeCategory);
-    if (activeTag !== "all")
-      items = items.filter((c) =>
-        c.tags?.some((t) => t.toLowerCase() === activeTag.toLowerCase()),
-      );
-    if (query.trim()) {
-      const q = query.toLowerCase();
-
-      items = items.filter(
-        (c) =>
-          c.title.toLowerCase().includes(q) ||
-          c.description.toLowerCase().includes(q) ||
-          c.category.toLowerCase().includes(q) ||
-          c.tags?.some((t) => t.toLowerCase().includes(q)),
-      );
-    }
-
-    return items.sort((a, b) => {
-      if (sortBy === "newest")
-        return b.publishedAt.localeCompare(a.publishedAt);
-      if (sortBy === "oldest")
-        return a.publishedAt.localeCompare(b.publishedAt);
-
-      return 0;
-    });
-  }, [query, activeCategory, activeTag, sortBy]);
 
   return (
-    <BlogLayout
+    <DefaultLayout
       seo={{
         title: t("meta.blogTools.title"),
         description: t("meta.blogTools.desc"),
       }}
     >
-      <div className="space-y-10 py-4">
+      <div className="space-y-8 py-4">
         {/* Header */}
         <header className="space-y-4">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2">
@@ -159,9 +83,7 @@ export default function HerramientasPage() {
             >
               {t("blog.breadcrumb")}
             </Link>
-            <span aria-hidden="true" className="text-xs text-muted/60">
-              /
-            </span>
+            <span aria-hidden="true" className="text-xs text-muted/60">/</span>
             <span
               aria-current="page"
               className="text-xs font-medium text-foreground"
@@ -170,8 +92,21 @@ export default function HerramientasPage() {
             </span>
           </nav>
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-950/40 flex items-center justify-center text-violet-600 dark:text-violet-400">
-              <IconTool className="w-5 h-5" />
+            <div className="w-11 h-11 rounded-2xl bg-violet-50 dark:bg-violet-950/30 flex items-center justify-center text-violet-600 dark:text-violet-400">
+              <svg
+                aria-hidden="true"
+                className="w-5.5 h-5.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                />
+              </svg>
             </div>
             <div>
               <p className="section-label">{t("blog.badge")}</p>
@@ -188,33 +123,8 @@ export default function HerramientasPage() {
           </p>
         </header>
 
-        {/* Search */}
-        <div className="relative max-w-xl" role="search">
-          <label className="sr-only" htmlFor="tools-search">
-            {t("blog.searchLabelTools")}
-          </label>
-          <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted/60" />
-          <input
-            className="w-full pl-11 pr-4 py-3 rounded-xl bg-surface border-border/30 text-sm text-foreground placeholder-muted/60 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all"
-            id="tools-search"
-            placeholder={t("blog.searchPlaceholderTools")}
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          {query && (
-            <button
-              aria-label={t("blog.searchClear")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted/60 hover:text-muted"
-              onClick={() => setQuery("")}
-            >
-              <IconClose className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-
         {/* Stats */}
-        <div className="flex flex-wrap items-center gap-3 text-xs text-muted/60">
+        <div className="flex items-center gap-3 text-xs text-muted/60">
           <span className="font-semibold text-muted">
             {allTools.length} {t("blog.type.tools").toLowerCase()}
           </span>
@@ -223,182 +133,41 @@ export default function HerramientasPage() {
             className="w-1 h-1 rounded-full bg-default"
           />
           <span>
-            {catMeta.length} {t("blog.categoryLabel")}
-          </span>
-          <span
-            aria-hidden="true"
-            className="w-1 h-1 rounded-full bg-default"
-          />
-          <span>
-            {allToolTags.length} {t("blog.tagLabel")}
+            {groupsWithCount.length} {t("blog.categoryLabel")}
           </span>
         </div>
 
-        {/* Category quick-nav */}
-        {activeCategory === "all" && !query && (
-          <div
-            aria-label={t("blog.categories")}
-            className="flex flex-wrap gap-1.5"
-            role="group"
-          >
-            {catMeta.map((cat) => (
-              <button
-                key={cat.id}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-default text-muted hover:bg-default transition-colors"
-                onClick={() => setActiveCategory(cat.id)}
-              >
-                {t(cat.labelKey)}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Filters */}
-        <FilterBar>
-          <div className="flex flex-wrap items-start gap-3">
-            <Select
-              fullWidth
-              className="flex-1 min-w-[120px]"
-              placeholder={t("blog.filterCategory")}
-              value={activeCategory}
-              variant="primary"
-              onChange={(v) => setActiveCategory(v as string)}
+        {/* Group cards grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {groupsWithCount.map((group) => (
+            <Link
+              key={group.id}
+              className={`group flex flex-col gap-4 p-6 rounded-2xl bg-surface border border-border ${group.hoverBorder} hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline`}
+              href={`/blog/herramientas/${group.slug}`}
             >
-              <Label>{t("blog.filterCategory")}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {categoryOptions.map((o) => (
-                    <ListBox.Item
-                      key={o.id}
-                      id={o.id}
-                      textValue={t(o.labelKey)}
-                    >
-                      {t(o.labelKey)}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-            </Select>
-            <Select
-              fullWidth
-              className="flex-1 min-w-[120px]"
-              placeholder={t("blog.filterTag")}
-              value={activeTag}
-              variant="primary"
-              onChange={(v) => setActiveTag(v as string)}
-            >
-              <Label>{t("blog.filterTag")}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {tagOptions.map((o) => (
-                    <ListBox.Item
-                      key={o.id}
-                      id={o.id}
-                      textValue={t(o.labelKey)}
-                    >
-                      {t(o.labelKey)}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-            </Select>
-            <Select
-              fullWidth
-              className="flex-1 min-w-[100px]"
-              placeholder={t("blog.filterOrder")}
-              value={sortBy}
-              variant="primary"
-              onChange={(v) => setSortBy(v as string)}
-            >
-              <Label>{t("blog.filterOrder")}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  <ListBox.Item
-                    key="newest"
-                    id="newest"
-                    textValue={t("blog.sortNewest")}
-                  >
-                    {t("blog.sortNewest")}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                  <ListBox.Item
-                    key="oldest"
-                    id="oldest"
-                    textValue={t("blog.sortOldest")}
-                  >
-                    {t("blog.sortOldest")}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                </ListBox>
-              </Select.Popover>
-            </Select>
-            {(activeCategory !== "all" || activeTag !== "all") && (
-              <button
-                aria-label={t("blog.clearFilters")}
-                className="text-sm text-muted/60 hover:text-muted self-center"
-                onClick={() => {
-                  setActiveCategory("all");
-                  setActiveTag("all");
-                  setQuery("");
-                }}
-              >
-                ✕
-              </button>
-            )}
-          </div>
-        </FilterBar>
-
-        <p aria-live="polite" className="text-sm text-muted/60" role="status">
-          {results.length}{" "}
-          {results.length === 1 ? t("blog.toolSingular") : t("blog.toolPlural")}
-          {query && (
-            <span>
-              {" "}
-              {t("blog.forQuery")} &quot;
-              <span className="text-muted font-medium">{query}</span>&quot;
-            </span>
-          )}
-        </p>
-
-        {results.length === 0 ? (
-          <div className="text-center py-20">
-            <IconSearch className="w-12 h-12 text-muted/60 mx-auto mb-4" />
-            <p className="text-muted font-medium">
-              {t("blog.noToolsFor")} &quot;{query}&quot;
-            </p>
-            <button
-              className="mt-3 text-sm text-violet-600 dark:text-violet-400 hover:underline"
-              onClick={() => setQuery("")}
-            >
-              {t("blog.clearSearch")}
-            </button>
-          </div>
-        ) : (
-          <div
-            aria-label={t("blog.type.tools")}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4"
-            role="list"
-          >
-            {results.map((item) => (
-              <ToolCard key={item.id} item={item} />
-            ))}
-          </div>
-        )}
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-12 h-12 rounded-2xl flex items-center justify-center ${group.color} ${group.text} group-hover:scale-105 transition-transform duration-200`}
+                >
+                  {GROUP_ICONS[group.id] ?? <span className="text-xl font-bold">•</span>}
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground group-hover:text-accent transition-colors">
+                    {t(group.titleKey)}
+                  </h2>
+                  <span className="text-xs text-muted/60">
+                    {group.count}{" "}
+                    {group.count === 1 ? t("blog.toolSingular") : t("blog.toolPlural")}
+                  </span>
+                </div>
+              </div>
+              <p className="text-sm text-muted leading-relaxed">
+                {t(group.descriptionKey)}
+              </p>
+            </Link>
+          ))}
+        </div>
       </div>
-    </BlogLayout>
+    </DefaultLayout>
   );
 }

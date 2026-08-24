@@ -128,9 +128,9 @@ export default function EstadoGlobalContent() {
         Cuando una app crece, pasar datos de componente en componente se
         convierte en un dolor: props interminables, re-renders inesperados y
         lógica duplicada. Este tutorial cubre el estado global con Context y
-        Zustand, la capa de datos con React Query y cuándo delegar el fetching
-        a Next.js. Prerequisitos: React (hooks y componentes) y consumo básico
-        de APIs.
+        Zustand, la capa de datos con React Query y cuándo delegar el fetching a
+        Next.js. Prerequisitos: React (hooks y componentes) y consumo básico de
+        APIs.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -138,10 +138,10 @@ export default function EstadoGlobalContent() {
       <BlogH2 id="por-que">¿Por qué estado global?</BlogH2>
 
       <BlogP>
-        El estado en React es local por defecto: vive dentro del componente
-        que lo declara. Eso está bien mientras los datos no se compartan.
-        En cuanto dos componentes que no son padre-hijo necesitan los mismos
-        datos, empieza el problema.
+        El estado en React es local por defecto: vive dentro del componente que
+        lo declara. Eso está bien mientras los datos no se compartan. En cuanto
+        dos componentes que no son padre-hijo necesitan los mismos datos,
+        empieza el problema.
       </BlogP>
 
       <BlogH3 id="prop-drilling">Prop drilling</BlogH3>
@@ -207,8 +207,8 @@ function ProfileMenu({ user, onLogin }) {
         </BlogLi>
         <BlogLi>
           <strong>Mezcla de responsabilidades:</strong> si además pones data
-          fetching en el provider, cada consulta de la API re-renderiza toda
-          la app.
+          fetching en el provider, cada consulta de la API re-renderiza toda la
+          app.
         </BlogLi>
       </BlogUl>
 
@@ -229,8 +229,8 @@ function ProfileMenu({ user, onLogin }) {
 
       <BlogUl>
         <BlogLi>
-          El estado es <strong>global de verdad</strong>: sesión, tema,
-          carrito, preferencias. No es un dato aislado de una pantalla.
+          El estado es <strong>global de verdad</strong>: sesión, tema, carrito,
+          preferencias. No es un dato aislado de una pantalla.
         </BlogLi>
         <BlogLi>
           Muchos componentes leen el mismo dato y solo una fracción debería
@@ -248,8 +248,9 @@ function ProfileMenu({ user, onLogin }) {
 
       <BlogCallout type="info">
         Regla práctica: <strong>Context para estado que cambia poco</strong>{" "}
-        (tema, idioma, proveedor de datos), <strong>store para estado que
-        cambia mucho y se comparte</strong> (sesión, carrito, UI efímera) y{" "}
+        (tema, idioma, proveedor de datos),{" "}
+        <strong>store para estado que cambia mucho y se comparte</strong>{" "}
+        (sesión, carrito, UI efímera) y{" "}
         <strong>React Query para estado del servidor</strong> (lo que viene de
         una API). Esta distinción es el corazón de este tutorial.
       </BlogCallout>
@@ -292,9 +293,9 @@ export const AuthContext = createContext<AuthContextValue | null>(null);`}</Blog
       <BlogH3 id="provider-hook">Provider y custom hook</BlogH3>
 
       <BlogP>
-        El provider guarda el estado con <BlogInlineCode>useState</BlogInlineCode>{" "}
-        y expone un hook propio que lanza un error claro si alguien lo usa
-        fuera del árbol:
+        El provider guarda el estado con{" "}
+        <BlogInlineCode>useState</BlogInlineCode> y expone un hook propio que
+        lanza un error claro si alguien lo usa fuera del árbol:
       </BlogP>
 
       <BlogCode>{`// auth-provider.tsx
@@ -325,9 +326,9 @@ export function useAuth(): AuthContextValue {
 }`}</BlogCode>
 
       <BlogCallout type="tip">
-        El error del custom hook es tu mejor amigo: convierte un fallo silencioso
-        (el contexto <BlogInlineCode>null</BlogInlineCode>) en un mensaje que
-        dice exactamente qué componente está mal colocado.
+        El error del custom hook es tu mejor amigo: convierte un fallo
+        silencioso (el contexto <BlogInlineCode>null</BlogInlineCode>) en un
+        mensaje que dice exactamente qué componente está mal colocado.
       </BlogCallout>
 
       <BlogH3 id="usememo">useMemo y re-renders</BlogH3>
@@ -359,8 +360,8 @@ export function useAuth(): AuthContextValue {
         Context no escala para estado que cambia a alta frecuencia (posición de
         ratón, contenido de un editor, websockets con updates constantes). Para
         esos casos necesitas suscripciones selectivas, y ahí entran los stores
-        con selectores. Una señal clara de que Context no basta: te ves
-        creando cinco contextos distintos solo para partir el estado y reducir
+        con selectores. Una señal clara de que Context no basta: te ves creando
+        cinco contextos distintos solo para partir el estado y reducir
         re-renders.
       </BlogP>
 
@@ -389,8 +390,8 @@ export function useAuth(): AuthContextValue {
 
       <BlogP>
         El store se define fuera del componente. El{" "}
-        <BlogInlineCode>set</BlogInlineCode> permite actualizar todo el estado
-        o aplicar una función sobre el estado actual:
+        <BlogInlineCode>set</BlogInlineCode> permite actualizar todo el estado o
+        aplicar una función sobre el estado actual:
       </BlogP>
 
       <BlogCode>{`// cart-store.ts
@@ -454,10 +455,10 @@ const user = useCartStore((state) => state.user);`}</BlogCode>
       <BlogCallout type="warn">
         Nunca selecciones un objeto completo que se construya de nuevo en cada
         cambio. Si el selector devuelve un objeto literal o un{" "}
-        <BlogInlineCode>.filter()</BlogInlineCode>, Zustand comparará referencias
-        con <BlogInlineCode>Object.is</BlogInlineCode> y verá un valor "distinto"
-        en cada render, provocando un loop infinito. Para derivar datos se usa{" "}
-        <BlogInlineCode>useShallow</BlogInlineCode>:
+        <BlogInlineCode>.filter()</BlogInlineCode>, Zustand comparará
+        referencias con <BlogInlineCode>Object.is</BlogInlineCode> y verá un
+        valor "distinto" en cada render, provocando un loop infinito. Para
+        derivar datos se usa <BlogInlineCode>useShallow</BlogInlineCode>:
       </BlogCallout>
 
       <BlogCode>{`import { useShallow } from "zustand/react/shallow";
@@ -475,8 +476,8 @@ const { name, isAdmin } = useCartStore(
       <BlogP>
         Cuando el store crece, se divide en <strong>slices</strong>: cada slice
         es una función que recibe <BlogInlineCode>set</BlogInlineCode> (y{" "}
-        <BlogInlineCode>get</BlogInlineCode>) y devuelve su parte del estado.
-        El store final las combina:
+        <BlogInlineCode>get</BlogInlineCode>) y devuelve su parte del estado. El
+        store final las combina:
       </BlogP>
 
       <BlogCode>{`// slices/user-slice.ts
@@ -547,7 +548,9 @@ export const useThemeStore = create<ThemeStore>()(
         <BlogInlineCode>partialize</BlogInlineCode> evita persistir funciones
         (acciones) y datos sensibles. Para valores de gran tamaño o de acceso
         lento, cambia el storage por{" "}
-        <BlogInlineCode>createJSONStorage(() => sessionStorage)</BlogInlineCode>{" "}
+        <BlogInlineCode>
+          createJSONStorage(() =&gt; sessionStorage)
+        </BlogInlineCode>{" "}
         o un storage propio.
       </BlogCallout>
 
@@ -584,8 +587,9 @@ export function Providers({ children }: { children: ReactNode }) {
       <BlogP>
         <BlogInlineCode>useQuery</BlogInlineCode> recibe una{" "}
         <BlogInlineCode>queryKey</BlogInlineCode> (identifica la caché) y una{" "}
-        <BlogInlineCode>queryFn</BlogInlineCode> (devuelve una promesa). La caché
-        hace que dos componentes con la misma clave compartan la misma petición:
+        <BlogInlineCode>queryFn</BlogInlineCode> (devuelve una promesa). La
+        caché hace que dos componentes con la misma clave compartan la misma
+        petición:
       </BlogP>
 
       <BlogCode>{`// use-posts.ts
@@ -612,9 +616,7 @@ export function usePosts() {
   });
 }`}</BlogCode>
 
-      <BlogP>
-        La query devuelve flags de estado que controlan la UI:
-      </BlogP>
+      <BlogP>La query devuelve flags de estado que controlan la UI:</BlogP>
 
       <BlogCode>{`// PostList.tsx
 export function PostList() {
@@ -739,9 +741,9 @@ export function useToggleTodo() {
       <BlogH3 id="dependencias">Queries con dependencias</BlogH3>
 
       <BlogP>
-        Los parámetros forman parte de la <BlogInlineCode>queryKey</BlogInlineCode>{" "}
-        y la query se desactiva con <BlogInlineCode>enabled</BlogInlineCode>{" "}
-        hasta que el dato esté listo:
+        Los parámetros forman parte de la{" "}
+        <BlogInlineCode>queryKey</BlogInlineCode> y la query se desactiva con{" "}
+        <BlogInlineCode>enabled</BlogInlineCode> hasta que el dato esté listo:
       </BlogP>
 
       <BlogCode>{`// use-posts-by-user.ts
@@ -835,14 +837,14 @@ export function PaginatedPosts() {
         </BlogLi>
         <BlogLi>
           <strong>Cliente:</strong> datos privados de terceros, acciones en
-          tiempo real o consultas dependientes de la interacción del usuario
-          van con React Query, que además las cachea y revalida.
+          tiempo real o consultas dependientes de la interacción del usuario van
+          con React Query, que además las cachea y revalida.
         </BlogLi>
       </BlogUl>
 
       <BlogP>
-        En el pages router, el fetching en servidor se declara en la página
-        con <BlogInlineCode>getStaticProps</BlogInlineCode> (estático) o{" "}
+        En el pages router, el fetching en servidor se declara en la página con{" "}
+        <BlogInlineCode>getStaticProps</BlogInlineCode> (estático) o{" "}
         <BlogInlineCode>getServerSideProps</BlogInlineCode> (por request):
       </BlogP>
 
@@ -888,7 +890,8 @@ export default function BlogPage({ posts }: BlogProps) {
         El contenido que no cambia a cada segundo (artículos, documentación,
         landing) se genera estático en build y se sirve desde CDN. Con{" "}
         <BlogInlineCode>revalidate</BlogInlineCode> activas ISR: Next regenera
-        la página en segundo plano cuando expira, sin derribar la copia en caché.
+        la página en segundo plano cuando expira, sin derribar la copia en
+        caché.
       </BlogP>
 
       <BlogCallout type="info">
@@ -904,10 +907,9 @@ export default function BlogPage({ posts }: BlogProps) {
         instante y las secciones lentas (una lista de datos, un widget) llegan
         cuando están listas. El usuario ve contenido en cuanto existe, en lugar
         de esperar a que todo el documento termine de generarse. El patrón
-        moderno en App Router son los{" "}
-        <BlogInlineCode>async</BlogInlineCode> components y{" "}
-        <BlogInlineCode>loading.tsx</BlogInlineCode>, que dibujan el placeholder
-        del segmento mientras el dato se resuelve.
+        moderno en App Router son los <BlogInlineCode>async</BlogInlineCode>{" "}
+        components y <BlogInlineCode>loading.tsx</BlogInlineCode>, que dibujan
+        el placeholder del segmento mientras el dato se resuelve.
       </BlogP>
 
       <BlogH2 id="comparativa">Comparativa final</BlogH2>
@@ -1028,7 +1030,7 @@ export const useCounterStore = create<CounterStore>()(
 
         <ExerciseCard
           description="Construye una pantalla de usuarios con React Query: lista con isLoading/isError y refetch, y una query dependiente que carga los posts de un usuario al hacer clic en él."
-          hint="queryKey ["users"] para la lista y ["posts", userId] con enabled para los posts."
+          hint='queryKey ["users"] para la lista y ["posts", userId] con enabled para los posts.'
           level="Intermedio"
           num={3}
           solution={`import { useState } from "react";

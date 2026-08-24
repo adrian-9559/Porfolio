@@ -331,6 +331,30 @@ export const CATEGORIES: CategoryMeta[] = [
     textColor: "text-red-600 dark:text-red-400",
     group: "web",
   },
+  {
+    id: "state-management",
+    label: "Estado global",
+    labelKey: "blog.category.state-management",
+    color: "bg-fuchsia-500",
+    textColor: "text-fuchsia-500 dark:text-fuchsia-400",
+    group: "web",
+  },
+  {
+    id: "performance",
+    label: "Rendimiento",
+    labelKey: "blog.category.performance",
+    color: "bg-amber-500",
+    textColor: "text-amber-500 dark:text-amber-400",
+    group: "web",
+  },
+  {
+    id: "accesibilidad",
+    label: "Accesibilidad",
+    labelKey: "blog.category.accesibilidad",
+    color: "bg-violet-500",
+    textColor: "text-violet-500 dark:text-violet-400",
+    group: "web",
+  },
   // ── Backend ───────────────────────────────────────────────────────────────
   {
     id: "nodejs",

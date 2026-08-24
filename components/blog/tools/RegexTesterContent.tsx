@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+import { useT } from "@/hooks/useT";
 
 const EXAMPLES = [
   {
@@ -35,10 +36,11 @@ const EXAMPLES = [
 ];
 
 export default function RegexTesterContent() {
+  const { t } = useT();
   const [pattern, setPattern] = useState("");
   const [flags, setFlags] = useState("g");
   const [text, setText] = useState(
-    "Escribe texto aquí para probar tu expresión regular.",
+    t("blog.regexTester.testText"),
   );
   const [error, setError] = useState("");
 
@@ -57,7 +59,7 @@ export default function RegexTesterContent() {
 
       return { highlighted, matches };
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Expresión inválida");
+      setError(e instanceof Error ? e.message : t("blog.regexTester.errorInvalid"));
 
       return { highlighted: text, matches: [] };
     }
@@ -108,21 +110,20 @@ export default function RegexTesterContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50">
-            Herramienta
+            {t("blog.regexTester.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.regexTester.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Tester de Regex
+          {t("blog.regexTester.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Prueba expresiones regulares en tiempo real. Resalta coincidencias y
-          muestra el recuento.
+          {t("blog.regexTester.desc")}
         </p>
       </div>
 
@@ -130,7 +131,7 @@ export default function RegexTesterContent() {
         {/* Examples */}
         <div>
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider mb-2">
-            Ejemplos rápidos
+            {t("blog.regexTester.quickExamples")}
           </p>
           <div className="flex flex-wrap gap-2">
             {EXAMPLES.map((ex) => (
@@ -148,7 +149,7 @@ export default function RegexTesterContent() {
         {/* Pattern input */}
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Expresión regular
+            {t("blog.regexTester.regex")}
           </p>
           <div className="flex items-stretch rounded-xl border border-black/8 dark:border-white/8 overflow-hidden focus-within:border-rose-400 dark:focus-within:border-rose-600 transition-colors">
             <span className="flex items-center px-3 bg-black/3 dark:bg-white/3 text-[#6e6e73] dark:text-[#86868b] text-sm font-mono border-r border-black/8 dark:border-white/8">
@@ -183,7 +184,7 @@ export default function RegexTesterContent() {
         {/* Test text */}
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Texto de prueba
+            {t("blog.regexTester.testText")}
           </p>
           <textarea
             className="w-full h-28 p-3 text-sm rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-rose-400 dark:focus:border-rose-600 transition-colors"
@@ -196,11 +197,11 @@ export default function RegexTesterContent() {
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
             <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-              Coincidencias
+              {t("blog.regexTester.matches")}
             </p>
             {result.matches.length > 0 && (
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400">
-                {result.matches.length} encontrada
+                {result.matches.length} {t("blog.regexTester.found")}
                 {result.matches.length !== 1 ? "s" : ""}
               </span>
             )}
@@ -214,7 +215,7 @@ export default function RegexTesterContent() {
         {result.matches.length > 0 && (
           <div className="space-y-1.5">
             <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-              Lista de coincidencias
+              {t("blog.regexTester.matchList")}
             </p>
             <div className="flex flex-wrap gap-2">
               {result.matches.map((m, i) => (

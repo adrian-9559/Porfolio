@@ -157,9 +157,9 @@ peticion.then((res) => {
 });`}</BlogCode>
 
       <BlogP>
-        El <strong>chaining</strong> encadena <BlogInlineCode>.then()</BlogInlineCode>{" "}
-        y devuelve una nueva promesa, permitiendo transformar el valor y
-        propagar errores por la cadena:
+        El <strong>chaining</strong> encadena{" "}
+        <BlogInlineCode>.then()</BlogInlineCode> y devuelve una nueva promesa,
+        permitiendo transformar el valor y propagar errores por la cadena:
       </BlogP>
 
       <BlogCode>{`fetch("https://api.example.com/usuarios/1")
@@ -176,13 +176,16 @@ peticion.then((res) => {
   });`}</BlogCode>
 
       <BlogCallout type="warn">
-        Un error que ocurre dentro de un <BlogInlineCode>.then()</BlogInlineCode>{" "}
-        no se propaga a la promesa original: se propaga a la promesa devuelta
-        por ese <BlogInlineCode>.then()</BlogInlineCode>. Siempre encadena el{" "}
+        Un error que ocurre dentro de un{" "}
+        <BlogInlineCode>.then()</BlogInlineCode> no se propaga a la promesa
+        original: se propaga a la promesa devuelta por ese{" "}
+        <BlogInlineCode>.then()</BlogInlineCode>. Siempre encadena el{" "}
         <BlogInlineCode>.catch()</BlogInlineCode> al final de la cadena.
       </BlogCallout>
 
-      <BlogH3 id="combinadores">Combinadores: all, allSettled, race, any</BlogH3>
+      <BlogH3 id="combinadores">
+        Combinadores: all, allSettled, race, any
+      </BlogH3>
 
       <BlogP>
         Cuando necesitas varias promesas a la vez, JavaScript ofrece cuatro
@@ -225,10 +228,9 @@ const primeraOk = await Promise.any([replicaA(), replicaB(), replicaC()]);`}</Bl
 
       <BlogP>
         <BlogInlineCode>Promise.all</BlogInlineCode> falla rápido: si una
-        promesa se rechaza, las demás se siguen ejecutando en segundo plano
-        pero su resultado se descarta. Para "parar" realmente las demás
-        necesitas <BlogInlineCode>AbortController</BlogInlineCode> (lo vemos en
-        fetch).
+        promesa se rechaza, las demás se siguen ejecutando en segundo plano pero
+        su resultado se descarta. Para "parar" realmente las demás necesitas{" "}
+        <BlogInlineCode>AbortController</BlogInlineCode> (lo vemos en fetch).
       </BlogP>
 
       <BlogH2 id="async-await">async/await</BlogH2>
@@ -284,9 +286,9 @@ function obtenerUsuario(id: number) {
 
       <BlogP>
         El <strong>top-level await</strong> permite usar{" "}
-        <BlogInlineCode>await</BlogInlineCode> fuera de una función async, en
-        el cuerpo de un módulo ES. Es la base de cargar dependencias que
-        necesitan otras de forma natural:
+        <BlogInlineCode>await</BlogInlineCode> fuera de una función async, en el
+        cuerpo de un módulo ES. Es la base de cargar dependencias que necesitan
+        otras de forma natural:
       </BlogP>
 
       <BlogCode>{`// config.ts
@@ -298,8 +300,8 @@ export const apiUrl = config.apiUrl;`}</BlogCode>
       <BlogCallout type="info">
         Top-level await bloquea la evaluación del módulo hasta resolver, y por
         lo tanto también a quien lo importa. Úsalo para inicialización
-        imprescindible y evítalo en bibliotecas públicas: hace el arranque de
-        la app más lento.
+        imprescindible y evítalo en bibliotecas públicas: hace el arranque de la
+        app más lento.
       </BlogCallout>
 
       <BlogH2 id="fetch">Fetch y consumo de APIs</BlogH2>
@@ -344,9 +346,9 @@ export const apiUrl = config.apiUrl;`}</BlogCode>
 
       <BlogP>
         <BlogInlineCode>AbortController</BlogInlineCode> permite cancelar una
-        petición en curso. Es imprescindible en componentes que se
-        desmontan, en búsquedas que escriben más rápido de lo que responden y
-        en timeouts de red:
+        petición en curso. Es imprescindible en componentes que se desmontan, en
+        búsquedas que escriben más rápido de lo que responden y en timeouts de
+        red:
       </BlogP>
 
       <BlogCode>{`function buscarConTiempo(consulta: string) {
@@ -389,9 +391,9 @@ export const apiUrl = config.apiUrl;`}</BlogCode>
 
       <BlogP>
         Los atributos <BlogInlineCode>data-*</BlogInlineCode> guardan datos
-        arbitrarios en un elemento sin interferir con la semántica HTML. Se
-        leen con <BlogInlineCode>dataset</BlogInlineCode> (camelCase) y se
-        actualizan en caliente:
+        arbitrarios en un elemento sin interferir con la semántica HTML. Se leen
+        con <BlogInlineCode>dataset</BlogInlineCode> (camelCase) y se actualizan
+        en caliente:
       </BlogP>
 
       <BlogCode>{`<button data-accion="eliminar" data-id="42">Eliminar</button>
@@ -406,8 +408,9 @@ export const apiUrl = config.apiUrl;`}</BlogCode>
       <BlogP>
         <BlogInlineCode>classList</BlogInlineCode> es la forma segura de
         manipular clases: <BlogInlineCode>add</BlogInlineCode>,{" "}
-        <BlogInlineCode>remove</BlogInlineCode>, <BlogInlineCode>toggle</BlogInlineCode>{" "}
-        y <BlogInlineCode>contains</BlogInlineCode>:
+        <BlogInlineCode>remove</BlogInlineCode>,{" "}
+        <BlogInlineCode>toggle</BlogInlineCode> y{" "}
+        <BlogInlineCode>contains</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`const panel = document.getElementById("panel");
@@ -446,18 +449,19 @@ lista.addEventListener("click", (evento) => {
 });`}</BlogCode>
 
       <BlogCallout type="info">
-        <BlogInlineCode>closest()</BlogInlineCode> recorre hacia arriba
-        buscando el ancestro que cumple el selector; <BlogInlineCode>matches()</BlogInlineCode>{" "}
-        comprueba si un elemento concreto lo cumple. La combinación de ambos
-        con delegación es el patrón de tablas y listas de toda la web.
+        <BlogInlineCode>closest()</BlogInlineCode> recorre hacia arriba buscando
+        el ancestro que cumple el selector;{" "}
+        <BlogInlineCode>matches()</BlogInlineCode> comprueba si un elemento
+        concreto lo cumple. La combinación de ambos con delegación es el patrón
+        de tablas y listas de toda la web.
       </BlogCallout>
 
       <BlogH3 id="observadores">IntersectionObserver y MutationObserver</BlogH3>
 
       <BlogP>
         <BlogInlineCode>IntersectionObserver</BlogInlineCode> notifica cuando un
-        elemento entra o sale del viewport (o se cruza con otro). Es la base
-        del lazy loading y de los efectos de scroll sin tocar el evento{" "}
+        elemento entra o sale del viewport (o se cruza con otro). Es la base del
+        lazy loading y de los efectos de scroll sin tocar el evento{" "}
         <BlogInlineCode>scroll</BlogInlineCode>:
       </BlogP>
 
@@ -479,8 +483,8 @@ document.querySelectorAll("img[data-lazy]").forEach((img) => {
 
       <BlogP>
         <BlogInlineCode>MutationObserver</BlogInlineCode> observa cambios en el
-        DOM: nodos añadidos, atributos modificados o texto alterado. Es la
-        forma de reaccionar a cambios que no controlas (código de terceros,
+        DOM: nodos añadidos, atributos modificados o texto alterado. Es la forma
+        de reaccionar a cambios que no controlas (código de terceros,
         extensiones, SPAs):
       </BlogP>
 
@@ -503,8 +507,7 @@ observador.observe(document.body, { childList: true, subtree: true });`}</BlogCo
         de tu framework (React/Vue gestionan su propio DOM). Úsalos para
         integraciones con librerías externas y lazy loading. Y recuerda llamar
         siempre a <BlogInlineCode>disconnect()</BlogInlineCode> o{" "}
-        <BlogInlineCode>unobserve()</BlogInlineCode> para no filtrar
-        listeners.
+        <BlogInlineCode>unobserve()</BlogInlineCode> para no filtrar listeners.
       </BlogCallout>
 
       <BlogH2 id="modulos">Módulos ES</BlogH2>
@@ -556,9 +559,9 @@ if (navigator.clipboard) {
 
       <BlogCallout type="tip">
         El <strong>tree-shaking</strong> elimina del bundle final los exports
-        que nunca se importan. Para que funcione, escribe exports con nombre
-        (no efectos secundarios en el módulo) y evita importar bibliotecas
-        enteras cuando solo usas una función.
+        que nunca se importan. Para que funcione, escribe exports con nombre (no
+        efectos secundarios en el módulo) y evita importar bibliotecas enteras
+        cuando solo usas una función.
       </BlogCallout>
 
       <BlogH2 id="apis-navegador">APIs del navegador</BlogH2>
@@ -592,8 +595,8 @@ sessionStorage.setItem("token", "abc123");`}</BlogCode>
 
       <BlogCallout type="warn">
         <BlogInlineCode>localStorage</BlogInlineCode> es síncrono y bloquea el
-        hilo principal, y no es seguro para datos sensibles (cualquier script
-        de la página puede leerlo). Para sesiones usa cookies httpOnly o
+        hilo principal, y no es seguro para datos sensibles (cualquier script de
+        la página puede leerlo). Para sesiones usa cookies httpOnly o
         almacenamiento en memoria; para datos grandes, IndexedDB.
       </BlogCallout>
 
@@ -651,8 +654,8 @@ async function copiarConRespaldo(texto: string) {
       <BlogH3 id="intl">Intl para fechas y números</BlogH3>
 
       <BlogP>
-        <BlogInlineCode>Intl</BlogInlineCode> formatea fechas, números y
-        monedas según el locale, sin librerías externas:
+        <BlogInlineCode>Intl</BlogInlineCode> formatea fechas, números y monedas
+        según el locale, sin librerías externas:
       </BlogP>
 
       <BlogCode>{`const fecha = new Date("2026-08-03T10:00:00Z");
@@ -725,9 +728,10 @@ async function buscar(consulta: string) {
 }`}</BlogCode>
 
       <BlogCallout type="tip">
-        La alternativa moderna es <BlogInlineCode>AbortController</BlogInlineCode>:{" "}
-        aborta la petición anterior antes de lanzar la nueva. Así no solo
-        ignoras el resultado, sino que liberas la conexión de red.
+        La alternativa moderna es{" "}
+        <BlogInlineCode>AbortController</BlogInlineCode>: aborta la petición
+        anterior antes de lanzar la nueva. Así no solo ignoras el resultado,
+        sino que liberas la conexión de red.
       </BlogCallout>
 
       <BlogH3 id="throttle-debounce">Throttling y debouncing</BlogH3>
@@ -739,8 +743,8 @@ async function buscar(consulta: string) {
 
       <BlogUl>
         <BlogLi>
-          <strong>Debounce:</strong> ejecuta la función solo después de que
-          pase un tiempo sin nuevos eventos. Ideal para búsquedas mientras se
+          <strong>Debounce:</strong> ejecuta la función solo después de que pase
+          un tiempo sin nuevos eventos. Ideal para búsquedas mientras se
           escribe.
         </BlogLi>
         <BlogLi>
@@ -770,9 +774,9 @@ input.addEventListener("input", (e) => {
 
       <BlogCallout type="warn">
         No reinventes la rueda en producción: React Query, SWR y librerías de
-        estado ya gestionan race conditions, caché y cancelación. Estas
-        técnicas manuales son para entender el mecanismo y para código vanilla
-        o integraciones puntuales.
+        estado ya gestionan race conditions, caché y cancelación. Estas técnicas
+        manuales son para entender el mecanismo y para código vanilla o
+        integraciones puntuales.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -889,13 +893,12 @@ async function buscar(consulta) {
       <hr className="border-black/8 dark:border-white/8 my-8" />
 
       <BlogP>
-        El asincronismo es lo que hace que la web se sienta viva: promesas
-        para coordinar, async/await para leerlo con claridad, fetch para
-        hablar con el servidor y las APIs del navegador para interactuar con
-        el entorno. Dominar los combinadores, la cancelación y los
-        observadores te separa de quien solo encadena .then(). Con estas
-        piezas ya puedes construir interfaces rápidas, robustas y sin
-        condiciones de carrera.
+        El asincronismo es lo que hace que la web se sienta viva: promesas para
+        coordinar, async/await para leerlo con claridad, fetch para hablar con
+        el servidor y las APIs del navegador para interactuar con el entorno.
+        Dominar los combinadores, la cancelación y los observadores te separa de
+        quien solo encadena .then(). Con estas piezas ya puedes construir
+        interfaces rápidas, robustas y sin condiciones de carrera.
       </BlogP>
     </article>
   );

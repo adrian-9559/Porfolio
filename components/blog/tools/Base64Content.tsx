@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useT } from "@/hooks/useT";
 
 export default function Base64Content() {
+  const { t } = useT();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
@@ -19,8 +21,8 @@ export default function Base64Content() {
     } catch {
       setError(
         mode === "decode"
-          ? "Base64 inválido — verifica que la cadena sea correcta."
-          : "Error al codificar.",
+          ? t("blog.base64.errorInvalid")
+          : t("blog.base64.errorEncode"),
       );
       setOutput("");
     }
@@ -50,21 +52,20 @@ export default function Base64Content() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 border border-sky-200 dark:border-sky-800/50">
-            Herramienta
+            {t("blog.base64.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.base64.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Codificador Base64
+          {t("blog.base64.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Codifica y decodifica texto en Base64 al instante. Útil para tokens,
-          imágenes y APIs.
+          {t("blog.base64.desc")}
         </p>
       </div>
 
@@ -81,7 +82,7 @@ export default function Base64Content() {
                 setError("");
               }}
             >
-              {m === "encode" ? "Codificar → Base64" : "Decodificar → Texto"}
+              {m === "encode" ? t("blog.base64.encode") : t("blog.base64.decode")}
             </button>
           ))}
         </div>
@@ -89,12 +90,12 @@ export default function Base64Content() {
         {/* Input */}
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            {mode === "encode" ? "Texto original" : "Cadena Base64"}
+            {mode === "encode" ? t("blog.base64.originalText") : t("blog.base64.base64String")}
           </p>
           <textarea
             className="w-full h-36 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-sky-400 dark:focus:border-sky-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
             placeholder={
-              mode === "encode" ? "Hola mundo 👋" : "SGVsbG8gV29ybGQ="
+              mode === "encode" ? t("blog.base64.placeholderEncode") : t("blog.base64.placeholderDecode")
             }
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -107,20 +108,20 @@ export default function Base64Content() {
             className="px-4 py-2 rounded-lg text-sm font-semibold bg-sky-500 hover:bg-sky-600 text-white transition-colors"
             onClick={process}
           >
-            {mode === "encode" ? "Codificar" : "Decodificar"}
+            {mode === "encode" ? t("blog.base64.encodeBtn") : t("blog.base64.decodeBtn")}
           </button>
           <button
             className="px-3 py-2 rounded-lg text-sm font-semibold bg-black/8 dark:bg-white/8 text-[#1d1d1f] dark:text-white hover:bg-black/12 dark:hover:bg-white/12 transition-colors disabled:opacity-40"
             disabled={!output}
             onClick={swap}
           >
-            ⇅ Intercambiar
+            {t("blog.base64.swap")}
           </button>
           <button
             className="px-3 py-2 rounded-lg text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
             onClick={clear}
           >
-            Limpiar
+            {t("blog.base64.clear")}
           </button>
         </div>
 
@@ -129,13 +130,13 @@ export default function Base64Content() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-                {mode === "encode" ? "Base64" : "Texto decodificado"}
+                {mode === "encode" ? "Base64" : t("blog.base64.decodedText")}
               </p>
               <button
                 className="text-xs text-sky-600 dark:text-sky-400 hover:underline"
                 onClick={copy}
               >
-                {copied ? "¡Copiado!" : "Copiar"}
+                {copied ? t("blog.base64.copied") : t("blog.base64.copy")}
               </button>
             </div>
             <div className="p-3 rounded-xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800/40 font-mono text-sm text-[#1d1d1f] dark:text-white break-all">
@@ -153,22 +154,21 @@ export default function Base64Content() {
         {/* Info */}
         <div className="mt-6 p-4 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-black/8 dark:border-white/8 space-y-1.5">
           <p className="text-xs font-semibold text-[#1d1d1f] dark:text-white">
-            ¿Para qué sirve Base64?
+            {t("blog.base64.infoTitle")}
           </p>
           <ul className="text-xs text-[#6e6e73] dark:text-[#86868b] space-y-1">
             <li>
-              • Codificar credenciales en headers HTTP (
+              • {t("blog.base64.infoItem1")} (
               <code className="font-mono">Authorization: Basic ...</code>)
             </li>
             <li>
-              • Incrustar imágenes en HTML/CSS como{" "}
+              • {t("blog.base64.infoItem2")}{" "}
               <code className="font-mono">data:image/png;base64,...</code>
             </li>
             <li>
-              • Transportar datos binarios a través de sistemas de texto (email,
-              JSON)
+              • {t("blog.base64.infoItem3")}
             </li>
-            <li>• Tokens JWT: la cabecera y el payload son Base64url</li>
+            <li>• {t("blog.base64.infoItem4")}</li>
           </ul>
         </div>
       </div>

@@ -125,8 +125,8 @@ export default function RendimientoFrontendContentEn() {
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
         Speed is not a luxury: it is a factor in conversion, SEO, and
-        experience. This tutorial explains what the Core Web Vitals measure,
-        how to measure them with Lighthouse and DevTools, and the concrete
+        experience. This tutorial explains what the Core Web Vitals measure, how
+        to measure them with Lighthouse and DevTools, and the concrete
         techniques to optimize loading, images, caching, and rendering in React
         and Next.js. Prerequisites: React and Next.js.
       </p>
@@ -137,18 +137,18 @@ export default function RendimientoFrontendContentEn() {
 
       <BlogP>
         The Core Web Vitals are three metrics Google uses to evaluate user
-        experience. They are measured in two contexts:{" "}
-        <strong>lab</strong> (controlled environment, Lighthouse) and{" "}
-        <strong>field</strong> (real user data, CrUX). Each has a "good"
-        threshold and an "needs improvement" one.
+        experience. They are measured in two contexts: <strong>lab</strong>{" "}
+        (controlled environment, Lighthouse) and <strong>field</strong> (real
+        user data, CrUX). Each has a "good" threshold and an "needs improvement"
+        one.
       </BlogP>
 
       <BlogH3 id="lcp">LCP — Largest Contentful Paint</BlogH3>
 
       <BlogP>
-        It measures when the <strong>largest visible element</strong> is
-        painted (hero image, big heading, video). It is a{" "}
-        <strong>loading</strong> metric.
+        It measures when the <strong>largest visible element</strong> is painted
+        (hero image, big heading, video). It is a <strong>loading</strong>{" "}
+        metric.
       </BlogP>
 
       <BlogUl>
@@ -221,24 +221,21 @@ export default function RendimientoFrontendContentEn() {
 
       <BlogH2 id="herramientas">Lighthouse and tools</BlogH2>
 
-      <BlogP>
-        Before optimizing, measure. The usual flow:
-      </BlogP>
+      <BlogP>Before optimizing, measure. The usual flow:</BlogP>
 
       <BlogUl>
         <BlogLi>
           <strong>Chrome DevTools → Performance:</strong> records a trace and
-          shows which tasks block the main thread, how long each resource
-          takes, and where the bottleneck is.
+          shows which tasks block the main thread, how long each resource takes,
+          and where the bottleneck is.
         </BlogLi>
         <BlogLi>
           <strong>Lighthouse:</strong> automated audit of performance,
-          accessibility, SEO, and best practices. Run from DevTools, CLI, or
-          CI.
+          accessibility, SEO, and best practices. Run from DevTools, CLI, or CI.
         </BlogLi>
         <BlogLi>
-          <strong>Web Vitals extension:</strong> shows LCP, INP, and CLS in
-          real time while you browse.
+          <strong>Web Vitals extension:</strong> shows LCP, INP, and CLS in real
+          time while you browse.
         </BlogLi>
         <BlogLi>
           <strong>Next.js dashboard:</strong> with{" "}
@@ -254,10 +251,9 @@ npx lighthouse https://your-site.com --view --output=json --output-path=./report
 ANALYZE=true npm run build`}</BlogCode>
 
       <BlogCallout type="warn">
-        A single Lighthouse run on your machine is not enough: network, CPU,
-        and device change the result. Run it several times, use mobile mode
-        (more demanding), and compare with the field data from PageSpeed
-        Insights.
+        A single Lighthouse run on your machine is not enough: network, CPU, and
+        device change the result. Run it several times, use mobile mode (more
+        demanding), and compare with the field data from PageSpeed Insights.
       </BlogCallout>
 
       <BlogH2 id="carga">Load optimization</BlogH2>
@@ -271,9 +267,8 @@ ANALYZE=true npm run build`}</BlogCode>
 
       <BlogP>
         Code splitting divides the bundle into chunks loaded on demand. In
-        Next.js, each page already generates its own chunk. For heavy
-        components inside a page, use{" "}
-        <BlogInlineCode>next/dynamic</BlogInlineCode>:
+        Next.js, each page already generates its own chunk. For heavy components
+        inside a page, use <BlogInlineCode>next/dynamic</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`// components/Chart.tsx — loaded only when needed
@@ -310,8 +305,8 @@ export function App() {
 
       <BlogP>
         An honest loading state prevents the user from thinking the app is
-        broken. In Next.js, <BlogInlineCode>loading.tsx</BlogInlineCode> shows
-        a placeholder while the segment resolves, and{" "}
+        broken. In Next.js, <BlogInlineCode>loading.tsx</BlogInlineCode> shows a
+        placeholder while the segment resolves, and{" "}
         <BlogInlineCode>React.lazy</BlogInlineCode> uses{" "}
         <BlogInlineCode>fallback</BlogInlineCode>:
       </BlogP>
@@ -330,9 +325,8 @@ export default function Loading() {
 
       <BlogP>
         Prefetch downloads resources before the user asks for them. Next.js
-        prefetches visible <BlogInlineCode>Link</BlogInlineCode> elements in
-        the viewport automatically. For data, React Query lets you prefetch
-        queries:
+        prefetches visible <BlogInlineCode>Link</BlogInlineCode> elements in the
+        viewport automatically. For data, React Query lets you prefetch queries:
       </BlogP>
 
       <BlogCode>{`import { useQueryClient } from "@tanstack/react-query";
@@ -373,8 +367,9 @@ export function usePrefetchPost(id: string) {
       <BlogP>
         <BlogInlineCode>next/image</BlogInlineCode> optimizes automatically: it
         generates multiple sizes (<BlogInlineCode>srcset</BlogInlineCode>),
-        serves WebP/AVIF, applies <BlogInlineCode>loading="lazy"</BlogInlineCode>{" "}
-        by default, and requires dimensions to avoid CLS:
+        serves WebP/AVIF, applies{" "}
+        <BlogInlineCode>loading="lazy"</BlogInlineCode> by default, and requires
+        dimensions to avoid CLS:
       </BlogP>
 
       <BlogCode>{`import Image from "next/image";
@@ -399,7 +394,8 @@ export function Hero() {
         </BlogLi>
         <BlogLi>
           <strong>sizes:</strong> tells the browser what width it will use, to
-          pick the right variant from the <BlogInlineCode>srcset</BlogInlineCode>.
+          pick the right variant from the{" "}
+          <BlogInlineCode>srcset</BlogInlineCode>.
         </BlogLi>
         <BlogLi>
           <strong>priority:</strong> preloads the image (only for the hero or
@@ -434,9 +430,8 @@ Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
       <BlogP>
         In Next.js, ISR (Incremental Static Regeneration) combines static with
-        revalidation: the page is generated at build time and regenerated in
-        the background when <BlogInlineCode>revalidate</BlogInlineCode>{" "}
-        expires:
+        revalidation: the page is generated at build time and regenerated in the
+        background when <BlogInlineCode>revalidate</BlogInlineCode> expires:
       </BlogP>
 
       <BlogCode>{`// pages/blog/[slug].tsx
@@ -515,11 +510,11 @@ export function Parent() {
 }`}</BlogCode>
 
       <BlogCallout type="warn">
-        Do not memoize everything. If the component is cheap or its props
-        change on every render, <BlogInlineCode>React.memo</BlogInlineCode>{" "}
-        only adds cost. The rule: memoize when there is a heavy component, a
-        long list, or an expensive value to compute — and measure before and
-        after. Premature memoization is a complexity debt.
+        Do not memoize everything. If the component is cheap or its props change
+        on every render, <BlogInlineCode>React.memo</BlogInlineCode> only adds
+        cost. The rule: memoize when there is a heavy component, a long list, or
+        an expensive value to compute — and measure before and after. Premature
+        memoization is a complexity debt.
       </BlogCallout>
 
       <BlogH2 id="eliminar-cls">Eliminating CLS</BlogH2>
@@ -532,8 +527,9 @@ export function Parent() {
       <BlogUl>
         <BlogLi>
           <strong>Fixed dimensions:</strong> images and videos with{" "}
-          <BlogInlineCode>width</BlogInlineCode>/<BlogInlineCode>height</BlogInlineCode>{" "}
-          or <BlogInlineCode>aspect-ratio</BlogInlineCode>.
+          <BlogInlineCode>width</BlogInlineCode>/
+          <BlogInlineCode>height</BlogInlineCode> or{" "}
+          <BlogInlineCode>aspect-ratio</BlogInlineCode>.
         </BlogLi>
         <BlogLi>
           <strong>Fonts:</strong> use{" "}
@@ -560,8 +556,8 @@ export function Parent() {
 }`}</BlogCode>
 
       <BlogCallout type="tip">
-        A common CLS pattern: a banner or ad inserted above the content.
-        Reserve its space with a fixed-height container or{" "}
+        A common CLS pattern: a banner or ad inserted above the content. Reserve
+        its space with a fixed-height container or{" "}
         <BlogInlineCode>min-height</BlogInlineCode> from the first render.
       </BlogCallout>
 
@@ -583,14 +579,13 @@ export default withBundleAnalyzer({
 });`}</BlogCode>
 
       <BlogP>
-        With the analysis in hand, look for heavy dependencies and ask
-        yourself:
+        With the analysis in hand, look for heavy dependencies and ask yourself:
       </BlogP>
 
       <BlogUl>
         <BlogLi>
           Can I import only the part I use? (tree-shaking,{" "}
-          <BlogInlineCode>import { useMemo } from "react"</BlogInlineCode>).
+          <BlogInlineCode>{'import { useMemo } from "react"'}</BlogInlineCode>).
         </BlogLi>
         <BlogLi>
           Can I load it lazily with <BlogInlineCode>dynamic</BlogInlineCode>?
@@ -603,8 +598,8 @@ export default withBundleAnalyzer({
 
       <BlogCallout type="tip">
         Bundle analysis is a habit, not an event: run it in CI and alert when
-        the size rises above a threshold. That way heavy dependencies are
-        caught in the PR, not in production.
+        the size rises above a threshold. That way heavy dependencies are caught
+        in the PR, not in production.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -748,8 +743,8 @@ export function Gallery({ images }: { images: { src: string; alt: string }[] }) 
         Performance is not a final phase: it is a discipline applied while you
         write. Measure with Lighthouse and field data, optimize images and
         loading, cache with judgment, and memoize only where it helps. Each
-        technique in this tutorial attacks a specific metric — and together
-        they turn a page that "works" into one that feels instant.
+        technique in this tutorial attacks a specific metric — and together they
+        turn a page that "works" into one that feels instant.
       </BlogP>
     </article>
   );

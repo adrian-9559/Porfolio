@@ -246,17 +246,18 @@ function ProfileMenu({ user, onLogin }) {
 
       <BlogCallout type="info">
         Practical rule: <strong>Context for state that rarely changes</strong>{" "}
-        (theme, language, data provider), <strong>a store for shared state that
-        changes often</strong> (session, cart, ephemeral UI), and{" "}
-        <strong>React Query for server state</strong> (whatever comes from an
-        API). This distinction is the heart of this tutorial.
+        (theme, language, data provider),{" "}
+        <strong>a store for shared state that changes often</strong> (session,
+        cart, ephemeral UI), and <strong>React Query for server state</strong>{" "}
+        (whatever comes from an API). This distinction is the heart of this
+        tutorial.
       </BlogCallout>
 
       <BlogH2 id="context-avanzado">Advanced Context API</BlogH2>
 
       <BlogP>
-        Context is not bad: it is the right mechanism for certain cases. The
-        key is using it well: typing, a dedicated provider, a custom hook, and
+        Context is not bad: it is the right mechanism for certain cases. The key
+        is using it well: typing, a dedicated provider, a custom hook, and
         memoization.
       </BlogP>
 
@@ -290,9 +291,9 @@ export const AuthContext = createContext<AuthContextValue | null>(null);`}</Blog
       <BlogH3 id="provider-hook">Provider and custom hook</BlogH3>
 
       <BlogP>
-        The provider keeps the state with <BlogInlineCode>useState</BlogInlineCode>{" "}
-        and exposes its own hook that throws a clear error if used outside the
-        tree:
+        The provider keeps the state with{" "}
+        <BlogInlineCode>useState</BlogInlineCode> and exposes its own hook that
+        throws a clear error if used outside the tree:
       </BlogP>
 
       <BlogCode>{`// auth-provider.tsx
@@ -448,10 +449,10 @@ const user = useCartStore((state) => state.user);`}</BlogCode>
 
       <BlogCallout type="warn">
         Never select a whole object that gets rebuilt on every change. If the
-        selector returns an object literal or a <BlogInlineCode>.filter()</BlogInlineCode>,{" "}
-        Zustand compares references with{" "}
-        <BlogInlineCode>Object.is</BlogInlineCode> and sees a "different" value
-        on every render, causing an infinite loop. To derive data, use{" "}
+        selector returns an object literal or a{" "}
+        <BlogInlineCode>.filter()</BlogInlineCode>, Zustand compares references
+        with <BlogInlineCode>Object.is</BlogInlineCode> and sees a "different"
+        value on every render, causing an infinite loop. To derive data, use{" "}
         <BlogInlineCode>useShallow</BlogInlineCode>:
       </BlogCallout>
 
@@ -542,17 +543,19 @@ export const useThemeStore = create<ThemeStore>()(
         <BlogInlineCode>partialize</BlogInlineCode> avoids persisting functions
         (actions) and sensitive data. For large or slow values, switch the
         storage to{" "}
-        <BlogInlineCode>createJSONStorage(() => sessionStorage)</BlogInlineCode>{" "}
+        <BlogInlineCode>
+          createJSONStorage(() =&gt; sessionStorage)
+        </BlogInlineCode>{" "}
         or a custom storage.
       </BlogCallout>
 
       <BlogH2 id="react-query">React Query (TanStack Query)</BlogH2>
 
       <BlogP>
-        React Query (now TanStack Query) solves{" "}
-        <strong>server state</strong>: caching, revalidation, retries, and UI
-        synchronization. It is orthogonal to Zustand: Zustand stores client
-        state, React Query stores API responses.
+        React Query (now TanStack Query) solves <strong>server state</strong>:
+        caching, revalidation, retries, and UI synchronization. It is orthogonal
+        to Zustand: Zustand stores client state, React Query stores API
+        responses.
       </BlogP>
 
       <BlogH3 id="queryclient">QueryClient and provider</BlogH3>
@@ -607,9 +610,7 @@ export function usePosts() {
   });
 }`}</BlogCode>
 
-      <BlogP>
-        The query returns state flags that drive the UI:
-      </BlogP>
+      <BlogP>The query returns state flags that drive the UI:</BlogP>
 
       <BlogCode>{`// PostList.tsx
 export function PostList() {
@@ -816,8 +817,8 @@ export function PaginatedPosts() {
 
       <BlogP>
         Next.js adds another dimension: deciding <strong>where</strong> the
-        fetching happens. On the server, on the client, or both depending on
-        the nature of the data.
+        fetching happens. On the server, on the client, or both depending on the
+        nature of the data.
       </BlogP>
 
       <BlogH3 id="servidor-vs-cliente">Server vs client</BlogH3>
@@ -889,8 +890,8 @@ export default function BlogPage({ posts }: BlogProps) {
 
       <BlogCallout type="info">
         Static page + revalidation + CDN is the Core Web Vitals recipe for
-        public content: the HTML arrives almost without server cost and the
-        TTFB drops drastically.
+        public content: the HTML arrives almost without server cost and the TTFB
+        drops drastically.
       </BlogCallout>
 
       <BlogH3 id="streams">Streams and progressive rendering</BlogH3>
@@ -936,8 +937,8 @@ export default function BlogPage({ posts }: BlogProps) {
       <BlogCallout type="tip">
         There is no single answer: a real app uses all four. Context for the
         theme, Zustand for the cart, React Query for the products, and SSG for
-        the home page. Knowing when each one is the right choice is exactly
-        what this tutorial taught you.
+        the home page. Knowing when each one is the right choice is exactly what
+        this tutorial taught you.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -1022,7 +1023,7 @@ export const useCounterStore = create<CounterStore>()(
 
         <ExerciseCard
           description="Build a users screen with React Query: a list with isLoading/isError and refetch, and a dependent query that loads a user's posts when you click on them."
-          hint="queryKey ["users"] for the list and ["posts", userId] with enabled for the posts."
+          hint='queryKey ["users"] for the list and ["posts", userId] with enabled for the posts.'
           level="Intermediate"
           num={3}
           solution={`import { useState } from "react";
@@ -1170,10 +1171,9 @@ export const useAppStore = create<AppStore>()((...args) => ({
       <BlogP>
         Global state and data fetching are not a "which library do I use"
         problem, but one of classifying data: the things that rarely change
-        (Context), the things that change often on the client (Zustand), and
-        the things that come from an API (React Query or the Next.js server).
-        With that classification clear, every architecture decision answers
-        itself.
+        (Context), the things that change often on the client (Zustand), and the
+        things that come from an API (React Query or the Next.js server). With
+        that classification clear, every architecture decision answers itself.
       </BlogP>
     </article>
   );

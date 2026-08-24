@@ -129,11 +129,11 @@ export interface ServiceHealth {
 
 export const adminService = {
   // Stats
-  getStats: () => apiFetch<AdminStats>("/admin/stats"),
+  getStats: () => apiFetch<AdminStats>("/api/admin/stats"),
 
   // Notifications
   listNotifications: () =>
-    apiFetch<AdminNotification[]>("/admin/notifications"),
+    apiFetch<AdminNotification[]>("/api/admin/notifications"),
   sendNotification: (payload: {
     title: string;
     message: string;
@@ -141,7 +141,7 @@ export const adminService = {
     userId?: string;
     toAll?: boolean;
   }) =>
-    apiFetch<{ sent: number | string }>("/admin/notifications/send", {
+    apiFetch<{ sent: number | string }>("/api/admin/notifications/send", {
       method: "POST",
       body: JSON.stringify(payload),
     }),
@@ -149,7 +149,7 @@ export const adminService = {
     apiFetch<void>(`/admin/notifications/${id}`, { method: "DELETE" }),
 
   // Contact
-  listContact: () => apiFetch<ContactMessage[]>("/admin/contact"),
+  listContact: () => apiFetch<ContactMessage[]>("/api/admin/contact"),
   updateContactStatus: (id: string, status: ContactMessage["status"]) =>
     apiFetch<ContactMessage>(`/admin/contact/${id}/status`, {
       method: "PATCH",
@@ -159,35 +159,37 @@ export const adminService = {
     apiFetch<void>(`/admin/contact/${id}`, { method: "DELETE" }),
 
   // API Keys
-  listApiKeys: () => apiFetch<AdminApiKey[]>("/admin/api-keys"),
+  listApiKeys: () => apiFetch<AdminApiKey[]>("/api/admin/api-keys"),
   revokeApiKey: (id: string) =>
     apiFetch<AdminApiKey>(`/admin/api-keys/${id}/revoke`, { method: "PATCH" }),
   deleteApiKey: (id: string) =>
     apiFetch<void>(`/admin/api-keys/${id}`, { method: "DELETE" }),
 
   // Agents
-  listAgents: () => apiFetch<AdminAgent[]>("/admin/agents"),
+  listAgents: () => apiFetch<AdminAgent[]>("/api/admin/agents"),
   deleteAgent: (id: string) =>
     apiFetch<void>(`/admin/agents/${id}`, { method: "DELETE" }),
 
   // Workflows
-  listWorkflows: () => apiFetch<AdminWorkflow[]>("/admin/workflows"),
+  listWorkflows: () => apiFetch<AdminWorkflow[]>("/api/admin/workflows"),
   deleteWorkflow: (id: string) =>
     apiFetch<void>(`/admin/workflows/${id}`, { method: "DELETE" }),
 
   // Repositories
-  listRepositories: () => apiFetch<AdminRepository[]>("/admin/repositories"),
+  listRepositories: () =>
+    apiFetch<AdminRepository[]>("/api/admin/repositories"),
   deleteRepository: (id: string) =>
     apiFetch<void>(`/admin/repositories/${id}`, { method: "DELETE" }),
 
   // Friendships
-  listFriendships: () => apiFetch<AdminFriendship[]>("/admin/friendships"),
+  listFriendships: () => apiFetch<AdminFriendship[]>("/api/admin/friendships"),
   listFriendRequests: () =>
-    apiFetch<AdminFriendRequest[]>("/admin/friendships/requests"),
+    apiFetch<AdminFriendRequest[]>("/api/admin/friendships/requests"),
 
   // Services health
-  getServicesHealth: () => apiFetch<ServiceHealth[]>("/admin/services/health"),
+  getServicesHealth: () =>
+    apiFetch<ServiceHealth[]>("/api/admin/services/health"),
 
   // System health — public route, no auth required
-  getHealth: () => apiFetch<SystemHealth>("/health"),
+  getHealth: () => apiFetch<SystemHealth>("/api/health"),
 };

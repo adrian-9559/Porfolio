@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import {
   BlogH2,
-  BlogH3,
   BlogP,
   BlogCode,
   BlogInlineCode,
@@ -133,9 +132,9 @@ export default function CICDContentEn() {
 
       <BlogP>
         <strong>CI (Continuous Integration)</strong> is the practice of
-        integrating the whole team's code into the shared repository
-        frequently. Each integration is automatically verified with build, lint
-        and tests, so errors surface in minutes, not days.
+        integrating the whole team's code into the shared repository frequently.
+        Each integration is automatically verified with build, lint and tests,
+        so errors surface in minutes, not days.
       </BlogP>
 
       <BlogP>
@@ -147,8 +146,8 @@ export default function CICDContentEn() {
 
       <BlogCallout type="info">
         The mental flow: commit → CI verifies everything is healthy → CD
-        delivers the artifact → deploy. Each layer fails fast and loudly, so
-        the team knows where to look before the problem reaches users.
+        delivers the artifact → deploy. Each layer fails fast and loudly, so the
+        team knows where to look before the problem reaches users.
       </BlogCallout>
 
       <BlogH2 id="concepts">GitHub Actions concepts</BlogH2>
@@ -174,8 +173,8 @@ export default function CICDContentEn() {
         in a workflow run in parallel by default.
       </BlogP>
       <BlogP>
-        <strong>Step</strong>: each individual action inside a job: a command,
-        a reusable action from the marketplace...
+        <strong>Step</strong>: each individual action inside a job: a command, a
+        reusable action from the marketplace...
       </BlogP>
       <BlogP>
         <strong>Runner</strong>: the machine that executes jobs. GitHub offers
@@ -221,8 +220,9 @@ jobs:
 
       <BlogP>
         Each job declares which runner to use and a list of steps executed in
-        order. Steps can be community actions (<BlogInlineCode>uses</BlogInlineCode>)
-        or shell commands (<BlogInlineCode>run</BlogInlineCode>):
+        order. Steps can be community actions (
+        <BlogInlineCode>uses</BlogInlineCode>) or shell commands (
+        <BlogInlineCode>run</BlogInlineCode>):
       </BlogP>
 
       <BlogCode>{`jobs:
@@ -294,7 +294,8 @@ jobs:
         <BlogInlineCode>npm ci</BlogInlineCode> installs exactly what{" "}
         <BlogInlineCode>package-lock.json</BlogInlineCode> defines and clears{" "}
         <BlogInlineCode>node_modules</BlogInlineCode> first — it is the
-        reproducible choice for CI, unlike <BlogInlineCode>npm install</BlogInlineCode>.
+        reproducible choice for CI, unlike{" "}
+        <BlogInlineCode>npm install</BlogInlineCode>.
       </BlogP>
 
       <BlogH2 id="secrets">Secrets</BlogH2>
@@ -345,10 +346,10 @@ jobs:
       \${{ runner.os }}-node-`}</BlogCode>
 
       <BlogP>
-        The key includes the lockfile hash: if dependencies haven't changed,
-        the cache hits. <BlogInlineCode>restore-keys</BlogInlineCode> falls back
-        to partial caches when the key misses. setup-node has this built in
-        with <BlogInlineCode>cache: npm</BlogInlineCode> for this common case.
+        The key includes the lockfile hash: if dependencies haven't changed, the
+        cache hits. <BlogInlineCode>restore-keys</BlogInlineCode> falls back to
+        partial caches when the key misses. setup-node has this built in with{" "}
+        <BlogInlineCode>cache: npm</BlogInlineCode> for this common case.
       </BlogP>
 
       <BlogP>

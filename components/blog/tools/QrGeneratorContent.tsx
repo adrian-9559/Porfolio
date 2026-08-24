@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useT } from "@/hooks/useT";
 
 export default function QrGeneratorContent() {
+  const { t } = useT();
   const [text, setText] = useState("");
   const [qrUrl, setQrUrl] = useState("");
   const [copied, setCopied] = useState(false);
@@ -38,32 +40,31 @@ export default function QrGeneratorContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50">
-            Herramienta
+            {t("blog.qrGenerator.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.qrGenerator.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Generador de QR
+          {t("blog.qrGenerator.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Genera códigos QR desde texto o URLs. Descarga como PNG o copia la
-          imagen.
+          {t("blog.qrGenerator.desc")}
         </p>
       </div>
 
       <div className="space-y-4">
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Texto o URL
+            {t("blog.qrGenerator.textOrUrl")}
           </p>
           <textarea
             className="w-full h-24 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-amber-400 dark:focus:border-amber-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-            placeholder="https://tudominio.com"
+            placeholder={t("blog.qrGenerator.placeholder")}
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
@@ -74,7 +75,7 @@ export default function QrGeneratorContent() {
           disabled={!text.trim()}
           onClick={generate}
         >
-          Generar QR
+          {t("blog.qrGenerator.generate")}
         </button>
 
         {qrUrl && (
@@ -88,13 +89,13 @@ export default function QrGeneratorContent() {
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/8 dark:bg-white/8 text-[#1d1d1f] dark:text-white hover:bg-black/12 dark:hover:bg-white/12 transition-colors"
                 onClick={download}
               >
-                Descargar PNG
+                {t("blog.qrGenerator.downloadPng")}
               </button>
               <button
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors"
                 onClick={copyImg}
               >
-                {copied ? "¡Copiado!" : "Copiar URL imagen"}
+                {copied ? t("blog.qrGenerator.copied") : t("blog.qrGenerator.copyImageUrl")}
               </button>
             </div>
           </div>

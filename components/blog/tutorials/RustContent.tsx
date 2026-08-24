@@ -124,9 +124,8 @@ export default function RustContent() {
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
         Rust te da el rendimiento de C sin los dolores de cabeza de la gestión
         manual de memoria. A través de su modelo de ownership, el compilador
-        elimina errores de memoria en tiempo de compilación. Ideal si ya
-        conoces punteros en C y quieres escribir código rápido sin garbage
-        collector.
+        elimina errores de memoria en tiempo de compilación. Ideal si ya conoces
+        punteros en C y quieres escribir código rápido sin garbage collector.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -143,8 +142,8 @@ export default function RustContent() {
 
       <BlogP>
         La clave es su <strong>modelo de ownership</strong>: el compilador
-        rastrea en tiempo de compilación quién posee cada dato, cuándo se
-        libera y cuándo se puede acceder a él. Si tu código tiene un{" "}
+        rastrea en tiempo de compilación quién posee cada dato, cuándo se libera
+        y cuándo se puede acceder a él. Si tu código tiene un{" "}
         <em>use-after-free</em>, un doble free o una carrera de datos, no
         compila. Errores que en C causan vulnerabilidades de seguridad aquí se
         detectan antes de ejecutar nada.
@@ -153,24 +152,25 @@ export default function RustContent() {
       <BlogCallout type="info">
         El objetivo de Rust no es que el código "compile a la primera". Es muy
         normal que el compilador te corrija 20 veces antes de que tu programa
-        haga algo. Esas correcciones son precisamente el valor: el compilador
-        te enseña dónde está el problema de memoria antes de que llegue a
+        haga algo. Esas correcciones son precisamente el valor: el compilador te
+        enseña dónde está el problema de memoria antes de que llegue a
         producción.
       </BlogCallout>
 
       <BlogP>
         El ecosistema gira alrededor de <strong>Cargo</strong>, la herramienta
         oficial que combina gestor de paquetes, build system y runner de tests,
-        similar a lo que npm es para Node pero integrado desde el primer día.
-        El registro de paquetes se llama <BlogInlineCode>crates.io</BlogInlineCode>{" "}
+        similar a lo que npm es para Node pero integrado desde el primer día. El
+        registro de paquetes se llama <BlogInlineCode>crates.io</BlogInlineCode>{" "}
         y cada paquete se llama <em>crate</em>.
       </BlogP>
 
       <BlogH2 id="instalar">Instalar</BlogH2>
 
       <BlogP>
-        La forma oficial de instalar Rust es con <BlogInlineCode>rustup</BlogInlineCode>,
-        el gestor de toolchains. Se instala con un script y luego te da acceso a{" "}
+        La forma oficial de instalar Rust es con{" "}
+        <BlogInlineCode>rustup</BlogInlineCode>, el gestor de toolchains. Se
+        instala con un script y luego te da acceso a{" "}
         <BlogInlineCode>cargo</BlogInlineCode> (build/gestor) y{" "}
         <BlogInlineCode>rustc</BlogInlineCode> (compilador):
       </BlogP>
@@ -230,9 +230,9 @@ edition = "2021"
 
       <BlogP>
         Por defecto las variables en Rust son <strong>inmutables</strong>. Para
-        poder modificarlas hay que marcarlas con <BlogInlineCode>mut</BlogInlineCode>.
-        Es la decisión más segura: la mutabilidad pasa a ser explícita y solo
-        donde realmente la necesitas:
+        poder modificarlas hay que marcarlas con{" "}
+        <BlogInlineCode>mut</BlogInlineCode>. Es la decisión más segura: la
+        mutabilidad pasa a ser explícita y solo donde realmente la necesitas:
       </BlogP>
 
       <BlogCode>{`fn main() {
@@ -246,8 +246,8 @@ edition = "2021"
 }`}</BlogCode>
 
       <BlogP>
-        El <strong>shadowing</strong> permite re-declarar un nombre con un
-        nuevo valor o incluso un nuevo tipo, sin necesidad de{" "}
+        El <strong>shadowing</strong> permite re-declarar un nombre con un nuevo
+        valor o incluso un nuevo tipo, sin necesidad de{" "}
         <BlogInlineCode>mut</BlogInlineCode>:
       </BlogP>
 
@@ -286,10 +286,10 @@ numeros.push(4);`}</BlogCode>
         <BlogInlineCode>i128</BlogInlineCode> (con signo) y{" "}
         <BlogInlineCode>u8</BlogInlineCode> a{" "}
         <BlogInlineCode>u128</BlogInlineCode> (sin signo), más{" "}
-        <BlogInlineCode>isize</BlogInlineCode>/<BlogInlineCode>usize</BlogInlineCode>{" "}
-        que dependen de la arquitectura (64 bits en tu máquina). Usa{" "}
-        <BlogInlineCode>i32</BlogInlineCode> por defecto: es el más rápido en la
-        mayoría de CPU.
+        <BlogInlineCode>isize</BlogInlineCode>/
+        <BlogInlineCode>usize</BlogInlineCode> que dependen de la arquitectura
+        (64 bits en tu máquina). Usa <BlogInlineCode>i32</BlogInlineCode> por
+        defecto: es el más rápido en la mayoría de CPU.
       </BlogP>
 
       <BlogH2 id="ownership">Ownership</BlogH2>
@@ -297,8 +297,8 @@ numeros.push(4);`}</BlogCode>
       <BlogP>
         Esta es la sección más importante de Rust. Cada valor tiene un{" "}
         <strong>dueño</strong> (owner): la variable que lo contiene. Cuando el
-        dueño sale del ámbito, el valor se <strong>libera</strong> automáticamente.
-        Las reglas son tres:
+        dueño sale del ámbito, el valor se <strong>libera</strong>{" "}
+        automáticamente. Las reglas son tres:
       </BlogP>
 
       <BlogCode>{`// Regla 1: cada valor tiene un único dueño.
@@ -372,10 +372,11 @@ fn main() {
       <BlogH2 id="slices-referencias">Slices y referencias</BlogH2>
 
       <BlogP>
-        Un <strong>slice</strong> es una vista (referencia + longitud) sobre
-        una secuencia de datos contiguos, sin copiarlos. Es la forma idiomática
-        de pasar trozos de texto o listas. El tipo <BlogInlineCode>&amp;str</BlogInlineCode>{" "}
-        es un slice de un <BlogInlineCode>String</BlogInlineCode>:
+        Un <strong>slice</strong> es una vista (referencia + longitud) sobre una
+        secuencia de datos contiguos, sin copiarlos. Es la forma idiomática de
+        pasar trozos de texto o listas. El tipo{" "}
+        <BlogInlineCode>&amp;str</BlogInlineCode> es un slice de un{" "}
+        <BlogInlineCode>String</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`fn primera_palabra(s: &str) -> &str {
@@ -398,8 +399,8 @@ fn main() {
         El ejemplo demuestra algo poderoso: la función devuelve una referencia
         que <strong>vive tanto como la entrada</strong>. El compilador garantiza
         que <BlogInlineCode>palabra</BlogInlineCode> nunca pueda apuntar a
-        memoria ya liberada, aunque{" "}
-        <BlogInlineCode>frase</BlogInlineCode> se modifique después.
+        memoria ya liberada, aunque <BlogInlineCode>frase</BlogInlineCode> se
+        modifique después.
       </BlogP>
 
       <BlogP>
@@ -454,8 +455,8 @@ fn main() {
 
       <BlogP>
         Los <BlogInlineCode>enum</BlogInlineCode> en Rust son mucho más potentes
-        que en otros lenguajes: cada variante puede <strong>llevar datos</strong>.
-        Son la base del pattern matching:
+        que en otros lenguajes: cada variante puede{" "}
+        <strong>llevar datos</strong>. Son la base del pattern matching:
       </BlogP>
 
       <BlogCode>{`enum Estado {
@@ -549,8 +550,8 @@ fn abrir_o_crear() -> Result<File, io::Error> {
 }`}</BlogCode>
 
       <BlogP>
-        El operador <BlogInlineCode>?</BlogInlineCode> es azúcar sintáctico:
-        si el Result es Ok, extrae el valor; si es Err, devuelve el error de la
+        El operador <BlogInlineCode>?</BlogInlineCode> es azúcar sintáctico: si
+        el Result es Ok, extrae el valor; si es Err, devuelve el error de la
         función actual. Es la forma idiomática de escribir código limpio sin
         anidar matches:
       </BlogP>
@@ -566,8 +567,8 @@ fn leer_contenido(ruta: &str) -> Result<String, io::Error> {
       <BlogP>
         Para prototipos o valores que "no pueden fallar", existe{" "}
         <BlogInlineCode>unwrap()</BlogInlineCode> (pánico si es Err) y{" "}
-        <BlogInlineCode>expect("mensaje")</BlogInlineCode>, que añade contexto al
-        pánico. Úsalos con moderación: en código de producción prefiere{" "}
+        <BlogInlineCode>expect("mensaje")</BlogInlineCode>, que añade contexto
+        al pánico. Úsalos con moderación: en código de producción prefiere{" "}
         <BlogInlineCode>?</BlogInlineCode>:
       </BlogP>
 
@@ -695,8 +696,9 @@ cargo run -- suma 4 7
 # Salida: 4 + 7 = 11`}</BlogCode>
 
       <BlogP>
-        Cargo también gestiona tests con <BlogInlineCode>cargo test</BlogInlineCode>{" "}
-        y dependencias declaradas en <BlogInlineCode>Cargo.toml</BlogInlineCode>:
+        Cargo también gestiona tests con{" "}
+        <BlogInlineCode>cargo test</BlogInlineCode> y dependencias declaradas en{" "}
+        <BlogInlineCode>Cargo.toml</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`[dependencies]
@@ -706,8 +708,8 @@ clap = "4"`}</BlogCode>
       <BlogP>
         Para CLIs reales, la crate <BlogInlineCode>clap</BlogInlineCode> es el
         estándar de facto: parsea argumentos, genera la ayuda y valida tipos
-        automáticamente. Para serializar JSON, <BlogInlineCode>serde</BlogInlineCode>{" "}
-        es imprescindible.
+        automáticamente. Para serializar JSON,{" "}
+        <BlogInlineCode>serde</BlogInlineCode> es imprescindible.
       </BlogP>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />

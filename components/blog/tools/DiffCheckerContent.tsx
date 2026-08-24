@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useT } from "@/hooks/useT";
 
 function diffLines(a: string, b: string) {
   const la = a.split("\n");
@@ -23,6 +24,7 @@ function diffLines(a: string, b: string) {
 }
 
 export default function DiffCheckerContent() {
+  const { t } = useT();
   const [left, setLeft] = useState("");
   const [right, setRight] = useState("");
 
@@ -33,43 +35,42 @@ export default function DiffCheckerContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/50">
-            Herramienta
+            {t("blog.diffChecker.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.diffChecker.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Comparador de texto
+          {t("blog.diffChecker.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Compara dos textos lado a lado. Líneas añadidas y eliminadas se
-          resaltan al instante.
+          {t("blog.diffChecker.desc")}
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Original
+            {t("blog.diffChecker.original")}
           </p>
           <textarea
             className="w-full h-64 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-            placeholder="Texto A..."
+            placeholder={t("blog.diffChecker.textA")}
             value={left}
             onChange={(e) => setLeft(e.target.value)}
           />
         </div>
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Modificado
+            {t("blog.diffChecker.modified")}
           </p>
           <textarea
             className="w-full h-64 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-            placeholder="Texto B..."
+            placeholder={t("blog.diffChecker.textB")}
             value={right}
             onChange={(e) => setRight(e.target.value)}
           />
@@ -79,7 +80,7 @@ export default function DiffCheckerContent() {
       {(left || right) && (
         <div className="mt-4 space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Diferencias
+            {t("blog.diffChecker.differences")}
           </p>
           <div className="rounded-xl border border-black/8 dark:border-white/8 overflow-hidden">
             {diffs.map((d, i) => (
@@ -101,7 +102,7 @@ export default function DiffCheckerContent() {
             ))}
             {diffs.length === 0 && (
               <div className="px-3 py-6 text-center text-xs text-[#aeaeb2] dark:text-[#636366]">
-                Sin diferencias
+                {t("blog.diffChecker.noDifferences")}
               </div>
             )}
           </div>

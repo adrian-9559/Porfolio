@@ -191,8 +191,7 @@ export default function CssAvanzadoContent() {
       <BlogH3 id="easing">Easing y cubic-bezier</BlogH3>
 
       <BlogP>
-        Las curvas predefinidas son{" "}
-        <BlogInlineCode>linear</BlogInlineCode>,{" "}
+        Las curvas predefinidas son <BlogInlineCode>linear</BlogInlineCode>,{" "}
         <BlogInlineCode>ease</BlogInlineCode> (la de por defecto),{" "}
         <BlogInlineCode>ease-in</BlogInlineCode>,{" "}
         <BlogInlineCode>ease-out</BlogInlineCode> y{" "}
@@ -211,18 +210,17 @@ export default function CssAvanzadoContent() {
 }`}</BlogCode>
 
       <BlogCallout type="tip">
-        Regla práctica: <BlogInlineCode>ease-out</BlogInlineCode> para
-        entradas (lo que aparece), <BlogInlineCode>ease-in</BlogInlineCode>{" "}
-        para salidas (lo que desaparece) y una curva "overshoot" (y por encima
-        de 1) solo para efectos decorativos. Demasiada curva mata la sensación
-        de UI nativa.
+        Regla práctica: <BlogInlineCode>ease-out</BlogInlineCode> para entradas
+        (lo que aparece), <BlogInlineCode>ease-in</BlogInlineCode> para salidas
+        (lo que desaparece) y una curva "overshoot" (y por encima de 1) solo
+        para efectos decorativos. Demasiada curva mata la sensación de UI
+        nativa.
       </BlogCallout>
 
       <BlogP>
-        Hay una quinta curva muy útil:{" "}
-        <BlogInlineCode>steps()</BlogInlineCode>. Divide la animación en saltos
-        discretos en lugar de interpolación continua, ideal para sprites de
-        personajes o contadores:
+        Hay una quinta curva muy útil: <BlogInlineCode>steps()</BlogInlineCode>.
+        Divide la animación en saltos discretos en lugar de interpolación
+        continua, ideal para sprites de personajes o contadores:
       </BlogP>
 
       <BlogCode>{`/* Pasos discretos: el texto cambia como un marcador */
@@ -234,8 +232,8 @@ export default function CssAvanzadoContent() {
 
       <BlogP>
         Muchas personas tienen sensibilidad al movimiento. La media query{" "}
-        <BlogInlineCode>prefers-reduced-motion</BlogInlineCode> permite
-        detectar la preferencia del sistema operativo y reducir o eliminar las
+        <BlogInlineCode>prefers-reduced-motion</BlogInlineCode> permite detectar
+        la preferencia del sistema operativo y reducir o eliminar las
         animaciones:
       </BlogP>
 
@@ -253,8 +251,8 @@ export default function CssAvanzadoContent() {
 
       <BlogCallout type="warn">
         No elimines solo la transición: las animaciones con{" "}
-        <BlogInlineCode>@keyframes</BlogInlineCode> también deben respetarse.
-        Un patrón común y aceptado es dejar la transición pero con duración{" "}
+        <BlogInlineCode>@keyframes</BlogInlineCode> también deben respetarse. Un
+        patrón común y aceptado es dejar la transición pero con duración{" "}
         <BlogInlineCode>0.01ms</BlogInlineCode>, que mantiene la lógica del
         evento sin el movimiento visible.
       </BlogCallout>
@@ -263,8 +261,8 @@ export default function CssAvanzadoContent() {
 
       <BlogP>
         <BlogInlineCode>transform</BlogInlineCode> modifica la geometría de un
-        elemento sin tocar el flujo del documento: los hermanos no se
-        recolocan. Funciones principales:
+        elemento sin tocar el flujo del documento: los hermanos no se recolocan.
+        Funciones principales:
       </BlogP>
 
       <BlogUl>
@@ -272,8 +270,8 @@ export default function CssAvanzadoContent() {
           <BlogInlineCode>translate(x, y)</BlogInlineCode> — desplazar.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>rotate(deg)</BlogInlineCode> — girar (acepta
-          grados o <BlogInlineCode>turn</BlogInlineCode>).
+          <BlogInlineCode>rotate(deg)</BlogInlineCode> — girar (acepta grados o{" "}
+          <BlogInlineCode>turn</BlogInlineCode>).
         </BlogLi>
         <BlogLi>
           <BlogInlineCode>scale(factor)</BlogInlineCode> — escalar.
@@ -327,15 +325,15 @@ export default function CssAvanzadoContent() {
         Las transformaciones 3D requieren un contexto:{" "}
         <BlogInlineCode>perspective</BlogInlineCode> en el padre (o la función{" "}
         <BlogInlineCode>perspective()</BlogInlineCode> dentro del{" "}
-        <BlogInlineCode>transform</BlogInlineCode>). Sin él, las funciones 3D
-        se ignoran y el elemento se aplana.
+        <BlogInlineCode>transform</BlogInlineCode>). Sin él, las funciones 3D se
+        ignoran y el elemento se aplana.
       </BlogCallout>
 
       <BlogP>
         Un detalle clave: el orden de las funciones importa.{" "}
         <BlogInlineCode>translate()</BlogInlineCode> y{" "}
-        <BlogInlineCode>scale()</BlogInlineCode> no conmutan. Piensa en el
-        orden como una cadena que se aplica de derecha a izquierda:
+        <BlogInlineCode>scale()</BlogInlineCode> no conmutan. Piensa en el orden
+        como una cadena que se aplica de derecha a izquierda:
       </BlogP>
 
       <BlogCode>{`/* Primero escala, luego desplaza (el desplazamiento también se escala) */
@@ -383,12 +381,12 @@ export default function CssAvanzadoContent() {
           ciclo.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>animation-timing-function</BlogInlineCode> — curva
-          del easing.
+          <BlogInlineCode>animation-timing-function</BlogInlineCode> — curva del
+          easing.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>animation-iteration-count</BlogInlineCode> — número
-          de ciclos o <BlogInlineCode>infinite</BlogInlineCode>.
+          <BlogInlineCode>animation-iteration-count</BlogInlineCode> — número de
+          ciclos o <BlogInlineCode>infinite</BlogInlineCode>.
         </BlogLi>
         <BlogLi>
           <BlogInlineCode>animation-delay</BlogInlineCode> — espera antes de
@@ -451,8 +449,8 @@ export default function CssAvanzadoContent() {
         <BlogInlineCode>display</BlogInlineCode>) dentro de un keyframe
         directamente. El truco clásico es usar{" "}
         <BlogInlineCode>visibility</BlogInlineCode> con un keyframe de dos
-        pasos: se mantiene <BlogInlineCode>visible</BlogInlineCode> hasta el
-        99% y salta a <BlogInlineCode>hidden</BlogInlineCode> al final.
+        pasos: se mantiene <BlogInlineCode>visible</BlogInlineCode> hasta el 99%
+        y salta a <BlogInlineCode>hidden</BlogInlineCode> al final.
       </BlogCallout>
 
       <BlogH2 id="layout-moderno">Layout moderno</BlogH2>
@@ -462,8 +460,8 @@ export default function CssAvanzadoContent() {
       <BlogP>
         Hasta hace poco, lo único "responsive" era la ventana. Con las{" "}
         <strong>container queries</strong>, un componente responde al tamaño de
-        su contenedor, lo que permite piezas reutilizables que se adaptan
-        donde sea que vivan:
+        su contenedor, lo que permite piezas reutilizables que se adaptan donde
+        sea que vivan:
       </BlogP>
 
       <BlogCode>{`.tarjeta-contenedor {
@@ -489,16 +487,17 @@ export default function CssAvanzadoContent() {
       <BlogCallout type="info">
         En la práctica, los componentes de bibliotecas modernas ya usan
         container queries internamente. Si tu componente no necesita estilos
-        basados en el viewport, prefiere <BlogInlineCode>@container</BlogInlineCode>{" "}
-        sobre <BlogInlineCode>@media</BlogInlineCode>.
+        basados en el viewport, prefiere{" "}
+        <BlogInlineCode>@container</BlogInlineCode> sobre{" "}
+        <BlogInlineCode>@media</BlogInlineCode>.
       </BlogCallout>
 
       <BlogH3 id="has">El selector :has()</BlogH3>
 
       <BlogP>
         <BlogInlineCode>:has()</BlogInlineCode> selecciona un elemento porque{" "}
-        <em>contiene</em> a otro. Es un selector relacional y resuelve el 90%
-        de los casos que antes exigían JavaScript (como estilos "padre si hay
+        <em>contiene</em> a otro. Es un selector relacional y resuelve el 90% de
+        los casos que antes exigían JavaScript (como estilos "padre si hay
         hijo"):
       </BlogP>
 
@@ -546,16 +545,16 @@ export default function CssAvanzadoContent() {
 
       <BlogP>
         Sin subgrid, tres tarjetas con contenido de alturas distintas tendrían
-        sus pies de página desalineados. Con subgrid, todas comparten las
-        mismas pistas y los botones quedan alineados en la misma fila.
+        sus pies de página desalineados. Con subgrid, todas comparten las mismas
+        pistas y los botones quedan alineados en la misma fila.
       </BlogP>
 
       <BlogH3 id="funciones-modernas">Funciones modernas</BlogH3>
 
       <BlogP>
-        <BlogInlineCode>clamp()</BlogInlineCode> fija un valor entre un mínimo
-        y un máximo. Es la herramienta reina de la tipografía fluida, sin
-        media queries:
+        <BlogInlineCode>clamp()</BlogInlineCode> fija un valor entre un mínimo y
+        un máximo. Es la herramienta reina de la tipografía fluida, sin media
+        queries:
       </BlogP>
 
       <BlogCode>{`/* font-size fluido: nunca menor de 1rem, nunca mayor de 2.5rem */
@@ -571,9 +570,8 @@ h1 {
       <BlogP>
         <BlogInlineCode>min()</BlogInlineCode> y{" "}
         <BlogInlineCode>max()</BlogInlineCode> eligen el menor o mayor de una
-        lista de valores, y{" "}
-        <BlogInlineCode>aspect-ratio</BlogInlineCode> fija la proporción sin
-        conocer ni un ancho ni un alto:
+        lista de valores, y <BlogInlineCode>aspect-ratio</BlogInlineCode> fija
+        la proporción sin conocer ni un ancho ni un alto:
       </BlogP>
 
       <BlogCode>{`/* El video nunca ocupa más del 60% del contenedor */
@@ -615,16 +613,15 @@ h1 {
 
       <BlogCallout type="info">
         La gran ventaja frente a un preprocesador: las custom properties son{" "}
-        <strong>dinámicas</strong>. Cambiar el valor de una variable (desde JS
-        o desde una media query) re-renderiza todos los usos en caliente, sin
+        <strong>dinámicas</strong>. Cambiar el valor de una variable (desde JS o
+        desde una media query) re-renderiza todos los usos en caliente, sin
         recompilar. Eso las convierte en el mecanismo ideal para temas.
       </BlogCallout>
 
       <BlogP>
         Con <BlogInlineCode>calc()</BlogInlineCode> se pueden derivar valores
-        nuevos a partir de variables, y{" "}
-        <BlogInlineCode>var()</BlogInlineCode> acepta un valor de respaldo si
-        la variable no existe:
+        nuevos a partir de variables, y <BlogInlineCode>var()</BlogInlineCode>{" "}
+        acepta un valor de respaldo si la variable no existe:
       </BlogP>
 
       <BlogCode>{`.tarjeta {
@@ -694,13 +691,14 @@ document.documentElement.setAttribute("data-theme", temaGuardado);`}</BlogCode>
       <BlogH2 id="rendimiento">Rendimiento de animaciones</BlogH2>
 
       <BlogP>
-        No todas las propiedades se animan igual de barato. El navegador
-        ejecuta las animaciones en capas distintas y solo{" "}
+        No todas las propiedades se animan igual de barato. El navegador ejecuta
+        las animaciones en capas distintas y solo{" "}
         <BlogInlineCode>transform</BlogInlineCode> y{" "}
-        <BlogInlineCode>opacity</BlogInlineCode> se procesan en la GPU sin
-        tocar el layout. Animar <BlogInlineCode>width</BlogInlineCode>,{" "}
-        <BlogInlineCode>top</BlogInlineCode> o <BlogInlineCode>box-shadow</BlogInlineCode>{" "}
-        fuerza recálculos de layout y paint en cada frame:
+        <BlogInlineCode>opacity</BlogInlineCode> se procesan en la GPU sin tocar
+        el layout. Animar <BlogInlineCode>width</BlogInlineCode>,{" "}
+        <BlogInlineCode>top</BlogInlineCode> o{" "}
+        <BlogInlineCode>box-shadow</BlogInlineCode> fuerza recálculos de layout
+        y paint en cada frame:
       </BlogP>
 
       <BlogCode>{`/* Caro: recalcula layout en cada frame */
@@ -763,9 +761,9 @@ document.documentElement.setAttribute("data-theme", temaGuardado);`}</BlogCode>
         Regla de oro del rendimiento de UI: anima siempre{" "}
         <BlogInlineCode>transform</BlogInlineCode> y{" "}
         <BlogInlineCode>opacity</BlogInlineCode>. Si necesitas un movimiento
-        "visual" de layout (altura, ancho), simúlalo con transformaciones o
-        usa <BlogInlineCode>grid-template-rows</BlogInlineCode> 0fr → 1fr, que
-        el navegador optimiza nativamente.
+        "visual" de layout (altura, ancho), simúlalo con transformaciones o usa{" "}
+        <BlogInlineCode>grid-template-rows</BlogInlineCode> 0fr → 1fr, que el
+        navegador optimiza nativamente.
       </BlogCallout>
 
       <BlogH2 id="sass-postcss">Sass y PostCSS en breve</BlogH2>
@@ -778,8 +776,8 @@ document.documentElement.setAttribute("data-theme", temaGuardado);`}</BlogCode>
 
       <BlogUl>
         <BlogLi>
-          <strong>Anidamiento:</strong> escribir selectores dentro de otros.
-          Hoy CSS nativo también lo soporta, con reglas propias.
+          <strong>Anidamiento:</strong> escribir selectores dentro de otros. Hoy
+          CSS nativo también lo soporta, con reglas propias.
         </BlogLi>
         <BlogLi>
           <strong>Mixins:</strong> bloques de estilos reutilizables con
@@ -811,12 +809,12 @@ document.documentElement.setAttribute("data-theme", temaGuardado);`}</BlogCode>
 }`}</BlogCode>
 
       <BlogCallout type="warn">
-        Si empiezas un proyecto nuevo hoy, pregúntate si lo necesitas.
-        Tailwind, CSS Modules, Lightning CSS o PostCSS cubren la mayoría de
-        casos y el CSS nativo (custom properties, nesting,{" "}
-        <BlogInlineCode>@container</BlogInlineCode>) ha absorbido las
-        features más demandadas. Sass sigue siendo excelente para codebases
-        grandes que ya lo usan.
+        Si empiezas un proyecto nuevo hoy, pregúntate si lo necesitas. Tailwind,
+        CSS Modules, Lightning CSS o PostCSS cubren la mayoría de casos y el CSS
+        nativo (custom properties, nesting,{" "}
+        <BlogInlineCode>@container</BlogInlineCode>) ha absorbido las features
+        más demandadas. Sass sigue siendo excelente para codebases grandes que
+        ya lo usan.
       </BlogCallout>
 
       <BlogP>
@@ -952,13 +950,13 @@ html.setAttribute("data-theme", actual === "oscuro" ? "claro" : "oscuro");`}
       <hr className="border-black/8 dark:border-white/8 my-8" />
 
       <BlogP>
-        CSS moderno es un lenguaje de verdad: animaciones con control de
-        tiempo, layouts que responden a su contenedor y sistemas de temas
-        dinámicos, todo sin JavaScript. La clave está en combinar bien las
-        piezas — transiciones para estados, keyframes para secuencias, custom
-        properties para datos — y en animar solo lo que la GPU puede hacer
-        rápido. Con esto ya tienes la base para construir interfaces que se
-        sienten vivas y que rinden.
+        CSS moderno es un lenguaje de verdad: animaciones con control de tiempo,
+        layouts que responden a su contenedor y sistemas de temas dinámicos,
+        todo sin JavaScript. La clave está en combinar bien las piezas —
+        transiciones para estados, keyframes para secuencias, custom properties
+        para datos — y en animar solo lo que la GPU puede hacer rápido. Con esto
+        ya tienes la base para construir interfaces que se sienten vivas y que
+        rinden.
       </BlogP>
     </article>
   );

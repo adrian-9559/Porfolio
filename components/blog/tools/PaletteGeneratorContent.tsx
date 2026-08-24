@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
+import { useT } from "@/hooks/useT";
 
 // ── Color math ────────────────────────────────────────────────────────────────
 
@@ -342,7 +343,7 @@ function evaluatePalette(colors: PaletteColor[]): {
 
 // ── Components ────────────────────────────────────────────────────────────────
 
-function ScoreRing({ value }: { value: number }) {
+function ScoreRing({ value, t }: { value: number; t: (key: string) => string }) {
   const radius = 52;
   const circ = 2 * Math.PI * radius;
   const dash = (value / 100) * circ;
@@ -356,12 +357,12 @@ function ScoreRing({ value }: { value: number }) {
           : "#ef4444";
   const label =
     value >= 80
-      ? "Excelente"
+      ? t("blog.paletteGenerator.scoreExcellent")
       : value >= 60
-        ? "Buena"
+        ? t("blog.paletteGenerator.scoreGood")
         : value >= 40
-          ? "Regular"
-          : "Mejorable";
+          ? t("blog.paletteGenerator.scoreFair")
+          : t("blog.paletteGenerator.scorePoor");
 
   return (
     <div className="flex flex-col items-center gap-1">
@@ -408,9 +409,11 @@ function ScoreRing({ value }: { value: number }) {
 function ColorSwatch({
   color,
   onChange,
+  t,
 }: {
   color: PaletteColor;
   onChange: (hex: string) => void;
+  t: (key: string) => string;
 }) {
   const [editing, setEditing] = useState(false);
   const [inputVal, setInputVal] = useState(color.hex);
@@ -436,12 +439,12 @@ function ColorSwatch({
   }
 
   const roleBadge: Record<PaletteColor["role"], string> = {
-    bg: "Fondo",
-    surface: "Superficie",
-    primary: "Primario",
-    secondary: "Secundario",
-    accent: "Acento",
-    text: "Texto",
+    bg: t("blog.paletteGenerator.roleBg"),
+    surface: t("blog.paletteGenerator.roleSurface"),
+    primary: t("blog.paletteGenerator.rolePrimary"),
+    secondary: t("blog.paletteGenerator.roleSecondary"),
+    accent: t("blog.paletteGenerator.roleAccent"),
+    text: t("blog.paletteGenerator.roleText"),
   };
 
   return (
@@ -524,7 +527,7 @@ function ColorSwatch({
           className="text-[10px] text-[#aeaeb2] hover:text-[#6e6e73] dark:hover:text-[#aeaeb2] transition-colors text-left"
           onClick={copy}
         >
-          {copied ? "✓ Copiado" : "Copiar HEX"}
+          {copied ? t("blog.paletteGenerator.copiedHex") : t("blog.paletteGenerator.copyHex")}
         </button>
       </div>
     </div>
@@ -663,6 +666,7 @@ const PRESETS: { label: string; primary: string; secondary: string }[] = [
 ];
 
 export default function PaletteGeneratorContent() {
+  const { t } = useT();
   const [primary, setPrimary] = useState("#6366f1");
   const [secondary, setSecondary] = useState("#f97316");
   const [colors, setColors] = useState<PaletteColor[]>([]);
@@ -704,7 +708,7 @@ export default function PaletteGeneratorContent() {
           {/* Primary picker */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wide">
-              Color primario
+              {t("blog.paletteGenerator.primaryColor")}
             </label>
             <div className="flex items-center gap-2">
               <label
@@ -736,7 +740,7 @@ export default function PaletteGeneratorContent() {
           {/* Secondary picker */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wide">
-              Color secundario
+              {t("blog.paletteGenerator.secondaryColor")}
             </label>
             <div className="flex items-center gap-2">
               <label
@@ -768,7 +772,7 @@ export default function PaletteGeneratorContent() {
           {/* Score pill */}
           <div className="ml-auto flex flex-col items-end gap-0.5">
             <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
-              Puntuación
+              {t("blog.paletteGenerator.score")}
             </span>
             <span className={`text-3xl font-bold tabular-nums ${scoreColor}`}>
               {score.total}
@@ -780,7 +784,7 @@ export default function PaletteGeneratorContent() {
         {/* Presets */}
         <div className="mt-4 pt-4 border-t border-black/6 dark:border-white/6">
           <p className="text-xs font-medium text-[#aeaeb2] dark:text-[#636366] mb-2">
-            Presets rápidos
+              {t("blog.paletteGenerator.quickPresets")}
           </p>
           <div className="flex flex-wrap gap-2">
             {PRESETS.map((preset) => (
@@ -820,10 +824,10 @@ export default function PaletteGeneratorContent() {
             onClick={() => setActiveTab(tab)}
           >
             {tab === "palette"
-              ? "🎨 Paleta"
+              ? t("blog.paletteGenerator.tabPalette")
               : tab === "preview"
-                ? "👁 Vista previa"
-                : "📊 Análisis"}
+                ? t("blog.paletteGenerator.tabPreview")
+                : t("blog.paletteGenerator.tabScore")}
           </button>
         ))}
       </div>
@@ -832,9 +836,7 @@ export default function PaletteGeneratorContent() {
       {activeTab === "palette" && (
         <div>
           <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mb-4">
-            Haz clic en cualquier color para cambiar su valor. Pulsa el bloque
-            de color para abrir el selector nativo, o el HEX para editar
-            manualmente.
+              {t("blog.paletteGenerator.paletteHint")}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {colors.map((c) => (
@@ -842,6 +844,7 @@ export default function PaletteGeneratorContent() {
                 key={c.id}
                 color={c}
                 onChange={(hex) => updateColor(c.id, hex)}
+                t={t}
               />
             ))}
           </div>
@@ -849,7 +852,7 @@ export default function PaletteGeneratorContent() {
           {/* CSS export */}
           <details className="mt-6">
             <summary className="text-sm font-medium text-[#6e6e73] dark:text-[#86868b] cursor-pointer hover:text-[#1d1d1f] dark:hover:text-white transition-colors select-none">
-              Exportar como CSS variables →
+              {t("blog.paletteGenerator.exportCss")}
             </summary>
             <pre className="mt-3 bg-[#0d1117] rounded-xl p-4 overflow-x-auto text-xs text-[#e6edf3] leading-relaxed">
               <code>{`:root {\n${colors.map((c) => `  --color-${c.id}: ${c.hex.toUpperCase()};`).join("\n")}\n}`}</code>
@@ -862,7 +865,7 @@ export default function PaletteGeneratorContent() {
       {activeTab === "preview" && (
         <div className="space-y-4">
           <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Previsualización de cómo quedaría la paleta en una interfaz real.
+              {t("blog.paletteGenerator.previewHint")}
           </p>
           <PreviewUI colors={colors} />
         </div>
@@ -872,7 +875,7 @@ export default function PaletteGeneratorContent() {
       {activeTab === "score" && (
         <div className="space-y-4">
           <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6 flex flex-col sm:flex-row gap-6 items-center">
-            <ScoreRing value={score.total} />
+            <ScoreRing value={score.total} t={t} />
             <div className="flex-1 space-y-3 w-full">
               {score.details.map((d) => {
                 const pct = (d.score / d.max) * 100;
@@ -916,15 +919,15 @@ export default function PaletteGeneratorContent() {
           {/* WCAG pairs */}
           <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5">
             <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-3">
-              Contraste entre pares clave (WCAG)
+              {t("blog.paletteGenerator.contrastTitle")}
             </h3>
             <div className="space-y-2">
               {[
-                ["text", "bg", "Texto sobre fondo"],
-                ["text", "surface", "Texto sobre superficie"],
-                ["primary", "bg", "Primario sobre fondo"],
-                ["secondary", "bg", "Secundario sobre fondo"],
-                ["accent", "bg", "Acento sobre fondo"],
+                ["text", "bg", t("blog.paletteGenerator.textOnBg")],
+                ["text", "surface", t("blog.paletteGenerator.textOnSurface")],
+                ["primary", "bg", t("blog.paletteGenerator.primaryOnBg")],
+                ["secondary", "bg", t("blog.paletteGenerator.secondaryOnBg")],
+                ["accent", "bg", t("blog.paletteGenerator.accentOnBg")],
               ].map(([a, b, label]) => {
                 const hexA = colors.find((c) => c.id === a)?.hex ?? "#000";
                 const hexB = colors.find((c) => c.id === b)?.hex ?? "#fff";

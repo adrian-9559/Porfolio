@@ -2,9 +2,9 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { PDFDocument, rgb } from "pdf-lib";
 import * as pdfjs from "pdfjs-dist";
+import { useT } from "@/hooks/useT";
 
-const PDFJS_VERSION = "6.1.200";
-const WORKER = `https://unpkg.com/pdfjs-dist@${PDFJS_VERSION}/build/pdf.worker.min.mjs`;
+const WORKER = "/pdf.worker.min.mjs";
 
 type Annotation = {
   type: "text" | "rect" | "circle" | "line";
@@ -44,13 +44,8 @@ function hexToRgb(hex: string) {
   };
 }
 
-let uidCounter = 0;
-
-function uid() {
-  return ++uidCounter;
-}
-
 export default function PdfEditorContent() {
+  const { t } = useT();
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [pages, setPages] = useState<PageMeta[]>([]);
@@ -71,17 +66,19 @@ export default function PdfEditorContent() {
   const [color, setColor] = useState("#1d1d1f");
   const [fillColor, setFillColor] = useState("transparent");
   const [fontSize, setFontSize] = useState(16);
-  const [editText, setEditText] = useState("");
   const [drag, setDrag] = useState<{
-    type: "move" | "create";
+    type: "move" | "create" | "resize";
     pi: number;
     ai: number | null;
     startX: number;
     startY: number;
     annX: number;
     annY: number;
+    origW: number;
+    origH: number;
   } | null>(null);
 
+  const uidRef = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const mergeRef = useRef<HTMLInputElement>(null);
   const pageRef = useRef<HTMLDivElement>(null);
@@ -90,11 +87,39 @@ export default function PdfEditorContent() {
     pdfjs.GlobalWorkerOptions.workerSrc = WORKER;
   }, []);
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (
+        !selAnn ||
+        editPageIdx === null ||
+        (e.target as HTMLElement).tagName === "INPUT"
+      )
+        return;
+
+      if (e.key === "Delete" || e.key === "Backspace") {
+        e.preventDefault();
+        deleteAnnotation(selAnn.p, selAnn.a);
+      }
+
+      if (e.key === "Escape") {
+        setSelAnn(null);
+        setTool("select");
+      }
+    };
+
+    window.addEventListener("keydown", handler);
+
+    return () => window.removeEventListener("keydown", handler);
+  }, [selAnn, editPageIdx]);
+
   const load = useCallback(async (bytes: ArrayBuffer) => {
     setLoading(true);
     setError("");
     try {
-      const doc = await PDFDocument.load(bytes);
+      const doc = await PDFDocument.load(bytes, {
+        ignoreEncryption: true,
+        updateMetadata: false,
+      });
       const n = doc.getPageCount();
 
       setOriginalBytes(bytes);
@@ -135,18 +160,23 @@ export default function PdfEditorContent() {
       setPreviews(urls);
       setEditPreviews(editUrls);
       setPdfPageSizes(sizes);
-    } catch {
-      setError(
-        "No se pudo cargar el PDF. Asegúrate de que sea un archivo PDF válido.",
-      );
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+
+      console.error("PDF load error:", e);
+      setError(`${t("blog.pdfEditor.loadError")}\n${msg}`);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   const handleFile = (f: File) => {
-    if (f.type !== "application/pdf") {
-      setError("Solo se aceptan archivos PDF.");
+    const isPdf =
+      f.type === "application/pdf" ||
+      f.name.toLowerCase().endsWith(".pdf");
+
+    if (!isPdf) {
+      setError(t("blog.pdfEditor.onlyPdf"));
 
       return;
     }
@@ -168,6 +198,11 @@ export default function PdfEditorContent() {
     setPreviews((prev) => prev.filter((_, i) => i !== idx));
     setEditPreviews((prev) => prev.filter((_, i) => i !== idx));
     setAnnotations((prev) => prev.filter((_, i) => i !== idx));
+    if (editPageIdx !== null) {
+      if (editPageIdx === idx) setEditPageIdx(null);
+      else if (editPageIdx > idx) setEditPageIdx(editPageIdx - 1);
+    }
+    setSelAnn(null);
   };
 
   const movePage = (idx: number, dir: -1 | 1) => {
@@ -202,6 +237,9 @@ export default function PdfEditorContent() {
 
       return n;
     });
+    if (editPageIdx === idx) setEditPageIdx(to);
+    else if (editPageIdx === to) setEditPageIdx(idx);
+    setSelAnn(null);
   };
 
   const handleMerge = async () => {
@@ -215,7 +253,7 @@ export default function PdfEditorContent() {
         ...(await Promise.all(mergeFiles.map((f) => f.arrayBuffer()))),
       ];
       const allDocs = await Promise.all(
-        allBytes.map((b) => PDFDocument.load(b)),
+        allBytes.map((b) => PDFDocument.load(b, { ignoreEncryption: true })),
       );
 
       for (const doc of allDocs) {
@@ -231,7 +269,7 @@ export default function PdfEditorContent() {
       setFile(mergedFile);
       await load(bytes);
     } catch {
-      setError("Error al combinar PDFs.");
+      setError(t("blog.pdfEditor.mergeError"));
     } finally {
       setLoading(false);
     }
@@ -242,9 +280,14 @@ export default function PdfEditorContent() {
     setLoading(true);
     setError("");
     try {
-      const source = await PDFDocument.load(originalBytes.slice(0));
+      const source = await PDFDocument.load(originalBytes.slice(0), { ignoreEncryption: true });
       const out = await PDFDocument.create();
-      const helv = await out.embedFont("Helvetica");
+      const hasTextAnns = annotations.some((pageAnns) =>
+        pageAnns.some((a) => a.type === "text"),
+      );
+      const helv = hasTextAnns
+        ? await out.embedFont("Helvetica")
+        : undefined;
 
       for (let pi = 0; pi < pages.length; pi++) {
         const p = pages[pi];
@@ -274,6 +317,7 @@ export default function PdfEditorContent() {
                 y: pdfH - ann.y - ann.fontSize,
                 size: ann.fontSize,
                 color: rgb(col.r, col.g, col.b),
+                font: helv,
               });
               break;
             }
@@ -342,7 +386,7 @@ export default function PdfEditorContent() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      setError("Error al generar el PDF.");
+      setError(t("blog.pdfEditor.downloadError"));
     } finally {
       setLoading(false);
     }
@@ -353,6 +397,7 @@ export default function PdfEditorContent() {
     setPages([]);
     setPreviews([]);
     setEditPreviews([]);
+    setPdfPageSizes([]);
     setOriginalBytes(null);
     setMergeFiles([]);
     setEditPageIdx(null);
@@ -426,12 +471,11 @@ export default function PdfEditorContent() {
     if (tool === "select") {
       e.stopPropagation();
 
-      // Check if clicked on an annotation — handled by individual annotation handlers
       return;
     }
 
     if (tool === "text") {
-      const id = uid();
+      const id = ++uidRef.current;
 
       addAnnotation(pid, {
         type: "text",
@@ -439,7 +483,7 @@ export default function PdfEditorContent() {
         y: coords.y,
         width: 140,
         height: 32,
-        content: `Texto ${id}`,
+        content: `Text ${id}`,
         color,
         fontSize,
         fillColor: "transparent",
@@ -448,7 +492,6 @@ export default function PdfEditorContent() {
       return;
     }
 
-    // Shapes: start drag to create
     const ann: Annotation =
       tool === "rect"
         ? {
@@ -497,6 +540,8 @@ export default function PdfEditorContent() {
       startY: coords.y,
       annX: coords.x,
       annY: coords.y,
+      origW: 0,
+      origH: 0,
     });
   };
 
@@ -525,6 +570,14 @@ export default function PdfEditorContent() {
       updateAnnotation(drag.pi, drag.ai, {
         x: drag.annX + dx,
         y: drag.annY + dy,
+      });
+    } else if (drag.type === "resize" && drag.ai !== null) {
+      const dx = coords.x - drag.startX;
+      const dy = coords.y - drag.startY;
+
+      updateAnnotation(drag.pi, drag.ai, {
+        width: Math.max(drag.origW + dx, 10),
+        height: Math.max(drag.origH + dy, 10),
       });
     }
   };
@@ -555,6 +608,30 @@ export default function PdfEditorContent() {
       startY: coords.y,
       annX: annotations[pi][ai].x,
       annY: annotations[pi][ai].y,
+      origW: annotations[pi][ai].width,
+      origH: annotations[pi][ai].height,
+    });
+  };
+
+  const handleResizeMouseDown = (
+    pi: number,
+    ai: number,
+    e: React.MouseEvent,
+  ) => {
+    e.stopPropagation();
+    const coords = getCoords(e);
+
+    if (!coords) return;
+    setDrag({
+      type: "resize",
+      pi,
+      ai,
+      startX: coords.x,
+      startY: coords.y,
+      annX: annotations[pi][ai].x,
+      annY: annotations[pi][ai].y,
+      origW: annotations[pi][ai].width,
+      origH: annotations[pi][ai].height,
     });
   };
 
@@ -647,6 +724,7 @@ export default function PdfEditorContent() {
               borderRadius: "50%",
               cursor: "nwse-resize",
             }}
+            onMouseDown={(e) => handleResizeMouseDown(pi, ai, e)}
           />
         )}
       </div>
@@ -664,22 +742,25 @@ export default function PdfEditorContent() {
         <div className="space-y-3 mb-6">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50">
-              Editor
+              {t("blog.pdfEditor.badge")}
             </span>
             <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-              Uso libre
+              {t("blog.pdfEditor.freeUse")}
             </span>
           </div>
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">
-                Página {editPageIdx + 1} de {pages.length}
+                {t("blog.pdfEditor.pageOf", {
+                  current: editPageIdx + 1,
+                  total: pages.length,
+                })}
               </h1>
               <div className="flex items-center gap-1">
                 <button
                   className="p-1 rounded text-xs text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white disabled:opacity-30 transition-colors"
                   disabled={editPageIdx === 0}
-                  title="Página anterior"
+                  title={t("blog.pdfEditor.prevPage")}
                   onClick={() => {
                     setEditPageIdx(editPageIdx - 1);
                     setSelAnn(null);
@@ -691,7 +772,7 @@ export default function PdfEditorContent() {
                 <button
                   className="p-1 rounded text-xs text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white disabled:opacity-30 transition-colors"
                   disabled={editPageIdx >= pages.length - 1}
-                  title="Página siguiente"
+                  title={t("blog.pdfEditor.nextPage")}
                   onClick={() => {
                     setEditPageIdx(editPageIdx + 1);
                     setSelAnn(null);
@@ -708,7 +789,7 @@ export default function PdfEditorContent() {
                 disabled={loading}
                 onClick={download}
               >
-                Descargar PDF
+                {t("blog.pdfEditor.downloadPdf")}
               </button>
               <button
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/8 dark:bg-white/8 text-[#1d1d1f] dark:text-white hover:bg-black/12 dark:hover:bg-white/12 transition-colors"
@@ -717,7 +798,7 @@ export default function PdfEditorContent() {
                   setSelAnn(null);
                 }}
               >
-                ← Volver
+                {t("blog.pdfEditor.back")}
               </button>
             </div>
           </div>
@@ -725,24 +806,24 @@ export default function PdfEditorContent() {
 
         {/* Toolbar */}
         <div className="flex flex-wrap items-center gap-1.5 p-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 mb-4">
-          {(["select", "text", "rect", "circle", "line"] as const).map((t) => (
+          {(["select", "text", "rect", "circle", "line"] as const).map((toolType) => (
             <button
-              key={t}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${tool === t ? "bg-white dark:bg-[#1c1c22] text-amber-600 dark:text-amber-400 shadow-sm" : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"}`}
+              key={toolType}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${tool === toolType ? "bg-white dark:bg-[#1c1c22] text-amber-600 dark:text-amber-400 shadow-sm" : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"}`}
               onClick={() => {
-                setTool(t);
+                setTool(toolType);
                 setSelAnn(null);
               }}
             >
-              {t === "select"
-                ? "🖱 Mover"
-                : t === "text"
-                  ? "T Texto"
-                  : t === "rect"
-                    ? "▬ Rect"
-                    : t === "circle"
-                      ? "● Círculo"
-                      : "╱ Línea"}
+              {toolType === "select"
+                ? t("blog.pdfEditor.move")
+                : toolType === "text"
+                  ? t("blog.pdfEditor.text")
+                  : toolType === "rect"
+                    ? t("blog.pdfEditor.rect")
+                    : toolType === "circle"
+                      ? t("blog.pdfEditor.circle")
+                      : t("blog.pdfEditor.line")}
             </button>
           ))}
           <span className="w-px h-5 bg-black/8 dark:bg-white/8 mx-1" />
@@ -769,8 +850,8 @@ export default function PdfEditorContent() {
           ))}
           <span className="w-px h-5 bg-black/8 dark:bg-white/8 mx-1" />
           <div className="flex items-center gap-1 text-[10px] text-[#6e6e73] dark:text-[#86868b]">
-            <span>Fondo:</span>
-            {["transparent", ...COLORS].slice(0, 5).map((c) => (
+            <span>{t("blog.pdfEditor.background")}</span>
+            {["transparent", ...COLORS].map((c) => (
               <button
                 key={c}
                 className={`w-4 h-4 rounded-sm border ${fillColor === c ? "border-amber-500" : "border-black/20 dark:border-white/20"}`}
@@ -798,7 +879,7 @@ export default function PdfEditorContent() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt={`Página ${editPageIdx + 1}`}
+            alt={`Page ${editPageIdx + 1}`}
             className="w-full h-auto block pointer-events-none"
             draggable={false}
             src={editPreviews[editPageIdx]}
@@ -816,17 +897,17 @@ export default function PdfEditorContent() {
           <div className="mt-4 p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-black/8 dark:border-white/8 flex flex-wrap items-center gap-3">
             <span className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
               {pageAnns[sel].type === "text"
-                ? "Texto"
+                ? t("blog.pdfEditor.text")
                 : pageAnns[sel].type === "rect"
-                  ? "Rectángulo"
+                  ? t("blog.pdfEditor.rect")
                   : pageAnns[sel].type === "circle"
-                    ? "Círculo"
-                    : "Línea"}
+                    ? t("blog.pdfEditor.circle")
+                    : t("blog.pdfEditor.line")}
             </span>
             {pageAnns[sel].type === "text" && (
               <input
                 className="flex-1 min-w-[120px] p-1.5 text-xs rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white"
-                placeholder="Escribe el texto..."
+                placeholder="Type text..."
                 value={pageAnns[sel].content}
                 onChange={(e) =>
                   updateAnnotation(editPageIdx, sel, {
@@ -850,7 +931,7 @@ export default function PdfEditorContent() {
               className="px-2 py-1 rounded-lg text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors ml-auto"
               onClick={() => deleteAnnotation(editPageIdx, sel)}
             >
-              Eliminar
+              {t("blog.pdfEditor.delete")}
             </button>
           </div>
         )}
@@ -865,21 +946,20 @@ export default function PdfEditorContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50">
-            Herramienta
+            {t("blog.pdfEditor.badge")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.pdfEditor.freeUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Editor de PDF
+          {t("blog.pdfEditor.uploadTitle")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Sube un PDF para editar sus páginas: añade texto, formas, rotación y
-          más. Todo en el navegador.
+          {t("blog.pdfEditor.uploadDesc")}
         </p>
       </div>
 
@@ -916,9 +996,9 @@ export default function PdfEditorContent() {
               />
             </svg>
             <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
-              Arrastra un PDF aquí o{" "}
+              {t("blog.pdfEditor.dragHere")}
               <span className="text-amber-600 dark:text-amber-400 font-semibold">
-                selecciona un archivo
+                {t("blog.pdfEditor.selectFile")}
               </span>
             </p>
             <input
@@ -939,7 +1019,7 @@ export default function PdfEditorContent() {
           <div className="flex items-center justify-center gap-2 py-8">
             <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
             <span className="text-sm text-[#6e6e73] dark:text-[#86868b]">
-              Procesando PDF…
+              {t("blog.pdfEditor.processing")}
             </span>
           </div>
         )}
@@ -968,8 +1048,7 @@ export default function PdfEditorContent() {
                     {file.name}
                   </p>
                   <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
-                    {pages.length} página{pages.length !== 1 ? "s" : ""} — clic
-                    para editar
+                    {t("blog.pdfEditor.pagesLabel", { count: pages.length })}
                   </p>
                 </div>
               </div>
@@ -978,14 +1057,14 @@ export default function PdfEditorContent() {
                   className="px-3 py-1.5 rounded-lg text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
                   onClick={reset}
                 >
-                  Quitar
+                  {t("blog.pdfEditor.remove")}
                 </button>
                 <button
                   className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white transition-colors disabled:opacity-40"
                   disabled={pages.length === 0 || loading}
                   onClick={download}
                 >
-                  Descargar PDF
+                  {t("blog.pdfEditor.downloadPdf")}
                 </button>
               </div>
             </div>
@@ -993,14 +1072,14 @@ export default function PdfEditorContent() {
             {/* Merge section */}
             <div className="p-4 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-black/8 dark:border-white/8 space-y-3">
               <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-                Combinar con otro PDF
+                {t("blog.pdfEditor.mergeWith")}
               </p>
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/8 dark:bg-white/8 text-[#1d1d1f] dark:text-white hover:bg-black/12 dark:hover:bg-white/12 transition-colors"
                   onClick={() => mergeRef.current?.click()}
                 >
-                  + Añadir PDF
+                  {t("blog.pdfEditor.addPdf")}
                 </button>
                 <input
                   ref={mergeRef}
@@ -1016,15 +1095,14 @@ export default function PdfEditorContent() {
                 {mergeFiles.length > 0 && (
                   <>
                     <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
-                      {mergeFiles.length} seleccionado
-                      {mergeFiles.length !== 1 ? "s" : ""}
+                      {t("blog.pdfEditor.selected", { n: mergeFiles.length })}
                     </span>
                     <button
                       className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white transition-colors disabled:opacity-40"
                       disabled={loading}
                       onClick={handleMerge}
                     >
-                      Combinar
+                      {t("blog.pdfEditor.merge")}
                     </button>
                   </>
                 )}
@@ -1045,7 +1123,7 @@ export default function PdfEditorContent() {
                           )
                         }
                       >
-                        Quitar
+                        {t("blog.pdfEditor.remove")}
                       </button>
                     </div>
                   ))}
@@ -1056,7 +1134,7 @@ export default function PdfEditorContent() {
             {/* Page grid */}
             <div className="space-y-2">
               <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-                Páginas ({pages.length})
+                {t("blog.pdfEditor.pagesCount", { n: pages.length })}
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {pages.map((p, i) => (
@@ -1072,14 +1150,14 @@ export default function PdfEditorContent() {
                       {previews[i] ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          alt={`Página ${i + 1}`}
+                          alt={`Page ${i + 1}`}
                           className="max-w-full max-h-full object-contain transition-transform"
                           src={previews[i]}
                           style={{ transform: `rotate(${p.rotation}deg)` }}
                         />
                       ) : (
                         <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-                          Cargando…
+                          {t("blog.pdfEditor.loading")}
                         </span>
                       )}
                     </div>
@@ -1107,14 +1185,14 @@ export default function PdfEditorContent() {
                     >
                       <button
                         className="p-1 rounded text-[10px] text-[#6e6e73] dark:text-[#86868b] hover:text-amber-600 dark:hover:text-amber-400 hover:bg-black/8 dark:hover:bg-white/8 transition-colors"
-                        title="Rotar 90° izquierda"
+                        title={t("blog.pdfEditor.rotateLeft")}
                         onClick={() => rotatePage(i, -1)}
                       >
                         ↺
                       </button>
                       <button
                         className="p-1 rounded text-[10px] text-[#6e6e73] dark:text-[#86868b] hover:text-amber-600 dark:hover:text-amber-400 hover:bg-black/8 dark:hover:bg-white/8 transition-colors"
-                        title="Rotar 90° derecha"
+                        title={t("blog.pdfEditor.rotateRight")}
                         onClick={() => rotatePage(i, 1)}
                       >
                         ↻
@@ -1122,7 +1200,7 @@ export default function PdfEditorContent() {
                       <button
                         className="p-1 rounded text-[10px] text-[#6e6e73] dark:text-[#86868b] hover:text-amber-600 dark:hover:text-amber-400 hover:bg-black/8 dark:hover:bg-white/8 transition-colors disabled:opacity-30"
                         disabled={i === 0}
-                        title="Mover arriba"
+                        title={t("blog.pdfEditor.moveUp")}
                         onClick={() => movePage(i, -1)}
                       >
                         ↑
@@ -1130,14 +1208,14 @@ export default function PdfEditorContent() {
                       <button
                         className="p-1 rounded text-[10px] text-[#6e6e73] dark:text-[#86868b] hover:text-amber-600 dark:hover:text-amber-400 hover:bg-black/8 dark:hover:bg-white/8 transition-colors disabled:opacity-30"
                         disabled={i === pages.length - 1}
-                        title="Mover abajo"
+                        title={t("blog.pdfEditor.moveDown")}
                         onClick={() => movePage(i, 1)}
                       >
                         ↓
                       </button>
                       <button
                         className="p-1 rounded text-[10px] text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-                        title="Eliminar página"
+                        title={t("blog.pdfEditor.deletePage")}
                         onClick={() => removePage(i)}
                       >
                         ✕

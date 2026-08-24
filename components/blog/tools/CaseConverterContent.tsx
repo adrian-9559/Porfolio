@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useT } from "@/hooks/useT";
 
 const cases = [
   { id: "lower", label: "lowercase", fn: (s: string) => s.toLowerCase() },
@@ -44,6 +45,7 @@ const cases = [
 ] as const;
 
 export default function CaseConverterContent() {
+  const { t } = useT();
   const [input, setInput] = useState("");
   const [active, setActive] = useState("camel");
   const [copied, setCopied] = useState(false);
@@ -62,21 +64,20 @@ export default function CaseConverterContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50">
-            Herramienta
+            {t("blog.caseConverter.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.caseConverter.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Conversor de mayúsculas
+          {t("blog.caseConverter.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Convierte textos entre camelCase, snake_case, kebab-case, PascalCase y
-          más.
+          {t("blog.caseConverter.desc")}
         </p>
       </div>
 
@@ -95,11 +96,11 @@ export default function CaseConverterContent() {
 
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Texto original
+            {t("blog.caseConverter.originalText")}
           </p>
           <textarea
             className="w-full h-24 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-rose-400 dark:focus:border-rose-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-            placeholder="mi texto de ejemplo"
+            placeholder={t("blog.caseConverter.placeholder")}
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -115,7 +116,7 @@ export default function CaseConverterContent() {
                 className="text-xs text-rose-600 dark:text-rose-400 hover:underline"
                 onClick={copy}
               >
-                {copied ? "¡Copiado!" : "Copiar"}
+                {copied ? t("blog.caseConverter.copied") : t("blog.caseConverter.copy")}
               </button>
             </div>
             <div className="p-3 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/40 font-mono text-sm text-[#1d1d1f] dark:text-white break-all">

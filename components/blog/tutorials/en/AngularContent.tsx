@@ -125,10 +125,9 @@ export default function AngularContentEn() {
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
         Angular is Google's framework for building complete web applications:
-        components, routing, dependency injection, and HTTP included out of
-        the box. This tutorial takes you from creating your first project to
-        an app with services and routes. Conceptual prerequisite:
-        TypeScript.
+        components, routing, dependency injection, and HTTP included out of the
+        box. This tutorial takes you from creating your first project to an app
+        with services and routes. Conceptual prerequisite: TypeScript.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -137,10 +136,10 @@ export default function AngularContentEn() {
 
       <BlogP>
         Angular is a complete frontend framework maintained by Google. Unlike
-        libraries that only render views, Angular gives you everything you
-        need for an enterprise application out of the box: a component system
-        with templates, a router, forms, an HTTP client, dependency
-        injection, and integrated testing tools.
+        libraries that only render views, Angular gives you everything you need
+        for an enterprise application out of the box: a component system with
+        templates, a router, forms, an HTTP client, dependency injection, and
+        integrated testing tools.
       </BlogP>
 
       <BlogUl>
@@ -165,8 +164,8 @@ export default function AngularContentEn() {
 
       <BlogCallout type="info">
         Since Angular 17, <BlogInlineCode>standalone</BlogInlineCode> mode is
-        the norm: components no longer need NgModules to be used. Everything
-        in this tutorial uses that modern approach.
+        the norm: components no longer need NgModules to be used. Everything in
+        this tutorial uses that modern approach.
       </BlogCallout>
 
       <BlogH2 id="instalar">Install and create a project</BlogH2>
@@ -186,8 +185,8 @@ ng serve --open   # http://localhost:4200`}</BlogCode>
 
       <BlogP>
         The <BlogInlineCode>--standalone</BlogInlineCode> flag generates a
-        project without NgModules, with independent components. If you
-        forget it, Angular 17+ asks you interactively.
+        project without NgModules, with independent components. If you forget
+        it, Angular 17+ asks you interactively.
       </BlogP>
 
       <BlogCallout type="warn">
@@ -221,8 +220,8 @@ ng serve --open   # http://localhost:4200`}</BlogCode>
       <BlogH3 id="bootstrap">Bootstrapping: main.ts</BlogH3>
 
       <BlogP>
-        <BlogInlineCode>main.ts</BlogInlineCode> starts the application
-        using the root component and the global configuration:
+        <BlogInlineCode>main.ts</BlogInlineCode> starts the application using
+        the root component and the global configuration:
       </BlogP>
 
       <BlogCode>{`import { bootstrapApplication } from '@angular/platform-browser';
@@ -235,8 +234,8 @@ bootstrapApplication(AppComponent, appConfig)
       <BlogH3 id="app-config">Configuration: app.config.ts</BlogH3>
 
       <BlogP>
-        This is where the providers shared by the whole app are registered.
-        A freshly created project already includes the router:
+        This is where the providers shared by the whole app are registered. A
+        freshly created project already includes the router:
       </BlogP>
 
       <BlogCode>{`import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
@@ -260,8 +259,8 @@ export const appConfig: ApplicationConfig = {
       <BlogP>
         A component is a TypeScript class decorated with{" "}
         <BlogInlineCode>@Component</BlogInlineCode> that defines the selector,
-        the template, and the styles. In standalone mode we declare
-        everything in a single file:
+        the template, and the styles. In standalone mode we declare everything
+        in a single file:
       </BlogP>
 
       <BlogCode>{`import { Component } from '@angular/core';
@@ -280,14 +279,15 @@ export class GreetingComponent {
 }`}</BlogCode>
 
       <BlogP>
-        <strong>Interpolation</strong> <BlogInlineCode>{"{{ }}"}
-        </BlogInlineCode> prints the value of a component property into the
-        HTML. Angular re-renders automatically when it changes.
+        <strong>Interpolation</strong>{" "}
+        <BlogInlineCode>{"{{ }}"}</BlogInlineCode> prints the value of a
+        component property into the HTML. Angular re-renders automatically when
+        it changes.
       </BlogP>
 
       <BlogP>
-        Modern templates use built-in <strong>control flow</strong> instead
-        of structural directives:
+        Modern templates use built-in <strong>control flow</strong> instead of
+        structural directives:
       </BlogP>
 
       <BlogCode>{`@if (user) {
@@ -303,10 +303,11 @@ export class GreetingComponent {
 }`}</BlogCode>
 
       <BlogCallout type="info">
-        <BlogInlineCode>@if</BlogInlineCode> and <BlogInlineCode>@for</BlogInlineCode>{" "}
-        are the recommended syntax since Angular 17. The legacy{" "}
-        <BlogInlineCode>*ngIf</BlogInlineCode> and <BlogInlineCode>*ngFor</BlogInlineCode>{" "}
-        still work but are deprecated in favor of the new control flow. The{" "}
+        <BlogInlineCode>@if</BlogInlineCode> and{" "}
+        <BlogInlineCode>@for</BlogInlineCode> are the recommended syntax since
+        Angular 17. The legacy <BlogInlineCode>*ngIf</BlogInlineCode> and{" "}
+        <BlogInlineCode>*ngFor</BlogInlineCode> still work but are deprecated in
+        favor of the new control flow. The{" "}
         <BlogInlineCode>track</BlogInlineCode> on{" "}
         <BlogInlineCode>@for</BlogInlineCode> is required and improves list
         rendering performance.
@@ -338,8 +339,8 @@ export class GreetingComponent {
           calls a component method.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>{"{{ }}"}</BlogInlineCode> displays the value,
-          always as text.
+          <BlogInlineCode>{"{{ }}"}</BlogInlineCode> displays the value, always
+          as text.
         </BlogLi>
       </BlogUl>
 
@@ -370,15 +371,14 @@ export class SearchComponent {
         <BlogInlineCode>[(ngModel)]</BlogInlineCode> is syntactic sugar for{" "}
         <BlogInlineCode>[ngModel]</BlogInlineCode> +{" "}
         <BlogInlineCode>(ngModelChange)</BlogInlineCode>. Understanding that
-        decomposition helps you write your own components with two-way
-        binding.
+        decomposition helps you write your own components with two-way binding.
       </BlogCallout>
 
       <BlogH2 id="directivas">Directives</BlogH2>
 
       <BlogP>
-        Directives change the behavior or appearance of elements. Angular
-        ships with several built-in ones:
+        Directives change the behavior or appearance of elements. Angular ships
+        with several built-in ones:
       </BlogP>
 
       <BlogCode>{`<!-- Built-in control flow -->
@@ -424,9 +424,9 @@ export class AlertComponent {
 }`}</BlogCode>
 
       <BlogP>
-        The general rule: <BlogInlineCode>@if/@for/@switch</BlogInlineCode>{" "}
-        for DOM structure, <BlogInlineCode>ngClass/ngStyle</BlogInlineCode>{" "}
-        for classes and styles, and custom attribute directives for reusable
+        The general rule: <BlogInlineCode>@if/@for/@switch</BlogInlineCode> for
+        DOM structure, <BlogInlineCode>ngClass/ngStyle</BlogInlineCode> for
+        classes and styles, and custom attribute directives for reusable
         behavior.
       </BlogP>
 
@@ -435,8 +435,8 @@ export class AlertComponent {
       <BlogP>
         A service is a class with reusable logic (HTTP calls, shared state,
         calculations). Angular's <strong>dependency injection</strong> (DI)
-        creates and delivers those instances wherever you ask for them,
-        without you managing the lifecycle:
+        creates and delivers those instances wherever you ask for them, without
+        you managing the lifecycle:
       </BlogP>
 
       <BlogCode>{`import { Injectable } from '@angular/core';
@@ -476,10 +476,12 @@ export class CounterComponent {
 }`}</BlogCode>
 
       <BlogCallout type="info">
-        <BlogInlineCode>inject()</BlogInlineCode> is the modern functional
-        form of injection, an alternative to the classic constructor{" "}
-        <BlogInlineCode>constructor(private svc: CounterService)</BlogInlineCode>.
-        It can only be called inside injection contexts (constructors, field
+        <BlogInlineCode>inject()</BlogInlineCode> is the modern functional form
+        of injection, an alternative to the classic constructor{" "}
+        <BlogInlineCode>
+          constructor(private svc: CounterService)
+        </BlogInlineCode>
+        . It can only be called inside injection contexts (constructors, field
         initializers, or provider factories).
       </BlogCallout>
 
@@ -504,8 +506,8 @@ export const appConfig: ApplicationConfig = {
 };`}</BlogCode>
 
       <BlogP>
-        Then the service injects <BlogInlineCode>HttpClient</BlogInlineCode>{" "}
-        and defines typed methods that return Observables:
+        Then the service injects <BlogInlineCode>HttpClient</BlogInlineCode> and
+        defines typed methods that return Observables:
       </BlogP>
 
       <BlogCode>{`import { Injectable, inject } from '@angular/core';
@@ -588,9 +590,9 @@ export const routes: Routes = [
 ];`}</BlogCode>
 
       <BlogP>
-        The root component includes <BlogInlineCode>router-outlet</BlogInlineCode>{" "}
-        (where the active route renders) and links with{" "}
-        <BlogInlineCode>routerLink</BlogInlineCode>:
+        The root component includes{" "}
+        <BlogInlineCode>router-outlet</BlogInlineCode> (where the active route
+        renders) and links with <BlogInlineCode>routerLink</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import { Component } from '@angular/core';
@@ -613,8 +615,7 @@ export class AppComponent {}`}</BlogCode>
       <BlogP>
         To read route parameters, enable{" "}
         <BlogInlineCode>withComponentInputBinding()</BlogInlineCode> when
-        registering the router. The parameter then arrives as a component
-        input:
+        registering the router. The parameter then arrives as a component input:
       </BlogP>
 
       <BlogCode>{`import { ApplicationConfig } from '@angular/core';
@@ -649,8 +650,9 @@ export class UserDetailComponent {
 }`}</BlogCode>
 
       <BlogCallout type="info">
-        Classic alternative: inject <BlogInlineCode>ActivatedRoute</BlogInlineCode>{" "}
-        and read <BlogInlineCode>snapshot.paramMap.get('id')</BlogInlineCode>.{" "}
+        Classic alternative: inject{" "}
+        <BlogInlineCode>ActivatedRoute</BlogInlineCode> and read{" "}
+        <BlogInlineCode>snapshot.paramMap.get('id')</BlogInlineCode>.{" "}
         <BlogInlineCode>withComponentInputBinding()</BlogInlineCode> is more
         declarative: the route passes the parameter like an input and your
         component stays testable in isolation.
@@ -806,11 +808,11 @@ export class PostsComponent {
       <hr className="border-black/8 dark:border-white/8 my-8" />
 
       <BlogP>
-        Angular shines in large projects where structure matters: its
-        dependency injection, router, and standalone mode give you a solid
-        foundation to scale from one component to an enterprise application
-        without losing control. Start with a small component, add services
-        when there is shared logic, and let the router organize the rest.
+        Angular shines in large projects where structure matters: its dependency
+        injection, router, and standalone mode give you a solid foundation to
+        scale from one component to an enterprise application without losing
+        control. Start with a small component, add services when there is shared
+        logic, and let the router organize the rest.
       </BlogP>
     </article>
   );

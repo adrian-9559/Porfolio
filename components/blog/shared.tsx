@@ -716,35 +716,87 @@ export function BlogTableOfContents({
 
 export function IconCode({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M8 9l-3 3 3 3M16 9l3 3-3 3M13.5 6l-3 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M8 9l-3 3 3 3M16 9l3 3-3 3M13.5 6l-3 12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconServer({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <rect x="3" y="4" width="18" height="7" rx="2" strokeWidth={2} />
-      <rect x="3" y="13" width="18" height="7" rx="2" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <rect height="7" rx="2" strokeWidth={2} width="18" x="3" y="4" />
+      <rect height="7" rx="2" strokeWidth={2} width="18" x="3" y="13" />
       <path d="M7 7.5h.01M7 16.5h.01" strokeLinecap="round" strokeWidth={2.5} />
     </svg>
   );
 }
 
-export function IconSparkles({ className = "w-4 h-4" }: { className?: string }) {
+export function IconSparkles({
+  className = "w-4 h-4",
+}: {
+  className?: string;
+}) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M19 15l.7 1.8L21.5 17.5l-1.8.7L19 20l-.7-1.8L16.5 17.5l1.8-.7L19 15z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M19 15l.7 1.8L21.5 17.5l-1.8.7L19 20l-.7-1.8L16.5 17.5l1.8-.7L19 15z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
-export function IconTerminal({ className = "w-4 h-4" }: { className?: string }) {
+export function IconTerminal({
+  className = "w-4 h-4",
+}: {
+  className?: string;
+}) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M4 17l6-5-6-5M12 19h8" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M4 17l6-5-6-5M12 19h8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }

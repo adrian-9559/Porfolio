@@ -284,8 +284,10 @@ export class AppModule {}`}</BlogCode>
         A <strong>controller</strong> defines the HTTP routes of a module. It is
         declared with <BlogInlineCode>@Controller('path')</BlogInlineCode> and
         each method exposes an endpoint with a method decorator:{" "}
-        <BlogInlineCode>@Get</BlogInlineCode>, <BlogInlineCode>@Post</BlogInlineCode>,{" "}
-        <BlogInlineCode>@Patch</BlogInlineCode>, <BlogInlineCode>@Delete</BlogInlineCode>:
+        <BlogInlineCode>@Get</BlogInlineCode>,{" "}
+        <BlogInlineCode>@Post</BlogInlineCode>,{" "}
+        <BlogInlineCode>@Patch</BlogInlineCode>,{" "}
+        <BlogInlineCode>@Delete</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
@@ -328,7 +330,8 @@ export class TasksController {
       <BlogP>
         Status codes are automatic: 200/201 for successful responses, and
         exceptions thrown from the service produce correct HTTP errors. For
-        responses with a specific code use <BlogInlineCode>@HttpCode(201)</BlogInlineCode>.
+        responses with a specific code use{" "}
+        <BlogInlineCode>@HttpCode(201)</BlogInlineCode>.
       </BlogP>
 
       <BlogH2 id="services">Services and dependency injection</BlogH2>
@@ -377,7 +380,8 @@ export class TasksService {
 }`}</BlogCode>
 
       <BlogCallout type="tip">
-        Throwing NestJS exceptions (<BlogInlineCode>NotFoundException</BlogInlineCode>,{" "}
+        Throwing NestJS exceptions (
+        <BlogInlineCode>NotFoundException</BlogInlineCode>,{" "}
         <BlogInlineCode>BadRequestException</BlogInlineCode>,{" "}
         <BlogInlineCode>UnauthorizedException</BlogInlineCode>...) in the
         service turns business logic into correct HTTP responses without
@@ -404,9 +408,7 @@ export class TasksService {
       <BlogCode>{`# Install the validation dependencies
 npm i class-validator class-transformer`}</BlogCode>
 
-      <BlogP>
-        Define the DTO with validation decorators:
-      </BlogP>
+      <BlogP>Define the DTO with validation decorators:</BlogP>
 
       <BlogCode>{`import { IsBoolean, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
@@ -475,7 +477,8 @@ npm i @nestjs/typeorm typeorm better-sqlite3
 npm i pg`}</BlogCode>
 
       <BlogP>
-        Configure the connection in the <BlogInlineCode>AppModule</BlogInlineCode>:
+        Configure the connection in the{" "}
+        <BlogInlineCode>AppModule</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import { Module } from '@nestjs/common';
@@ -517,7 +520,8 @@ export class Task {
       <BlogP>
         Inject the <strong>repository</strong> into the service with{" "}
         <BlogInlineCode>@InjectRepository</BlogInlineCode> and register it in
-        the module with <BlogInlineCode>TypeOrmModule.forFeature([Task])</BlogInlineCode>:
+        the module with{" "}
+        <BlogInlineCode>TypeOrmModule.forFeature([Task])</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import { Injectable } from '@nestjs/common';
@@ -563,7 +567,8 @@ export class TasksModule {}`}</BlogCode>
         <BlogInlineCode>findOne</BlogInlineCode>,{" "}
         <BlogInlineCode>findBy</BlogInlineCode>,{" "}
         <BlogInlineCode>queryBuilder</BlogInlineCode>, and pagination with{" "}
-        <BlogInlineCode>take</BlogInlineCode>/<BlogInlineCode>skip</BlogInlineCode>.
+        <BlogInlineCode>take</BlogInlineCode>/
+        <BlogInlineCode>skip</BlogInlineCode>.
       </BlogCallout>
 
       <BlogP>
@@ -587,8 +592,8 @@ export class TasksModule {}`}</BlogCode>
 
       <BlogP>
         <strong>Guards</strong> decide whether a request can continue. They are
-        used for authentication and authorization. For JWT, install the
-        packages and configure the module:
+        used for authentication and authorization. For JWT, install the packages
+        and configure the module:
       </BlogP>
 
       <BlogCode>{`npm i @nestjs/jwt`}</BlogCode>
@@ -720,8 +725,8 @@ export class TasksController {
 }`}</BlogCode>
 
       <BlogCallout type="tip">
-        Swagger uses the return type of each method and the DTOs to generate
-        the documentation automatically. With{" "}
+        Swagger uses the return type of each method and the DTOs to generate the
+        documentation automatically. With{" "}
         <BlogInlineCode>@ApiBearerAuth()</BlogInlineCode> on the controller and{" "}
         <BlogInlineCode>addBearerAuth()</BlogInlineCode> in the configuration,
         the UI shows the Authorize button to test protected endpoints.
@@ -932,12 +937,11 @@ export class ProfileController {
         NestJS turns a typical Express project into a clear, scalable
         architecture: modules that group controllers and services, validation
         with DTOs, persistence with TypeORM, and security with guards. With
-        Swagger, your API is documented without extra effort. The next steps
-        are TypeORM migrations, Passport for login strategies (local, OAuth),
+        Swagger, your API is documented without extra effort. The next steps are
+        TypeORM migrations, Passport for login strategies (local, OAuth),
         testing with <BlogInlineCode>@nestjs/testing</BlogInlineCode>, and
         WebSockets or GraphQL if your application needs them. It is the natural
-        choice if you want a serious, maintainable TypeScript backend over
-        time.
+        choice if you want a serious, maintainable TypeScript backend over time.
       </BlogP>
     </article>
   );

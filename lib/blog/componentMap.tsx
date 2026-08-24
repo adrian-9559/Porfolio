@@ -62,6 +62,12 @@ import KubernetesContent from "@/components/blog/tutorials/KubernetesContent";
 import GoContent from "@/components/blog/tutorials/GoContent";
 import RustContent from "@/components/blog/tutorials/RustContent";
 import NestJsContent from "@/components/blog/tutorials/NestJsContent";
+import CssAvanzadoContent from "@/components/blog/tutorials/CssAvanzadoContent";
+import JavaScriptAvanzadoContent from "@/components/blog/tutorials/JavaScriptAvanzadoContent";
+import TypeScriptAvanzadoContent from "@/components/blog/tutorials/TypeScriptAvanzadoContent";
+import EstadoGlobalContent from "@/components/blog/tutorials/EstadoGlobalContent";
+import RendimientoFrontendContent from "@/components/blog/tutorials/RendimientoFrontendContent";
+import AccesibilidadContent from "@/components/blog/tutorials/AccesibilidadContent";
 
 // Tutorials — EN
 import SvgContentEn from "@/components/blog/tutorials/en/SvgContent";
@@ -122,6 +128,12 @@ import KubernetesContentEn from "@/components/blog/tutorials/en/KubernetesConten
 import GoContentEn from "@/components/blog/tutorials/en/GoContent";
 import RustContentEn from "@/components/blog/tutorials/en/RustContent";
 import NestJsContentEn from "@/components/blog/tutorials/en/NestJsContent";
+import CssAvanzadoContentEn from "@/components/blog/tutorials/en/CssAvanzadoContent";
+import JavaScriptAvanzadoContentEn from "@/components/blog/tutorials/en/JavaScriptAvanzadoContent";
+import TypeScriptAvanzadoContentEn from "@/components/blog/tutorials/en/TypeScriptAvanzadoContent";
+import EstadoGlobalContentEn from "@/components/blog/tutorials/en/EstadoGlobalContent";
+import RendimientoFrontendContentEn from "@/components/blog/tutorials/en/RendimientoFrontendContent";
+import AccesibilidadContentEn from "@/components/blog/tutorials/en/AccesibilidadContent";
 
 // Tools — ES
 import PasswordContent from "@/components/blog/tools/PasswordContent";
@@ -139,29 +151,30 @@ import DiffCheckerContent from "@/components/blog/tools/DiffCheckerContent";
 // SQL Builder
 import SQLBuilderContent from "@/components/blog/tools/SQLBuilderContent";
 
-// Tools — EN
-import PasswordContentEn from "@/components/blog/tools/en/PasswordContent";
-import JsonFormatterContentEn from "@/components/blog/tools/en/JsonFormatterContent";
-import Base64ContentEn from "@/components/blog/tools/en/Base64Content";
-import RegexTesterContentEn from "@/components/blog/tools/en/RegexTesterContent";
-import ColorToolContentEn from "@/components/blog/tools/en/ColorToolContent";
-import PaletteGeneratorContentEn from "@/components/blog/tools/en/PaletteGeneratorContent";
-import QrGeneratorContentEn from "@/components/blog/tools/en/QrGeneratorContent";
-import UuidGeneratorContentEn from "@/components/blog/tools/en/UuidGeneratorContent";
-import TimestampConverterContentEn from "@/components/blog/tools/en/TimestampConverterContent";
-import CaseConverterContentEn from "@/components/blog/tools/en/CaseConverterContent";
-import DiffCheckerContentEn from "@/components/blog/tools/en/DiffCheckerContent";
+// New tools
+import MarkdownPreviewContent from "@/components/blog/tools/MarkdownPreviewContent";
+import JwtDecoderContent from "@/components/blog/tools/JwtDecoderContent";
+import UrlEncoderDecoderContent from "@/components/blog/tools/UrlEncoderDecoderContent";
+import CronBuilderContent from "@/components/blog/tools/CronBuilderContent";
+import HashGeneratorContent from "@/components/blog/tools/HashGeneratorContent";
+import JsonToTsContent from "@/components/blog/tools/JsonToTsContent";
+import HtmlEntityContent from "@/components/blog/tools/HtmlEntityContent";
+import LoremIpsumContent from "@/components/blog/tools/LoremIpsumContent";
+import RegexVisualizerContent from "@/components/blog/tools/RegexVisualizerContent";
+import BarcodeGeneratorContent from "@/components/blog/tools/BarcodeGeneratorContent";
+import CssGradientContent from "@/components/blog/tools/CssGradientContent";
+import ImageToBase64Content from "@/components/blog/tools/ImageToBase64Content";
+import MockDataContent from "@/components/blog/tools/MockDataContent";
 
-// SQL Builder — EN
-import SQLBuilderContentEn from "@/components/blog/tools/en/SQLBuilderContent";
+// Tools — EN (removed — ES components now use useT for i18n)
 
 const PdfEditorContent = dynamic(
   () => import("@/components/blog/tools/PdfEditorContent"),
   { ssr: false },
 );
 
-const PdfEditorContentEn = dynamic(
-  () => import("@/components/blog/tools/en/PdfEditorContent"),
+const PdfToExcelContent = dynamic(
+  () => import("@/components/blog/tools/PdfToExcelContent"),
   { ssr: false },
 );
 
@@ -232,25 +245,39 @@ const contentMap: Record<
   },
   "mongodb-guide": { es: MongoDBGuideContent, en: MongoDBGuideContentEn },
   "supabase-guide": { es: SupabaseGuideContent, en: SupabaseGuideContentEn },
-  password: { es: PasswordContent, en: PasswordContentEn },
-  "json-formatter": { es: JsonFormatterContent, en: JsonFormatterContentEn },
-  base64: { es: Base64Content, en: Base64ContentEn },
-  "regex-tester": { es: RegexTesterContent, en: RegexTesterContentEn },
-  "color-tool": { es: ColorToolContent, en: ColorToolContentEn },
+  password: { es: PasswordContent, en: PasswordContent },
+  "json-formatter": { es: JsonFormatterContent, en: JsonFormatterContent },
+  base64: { es: Base64Content, en: Base64Content },
+  "regex-tester": { es: RegexTesterContent, en: RegexTesterContent },
+  "color-tool": { es: ColorToolContent, en: ColorToolContent },
   "palette-generator": {
     es: PaletteGeneratorContent,
-    en: PaletteGeneratorContentEn,
+    en: PaletteGeneratorContent,
   },
-  "qr-generator": { es: QrGeneratorContent, en: QrGeneratorContentEn },
-  "uuid-generator": { es: UuidGeneratorContent, en: UuidGeneratorContentEn },
+  "qr-generator": { es: QrGeneratorContent, en: QrGeneratorContent },
+  "uuid-generator": { es: UuidGeneratorContent, en: UuidGeneratorContent },
   "timestamp-converter": {
     es: TimestampConverterContent,
-    en: TimestampConverterContentEn,
+    en: TimestampConverterContent,
   },
-  "case-converter": { es: CaseConverterContent, en: CaseConverterContentEn },
-  "diff-checker": { es: DiffCheckerContent, en: DiffCheckerContentEn },
-  "pdf-editor": { es: PdfEditorContent, en: PdfEditorContentEn },
-  "sql-builder": { es: SQLBuilderContent, en: SQLBuilderContentEn },
+  "case-converter": { es: CaseConverterContent, en: CaseConverterContent },
+  "diff-checker": { es: DiffCheckerContent, en: DiffCheckerContent },
+  "pdf-editor": { es: PdfEditorContent, en: PdfEditorContent },
+  "pdf-to-excel": { es: PdfToExcelContent, en: PdfToExcelContent },
+  "sql-builder": { es: SQLBuilderContent, en: SQLBuilderContent },
+  "markdown-preview": { es: MarkdownPreviewContent, en: MarkdownPreviewContent },
+  "jwt-decoder": { es: JwtDecoderContent, en: JwtDecoderContent },
+  "url-encoder-decoder": { es: UrlEncoderDecoderContent, en: UrlEncoderDecoderContent },
+  "cron-builder": { es: CronBuilderContent, en: CronBuilderContent },
+  "hash-generator": { es: HashGeneratorContent, en: HashGeneratorContent },
+  "json-to-ts": { es: JsonToTsContent, en: JsonToTsContent },
+  "html-entity": { es: HtmlEntityContent, en: HtmlEntityContent },
+  "lorem-ipsum": { es: LoremIpsumContent, en: LoremIpsumContent },
+  "regex-visualizer": { es: RegexVisualizerContent, en: RegexVisualizerContent },
+  "barcode-generator": { es: BarcodeGeneratorContent, en: BarcodeGeneratorContent },
+  "css-gradient": { es: CssGradientContent, en: CssGradientContent },
+  "image-to-base64": { es: ImageToBase64Content, en: ImageToBase64Content },
+  "mock-data": { es: MockDataContent, en: MockDataContent },
   "sql-builder-guide": { es: SQLBuilderDocContent, en: SQLBuilderDocContentEn },
   angular: { es: AngularContent, en: AngularContentEn },
   vue: { es: VueContent, en: VueContentEn },
@@ -261,6 +288,21 @@ const contentMap: Record<
   go: { es: GoContent, en: GoContentEn },
   rust: { es: RustContent, en: RustContentEn },
   nestjs: { es: NestJsContent, en: NestJsContentEn },
+  "css-avanzado": { es: CssAvanzadoContent, en: CssAvanzadoContentEn },
+  "javascript-avanzado": {
+    es: JavaScriptAvanzadoContent,
+    en: JavaScriptAvanzadoContentEn,
+  },
+  "typescript-avanzado": {
+    es: TypeScriptAvanzadoContent,
+    en: TypeScriptAvanzadoContentEn,
+  },
+  "estado-global": { es: EstadoGlobalContent, en: EstadoGlobalContentEn },
+  "rendimiento-frontend": {
+    es: RendimientoFrontendContent,
+    en: RendimientoFrontendContentEn,
+  },
+  accesibilidad: { es: AccesibilidadContent, en: AccesibilidadContentEn },
 };
 
 export function getContentComponent(

@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import {
   BlogH2,
-  BlogH3,
   BlogP,
   BlogCode,
   BlogInlineCode,
@@ -125,8 +124,8 @@ export default function CICDContent() {
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
         GitHub Actions automatiza el pipeline completo de tu repositorio: cada
         push puede compilar, pasar lint, ejecutar tests y desplegar a
-        producción. Aprende los conceptos, la estructura YAML y los patrones
-        que usan los proyectos reales.
+        producción. Aprende los conceptos, la estructura YAML y los patrones que
+        usan los proyectos reales.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -162,13 +161,15 @@ export default function CICDContent() {
 
       <BlogP>
         <strong>Workflow</strong>: el archivo YAML completo en{" "}
-        <BlogInlineCode>.github/workflows/</BlogInlineCode>. Define el
-        autómata: cuándo se dispara y qué hace.
+        <BlogInlineCode>.github/workflows/</BlogInlineCode>. Define el autómata:
+        cuándo se dispara y qué hace.
       </BlogP>
       <BlogP>
         <strong>Evento</strong>: lo que dispara el workflow.{" "}
-        <BlogInlineCode>push</BlogInlineCode>, <BlogInlineCode>pull_request</BlogInlineCode>,{" "}
-        <BlogInlineCode>schedule</BlogInlineCode>, <BlogInlineCode>workflow_dispatch</BlogInlineCode>...
+        <BlogInlineCode>push</BlogInlineCode>,{" "}
+        <BlogInlineCode>pull_request</BlogInlineCode>,{" "}
+        <BlogInlineCode>schedule</BlogInlineCode>,{" "}
+        <BlogInlineCode>workflow_dispatch</BlogInlineCode>...
       </BlogP>
       <BlogP>
         <strong>Job</strong>: un conjunto de pasos que se ejecutan en un mismo
@@ -189,8 +190,7 @@ export default function CICDContent() {
       <BlogP>
         Todo empieza con un archivo YAML dentro de{" "}
         <BlogInlineCode>.github/workflows/</BlogInlineCode>. La clave{" "}
-        <BlogInlineCode>on</BlogInlineCode> declara los eventos que lo
-        disparan:
+        <BlogInlineCode>on</BlogInlineCode> declara los eventos que lo disparan:
       </BlogP>
 
       <BlogCode>{`# .github/workflows/ci.yml
@@ -214,7 +214,9 @@ jobs:
         Con <BlogInlineCode>push</BlogInlineCode> el workflow corre en cada
         commit a main; con <BlogInlineCode>pull_request</BlogInlineCode>
         también en cada PR contra main, que es donde se filtran los errores
-        antes de integrar. <BlogInlineCode>workflow_dispatch</BlogInlineCode>{" "}
+        antes de integrar. <BlogInlineCode>
+          workflow_dispatch
+        </BlogInlineCode>{" "}
         añade un botón "Run workflow" manual en la UI de GitHub.
       </BlogP>
 
@@ -253,10 +255,11 @@ jobs:
 
       <BlogCallout type="warn">
         Cada <BlogInlineCode>run</BlogInlineCode> se ejecuta en una shell nueva
-        e independiente: las variables y el directorio no persisten entre
-        steps. Usa <BlogInlineCode>env:</BlogInlineCode> a nivel de step o job
-        para pasar contexto, o <BlogInlineCode>actions/upload-artifact</BlogInlineCode>{" "}
-        para guardar archivos entre jobs.
+        e independiente: las variables y el directorio no persisten entre steps.
+        Usa <BlogInlineCode>env:</BlogInlineCode> a nivel de step o job para
+        pasar contexto, o{" "}
+        <BlogInlineCode>actions/upload-artifact</BlogInlineCode> para guardar
+        archivos entre jobs.
       </BlogCallout>
 
       <BlogH2 id="build-lint-test">Build, lint y test</BlogH2>
@@ -296,7 +299,8 @@ jobs:
         <BlogInlineCode>npm ci</BlogInlineCode> instala exactamente lo que
         define <BlogInlineCode>package-lock.json</BlogInlineCode> y borra{" "}
         <BlogInlineCode>node_modules</BlogInlineCode> antes — es la opción
-        reproducible para CI, a diferencia de <BlogInlineCode>npm install</BlogInlineCode>.
+        reproducible para CI, a diferencia de{" "}
+        <BlogInlineCode>npm install</BlogInlineCode>.
       </BlogP>
 
       <BlogH2 id="secrets">Secrets</BlogH2>

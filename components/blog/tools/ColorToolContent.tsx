@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
+import { useT } from "@/hooks/useT";
 
 function hexToRgb(hex: string) {
   const clean = hex.replace("#", "");
@@ -91,6 +92,7 @@ const PALETTES = [
 ];
 
 export default function ColorToolContent() {
+  const { t } = useT();
   const [hex, setHex] = useState("#3b82f6");
   const [hexInput, setHexInput] = useState("#3b82f6");
   const [copied, setCopied] = useState("");
@@ -127,7 +129,7 @@ export default function ColorToolContent() {
         </p>
       </div>
       <span className="text-[10px] text-[#6e6e73] dark:text-[#86868b] opacity-0 group-hover:opacity-100 transition-opacity">
-        {copied === label ? "✓" : "Copiar"}
+        {copied === label ? "✓" : t("blog.colorTool.copy")}
       </span>
     </button>
   );
@@ -137,21 +139,20 @@ export default function ColorToolContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-pink-50 dark:bg-pink-950/40 text-pink-700 dark:text-pink-400 border border-pink-200 dark:border-pink-800/50">
-            Herramienta
+            {t("blog.colorTool.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.colorTool.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Conversor de colores
+          {t("blog.colorTool.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Convierte entre HEX, RGB y HSL. Selecciona del picker o escribe el
-          valor directamente.
+          {t("blog.colorTool.desc")}
         </p>
       </div>
 
@@ -186,7 +187,7 @@ export default function ColorToolContent() {
               />
             </div>
             <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
-              Haz clic en el cuadro de color para abrir el selector
+              {t("blog.colorTool.clickPicker")}
             </p>
           </div>
         </div>
@@ -204,11 +205,11 @@ export default function ColorToolContent() {
         {rgb && (
           <div className="space-y-2">
             <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-              Ajustar RGB
+              {t("blog.colorTool.adjustRgb")}
             </p>
             {(["r", "g", "b"] as const).map((ch, idx) => {
               const colors = ["#ef4444", "#22c55e", "#3b82f6"];
-              const labels = ["Rojo", "Verde", "Azul"];
+              const labels = [t("blog.colorTool.red"), t("blog.colorTool.green"), t("blog.colorTool.blue")];
 
               return (
                 <div key={ch} className="flex items-center gap-3">
@@ -244,7 +245,7 @@ export default function ColorToolContent() {
         {/* Palettes */}
         <div className="space-y-3">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Paletas predefinidas
+              {t("blog.colorTool.presetPalettes")}
           </p>
           {PALETTES.map((pal) => (
             <div key={pal.name}>

@@ -3,7 +3,7 @@ import type { UserWithProfile, Profile } from "@/types/auth";
 import { apiFetch } from "./apiClient";
 
 export const userService = {
-  list: () => apiFetch<UserWithProfile[]>("/users"),
+  list: () => apiFetch<UserWithProfile[]>("/api/users"),
 
   getById: (id: string) => apiFetch<UserWithProfile>(`/users/${id}`),
 

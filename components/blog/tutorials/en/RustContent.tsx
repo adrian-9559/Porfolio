@@ -165,9 +165,10 @@ export default function RustContentEn() {
       <BlogH2 id="install">Installing</BlogH2>
 
       <BlogP>
-        The official way to install Rust is with <BlogInlineCode>rustup</BlogInlineCode>,
-        the toolchain manager. It is installed with a script and then gives you
-        access to <BlogInlineCode>cargo</BlogInlineCode> (build/manager) and{" "}
+        The official way to install Rust is with{" "}
+        <BlogInlineCode>rustup</BlogInlineCode>, the toolchain manager. It is
+        installed with a script and then gives you access to{" "}
+        <BlogInlineCode>cargo</BlogInlineCode> (build/manager) and{" "}
         <BlogInlineCode>rustc</BlogInlineCode> (compiler):
       </BlogP>
 
@@ -243,7 +244,8 @@ edition = "2021"
 
       <BlogP>
         <strong>Shadowing</strong> lets you re-declare a name with a new value
-        or even a new type, without needing <BlogInlineCode>mut</BlogInlineCode>:
+        or even a new type, without needing <BlogInlineCode>mut</BlogInlineCode>
+        :
       </BlogP>
 
       <BlogCode>{`fn main() {
@@ -281,10 +283,10 @@ numbers.push(4);`}</BlogCode>
         <BlogInlineCode>i128</BlogInlineCode> (signed) and{" "}
         <BlogInlineCode>u8</BlogInlineCode> to{" "}
         <BlogInlineCode>u128</BlogInlineCode> (unsigned), plus{" "}
-        <BlogInlineCode>isize</BlogInlineCode>/<BlogInlineCode>usize</BlogInlineCode>{" "}
-        which depend on the architecture (64-bit on your machine). Use{" "}
-        <BlogInlineCode>i32</BlogInlineCode> by default: it is the fastest on
-        most CPUs.
+        <BlogInlineCode>isize</BlogInlineCode>/
+        <BlogInlineCode>usize</BlogInlineCode> which depend on the architecture
+        (64-bit on your machine). Use <BlogInlineCode>i32</BlogInlineCode> by
+        default: it is the fastest on most CPUs.
       </BlogP>
 
       <BlogH2 id="ownership">Ownership</BlogH2>
@@ -369,8 +371,9 @@ fn main() {
       <BlogP>
         A <strong>slice</strong> is a view (reference + length) over a
         contiguous sequence of data, without copying it. It is the idiomatic way
-        to pass pieces of text or lists. The type <BlogInlineCode>&amp;str</BlogInlineCode>{" "}
-        is a slice of a <BlogInlineCode>String</BlogInlineCode>:
+        to pass pieces of text or lists. The type{" "}
+        <BlogInlineCode>&amp;str</BlogInlineCode> is a slice of a{" "}
+        <BlogInlineCode>String</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`fn first_word(s: &str) -> &str {
@@ -561,8 +564,8 @@ fn read_content(path: &str) -> Result<String, io::Error> {
       <BlogP>
         For prototypes or values that "cannot fail", there is{" "}
         <BlogInlineCode>unwrap()</BlogInlineCode> (panics if it is Err) and{" "}
-        <BlogInlineCode>expect("message")</BlogInlineCode>, which adds context to
-        the panic. Use them sparingly: in production code prefer{" "}
+        <BlogInlineCode>expect("message")</BlogInlineCode>, which adds context
+        to the panic. Use them sparingly: in production code prefer{" "}
         <BlogInlineCode>?</BlogInlineCode>:
       </BlogP>
 
@@ -577,8 +580,8 @@ fn read_content(path: &str) -> Result<String, io::Error> {
         Panicking in Rust is controlled: it unwinds the stack (or aborts
         depending on configuration) and frees memory with its destructor, but{" "}
         <BlogInlineCode>Option</BlogInlineCode> and{" "}
-        <BlogInlineCode>Result</BlogInlineCode> are the normal path for
-        expected errors like missing files or malformed JSON.
+        <BlogInlineCode>Result</BlogInlineCode> are the normal path for expected
+        errors like missing files or malformed JSON.
       </BlogCallout>
 
       <BlogH2 id="traits">Traits</BlogH2>
@@ -690,8 +693,9 @@ cargo run -- sum 4 7
 # Output: 4 + 7 = 11`}</BlogCode>
 
       <BlogP>
-        Cargo also manages tests with <BlogInlineCode>cargo test</BlogInlineCode>{" "}
-        and dependencies declared in <BlogInlineCode>Cargo.toml</BlogInlineCode>:
+        Cargo also manages tests with{" "}
+        <BlogInlineCode>cargo test</BlogInlineCode> and dependencies declared in{" "}
+        <BlogInlineCode>Cargo.toml</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`[dependencies]

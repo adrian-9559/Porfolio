@@ -141,8 +141,8 @@ export default function GoContent() {
         difíciles de leer. Go se diseñó para que escribir software de servidor
         fuera <strong>simple, rápido y seguro</strong>. Es{" "}
         <strong>compilado</strong>: <BlogInlineCode>go build</BlogInlineCode>{" "}
-        genera un binario nativo sin máquina virtual, ideal para
-        microservicios, CLIs y sistemas de red.
+        genera un binario nativo sin máquina virtual, ideal para microservicios,
+        CLIs y sistemas de red.
       </BlogP>
 
       <BlogCallout type="info">
@@ -275,9 +275,10 @@ func main() {
         <BlogInlineCode>int</BlogInlineCode> (entero dependiente de la
         plataforma), <BlogInlineCode>float64</BlogInlineCode>,{" "}
         <BlogInlineCode>byte</BlogInlineCode> (alias de{" "}
-        <BlogInlineCode>uint8</BlogInlineCode>), <BlogInlineCode>rune</BlogInlineCode>{" "}
-        (carácter Unicode), slices <BlogInlineCode>[]string</BlogInlineCode> y
-        mapas <BlogInlineCode>map[string]int</BlogInlineCode>.
+        <BlogInlineCode>uint8</BlogInlineCode>),{" "}
+        <BlogInlineCode>rune</BlogInlineCode> (carácter Unicode), slices{" "}
+        <BlogInlineCode>[]string</BlogInlineCode> y mapas{" "}
+        <BlogInlineCode>map[string]int</BlogInlineCode>.
       </BlogP>
 
       <BlogP>
@@ -295,9 +296,9 @@ func main() {
         llaves son obligatorias, y permite declarar una variable en la propia
         condición. Solo existe <BlogInlineCode>for</BlogInlineCode> (clásico,
         estilo while e infinito), y <BlogInlineCode>for range</BlogInlineCode>{" "}
-        itera devolviendo índice y valor. El <BlogInlineCode>switch</BlogInlineCode>{" "}
-        no necesita <BlogInlineCode>break</BlogInlineCode> y funciona sin
-        expresión:
+        itera devolviendo índice y valor. El{" "}
+        <BlogInlineCode>switch</BlogInlineCode> no necesita{" "}
+        <BlogInlineCode>break</BlogInlineCode> y funciona sin expresión:
       </BlogP>
 
       <BlogCode>{`if nota := 7; nota >= 5 {
@@ -340,7 +341,8 @@ for _, fruta := range frutas {
       <BlogP>
         Las funciones se declaran con <BlogInlineCode>func</BlogInlineCode> y
         pueden devolver <strong>varios valores</strong>. La convención es
-        devolver el resultado junto con un <BlogInlineCode>error</BlogInlineCode>:
+        devolver el resultado junto con un{" "}
+        <BlogInlineCode>error</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`package main
@@ -369,8 +371,8 @@ func main() {
       <BlogCallout type="info">
         Los errores en Go son <strong>valores</strong>, no excepciones: no hay{" "}
         <BlogInlineCode>try/catch</BlogInlineCode>. Cada función que puede
-        fallar devuelve un error y el llamador decide qué hacer. Parece
-        verboso, pero garantiza que ningún error se ignore en silencio.
+        fallar devuelve un error y el llamador decide qué hacer. Parece verboso,
+        pero garantiza que ningún error se ignore en silencio.
       </BlogCallout>
 
       <BlogH2 id="structs-interfaces">Structs e interfaces</BlogH2>
@@ -406,9 +408,9 @@ func main() {
 
       <BlogP>
         Las <strong>interfaces</strong> son <strong>implícitas</strong>: un tipo
-        la implementa automáticamente si tiene sus métodos, sin declararlo.
-        Esto desacopla el código: quien consume la interfaz no sabe nada del
-        tipo concreto.
+        la implementa automáticamente si tiene sus métodos, sin declararlo. Esto
+        desacopla el código: quien consume la interfaz no sabe nada del tipo
+        concreto.
       </BlogP>
 
       <BlogCode>{`type Describible interface {
@@ -476,8 +478,8 @@ func main() {
         <BlogInlineCode>package main</BlogInlineCode>; el resto son librerías
         que se importan por su ruta, derivada del nombre del módulo en go.mod.
         La visibilidad se controla con la <strong>mayúscula inicial</strong>:
-        los nombres exportados empiezan en mayúscula, los privados en
-        minúscula. No existen <BlogInlineCode>public</BlogInlineCode> ni{" "}
+        los nombres exportados empiezan en mayúscula, los privados en minúscula.
+        No existen <BlogInlineCode>public</BlogInlineCode> ni{" "}
         <BlogInlineCode>private</BlogInlineCode>.
       </BlogP>
 
@@ -580,7 +582,12 @@ func tareasHandler(w http.ResponseWriter, r *http.Request) {
         <BlogInlineCode>encoding/json</BlogInlineCode> cómo convertir cada campo
         a JSON; sin ellas se serializarían con el nombre en mayúscula. Prueba:
         <BlogInlineCode>curl http://localhost:8080/tareas</BlogInlineCode> para
-        listar y <BlogInlineCode>{"curl -X POST -d '{\"text\":\"Escribir API en Go\"}' -H \"Content-Type: application/json\" http://localhost:8080/tareas"}</BlogInlineCode>{" "}
+        listar y{" "}
+        <BlogInlineCode>
+          {
+            'curl -X POST -d \'{"text":"Escribir API en Go"}\' -H "Content-Type: application/json" http://localhost:8080/tareas'
+          }
+        </BlogInlineCode>{" "}
         para crear.
       </BlogP>
 
@@ -697,7 +704,9 @@ func main() {
 
         <ExerciseCard
           description="Crea un servidor HTTP con la ruta /hola que lea el parámetro ?nombre= de la URL y responda Hola, {nombre}!. Sin parámetro, responde Hola, mundo!."
-          hint={'Lee el parámetro con r.URL.Query().Get("nombre") y escribe con fmt.Fprintf.'}
+          hint={
+            'Lee el parámetro con r.URL.Query().Get("nombre") y escribe con fmt.Fprintf.'
+          }
           level="Avanzado"
           num={5}
           solution={`package main
@@ -728,12 +737,12 @@ func main() {
 
       <BlogP>
         Con esto ya tienes los cimientos de Go: sintaxis limpia, errores como
-        valores, structs e interfaces, concurrencia con goroutines y un
-        servidor HTTP funcional. El siguiente paso es explorar la stdlib (JSON,
-        testing, bases de datos) y librerías como{" "}
-        <BlogInlineCode>chi</BlogInlineCode> o <BlogInlineCode>gin</BlogInlineCode>{" "}
-        para APIs más complejas. Go brilla en servicios que deben ser rápidos,
-        simples de operar y fáciles de mantener a largo plazo.
+        valores, structs e interfaces, concurrencia con goroutines y un servidor
+        HTTP funcional. El siguiente paso es explorar la stdlib (JSON, testing,
+        bases de datos) y librerías como <BlogInlineCode>chi</BlogInlineCode> o{" "}
+        <BlogInlineCode>gin</BlogInlineCode> para APIs más complejas. Go brilla
+        en servicios que deben ser rápidos, simples de operar y fáciles de
+        mantener a largo plazo.
       </BlogP>
     </article>
   );

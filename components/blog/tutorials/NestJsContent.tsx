@@ -284,8 +284,10 @@ export class AppModule {}`}</BlogCode>
         Un <strong>controller</strong> define las rutas HTTP de un módulo. Se
         declara con <BlogInlineCode>@Controller('ruta')</BlogInlineCode> y cada
         método expone un endpoint con un decorador de método:{" "}
-        <BlogInlineCode>@Get</BlogInlineCode>, <BlogInlineCode>@Post</BlogInlineCode>,{" "}
-        <BlogInlineCode>@Patch</BlogInlineCode>, <BlogInlineCode>@Delete</BlogInlineCode>:
+        <BlogInlineCode>@Get</BlogInlineCode>,{" "}
+        <BlogInlineCode>@Post</BlogInlineCode>,{" "}
+        <BlogInlineCode>@Patch</BlogInlineCode>,{" "}
+        <BlogInlineCode>@Delete</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
@@ -326,9 +328,9 @@ export class TareasController {
       </BlogCallout>
 
       <BlogP>
-        Los códigos de estado son automáticos: 200/201 para respuestas
-        exitosas, y las excepciones lanzadas desde el service producen errores
-        HTTP correctos. Para respuestas con código específico usa{" "}
+        Los códigos de estado son automáticos: 200/201 para respuestas exitosas,
+        y las excepciones lanzadas desde el service producen errores HTTP
+        correctos. Para respuestas con código específico usa{" "}
         <BlogInlineCode>@HttpCode(201)</BlogInlineCode>.
       </BlogP>
 
@@ -378,35 +380,35 @@ export class TareasService {
 }`}</BlogCode>
 
       <BlogCallout type="tip">
-        Lanzar excepciones de NestJS (<BlogInlineCode>NotFoundException</BlogInlineCode>,{" "}
+        Lanzar excepciones de NestJS (
+        <BlogInlineCode>NotFoundException</BlogInlineCode>,{" "}
         <BlogInlineCode>BadRequestException</BlogInlineCode>,{" "}
         <BlogInlineCode>UnauthorizedException</BlogInlineCode>...) en el service
-        convierte la lógica de negocio en respuestas HTTP correctas sin
-        acoplar el service a Express.
+        convierte la lógica de negocio en respuestas HTTP correctas sin acoplar
+        el service a Express.
       </BlogCallout>
 
       <BlogP>
         Los services son <strong>singletons por módulo</strong>: todos los que
         lo inyectan comparten la misma instancia. Si necesitas un ciclo de vida
         por petición, usa el decorador{" "}
-        <BlogInlineCode>{"@Injectable{ scope: Scope.REQUEST }"}</BlogInlineCode>.
+        <BlogInlineCode>{"@Injectable{ scope: Scope.REQUEST }"}</BlogInlineCode>
+        .
       </BlogP>
 
       <BlogH2 id="dtos">DTOs y validación</BlogH2>
 
       <BlogP>
         Un <strong>DTO</strong> (Data Transfer Object) define la forma de los
-        datos de entrada. Con <BlogInlineCode>class-validator</BlogInlineCode>{" "}
-        y <BlogInlineCode>class-transformer</BlogInlineCode>, los decoradores de
+        datos de entrada. Con <BlogInlineCode>class-validator</BlogInlineCode> y{" "}
+        <BlogInlineCode>class-transformer</BlogInlineCode>, los decoradores de
         los campos validan el body antes de que llegue a tu lógica:
       </BlogP>
 
       <BlogCode>{`# Instalar las dependencias de validación
 npm i class-validator class-transformer`}</BlogCode>
 
-      <BlogP>
-        Define el DTO con decoradores de validación:
-      </BlogP>
+      <BlogP>Define el DTO con decoradores de validación:</BlogP>
 
       <BlogCode>{`import { IsBoolean, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
@@ -517,7 +519,8 @@ export class Tarea {
       <BlogP>
         Inyecta el <strong>repositorio</strong> en el service con{" "}
         <BlogInlineCode>@InjectRepository</BlogInlineCode> y regístralo en el
-        módulo con <BlogInlineCode>TypeOrmModule.forFeature([Tarea])</BlogInlineCode>:
+        módulo con{" "}
+        <BlogInlineCode>TypeOrmModule.forFeature([Tarea])</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import { Injectable } from '@nestjs/common';
@@ -557,13 +560,14 @@ import { TareasService } from './tareas.service';
 export class TareasModule {}`}</BlogCode>
 
       <BlogCallout type="info">
-        El patrón repository separa la base de datos de la lógica de negocio:
-        el service trabaja con el repositorio y no escribe SQL a mano. Para
+        El patrón repository separa la base de datos de la lógica de negocio: el
+        service trabaja con el repositorio y no escribe SQL a mano. Para
         consultas complejas, el repositorio ofrece{" "}
         <BlogInlineCode>findOne</BlogInlineCode>,{" "}
         <BlogInlineCode>findBy</BlogInlineCode>,{" "}
         <BlogInlineCode>queryBuilder</BlogInlineCode> y paginación con{" "}
-        <BlogInlineCode>take</BlogInlineCode>/<BlogInlineCode>skip</BlogInlineCode>.
+        <BlogInlineCode>take</BlogInlineCode>/
+        <BlogInlineCode>skip</BlogInlineCode>.
       </BlogCallout>
 
       <BlogP>
@@ -586,9 +590,9 @@ export class TareasModule {}`}</BlogCode>
       <BlogH2 id="guards-jwt">Guards y JWT</BlogH2>
 
       <BlogP>
-        Los <strong>guards</strong> deciden si una petición puede continuar.
-        Se usan para autenticación y autorización. Para JWT, instala los
-        paquetes y configura el módulo:
+        Los <strong>guards</strong> deciden si una petición puede continuar. Se
+        usan para autenticación y autorización. Para JWT, instala los paquetes y
+        configura el módulo:
       </BlogP>
 
       <BlogCode>{`npm i @nestjs/jwt`}</BlogCode>
@@ -722,8 +726,8 @@ export class TareasController {
         Swagger usa el tipo de retorno de cada método y los DTOs para generar la
         documentación de forma automática. Con{" "}
         <BlogInlineCode>@ApiBearerAuth()</BlogInlineCode> en el controller y{" "}
-        <BlogInlineCode>addBearerAuth()</BlogInlineCode> en la configuración,
-        la UI muestra el botón Authorize para probar los endpoints protegidos.
+        <BlogInlineCode>addBearerAuth()</BlogInlineCode> en la configuración, la
+        UI muestra el botón Authorize para probar los endpoints protegidos.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -928,8 +932,8 @@ export class PerfilController {
       <hr className="border-black/8 dark:border-white/8 my-8" />
 
       <BlogP>
-        NestJS convierte un proyecto Express típico en una arquitectura clara
-        y escalable: módulos que agrupan controllers y services, validación con
+        NestJS convierte un proyecto Express típico en una arquitectura clara y
+        escalable: módulos que agrupan controllers y services, validación con
         DTOs, persistencia con TypeORM y seguridad con guards. Con Swagger, tu
         API queda documentada sin esfuerzo extra. Los siguientes pasos son las
         migraciones con TypeORM, Passport para estrategias de login (local,

@@ -200,9 +200,9 @@ func main() {
 }`}</BlogCode>
 
       <BlogP>
-        Every executable file starts with <BlogInlineCode>package main</BlogInlineCode>{" "}
-        and a <BlogInlineCode>main</BlogInlineCode> function. Run the program
-        with:
+        Every executable file starts with{" "}
+        <BlogInlineCode>package main</BlogInlineCode> and a{" "}
+        <BlogInlineCode>main</BlogInlineCode> function. Run the program with:
       </BlogP>
 
       <BlogCode>{`go run hello.go
@@ -304,10 +304,10 @@ func main() {
 }`}</BlogCode>
 
       <BlogP>
-        The rule is simple: inside functions use <BlogInlineCode>:=</BlogInlineCode>{" "}
-        to declare new variables; use <BlogInlineCode>var</BlogInlineCode> for
-        package-level variables or when you need to declare without
-        initializing.
+        The rule is simple: inside functions use{" "}
+        <BlogInlineCode>:=</BlogInlineCode> to declare new variables; use{" "}
+        <BlogInlineCode>var</BlogInlineCode> for package-level variables or when
+        you need to declare without initializing.
       </BlogP>
 
       <BlogH3 id="basic-types">Basic types</BlogH3>
@@ -557,8 +557,8 @@ func main() {
         Sleeping the main goroutine is an ugly hack: the correct approach is to
         communicate through a <strong>channel</strong> (
         <BlogInlineCode>chan</BlogInlineCode>), a pipe through which goroutines
-        send values. The <BlogInlineCode>&lt;-</BlogInlineCode> operator sends or
-        receives:
+        send values. The <BlogInlineCode>&lt;-</BlogInlineCode> operator sends
+        or receives:
       </BlogP>
 
       <BlogCode>{`func main() {
@@ -610,9 +610,8 @@ func main() {
       <BlogCallout type="warn">
         Sending to a closed channel causes a panic. The golden rule is:{" "}
         <strong>only the sender closes the channel</strong>, never the receiver,
-        and never close unless necessary.{" "}
-        <BlogInlineCode>range</BlogInlineCode> over a channel iterates until the
-        channel is closed.
+        and never close unless necessary. <BlogInlineCode>range</BlogInlineCode>{" "}
+        over a channel iterates until the channel is closed.
       </BlogCallout>
 
       <BlogH2 id="packages">Packages</BlogH2>
@@ -788,9 +787,7 @@ func tasksHandler(w http.ResponseWriter, r *http.Request) {
         their capitalized name.
       </BlogP>
 
-      <BlogP>
-        Let us test the complete API:
-      </BlogP>
+      <BlogP>Let us test the complete API:</BlogP>
 
       <BlogCode>{`# List tasks (GET)
 curl http://localhost:8080/tasks
@@ -914,7 +911,9 @@ func main() {
 
         <ExerciseCard
           description="Create an HTTP server with the /hello route that reads the ?name= parameter from the URL and responds Hello, {name}!. Without the parameter, respond Hello, world!."
-          hint={'Read the parameter with r.URL.Query().Get("name") and write with fmt.Fprintf.'}
+          hint={
+            'Read the parameter with r.URL.Query().Get("name") and write with fmt.Fprintf.'
+          }
           level="Hard"
           num={5}
           solution={`package main
@@ -948,8 +947,9 @@ func main() {
         as values, structs and interfaces, concurrency with goroutines, and a
         working HTTP server. The natural next step is exploring the stdlib
         (JSON, testing, databases) and libraries like{" "}
-        <BlogInlineCode>chi</BlogInlineCode> or <BlogInlineCode>gin</BlogInlineCode>{" "}
-        for more complex APIs, and <BlogInlineCode>sqlc</BlogInlineCode> or{" "}
+        <BlogInlineCode>chi</BlogInlineCode> or{" "}
+        <BlogInlineCode>gin</BlogInlineCode> for more complex APIs, and{" "}
+        <BlogInlineCode>sqlc</BlogInlineCode> or{" "}
         <BlogInlineCode>pgx</BlogInlineCode> for working with PostgreSQL. Go
         shines in services that must be fast, simple to operate, and easy to
         maintain in the long run.

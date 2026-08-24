@@ -68,8 +68,7 @@ const typeConfig: Record<
   },
 };
 
-const cfgFor = (type: ContentType) =>
-  typeConfig[type as BlogContentType];
+const cfgFor = (type: ContentType) => typeConfig[type as BlogContentType];
 
 function ContentCard({
   item,

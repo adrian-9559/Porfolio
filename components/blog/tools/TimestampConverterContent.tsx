@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useT } from "@/hooks/useT";
 
 export default function TimestampConverterContent() {
+  const { t } = useT();
   const [mode, setMode] = useState<"ts2date" | "date2ts">("ts2date");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -16,18 +18,18 @@ export default function TimestampConverterContent() {
       if (mode === "ts2date") {
         const num = Number(input.trim());
 
-        if (isNaN(num)) throw new Error("Número inválido");
+        if (isNaN(num)) throw new Error(t("blog.timestampConverter.errorInvalidNumber"));
         const ms = num > 1e12 ? num : num * 1000;
         const d = new Date(ms);
 
-        if (isNaN(d.getTime())) throw new Error("Fecha inválida");
+        if (isNaN(d.getTime())) throw new Error(t("blog.timestampConverter.errorInvalidDate"));
         setOutput(d.toISOString().replace("T", " ") + " (ISO)");
       } else {
         const d = new Date(input.trim());
 
         if (isNaN(d.getTime()))
           throw new Error(
-            "Fecha inválida. Usa formato ISO (2026-07-01) o similar.",
+            t("blog.timestampConverter.errorInvalidDateFormat"),
           );
         const secs = Math.floor(d.getTime() / 1000);
         const ms = d.getTime();
@@ -35,7 +37,7 @@ export default function TimestampConverterContent() {
         setOutput(`${secs} (segundos)\n${ms} (milisegundos)`);
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Error de conversión");
+      setError(e instanceof Error ? e.message : t("blog.timestampConverter.errorConversion"));
     }
   };
 
@@ -44,21 +46,20 @@ export default function TimestampConverterContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-950/40 text-teal-700 dark:text-teal-400 border border-teal-200 dark:border-teal-800/50">
-            Herramienta
+            {t("blog.timestampConverter.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.timestampConverter.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Conversor de timestamps
+          {t("blog.timestampConverter.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Convierte entre timestamp Unix y fecha legible. Soporta segundos,
-          milisegundos e ISO.
+          {t("blog.timestampConverter.desc")}
         </p>
       </div>
 
@@ -74,7 +75,7 @@ export default function TimestampConverterContent() {
                 setError("");
               }}
             >
-              {m === "ts2date" ? "Timestamp → Fecha" : "Fecha → Timestamp"}
+              {m === "ts2date" ? t("blog.timestampConverter.ts2date") : t("blog.timestampConverter.date2ts")}
             </button>
           ))}
         </div>
@@ -82,8 +83,8 @@ export default function TimestampConverterContent() {
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
             {mode === "ts2date"
-              ? "Timestamp Unix (segundos o milisegundos)"
-              : "Fecha (ISO o natural)"}
+              ? t("blog.timestampConverter.tsLabel")
+              : t("blog.timestampConverter.dateLabel")}
           </p>
           <input
             className="w-full p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white focus:outline-none focus:border-teal-400 dark:focus:border-teal-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
@@ -100,13 +101,13 @@ export default function TimestampConverterContent() {
           disabled={!input.trim()}
           onClick={convert}
         >
-          Convertir
+          {t("blog.timestampConverter.convert")}
         </button>
 
         {output && (
           <div className="space-y-1.5">
             <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-              Resultado
+              {t("blog.timestampConverter.result")}
             </p>
             <div className="p-3 rounded-xl bg-teal-50/60 dark:bg-teal-950/20 border border-teal-200 dark:border-teal-800/40 font-mono text-sm text-[#1d1d1f] dark:text-white whitespace-pre-wrap">
               {output}

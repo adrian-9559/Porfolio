@@ -137,12 +137,11 @@ export default function AngularContent() {
       <BlogH2 id="que-es">¿Qué es Angular?</BlogH2>
 
       <BlogP>
-        Angular es un framework completo de frontend mantenido por Google.
-        A diferencia de bibliotecas que solo renderizan vistas, Angular te da
-        todo lo necesario para una aplicación enterprise de fábrica: un
-        sistema de componentes con plantillas, enrutador, formularios,
-        cliente HTTP, inyección de dependencias y herramientas de testing
-        integradas.
+        Angular es un framework completo de frontend mantenido por Google. A
+        diferencia de bibliotecas que solo renderizan vistas, Angular te da todo
+        lo necesario para una aplicación enterprise de fábrica: un sistema de
+        componentes con plantillas, enrutador, formularios, cliente HTTP,
+        inyección de dependencias y herramientas de testing integradas.
       </BlogP>
 
       <BlogUl>
@@ -166,9 +165,9 @@ export default function AngularContent() {
       </BlogUl>
 
       <BlogCallout type="info">
-        Desde Angular 17 el modo <BlogInlineCode>standalone</BlogInlineCode>{" "}
-        es la norma: los componentes ya no necesitan NgModules para usarse.
-        Todo lo de este tutorial usa ese enfoque moderno.
+        Desde Angular 17 el modo <BlogInlineCode>standalone</BlogInlineCode> es
+        la norma: los componentes ya no necesitan NgModules para usarse. Todo lo
+        de este tutorial usa ese enfoque moderno.
       </BlogCallout>
 
       <BlogH2 id="instalar">Instalar y crear proyecto</BlogH2>
@@ -187,15 +186,16 @@ cd mi-app
 ng serve --open   # http://localhost:4200`}</BlogCode>
 
       <BlogP>
-        El flag <BlogInlineCode>--standalone</BlogInlineCode> genera un
-        proyecto sin NgModules, con componentes independientes. Si lo olvidas,
-        Angular 17+ lo pregunta interactivamente.
+        El flag <BlogInlineCode>--standalone</BlogInlineCode> genera un proyecto
+        sin NgModules, con componentes independientes. Si lo olvidas, Angular
+        17+ lo pregunta interactivamente.
       </BlogP>
 
       <BlogCallout type="warn">
-        La versión de la CLI y la versión del framework deben coincidir.
-        Nunca mezcles <BlogInlineCode>ng new</BlogInlineCode> de una versión
-        con dependencias de otra en el mismo <BlogInlineCode>package.json</BlogInlineCode>.
+        La versión de la CLI y la versión del framework deben coincidir. Nunca
+        mezcles <BlogInlineCode>ng new</BlogInlineCode> de una versión con
+        dependencias de otra en el mismo{" "}
+        <BlogInlineCode>package.json</BlogInlineCode>.
       </BlogCallout>
 
       <BlogH2 id="estructura">Estructura de un proyecto</BlogH2>
@@ -222,8 +222,8 @@ ng serve --open   # http://localhost:4200`}</BlogCode>
       <BlogH3 id="bootstrap">El arranque: main.ts</BlogH3>
 
       <BlogP>
-        <BlogInlineCode>main.ts</BlogInlineCode> arranca la aplicación
-        usando el componente raíz y la configuración global:
+        <BlogInlineCode>main.ts</BlogInlineCode> arranca la aplicación usando el
+        componente raíz y la configuración global:
       </BlogP>
 
       <BlogCode>{`import { bootstrapApplication } from '@angular/platform-browser';
@@ -236,8 +236,8 @@ bootstrapApplication(AppComponent, appConfig)
       <BlogH3 id="app-config">La configuración: app.config.ts</BlogH3>
 
       <BlogP>
-        Aquí se registran los providers que toda la app comparte. En un
-        proyecto recién creado ya incluye el router:
+        Aquí se registran los providers que toda la app comparte. En un proyecto
+        recién creado ya incluye el router:
       </BlogP>
 
       <BlogCode>{`import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
@@ -252,17 +252,18 @@ export const appConfig: ApplicationConfig = {
 };`}</BlogCode>
 
       <BlogP>
-        Más adelante añadiremos <BlogInlineCode>provideHttpClient()</BlogInlineCode>{" "}
-        aquí para habilitar peticiones HTTP.
+        Más adelante añadiremos{" "}
+        <BlogInlineCode>provideHttpClient()</BlogInlineCode> aquí para habilitar
+        peticiones HTTP.
       </BlogP>
 
       <BlogH2 id="componentes">Componentes y plantillas</BlogH2>
 
       <BlogP>
         Un componente es una clase TypeScript decorada con{" "}
-        <BlogInlineCode>@Component</BlogInlineCode> que define el selector,
-        la plantilla (template) y los estilos. En modo standalone declaramos
-        todo en un solo archivo:
+        <BlogInlineCode>@Component</BlogInlineCode> que define el selector, la
+        plantilla (template) y los estilos. En modo standalone declaramos todo
+        en un solo archivo:
       </BlogP>
 
       <BlogCode>{`import { Component } from '@angular/core';
@@ -281,14 +282,15 @@ export class SaludoComponent {
 }`}</BlogCode>
 
       <BlogP>
-        La <strong>interpolación</strong> <BlogInlineCode>{"{{ }}"}
-        </BlogInlineCode> imprime el valor de una propiedad del componente en
-        el HTML. Angular se encarga de re-renderizar cuando cambia.
+        La <strong>interpolación</strong>{" "}
+        <BlogInlineCode>{"{{ }}"}</BlogInlineCode> imprime el valor de una
+        propiedad del componente en el HTML. Angular se encarga de re-renderizar
+        cuando cambia.
       </BlogP>
 
       <BlogP>
-        Las plantillas modernas usan <strong>control flow</strong> integrado
-        en lugar de directivas estructurales:
+        Las plantillas modernas usan <strong>control flow</strong> integrado en
+        lugar de directivas estructurales:
       </BlogP>
 
       <BlogCode>{`@if (usuario) {
@@ -304,11 +306,12 @@ export class SaludoComponent {
 }`}</BlogCode>
 
       <BlogCallout type="info">
-        <BlogInlineCode>@if</BlogInlineCode> y <BlogInlineCode>@for</BlogInlineCode>{" "}
-        son la sintaxis recomendada desde Angular 17. Las antiguas{" "}
-        <BlogInlineCode>*ngIf</BlogInlineCode> y <BlogInlineCode>*ngFor</BlogInlineCode>{" "}
-        siguen funcionando pero están deprecadas en favor del nuevo control
-        flow. El <BlogInlineCode>track</BlogInlineCode> de{" "}
+        <BlogInlineCode>@if</BlogInlineCode> y{" "}
+        <BlogInlineCode>@for</BlogInlineCode> son la sintaxis recomendada desde
+        Angular 17. Las antiguas <BlogInlineCode>*ngIf</BlogInlineCode> y{" "}
+        <BlogInlineCode>*ngFor</BlogInlineCode> siguen funcionando pero están
+        deprecadas en favor del nuevo control flow. El{" "}
+        <BlogInlineCode>track</BlogInlineCode> de{" "}
         <BlogInlineCode>@for</BlogInlineCode> es obligatorio y mejora el
         rendimiento de las listas.
       </BlogCallout>
@@ -335,8 +338,8 @@ export class SaludoComponent {
           clase al atributo/elemento HTML.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>(evento)</BlogInlineCode> escucha un evento y llama
-          a un método del componente.
+          <BlogInlineCode>(evento)</BlogInlineCode> escucha un evento y llama a
+          un método del componente.
         </BlogLi>
         <BlogLi>
           <BlogInlineCode>{"{{ }}"}</BlogInlineCode> muestra el valor, siempre
@@ -371,8 +374,8 @@ export class BuscadorComponent {
         <BlogInlineCode>[(ngModel)]</BlogInlineCode> es azúcar sintáctico de{" "}
         <BlogInlineCode>[ngModel]</BlogInlineCode> +{" "}
         <BlogInlineCode>(ngModelChange)</BlogInlineCode>. Entender esa
-        descomposición te ayuda a escribir tus propios componentes con
-        binding bidireccional.
+        descomposición te ayuda a escribir tus propios componentes con binding
+        bidireccional.
       </BlogCallout>
 
       <BlogH2 id="directivas">Directivas</BlogH2>
@@ -425,8 +428,8 @@ export class AlertaComponent {
 }`}</BlogCode>
 
       <BlogP>
-        La regla general: <BlogInlineCode>@if/@for/@switch</BlogInlineCode>{" "}
-        para estructura del DOM, <BlogInlineCode>ngClass/ngStyle</BlogInlineCode>{" "}
+        La regla general: <BlogInlineCode>@if/@for/@switch</BlogInlineCode> para
+        estructura del DOM, <BlogInlineCode>ngClass/ngStyle</BlogInlineCode>{" "}
         para clases y estilos, y directivas de atributo personalizadas para
         comportamiento reutilizable.
       </BlogP>
@@ -434,10 +437,10 @@ export class AlertaComponent {
       <BlogH2 id="services">Services e inyección de dependencias</BlogH2>
 
       <BlogP>
-        Un service es una clase con lógica reutilizable (llamadas HTTP,
-        estado compartido, cálculos). La <strong>inyección de dependencias</strong>{" "}
-        (DI) de Angular crea y entrega esas instancias donde las pidas, sin
-        que tú gestiones el ciclo de vida:
+        Un service es una clase con lógica reutilizable (llamadas HTTP, estado
+        compartido, cálculos). La <strong>inyección de dependencias</strong>{" "}
+        (DI) de Angular crea y entrega esas instancias donde las pidas, sin que
+        tú gestiones el ciclo de vida:
       </BlogP>
 
       <BlogCode>{`import { Injectable } from '@angular/core';
@@ -453,9 +456,9 @@ export class ContadorService {
 }`}</BlogCode>
 
       <BlogP>
-        <BlogInlineCode>providedIn: 'root'</BlogInlineCode> registra el
-        service en el inyector raíz: es un singleton disponible en toda la
-        app. Para consumirlo dentro de un componente se usa la función{" "}
+        <BlogInlineCode>providedIn: 'root'</BlogInlineCode> registra el service
+        en el inyector raíz: es un singleton disponible en toda la app. Para
+        consumirlo dentro de un componente se usa la función{" "}
         <BlogInlineCode>inject()</BlogInlineCode>:
       </BlogP>
 
@@ -477,10 +480,12 @@ export class ContadorComponent {
 }`}</BlogCode>
 
       <BlogCallout type="info">
-        <BlogInlineCode>inject()</BlogInlineCode> es la forma funcional
-        moderna de la inyección, alternativa al constructor clásico{" "}
-        <BlogInlineCode>constructor(private svc: ContadorService)</BlogInlineCode>.
-        Se llama solo dentro de contextos de inyección (constructores,
+        <BlogInlineCode>inject()</BlogInlineCode> es la forma funcional moderna
+        de la inyección, alternativa al constructor clásico{" "}
+        <BlogInlineCode>
+          constructor(private svc: ContadorService)
+        </BlogInlineCode>
+        . Se llama solo dentro de contextos de inyección (constructores,
         initializers de campos o factories de providers).
       </BlogCallout>
 
@@ -538,8 +543,8 @@ export class UsuariosService {
 }`}</BlogCode>
 
       <BlogP>
-        En el componente, <BlogInlineCode>asyncPipe</BlogInlineCode> se
-        suscribe y desuscribe automáticamente, evitando memory leaks:
+        En el componente, <BlogInlineCode>asyncPipe</BlogInlineCode> se suscribe
+        y desuscribe automáticamente, evitando memory leaks:
       </BlogP>
 
       <BlogCode>{`import { Component, inject } from '@angular/core';
@@ -574,8 +579,8 @@ export class ListaUsuariosComponent {
       <BlogH2 id="routing">Routing</BlogH2>
 
       <BlogP>
-        El router de Angular mapea URLs a componentes. Las rutas se declaran
-        en <BlogInlineCode>app.routes.ts</BlogInlineCode>:
+        El router de Angular mapea URLs a componentes. Las rutas se declaran en{" "}
+        <BlogInlineCode>app.routes.ts</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import { Routes } from '@angular/router';
@@ -589,9 +594,9 @@ export const routes: Routes = [
 ];`}</BlogCode>
 
       <BlogP>
-        El componente raíz incluye <BlogInlineCode>router-outlet</BlogInlineCode>{" "}
-        (donde se renderiza la ruta activa) y enlaces con{" "}
-        <BlogInlineCode>routerLink</BlogInlineCode>:
+        El componente raíz incluye{" "}
+        <BlogInlineCode>router-outlet</BlogInlineCode> (donde se renderiza la
+        ruta activa) y enlaces con <BlogInlineCode>routerLink</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import { Component } from '@angular/core';
@@ -614,8 +619,7 @@ export class AppComponent {}`}</BlogCode>
       <BlogP>
         Para leer parámetros de la ruta, habilita{" "}
         <BlogInlineCode>withComponentInputBinding()</BlogInlineCode> al
-        registrar el router. Así el parámetro llega como input del
-        componente:
+        registrar el router. Así el parámetro llega como input del componente:
       </BlogP>
 
       <BlogCode>{`import { ApplicationConfig } from '@angular/core';
@@ -650,18 +654,19 @@ export class UsuarioDetalleComponent {
 }`}</BlogCode>
 
       <BlogCallout type="info">
-        Alternativa clásica: inyectar <BlogInlineCode>ActivatedRoute</BlogInlineCode>{" "}
-        y leer <BlogInlineCode>snapshot.paramMap.get('id')</BlogInlineCode>.{" "}
+        Alternativa clásica: inyectar{" "}
+        <BlogInlineCode>ActivatedRoute</BlogInlineCode> y leer{" "}
+        <BlogInlineCode>snapshot.paramMap.get('id')</BlogInlineCode>.{" "}
         <BlogInlineCode>withComponentInputBinding()</BlogInlineCode> es más
         declarativo: la ruta pasa el parámetro como si fuera un input y tu
         componente queda testeable de forma aislada.
       </BlogCallout>
 
       <BlogP>
-        Con esto tienes el ciclo completo: componente que renderiza, service
-        que pide datos, router que navega. Angular te da estructura clara a
-        medida que la app crece, y el modo standalone mantiene el código
-        simple sin renunciar a la escala enterprise.
+        Con esto tienes el ciclo completo: componente que renderiza, service que
+        pide datos, router que navega. Angular te da estructura clara a medida
+        que la app crece, y el modo standalone mantiene el código simple sin
+        renunciar a la escala enterprise.
       </BlogP>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -809,10 +814,10 @@ export class PostsComponent {
       <BlogP>
         Angular brilla en proyectos grandes donde la estructura importa: su
         inyección de dependencias, el router y el modo standalone te dan una
-        base sólida para escalar de un componente a una aplicación
-        enterprise sin perder el control. Empieza con un componente pequeño,
-        añade servicios cuando haya lógica compartida y deja que el router
-        organice el resto.
+        base sólida para escalar de un componente a una aplicación enterprise
+        sin perder el control. Empieza con un componente pequeño, añade
+        servicios cuando haya lógica compartida y deja que el router organice el
+        resto.
       </BlogP>
     </article>
   );

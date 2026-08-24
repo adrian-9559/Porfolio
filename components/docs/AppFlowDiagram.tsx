@@ -179,13 +179,13 @@ const NODES: FlowNode[] = [
     tech: [
       "Supabase Auth",
       "JWT HS256",
-      "localStorage (auth_token / refresh_token)",
-      "apiFetch interceptor",
+      "Cookies httpOnly (access_token / refresh_token)",
+      "BFF proxy Next.js (pages/api/[[...slug]])",
     ],
     notes: [
       "accessToken: ~1h de vida",
-      "apiFetch detecta 401 y renueva el token automáticamente",
-      "tokenStore abstrae el acceso a localStorage en todo el frontend",
+      "El proxy re-emite las cookies en el dominio del frontend (SameSite=Lax)",
+      "El backend renueva el access token vía la refresh cookie; el cliente no ve los tokens",
     ],
   },
 
@@ -573,7 +573,10 @@ const NODES: FlowNode[] = [
       "Keys almacenadas con hash SHA-256 en la DB",
       "Si API_KEY env está vacía → modo desarrollo sin gating",
     ],
-    env: ["API_KEY (backend .env)", "NEXT_PUBLIC_API_KEY (frontend .env)"],
+    env: [
+      "API_KEY (backend .env)",
+      "BACKEND_API_KEY (frontend .env, server-only)",
+    ],
   },
 
   // EXTERNAL

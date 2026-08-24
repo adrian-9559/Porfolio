@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
+import { useT } from "@/hooks/useT";
 
 const CHARS = {
   lowercase: "abcdefghijklmnopqrstuvwxyz",
@@ -77,6 +78,7 @@ function getStrength(
     numbers: boolean;
     symbols: boolean;
   },
+  t: (key: string) => string,
 ) {
   if (!pw) return { label: "", score: 0, color: "" };
   let score = 0;
@@ -88,11 +90,11 @@ function getStrength(
   if (opts.numbers) score++;
   if (opts.symbols) score++;
 
-  if (score <= 2) return { label: "Débil", score: 1, color: "bg-red-500" };
-  if (score <= 3) return { label: "Regular", score: 2, color: "bg-amber-500" };
-  if (score <= 4) return { label: "Buena", score: 3, color: "bg-emerald-500" };
+  if (score <= 2) return { label: t("blog.password.weak"), score: 1, color: "bg-red-500" };
+  if (score <= 3) return { label: t("blog.password.fair"), score: 2, color: "bg-amber-500" };
+  if (score <= 4) return { label: t("blog.password.good"), score: 3, color: "bg-emerald-500" };
 
-  return { label: "Fuerte", score: 4, color: "bg-blue-500" };
+  return { label: t("blog.password.strong"), score: 4, color: "bg-blue-500" };
 }
 
 const CheckOption = ({
@@ -124,6 +126,7 @@ const CheckOption = ({
 );
 
 export default function PasswordContent() {
+  const { t } = useT();
   const [length, setLength] = useState(16);
   const [opts, setOpts] = useState({
     lowercase: true,
@@ -171,7 +174,7 @@ export default function PasswordContent() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const strength = getStrength(password, opts);
+  const strength = getStrength(password, opts, t);
 
   return (
     <article className="max-w-2xl">
@@ -179,21 +182,20 @@ export default function PasswordContent() {
       <div className="space-y-3 mb-10">
         <div className="flex items-center gap-2">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-800/50">
-            Herramienta
+            {t("blog.password.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.password.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Generador de contraseñas
+          {t("blog.password.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Crea contraseñas seguras y aleatorias al instante. Personaliza la
-          longitud y los tipos de caracteres.
+          {t("blog.password.desc")}
         </p>
       </div>
 
@@ -231,7 +233,7 @@ export default function PasswordContent() {
                       strokeWidth={2.5}
                     />
                   </svg>
-                  Copiado
+                  {t("blog.password.copied")}
                 </>
               ) : (
                 <>
@@ -248,7 +250,7 @@ export default function PasswordContent() {
                       strokeWidth={2}
                     />
                   </svg>
-                  Copiar
+                  {t("blog.password.copy")}
                 </>
               )}
             </button>
@@ -260,7 +262,7 @@ export default function PasswordContent() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <p className="text-xs font-medium text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest">
-                Fortaleza
+                {t("blog.password.strength")}
               </p>
               <p
                 className={`text-xs font-semibold ${
@@ -298,7 +300,7 @@ export default function PasswordContent() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
-              Longitud
+              {t("blog.password.length")}
             </p>
             <span className="text-sm font-bold text-blue-600 dark:text-blue-400 tabular-nums">
               {length}
@@ -321,27 +323,27 @@ export default function PasswordContent() {
         {/* Character options */}
         <div className="space-y-3">
           <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
-            Incluir
+              {t("blog.password.include")}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <CheckOption
               checked={opts.lowercase}
-              label="Minúsculas (a-z)"
+              label={t("blog.password.lowercase")}
               onChange={(v) => handleOpt("lowercase", v)}
             />
             <CheckOption
               checked={opts.uppercase}
-              label="Mayúsculas (A-Z)"
+              label={t("blog.password.uppercase")}
               onChange={(v) => handleOpt("uppercase", v)}
             />
             <CheckOption
               checked={opts.numbers}
-              label="Números (0-9)"
+              label={t("blog.password.numbers")}
               onChange={(v) => handleOpt("numbers", v)}
             />
             <CheckOption
               checked={opts.symbols}
-              label="Símbolos (!@#...)"
+              label={t("blog.password.symbols")}
               onChange={(v) => handleOpt("symbols", v)}
             />
           </div>
@@ -365,21 +367,21 @@ export default function PasswordContent() {
               strokeWidth={2}
             />
           </svg>
-          Generar nueva contraseña
+          {t("blog.password.generate")}
         </button>
       </div>
 
       {/* Tips */}
       <div className="mt-8 p-5 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 space-y-3">
         <p className="text-xs font-semibold text-blue-800 dark:text-blue-300 uppercase tracking-wider">
-          Consejos de seguridad
+          {t("blog.password.securityTips")}
         </p>
         <ul className="space-y-2">
           {[
-            "Usa contraseñas de al menos 12 caracteres para mayor seguridad.",
-            "Combina mayúsculas, minúsculas, números y símbolos.",
-            "Nunca uses la misma contraseña en varios servicios.",
-            "Usa un gestor de contraseñas como Bitwarden o 1Password.",
+            t("blog.password.tip1"),
+            t("blog.password.tip2"),
+            t("blog.password.tip3"),
+            t("blog.password.tip4"),
           ].map((tip, i) => (
             <li
               key={i}

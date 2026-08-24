@@ -138,11 +138,12 @@ export default function TypeScriptAvanzadoContent() {
       <BlogH2 id="narrowing">Narrowing y type guards</BlogH2>
 
       <BlogP>
-        El <strong>narrowing</strong> es el proceso por el que TypeScript
-        reduce el tipo de una variable dentro de un bloque, en función de las
+        El <strong>narrowing</strong> es el proceso por el que TypeScript reduce
+        el tipo de una variable dentro de un bloque, en función de las
         condiciones de control de flujo. Los guardas básicos:{" "}
-        <BlogInlineCode>typeof</BlogInlineCode>, <BlogInlineCode>in</BlogInlineCode>{" "}
-        e <BlogInlineCode>instanceof</BlogInlineCode>:
+        <BlogInlineCode>typeof</BlogInlineCode>,{" "}
+        <BlogInlineCode>in</BlogInlineCode> e{" "}
+        <BlogInlineCode>instanceof</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`function procesarValor(valor: string | number | Date) {
@@ -181,7 +182,8 @@ function obtenerNombre(entidad: Usuario | Empresa) {
         Cuando un guarda es complejo, se extrae a una función con un{" "}
         <strong>type predicate</strong>: el operador{" "}
         <BlogInlineCode>is</BlogInlineCode> le dice a TypeScript qué tipo tiene
-        el valor cuando la función devuelve <BlogInlineCode>true</BlogInlineCode>:
+        el valor cuando la función devuelve{" "}
+        <BlogInlineCode>true</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`type Producto = { id: number; nombre: string; precio: number };
@@ -200,10 +202,10 @@ ofertas.forEach((oferta) => {
 });`}</BlogCode>
 
       <BlogCallout type="warn">
-        Un type predicate promete a TypeScript lo que tu lógica debe cumplir:
-        si el cuerpo de la función está mal, los errores se propagan a todo el
-        que use el predicado. Escríbelo correcto la primera vez — no hay
-        compilador que valide la promesa en sí.
+        Un type predicate promete a TypeScript lo que tu lógica debe cumplir: si
+        el cuerpo de la función está mal, los errores se propagan a todo el que
+        use el predicado. Escríbelo correcto la primera vez — no hay compilador
+        que valide la promesa en sí.
       </BlogCallout>
 
       <BlogP>
@@ -224,7 +226,9 @@ function mostrar(estado: Estado) {
   return <Resultado />;
 }`}</BlogCode>
 
-      <BlogH2 id="uniones-discriminadas">Uniones discriminadas y exhaustiveness</BlogH2>
+      <BlogH2 id="uniones-discriminadas">
+        Uniones discriminadas y exhaustiveness
+      </BlogH2>
 
       <BlogP>
         Una <strong>unión discriminada</strong> usa un campo literal común (el
@@ -287,10 +291,11 @@ function manejarEvento(evento: Evento) {
       <BlogH2 id="generics">Generics avanzados</BlogH2>
 
       <BlogP>
-        Un <strong>generic</strong> parametriza un tipo: la misma función o
-        tipo funciona para muchos tipos, y la relación entre parámetros se
-        conserva. Con <strong>constraints</strong> (<BlogInlineCode>extends</BlogInlineCode>){" "}
-        limitas a qué tipos puede aplicarse:
+        Un <strong>generic</strong> parametriza un tipo: la misma función o tipo
+        funciona para muchos tipos, y la relación entre parámetros se conserva.
+        Con <strong>constraints</strong> (
+        <BlogInlineCode>extends</BlogInlineCode>) limitas a qué tipos puede
+        aplicarse:
       </BlogP>
 
       <BlogCode>{`function primero<T>(lista: T[]): T | undefined {
@@ -325,7 +330,8 @@ function almacenar<T = string>(valor: T): void {
 }`}</BlogCode>
 
       <BlogP>
-        También se aplican a <strong>clases</strong> e <strong>interfaces</strong>:
+        También se aplican a <strong>clases</strong> e{" "}
+        <strong>interfaces</strong>:
       </BlogP>
 
       <BlogCode>{`// Clase genérica: una pila tipada
@@ -494,8 +500,9 @@ type D = DesempaquetaProfunda<Promise<Promise<string>>>; // string`}</BlogCode>
         <BlogInlineCode>ReturnType</BlogInlineCode>,{" "}
         <BlogInlineCode>Parameters</BlogInlineCode> y{" "}
         <BlogInlineCode>Awaited</BlogInlineCode> están implementados
-        internamente con conditional types e <BlogInlineCode>infer</BlogInlineCode>.{" "}
-        Aprender a escribirlos te permite crear utilidades propias.
+        internamente con conditional types e{" "}
+        <BlogInlineCode>infer</BlogInlineCode>. Aprender a escribirlos te
+        permite crear utilidades propias.
       </BlogCallout>
 
       <BlogH2 id="react">Tipado en React</BlogH2>
@@ -529,9 +536,10 @@ function Boton({ children, variant, onClick }: BotonProps) {
       <BlogCallout type="info">
         Sobre <BlogInlineCode>React.FC</BlogInlineCode>: sigue existiendo, pero
         la comunidad y el equipo de React recomiendan tipar las props
-        directamente. Motivos: no infiere <BlogInlineCode>children</BlogInlineCode>{" "}
-        implícitamente (en React 18 deben declararse), complica los generics y
-        añade verbosidad sin valor. La firma{" "}
+        directamente. Motivos: no infiere{" "}
+        <BlogInlineCode>children</BlogInlineCode> implícitamente (en React 18
+        deben declararse), complica los generics y añade verbosidad sin valor.
+        La firma{" "}
         <BlogInlineCode>(props: Props) =&gt; JSX.Element</BlogInlineCode> es la
         norma actual.
       </BlogCallout>
@@ -625,10 +633,10 @@ colores.primario; // literal "#2563eb", no string genérico`}</BlogCode>
       <BlogCallout type="warn">
         <BlogInlineCode>as const</BlogInlineCode> no es un casting "seguro":{" "}
         <BlogInlineCode>as</BlogInlineCode> fuerza un tipo y puede ocultar
-        errores reales si se usa mal.{" "}
-        <BlogInlineCode>satisfies</BlogInlineCode> (TS 4.9+) existe justo para
-        validar sin forzar. Prefiere siempre satisfaces sobre{" "}
-        <BlogInlineCode>as</BlogInlineCode> cuando solo quieras comprobar.
+        errores reales si se usa mal. <BlogInlineCode>satisfies</BlogInlineCode>{" "}
+        (TS 4.9+) existe justo para validar sin forzar. Prefiere siempre
+        satisfaces sobre <BlogInlineCode>as</BlogInlineCode> cuando solo quieras
+        comprobar.
       </BlogCallout>
 
       <BlogH2 id="tsconfig">tsconfig estricto</BlogH2>
@@ -663,8 +671,8 @@ colores.primario; // literal "#2563eb", no string genérico`}</BlogCode>
           <BlogInlineCode>strictFunctionTypes</BlogInlineCode> y más.
         </BlogLi>
         <BlogLi>
-          <strong>noUncheckedIndexedAccess</strong> — el acceso por índice de
-          un array devuelve <BlogInlineCode>T | undefined</BlogInlineCode>.
+          <strong>noUncheckedIndexedAccess</strong> — el acceso por índice de un
+          array devuelve <BlogInlineCode>T | undefined</BlogInlineCode>.
         </BlogLi>
         <BlogLi>
           <strong>exactOptionalPropertyTypes</strong> —{" "}
@@ -694,11 +702,11 @@ const c2: Config = {};
 const c3: Config = { retraso: 300 };`}</BlogCode>
 
       <BlogCallout type="info">
-        Migrar un proyecto legacy a <BlogInlineCode>strict: true</BlogInlineCode>{" "}
-        genera errores a miles; hazlo de a poco (flag por flag) en vez de todo
-        de golpe. Los proyectos nuevos no deberían arrancar sin{" "}
-        <BlogInlineCode>strict</BlogInlineCode> ni{" "}
-        <BlogInlineCode>noUncheckedIndexedAccess</BlogInlineCode>.
+        Migrar un proyecto legacy a{" "}
+        <BlogInlineCode>strict: true</BlogInlineCode> genera errores a miles;
+        hazlo de a poco (flag por flag) en vez de todo de golpe. Los proyectos
+        nuevos no deberían arrancar sin <BlogInlineCode>strict</BlogInlineCode>{" "}
+        ni <BlogInlineCode>noUncheckedIndexedAccess</BlogInlineCode>.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />

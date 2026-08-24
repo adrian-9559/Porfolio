@@ -125,9 +125,9 @@ export default function TailwindContent() {
       </h1>
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
-        Tailwind CSS es un framework que construye interfaces combinando
-        clases utilitarias de un solo propósito directamente en el HTML. Este
-        tutorial cubre instalación, spacing, layouts, responsive, dark mode y
+        Tailwind CSS es un framework que construye interfaces combinando clases
+        utilitarias de un solo propósito directamente en el HTML. Este tutorial
+        cubre instalación, spacing, layouts, responsive, dark mode y
         customización con la versión 4. Prerequisito conceptual: HTML y CSS.
       </p>
 
@@ -137,10 +137,10 @@ export default function TailwindContent() {
 
       <BlogP>
         A diferencia de Bootstrap, que trae componentes predefinidos, Tailwind
-        es <strong>utility-first</strong>: cada clase aplica una única
-        propiedad (<BlogInlineCode>p-4</BlogInlineCode> es solo padding de
-        1rem). Tú compones la interfaz combinando estas clases en el HTML, sin
-        escribir CSS en archivos separados.
+        es <strong>utility-first</strong>: cada clase aplica una única propiedad
+        (<BlogInlineCode>p-4</BlogInlineCode> es solo padding de 1rem). Tú
+        compones la interfaz combinando estas clases en el HTML, sin escribir
+        CSS en archivos separados.
       </BlogP>
 
       <BlogUl>
@@ -149,8 +149,8 @@ export default function TailwindContent() {
           inventar nombres de clase.
         </BlogLi>
         <BlogLi>
-          <strong>Consistencia:</strong> el spacing, la tipografía y los
-          colores vienen de un design system único.
+          <strong>Consistencia:</strong> el spacing, la tipografía y los colores
+          vienen de un design system único.
         </BlogLi>
         <BlogLi>
           <strong>Solo lo que usas:</strong> el CSS final se genera con las
@@ -158,8 +158,9 @@ export default function TailwindContent() {
         </BlogLi>
         <BlogLi>
           <strong>Responsive integrado:</strong> los prefijos{" "}
-          <BlogInlineCode>sm:</BlogInlineCode>, <BlogInlineCode>md:</BlogInlineCode>{" "}
-          y <BlogInlineCode>lg:</BlogInlineCode> viven en la misma clase.
+          <BlogInlineCode>sm:</BlogInlineCode>,{" "}
+          <BlogInlineCode>md:</BlogInlineCode> y{" "}
+          <BlogInlineCode>lg:</BlogInlineCode> viven en la misma clase.
         </BlogLi>
       </BlogUl>
 
@@ -167,8 +168,8 @@ export default function TailwindContent() {
         La versión 4 (lanzada en 2025) cambia el motor a CSS nativo: nada de
         PostCSS con plugins, usa el plugin oficial{" "}
         <BlogInlineCode>@tailwindcss/vite</BlogInlineCode> y una directiva{" "}
-        <BlogInlineCode>@import "tailwindcss"</BlogInlineCode> en tu CSS.
-        Todo lo de este tutorial usa v4.
+        <BlogInlineCode>@import "tailwindcss"</BlogInlineCode> en tu CSS. Todo
+        lo de este tutorial usa v4.
       </BlogCallout>
 
       <BlogH2 id="instalacion">Instalación</BlogH2>
@@ -196,9 +197,9 @@ export default defineConfig({
       <BlogH3 id="instalar-nextjs">Con Next.js</BlogH3>
 
       <BlogP>
-        Con Next.js (App Router o pages router) se usa el PostCSS plugin que
-        ya trae el paquete, o el plugin experimental de Vite según tu versión.
-        Para v4 el método estándar:
+        Con Next.js (App Router o pages router) se usa el PostCSS plugin que ya
+        trae el paquete, o el plugin experimental de Vite según tu versión. Para
+        v4 el método estándar:
       </BlogP>
 
       <BlogCode>{`npm install tailwindcss @tailwindcss/postcss
@@ -216,17 +217,18 @@ export default {
       <BlogCallout type="warn">
         En v4 <strong>no existe</strong>{" "}
         <BlogInlineCode>tailwind.config.js</BlogInlineCode> obligatorio ni la
-        directiva <BlogInlineCode>@tailwind base/components/utilities</BlogInlineCode>.
-        Todo se configura desde CSS con{" "}
-        <BlogInlineCode>@theme</BlogInlineCode> y la detección de contenido es
-        automática. Si migras desde v3, revisa la guía oficial de migración.
+        directiva{" "}
+        <BlogInlineCode>@tailwind base/components/utilities</BlogInlineCode>.
+        Todo se configura desde CSS con <BlogInlineCode>@theme</BlogInlineCode>{" "}
+        y la detección de contenido es automática. Si migras desde v3, revisa la
+        guía oficial de migración.
       </BlogCallout>
 
       <BlogH2 id="spacing">Spacing y tipografía</BlogH2>
 
       <BlogP>
-        El <strong>spacing</strong> usa una escala fija: cada unidad equivale
-        a 0.25rem (4px). <BlogInlineCode>p-4</BlogInlineCode> son 1rem,{" "}
+        El <strong>spacing</strong> usa una escala fija: cada unidad equivale a
+        0.25rem (4px). <BlogInlineCode>p-4</BlogInlineCode> son 1rem,{" "}
         <BlogInlineCode>mt-2</BlogInlineCode> es margin-top de 0.5rem:
       </BlogP>
 
@@ -260,8 +262,8 @@ p-16 = 4rem    (64px)`}</BlogCode>
 <span class="font-mono text-xs uppercase">CÓDIGO</span>`}</BlogCode>
 
       <BlogP>
-        Utilidades útiles de texto: <BlogInlineCode>text-center</BlogInlineCode>,{" "}
-        <BlogInlineCode>truncate</BlogInlineCode> (ellipsis),{" "}
+        Utilidades útiles de texto: <BlogInlineCode>text-center</BlogInlineCode>
+        , <BlogInlineCode>truncate</BlogInlineCode> (ellipsis),{" "}
         <BlogInlineCode>whitespace-nowrap</BlogInlineCode> y{" "}
         <BlogInlineCode>leading-*</BlogInlineCode> para interlineado.
       </BlogP>
@@ -298,14 +300,12 @@ p-16 = 4rem    (64px)`}</BlogCode>
           <BlogInlineCode>gap-4</BlogInlineCode> — espacio entre hijos.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>flex-1</BlogInlineCode> — el hijo crece para ocupar
-          el espacio restante.
+          <BlogInlineCode>flex-1</BlogInlineCode> — el hijo crece para ocupar el
+          espacio restante.
         </BlogLi>
       </BlogUl>
 
-      <BlogP>
-        Grid:
-      </BlogP>
+      <BlogP>Grid:</BlogP>
 
       <BlogCode>{`<div class="grid grid-cols-3 gap-4">
   <div class="p-4 bg-white rounded-xl shadow">Item 1</div>
@@ -323,9 +323,9 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
       <BlogCallout type="info">
         El patrón más común en la web real:{" "}
         <BlogInlineCode>flex</BlogInlineCode> para barras y filas de un solo
-        eje, <BlogInlineCode>grid</BlogInlineCode> para rejillas de tarjetas
-        y columnas. Y ambos aceptan <BlogInlineCode>gap-*</BlogInlineCode>,
-        así que olvídate de los márgenes negativos.
+        eje, <BlogInlineCode>grid</BlogInlineCode> para rejillas de tarjetas y
+        columnas. Y ambos aceptan <BlogInlineCode>gap-*</BlogInlineCode>, así
+        que olvídate de los márgenes negativos.
       </BlogCallout>
 
       <BlogH2 id="responsive">Responsive</BlogH2>
@@ -334,8 +334,8 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
         Los prefijos <BlogInlineCode>sm:</BlogInlineCode>,{" "}
         <BlogInlineCode>md:</BlogInlineCode>,{" "}
         <BlogInlineCode>lg:</BlogInlineCode> y{" "}
-        <BlogInlineCode>xl:</BlogInlineCode> aplican la utilidad solo desde
-        ese breakpoint en adelante (mobile-first):
+        <BlogInlineCode>xl:</BlogInlineCode> aplican la utilidad solo desde ese
+        breakpoint en adelante (mobile-first):
       </BlogP>
 
       <BlogCode>{`<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -351,14 +351,13 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
 </div>`}</BlogCode>
 
       <BlogP>
-        Los breakpoints por defecto en v4:{" "}
-        <BlogInlineCode>sm</BlogInlineCode> 640px,{" "}
-        <BlogInlineCode>md</BlogInlineCode> 768px,{" "}
+        Los breakpoints por defecto en v4: <BlogInlineCode>sm</BlogInlineCode>{" "}
+        640px, <BlogInlineCode>md</BlogInlineCode> 768px,{" "}
         <BlogInlineCode>lg</BlogInlineCode> 1024px,{" "}
         <BlogInlineCode>xl</BlogInlineCode> 1280px,{" "}
         <BlogInlineCode>2xl</BlogInlineCode> 1536px. Como es mobile-first,{" "}
-        <BlogInlineCode>md:grid-cols-2</BlogInlineCode> significa "desde
-        768px en adelante".
+        <BlogInlineCode>md:grid-cols-2</BlogInlineCode> significa "desde 768px
+        en adelante".
       </BlogP>
 
       <BlogCallout type="warn">
@@ -390,8 +389,8 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
       <BlogP>
         <BlogInlineCode>group-hover:</BlogInlineCode> aplica estilo a un hijo
         cuando se hace hover en un ancestro marcado con{" "}
-        <BlogInlineCode>group</BlogInlineCode>. Es la base de tarjetas y
-        menús que reaccionan al pasar el ratón:
+        <BlogInlineCode>group</BlogInlineCode>. Es la base de tarjetas y menús
+        que reaccionan al pasar el ratón:
       </BlogP>
 
       <BlogCode>{`<a class="group block p-4 rounded-xl hover:bg-gray-50">
@@ -414,8 +413,8 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
       <BlogH2 id="dark-mode">Dark mode</BlogH2>
 
       <BlogP>
-        La variante <BlogInlineCode>dark:</BlogInlineCode> aplica estilos
-        cuando el sistema (o el HTML) está en tema oscuro:
+        La variante <BlogInlineCode>dark:</BlogInlineCode> aplica estilos cuando
+        el sistema (o el HTML) está en tema oscuro:
       </BlogP>
 
       <BlogCode>{`<div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -445,9 +444,10 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
       <BlogCallout type="info">
         Con el toggle manual, un pequeño script en el{" "}
         <BlogInlineCode>&lt;head&gt;</BlogInlineCode> lee el valor guardado
-        (localStorage) y añade/elimina la clase <BlogInlineCode>.dark</BlogInlineCode>{" "}
-        del <BlogInlineCode>&lt;html&gt;</BlogInlineCode> antes del primer
-        paint, evitando un flash del tema equivocado.
+        (localStorage) y añade/elimina la clase{" "}
+        <BlogInlineCode>.dark</BlogInlineCode> del{" "}
+        <BlogInlineCode>&lt;html&gt;</BlogInlineCode> antes del primer paint,
+        evitando un flash del tema equivocado.
       </BlogCallout>
 
       <BlogH2 id="customizacion">Customización</BlogH2>
@@ -455,8 +455,8 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
       <BlogP>
         En v4, todo el tema se declara en CSS con{" "}
         <BlogInlineCode>@theme</BlogInlineCode>. Define tus propios colores,
-        fuentes y breakpoints, y Tailwind genera las utilidades
-        correspondientes automáticamente:
+        fuentes y breakpoints, y Tailwind genera las utilidades correspondientes
+        automáticamente:
       </BlogP>
 
       <BlogCode>{`/* globals.css */
@@ -491,12 +491,11 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
 }`}</BlogCode>
 
       <BlogCallout type="warn">
-        <BlogInlineCode>@apply</BlogInlineCode> sigue existiendo para
-        componer utilidades en CSS propio, pero v4 recomienda preferir clases
-        en el HTML. Usa <BlogInlineCode>@apply</BlogInlineCode> con
-        moderación (por ejemplo, en estilos de componentes de terceros) — el
-        abuso vuelve a crear el problema de "archivos CSS separados" que
-        Tailwind pretende eliminar.
+        <BlogInlineCode>@apply</BlogInlineCode> sigue existiendo para componer
+        utilidades en CSS propio, pero v4 recomienda preferir clases en el HTML.
+        Usa <BlogInlineCode>@apply</BlogInlineCode> con moderación (por ejemplo,
+        en estilos de componentes de terceros) — el abuso vuelve a crear el
+        problema de "archivos CSS separados" que Tailwind pretende eliminar.
       </BlogCallout>
 
       <BlogH2 id="componentes">Componentes con @layer</BlogH2>
@@ -530,9 +529,9 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
 <div class="tarjeta">Contenido de la tarjeta</div>`}</BlogCode>
 
       <BlogCallout type="info">
-        Por qué <BlogInlineCode>@layer</BlogInlineCode>: las utilidades
-        (capas <BlogInlineCode>utilities</BlogInlineCode>) ganan a los
-        componentes en CSS. Esto significa que{" "}
+        Por qué <BlogInlineCode>@layer</BlogInlineCode>: las utilidades (capas{" "}
+        <BlogInlineCode>utilities</BlogInlineCode>) ganan a los componentes en
+        CSS. Esto significa que{" "}
         <BlogInlineCode>class="tarjeta p-0"</BlogInlineCode> funciona: la
         utilidad <BlogInlineCode>p-0</BlogInlineCode> sobreescribe el padding
         del componente sin problemas de especificidad.
@@ -542,8 +541,8 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
         Con estas piezas tienes el ciclo completo: clases utilitarias para el
         día a día, variantes para estados y responsive,{" "}
         <BlogInlineCode>@theme</BlogInlineCode> para tu identidad y{" "}
-        <BlogInlineCode>@layer components</BlogInlineCode> para los patrones
-        que se repiten. Todo desde un solo lenguaje que vive en el HTML.
+        <BlogInlineCode>@layer components</BlogInlineCode> para los patrones que
+        se repiten. Todo desde un solo lenguaje que vive en el HTML.
       </BlogP>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -683,8 +682,8 @@ grid-flow-row / grid-flow-col → dirección`}</BlogCode>
       <hr className="border-black/8 dark:border-white/8 my-8" />
 
       <BlogP>
-        Tailwind cambia la forma de pensar el CSS: en lugar de nombrar clases
-        y mantener hojas de estilo, compones interfaces directamente con
+        Tailwind cambia la forma de pensar el CSS: en lugar de nombrar clases y
+        mantener hojas de estilo, compones interfaces directamente con
         utilidades. La v4 lo hace más simple todavía con configuración en CSS
         puro. Es la herramienta con la que se construyen la mayoría de
         interfaces modernas — y cuanto más la uses, más natural resulta.

@@ -17,7 +17,7 @@ interface NotificationsResponse {
 
 export const notificationService = {
   async getAll(): Promise<NotificationsResponse> {
-    return apiFetch<NotificationsResponse>("/notifications");
+    return apiFetch<NotificationsResponse>("/api/notifications");
   },
 
   async markRead(id: string): Promise<void> {
@@ -25,7 +25,7 @@ export const notificationService = {
   },
 
   async markAllRead(): Promise<void> {
-    await apiFetch("/notifications/read-all", { method: "PATCH" });
+    await apiFetch("/api/notifications/read-all", { method: "PATCH" });
   },
 
   async deleteOne(id: string): Promise<void> {
@@ -33,7 +33,7 @@ export const notificationService = {
   },
 
   async deleteAll(): Promise<void> {
-    await apiFetch("/notifications", { method: "DELETE" });
+    await apiFetch("/api/notifications", { method: "DELETE" });
   },
 };
 
@@ -43,7 +43,7 @@ export const contactService = {
     email: string;
     message: string;
   }): Promise<void> {
-    await apiFetch("/contact", {
+    await apiFetch("/api/contact", {
       method: "POST",
       body: JSON.stringify(payload),
     });

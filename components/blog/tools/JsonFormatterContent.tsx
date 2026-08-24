@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useT } from "@/hooks/useT";
 
 export default function JsonFormatterContent() {
+  const { t } = useT();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
@@ -15,7 +17,7 @@ export default function JsonFormatterContent() {
       setOutput(JSON.stringify(parsed, null, indent));
       setError("");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "JSON inválido");
+      setError(e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"));
       setOutput("");
     }
   };
@@ -27,7 +29,7 @@ export default function JsonFormatterContent() {
       setOutput(JSON.stringify(parsed));
       setError("");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "JSON inválido");
+      setError(e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"));
       setOutput("");
     }
   };
@@ -36,9 +38,9 @@ export default function JsonFormatterContent() {
     try {
       JSON.parse(input);
       setError("");
-      setOutput("✅ JSON válido");
+      setOutput(t("blog.jsonFormatter.validJson"));
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "JSON inválido");
+      setError(e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"));
       setOutput("");
     }
   };
@@ -60,21 +62,20 @@ export default function JsonFormatterContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50">
-            Herramienta
+            {t("blog.jsonFormatter.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.jsonFormatter.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Formateador de JSON
+          {t("blog.jsonFormatter.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Formatea, minifica y valida JSON al instante. Sin servidores, todo en
-          tu navegador.
+          {t("blog.jsonFormatter.desc")}
         </p>
       </div>
 
@@ -83,7 +84,7 @@ export default function JsonFormatterContent() {
         <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <label className="text-xs font-medium text-[#6e6e73] dark:text-[#86868b]">
-              Indentación:
+              {t("blog.jsonFormatter.indentation")}
             </label>
             {[2, 4].map((n) => (
               <button
@@ -91,7 +92,7 @@ export default function JsonFormatterContent() {
                 className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${indent === n ? "bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/8 dark:hover:bg-white/8"}`}
                 onClick={() => setIndent(n)}
               >
-                {n} espacios
+                {n} {t("blog.jsonFormatter.spaces")}
               </button>
             ))}
           </div>
@@ -100,25 +101,25 @@ export default function JsonFormatterContent() {
               className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white transition-colors"
               onClick={format}
             >
-              Formatear
+              {t("blog.jsonFormatter.format")}
             </button>
             <button
               className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/8 dark:bg-white/8 text-[#1d1d1f] dark:text-white hover:bg-black/12 dark:hover:bg-white/12 transition-colors"
               onClick={minify}
             >
-              Minificar
+              {t("blog.jsonFormatter.minify")}
             </button>
             <button
               className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/8 dark:bg-white/8 text-[#1d1d1f] dark:text-white hover:bg-black/12 dark:hover:bg-white/12 transition-colors"
               onClick={validate}
             >
-              Validar
+              {t("blog.jsonFormatter.validate")}
             </button>
             <button
               className="px-3 py-1.5 rounded-lg text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
               onClick={clear}
             >
-              Limpiar
+              {t("blog.jsonFormatter.clear")}
             </button>
           </div>
         </div>
@@ -127,7 +128,7 @@ export default function JsonFormatterContent() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-              Entrada
+              {t("blog.jsonFormatter.input")}
             </p>
             <textarea
               className="w-full h-64 p-3 text-xs font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-amber-400 dark:focus:border-amber-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
@@ -139,14 +140,14 @@ export default function JsonFormatterContent() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-                Salida
+                {t("blog.jsonFormatter.output")}
               </p>
               {output && !output.startsWith("✅") && (
                 <button
                   className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
                   onClick={copy}
                 >
-                  {copied ? "¡Copiado!" : "Copiar"}
+                  {copied ? t("blog.jsonFormatter.copied") : t("blog.jsonFormatter.copy")}
                 </button>
               )}
             </div>

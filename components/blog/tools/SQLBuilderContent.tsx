@@ -38,6 +38,7 @@ import { Badge } from "./SQLBuilderBadge";
 
 import { apiFetch } from "@/services/apiClient";
 import { useAuthStore } from "@/store/authStore";
+import { useT } from "@/hooks/useT";
 
 const EXAMPLE_SCHEMAS: ExampleSchema[] = [
   {
@@ -55,6 +56,7 @@ const EXAMPLE_SCHEMAS: ExampleSchema[] = [
 ];
 
 export default function SQLBuilderContent() {
+  const { t } = useT();
   const { isAuthenticated } = useAuthStore();
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -258,26 +260,25 @@ export default function SQLBuilderContent() {
   };
 
   return (
-    <article aria-label="Constructor SQL interactivo" className="max-w-4xl">
+    <article aria-label={t("blog.sqlBuilder.title")} className="max-w-4xl">
       {/* ── Header ── */}
       <div className="space-y-3 mb-6">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50">
-            Herramienta
+            {t("blog.sqlBuilder.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Interactivo
+            {t("blog.sqlBuilder.interactive")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Constructor SQL
+          {t("blog.sqlBuilder.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Construye consultas <code className="font-semibold">SELECT</code>{" "}
-          cliqueando tablas y columnas. Sin escribir SQL a mano.
+          {t("blog.sqlBuilder.desc")}
         </p>
       </div>
 
@@ -299,7 +300,7 @@ export default function SQLBuilderContent() {
           >
             <path d={showDocs ? "M4 10l4-4 4 4" : "M6 4l4 4-4 4"} />
           </svg>{" "}
-          <BookIcon aria-hidden="true" className="w-3.5 h-3.5" /> ¿Cómo usarlo?
+          <BookIcon aria-hidden="true" className="w-3.5 h-3.5" />           {t("blog.sqlBuilder.howToUse")}
         </button>
       </div>
 
@@ -309,11 +310,11 @@ export default function SQLBuilderContent() {
           id="sql-builder-docs"
         >
           <p className="font-semibold text-[#1d1d1f] dark:text-white flex items-center gap-1.5">
-            <BookIcon aria-hidden="true" className="w-4 h-4" /> Guía rápida
+            <BookIcon aria-hidden="true" className="w-4 h-4" /> {t("blog.sqlBuilder.quickGuide")}
           </p>
           <ol className="list-decimal pl-4 space-y-1.5">
             <li>
-              Haz clic en una columna para seleccionarla{" "}
+              {t("blog.sqlBuilder.guideStep1")}{" "}
               <svg
                 aria-hidden="true"
                 className="w-3.5 h-3.5 inline-block align-text-bottom text-emerald-500"
@@ -394,22 +395,16 @@ export default function SQLBuilderContent() {
             </li>
           </ol>
           <p className="font-semibold text-[#1d1d1f] dark:text-white mt-3 flex items-center gap-1.5">
-            <LinkIcon aria-hidden="true" className="w-4 h-4" /> JOINs
-            automáticos
+            <LinkIcon aria-hidden="true" className="w-4 h-4" /> {t("blog.sqlBuilder.autoJoins")}
           </p>
           <p>
-            Si seleccionas columnas de tablas relacionadas por clave foránea (
-            <code>REFERENCES</code>), el JOIN se genera automáticamente. La
-            tabla sin FK actúa como <code>FROM</code> principal.
+            {t("blog.sqlBuilder.autoJoinsDesc")}
           </p>
           <p className="font-semibold text-[#1d1d1f] dark:text-white mt-3 flex items-center gap-1.5">
-            <DocumentIcon aria-hidden="true" className="w-4 h-4" /> Formato DDL
-            esperado
+            <DocumentIcon aria-hidden="true" className="w-4 h-4" /> {t("blog.sqlBuilder.ddlFormat")}
           </p>
           <p>
-            Sentencias <code>CREATE TABLE</code> estándar con columnas, tipos,{" "}
-            <code>PRIMARY KEY</code> inline o standalone, y{" "}
-            <code>REFERENCES</code> para claves foráneas.
+            {t("blog.sqlBuilder.ddlFormatDesc")}
           </p>
         </div>
       )}
@@ -433,9 +428,9 @@ export default function SQLBuilderContent() {
               <path d="M10.5 10.5L14 14" />
             </svg>
             <input
-              aria-label="Filtrar columnas"
+              aria-label={t("blog.sqlBuilder.filterColumns")}
               className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 focus:border-transparent transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-              placeholder="Buscar columna…"
+              placeholder={t("blog.sqlBuilder.searchColumn")}
               type="text"
               value={columnFilter}
               onChange={(e) => setColumnFilter(e.target.value)}
@@ -454,11 +449,11 @@ export default function SQLBuilderContent() {
                   {ex.label}
                 </p>
                 <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mt-1">
-                  Tablas: {ex.tables}
+                  {t("blog.sqlBuilder.tables")}: {ex.tables}
                 </p>
                 <div className="flex gap-1.5 mt-2">
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
-                    Empezar
+                    {t("blog.sqlBuilder.startOver")}
                   </span>
                 </div>
               </button>
@@ -649,7 +644,7 @@ export default function SQLBuilderContent() {
                                     label={`WHERE ${ref}`}
                                     onClick={() => toggleWhere(ref)}
                                   >
-                                    Filtrar
+                                    {t("blog.sqlBuilder.filter")}
                                   </Badge>
                                   <Badge
                                     active={ordActive}
@@ -661,7 +656,7 @@ export default function SQLBuilderContent() {
                                       ? ordDir === "ASC"
                                         ? "↑"
                                         : "↓"
-                                      : "Ordenar"}
+                                      : t("blog.sqlBuilder.sort")}
                                   </Badge>
                                   <Badge
                                     active={grpActive}
@@ -669,7 +664,7 @@ export default function SQLBuilderContent() {
                                     label={`GROUP BY ${ref}`}
                                     onClick={() => toggleGroupBy(ref)}
                                   >
-                                    Agrupar
+                                    {t("blog.sqlBuilder.groupBy")}
                                   </Badge>
                                 </div>
                               </div>
@@ -713,8 +708,7 @@ export default function SQLBuilderContent() {
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all focus:outline-none focus:ring-2 focus:ring-red-400"
             onClick={handleStartOver}
           >
-            <TrashIcon aria-hidden="true" className="w-3.5 h-3.5" /> Empezar de
-            nuevo
+            <TrashIcon aria-hidden="true" className="w-3.5 h-3.5" /> {t("blog.sqlBuilder.startOver")}
           </button>
         </div>
       )}
@@ -730,7 +724,7 @@ export default function SQLBuilderContent() {
             aria-hidden="true"
             className={`w-3.5 h-3.5 transition-transform ${showCustomDDL ? "rotate-45" : ""}`}
           />
-          ¿Tienes tus propias tablas?
+          {t("blog.sqlBuilder.customTables")}
         </button>
         {showCustomDDL && (
           <div className="mt-2 space-y-2">
@@ -753,7 +747,7 @@ export default function SQLBuilderContent() {
                   aria-hidden="true"
                   className="w-3.5 h-3.5 inline-block align-text-bottom"
                 />{" "}
-                No se pudieron detectar tablas. Revisa la sintaxis.
+                {t("blog.sqlBuilder.parseError")}
               </p>
             )}
             <div className="flex gap-2 flex-wrap">
@@ -775,11 +769,11 @@ export default function SQLBuilderContent() {
       <div ref={outputRef} className="sticky top-4 z-10 mb-6">
         <div className="space-y-2 bg-white dark:bg-[#0a0a0f] rounded-xl p-4 border border-black/10 dark:border-white/10 shadow-sm">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            Tu consulta
+            {t("blog.sqlBuilder.yourQuery")}
           </p>
           {!displaySQL ? (
             <div className="rounded-xl bg-[#0d1117] p-4 overflow-x-auto text-xs text-[#8b949e]">
-              Selecciona columnas y cláusulas para generar una consulta…
+              {t("blog.sqlBuilder.selectHint")}
             </div>
           ) : (
             <>
@@ -795,20 +789,20 @@ export default function SQLBuilderContent() {
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   aria-label={
-                    copied ? "SQL copiado" : "Copiar SQL al portapapeles"
+                    copied ? t("blog.sqlBuilder.copied") : t("blog.sqlBuilder.copy")
                   }
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${copied ? "bg-emerald-500 text-white" : "bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15"} focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600`}
                   onClick={handleCopy}
                 >
                   {copied ? (
-                    "¡Copiado!"
+                    t("blog.sqlBuilder.copied")
                   ) : (
                     <>
                       <ClipboardIcon
                         aria-hidden="true"
                         className="w-3.5 h-3.5"
                       />{" "}
-                      Copiar
+                      {t("blog.sqlBuilder.copy")}
                     </>
                   )}
                 </button>
@@ -820,7 +814,7 @@ export default function SQLBuilderContent() {
                     onClick={handleToggleHistory}
                   >
                     <ClipboardIcon aria-hidden="true" className="w-3.5 h-3.5" />{" "}
-                    Historial
+                    {t("blog.sqlBuilder.history")}
                   </button>
                 )}
                 {activeSQL && (
@@ -828,7 +822,7 @@ export default function SQLBuilderContent() {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-black/5 dark:bg-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/10 dark:hover:bg-white/15 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600"
                     onClick={() => setActiveSQL(null)}
                   >
-                    Volver al editor
+                    {t("blog.sqlBuilder.backToEditor")}
                   </button>
                 )}
                 {copied && (
@@ -836,7 +830,7 @@ export default function SQLBuilderContent() {
                     className="text-xs text-emerald-600 dark:text-emerald-400"
                     role="status"
                   >
-                    Copiado al portapapeles
+                    {t("blog.sqlBuilder.copiedToClipboard")}
                   </span>
                 )}
               </div>
@@ -853,7 +847,7 @@ export default function SQLBuilderContent() {
         >
           <div className="px-4 py-2.5 bg-black/[0.03] dark:bg-white/[0.03] border-b border-black/10 dark:border-white/10">
             <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
-              Historial de consultas
+              {t("blog.sqlBuilder.queryHistory")}
             </h3>
           </div>
           <div className="px-4 py-3 max-h-64 overflow-y-auto">
@@ -863,12 +857,12 @@ export default function SQLBuilderContent() {
                 className="flex items-center justify-center py-6"
               >
                 <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-                  Cargando…
+                  {t("blog.sqlBuilder.loading")}
                 </span>
               </div>
             ) : history.length === 0 ? (
               <div className="py-6 text-center text-xs text-[#aeaeb2] dark:text-[#636366]">
-                No hay consultas guardadas
+                {t("blog.sqlBuilder.noSavedQueries")}
               </div>
             ) : (
               <ul
@@ -894,7 +888,7 @@ export default function SQLBuilderContent() {
                       className="px-2 py-1 rounded-lg text-[10px] font-semibold bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600"
                       onClick={() => loadHistoryItem(item)}
                     >
-                      Cargar
+                      {t("blog.sqlBuilder.load")}
                     </button>
                     <button
                       aria-label={`Eliminar consulta: ${item.sql_text.slice(0, 60)}`}
@@ -902,7 +896,7 @@ export default function SQLBuilderContent() {
                       onClick={() => deleteHistoryItem(item.id)}
                     >
                       <TrashIcon aria-hidden="true" className="w-3.5 h-3.5" />
-                      <span className="sr-only">Eliminar</span>
+                      <span className="sr-only">{t("blog.sqlBuilder.delete")}</span>
                     </button>
                   </li>
                 ))}

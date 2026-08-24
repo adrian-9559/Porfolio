@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import {
   BlogH2,
-  BlogH3,
   BlogP,
   BlogCode,
   BlogInlineCode,
@@ -124,10 +123,10 @@ export default function VueContentEn() {
       </h1>
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
-        Vue.js calls itself "the progressive framework": you can add it to
-        an existing page or use it to build a complete SPA. This tutorial
-        covers the Composition API, reactivity, components, routing, and
-        global state. Conceptual prerequisite: JavaScript.
+        Vue.js calls itself "the progressive framework": you can add it to an
+        existing page or use it to build a complete SPA. This tutorial covers
+        the Composition API, reactivity, components, routing, and global state.
+        Conceptual prerequisite: JavaScript.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -135,8 +134,8 @@ export default function VueContentEn() {
       <BlogH2 id="que-es">What is Vue?</BlogH2>
 
       <BlogP>
-        Created by Evan You in 2014, Vue grew from a view-layer library into
-        a framework with its own ecosystem. Its most distinctive feature is{" "}
+        Created by Evan You in 2014, Vue grew from a view-layer library into a
+        framework with its own ecosystem. Its most distinctive feature is{" "}
         <strong>progressiveness</strong>: you can use it as a simple{" "}
         <BlogInlineCode>&lt;script&gt;</BlogInlineCode> to enhance a page, or
         scale up to a complex application with Vue Router and Pinia.
@@ -144,12 +143,12 @@ export default function VueContentEn() {
 
       <BlogUl>
         <BlogLi>
-          <strong>Gentle learning curve:</strong> the template is familiar
-          HTML and reactivity is automatic.
+          <strong>Gentle learning curve:</strong> the template is familiar HTML
+          and reactivity is automatic.
         </BlogLi>
         <BlogLi>
-          <strong>Vite by default:</strong> the official scaffolding uses
-          Vite, with instant reload in development.
+          <strong>Vite by default:</strong> the official scaffolding uses Vite,
+          with instant reload in development.
         </BlogLi>
         <BlogLi>
           <strong>One file per component (SFC):</strong>{" "}
@@ -157,17 +156,17 @@ export default function VueContentEn() {
           styles.
         </BlogLi>
         <BlogLi>
-          <strong>Composition API:</strong> reusable logic with composables,
-          no mixins.
+          <strong>Composition API:</strong> reusable logic with composables, no
+          mixins.
         </BlogLi>
       </BlogUl>
 
       <BlogCallout type="info">
         Vue 3 uses the Composition API with{" "}
-        <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode> as the
-        recommended syntax. The Options API (<BlogInlineCode>data()</BlogInlineCode>,{" "}
-        <BlogInlineCode>methods</BlogInlineCode>) is still supported, but
-        this whole tutorial uses the modern approach.
+        <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode> as the recommended
+        syntax. The Options API (<BlogInlineCode>data()</BlogInlineCode>,{" "}
+        <BlogInlineCode>methods</BlogInlineCode>) is still supported, but this
+        whole tutorial uses the modern approach.
       </BlogCallout>
 
       <BlogH2 id="crear-proyecto">Create a project with Vite</BlogH2>
@@ -187,9 +186,8 @@ npm install
 npm run dev   # http://localhost:5173`}</BlogCode>
 
       <BlogP>
-        The result is a Vite SPA:{" "}
-        <BlogInlineCode>src/main.ts</BlogInlineCode> creates the app and
-        mounts the root component:
+        The result is a Vite SPA: <BlogInlineCode>src/main.ts</BlogInlineCode>{" "}
+        creates the app and mounts the root component:
       </BlogP>
 
       <BlogCode>{`import { createApp } from 'vue'
@@ -202,9 +200,7 @@ app.use(createPinia())
 app.use(router)
 app.mount('#app')`}</BlogCode>
 
-      <BlogP>
-        The typical structure of a Vue project:
-      </BlogP>
+      <BlogP>The typical structure of a Vue project:</BlogP>
 
       <BlogCode>{`my-app/
 ├── index.html
@@ -218,12 +214,14 @@ app.mount('#app')`}</BlogCode>
 │   └── views/           # route views
 └── package.json`}</BlogCode>
 
-      <BlogH2 id="composition-api">Composition API and &lt;script setup&gt;</BlogH2>
+      <BlogH2 id="composition-api">
+        Composition API and &lt;script setup&gt;
+      </BlogH2>
 
       <BlogP>
         A Vue component is a <BlogInlineCode>.vue</BlogInlineCode> file with
-        three blocks. With <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode>,
-        the declared variables are directly available in the template:
+        three blocks. With <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode>
+        , the declared variables are directly available in the template:
       </BlogP>
 
       <BlogCode>{`<script setup lang="ts">
@@ -239,17 +237,16 @@ const items = ['one', 'two', 'three']
 </template>`}</BlogCode>
 
       <BlogCallout type="info">
-        <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode> exports
-        nothing: variables and functions are local to the template. The
-        result is shorter code with no <BlogInlineCode>this</BlogInlineCode>{" "}
-        confusion.
+        <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode> exports nothing:
+        variables and functions are local to the template. The result is shorter
+        code with no <BlogInlineCode>this</BlogInlineCode> confusion.
       </BlogCallout>
 
       <BlogH2 id="reactividad">Reactivity</BlogH2>
 
       <BlogP>
-        Vue's reactivity tracks accesses and changes to reactive variables
-        and re-renders whatever depends on them. The three main tools:
+        Vue's reactivity tracks accesses and changes to reactive variables and
+        re-renders whatever depends on them. The three main tools:
       </BlogP>
 
       <BlogUl>
@@ -263,8 +260,8 @@ const items = ['one', 'two', 'three']
           accessed directly.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>computed()</BlogInlineCode> — derived value that
-          only recalculates when its dependencies change.
+          <BlogInlineCode>computed()</BlogInlineCode> — derived value that only
+          recalculates when its dependencies change.
         </BlogLi>
       </BlogUl>
 
@@ -288,8 +285,8 @@ const fullName = computed(
 </template>`}</BlogCode>
 
       <BlogCallout type="warn">
-        <BlogInlineCode>reactive()</BlogInlineCode> only works with objects;
-        for primitives use <BlogInlineCode>ref()</BlogInlineCode>. When you
+        <BlogInlineCode>reactive()</BlogInlineCode> only works with objects; for
+        primitives use <BlogInlineCode>ref()</BlogInlineCode>. When you
         destructure a reactive object you lose reactivity — use{" "}
         <BlogInlineCode>toRefs()</BlogInlineCode> if you need to extract
         properties.
@@ -298,8 +295,8 @@ const fullName = computed(
       <BlogH2 id="directivas">Directives</BlogH2>
 
       <BlogP>
-        Directives are attributes prefixed with <BlogInlineCode>v-</BlogInlineCode>{" "}
-        that control the DOM:
+        Directives are attributes prefixed with{" "}
+        <BlogInlineCode>v-</BlogInlineCode> that control the DOM:
       </BlogP>
 
       <BlogCode>{`<!-- Conditional -->
@@ -326,8 +323,8 @@ const fullName = computed(
           stable <BlogInlineCode>:key</BlogInlineCode>.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>v-model</BlogInlineCode> — two-way binding on
-          inputs, selects, and textareas.
+          <BlogInlineCode>v-model</BlogInlineCode> — two-way binding on inputs,
+          selects, and textareas.
         </BlogLi>
         <BlogLi>
           <BlogInlineCode>v-show</BlogInlineCode> — alternative that only
@@ -335,8 +332,9 @@ const fullName = computed(
           creating/destroying.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>v-bind</BlogInlineCode> (<BlogInlineCode>:</BlogInlineCode>){" "}
-          — binds attributes; <BlogInlineCode>v-on</BlogInlineCode> ({" "}
+          <BlogInlineCode>v-bind</BlogInlineCode> (
+          <BlogInlineCode>:</BlogInlineCode>) — binds attributes;{" "}
+          <BlogInlineCode>v-on</BlogInlineCode> ({" "}
           <BlogInlineCode>@</BlogInlineCode>) — listens for events.
         </BlogLi>
       </BlogUl>
@@ -346,8 +344,8 @@ const fullName = computed(
         <BlogInlineCode>v-for</BlogInlineCode> on the same element: Vue
         evaluates <BlogInlineCode>v-if</BlogInlineCode> first, which can be
         surprising. Prefer wrapping with{" "}
-        <BlogInlineCode>&lt;template&gt;</BlogInlineCode> or filtering first
-        in a <BlogInlineCode>computed</BlogInlineCode>.
+        <BlogInlineCode>&lt;template&gt;</BlogInlineCode> or filtering first in
+        a <BlogInlineCode>computed</BlogInlineCode>.
       </BlogCallout>
 
       <BlogH2 id="eventos">Events and modifiers</BlogH2>
@@ -397,8 +395,8 @@ const logPosition = (x: number, y: number) =>
       <BlogP>
         Components receive data from the parent with{" "}
         <BlogInlineCode>defineProps</BlogInlineCode> and notify with{" "}
-        <BlogInlineCode>defineEmits</BlogInlineCode>. Both are compiler
-        macros: they don't need importing:
+        <BlogInlineCode>defineEmits</BlogInlineCode>. Both are compiler macros:
+        they don't need importing:
       </BlogP>
 
       <BlogCode>{`<!-- TaskCard.vue -->
@@ -420,8 +418,8 @@ const emit = defineEmits<{
 </template>`}</BlogCode>
 
       <BlogP>
-        The parent component uses it listening to the events as if they were
-        DOM events:
+        The parent component uses it listening to the events as if they were DOM
+        events:
       </BlogP>
 
       <BlogCode>{`<script setup lang="ts">
@@ -450,17 +448,16 @@ const toggle = (id: number) => {
 
       <BlogCallout type="warn">
         Don't mutate a <BlogInlineCode>prop</BlogInlineCode> directly: it is
-        read-only and Vue will warn you. For mutable state initialized from
-        a prop, create a local <BlogInlineCode>ref</BlogInlineCode> or a{" "}
+        read-only and Vue will warn you. For mutable state initialized from a
+        prop, create a local <BlogInlineCode>ref</BlogInlineCode> or a{" "}
         <BlogInlineCode>computed</BlogInlineCode> with getter and setter.
       </BlogCallout>
 
       <BlogH2 id="slots">Slots</BlogH2>
 
       <BlogP>
-        Slots let you pass arbitrary content from the parent into a
-        component. That is content composition, ideal for layouts and
-        wrapper components:
+        Slots let you pass arbitrary content from the parent into a component.
+        That is content composition, ideal for layouts and wrapper components:
       </BlogP>
 
       <BlogCode>{`<!-- Card.vue -->
@@ -509,8 +506,8 @@ import Card from './Card.vue'
       <BlogP>
         Slots with <strong>scoped props</strong> (using{" "}
         <BlogInlineCode>&lt;slot :data="value" /&gt;</BlogInlineCode>) let the
-        parent receive child data inside the slot — powerful for
-        customizable lists and tables.
+        parent receive child data inside the slot — powerful for customizable
+        lists and tables.
       </BlogP>
 
       <BlogH2 id="ciclo-de-vida">Lifecycle</BlogH2>
@@ -546,8 +543,8 @@ onUnmounted(() => {
           subscriptions, timers, and listeners.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>onBeforeUnmount</BlogInlineCode> — last moment
-          before destruction.
+          <BlogInlineCode>onBeforeUnmount</BlogInlineCode> — last moment before
+          destruction.
         </BlogLi>
         <BlogLi>
           <BlogInlineCode>watch</BlogInlineCode> — reacts to changes of a
@@ -556,10 +553,10 @@ onUnmounted(() => {
       </BlogUl>
 
       <BlogCallout type="info">
-        In Vue 3 the Options API's <BlogInlineCode>created</BlogInlineCode>{" "}
-        hook does not exist: the body of{" "}
-        <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode> runs before
-        mount, so top-level fetch works the same way. Use it with{" "}
+        In Vue 3 the Options API's <BlogInlineCode>created</BlogInlineCode> hook
+        does not exist: the body of{" "}
+        <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode> runs before mount,
+        so top-level fetch works the same way. Use it with{" "}
         <BlogInlineCode>onMounted</BlogInlineCode> to have access to the DOM.
       </BlogCallout>
 
@@ -635,15 +632,15 @@ const goHome = () => router.push('/')
         If you navigate from <BlogInlineCode>/users/1</BlogInlineCode> to{" "}
         <BlogInlineCode>/users/2</BlogInlineCode>, the component{" "}
         <em>is reused</em> (it is not remounted). That is why you read the
-        parameter with <BlogInlineCode>watch</BlogInlineCode> instead of
-        only <BlogInlineCode>onMounted</BlogInlineCode>.
+        parameter with <BlogInlineCode>watch</BlogInlineCode> instead of only{" "}
+        <BlogInlineCode>onMounted</BlogInlineCode>.
       </BlogCallout>
 
       <BlogH2 id="pinia">Global state with Pinia</BlogH2>
 
       <BlogP>
-        When several views share state (session, cart, filters), Pinia is
-        Vue's official store. A store is defined with{" "}
+        When several views share state (session, cart, filters), Pinia is Vue's
+        official store. A store is defined with{" "}
         <BlogInlineCode>defineStore</BlogInlineCode>:
       </BlogP>
 
@@ -673,9 +670,7 @@ export const useUserStore = defineStore('user', () => {
   return { name, role, isAdmin, signIn, signOut }
 })`}</BlogCode>
 
-      <BlogP>
-        Any component consumes it with the hook Pinia generates:
-      </BlogP>
+      <BlogP>Any component consumes it with the hook Pinia generates:</BlogP>
 
       <BlogCode>{`<script setup lang="ts">
 import { useUserStore } from '../stores/user'
@@ -693,16 +688,16 @@ const user = useUserStore()
         Pinia with the Composition API looks a lot like{" "}
         <BlogInlineCode>&lt;script setup&gt;</BlogInlineCode>:{" "}
         <BlogInlineCode>ref</BlogInlineCode> for state,{" "}
-        <BlogInlineCode>computed</BlogInlineCode> for getters, and functions
-        for actions. If you master a component, you already master a store.
-        DevTools integration and TypeScript support are native.
+        <BlogInlineCode>computed</BlogInlineCode> for getters, and functions for
+        actions. If you master a component, you already master a store. DevTools
+        integration and TypeScript support are native.
       </BlogCallout>
 
       <BlogP>
         Vue lets you start small and grow incrementally: a{" "}
-        <BlogInlineCode>&lt;script&gt;</BlogInlineCode> on a page, an SFC
-        here, a router there, and Pinia when state demands it. That is the
-        essence of "the progressive framework".
+        <BlogInlineCode>&lt;script&gt;</BlogInlineCode> on a page, an SFC here,
+        a router there, and Pinia when state demands it. That is the essence of
+        "the progressive framework".
       </BlogP>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -852,9 +847,9 @@ onMounted(async () => {
 
       <BlogP>
         Vue is an excellent entry point to modern frontend development: its
-        automatic reactivity and readable syntax let you focus on the
-        problem, not the framework. When the project grows, Vue Router and
-        Pinia scale with you without requiring a rewrite.
+        automatic reactivity and readable syntax let you focus on the problem,
+        not the framework. When the project grows, Vue Router and Pinia scale
+        with you without requiring a rewrite.
       </BlogP>
     </article>
   );

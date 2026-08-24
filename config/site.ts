@@ -36,6 +36,11 @@ export const siteConfig = {
       href: "/campus",
     },
     {
+      key: "nav.tools",
+      label: "Tools",
+      href: "/blog/herramientas",
+    },
+    {
       key: "nav.contact",
       label: "Contact",
       href: "/contact",
@@ -66,6 +71,11 @@ export const siteConfig = {
       key: "nav.campus",
       label: "Campus",
       href: "/campus",
+    },
+    {
+      key: "nav.tools",
+      label: "Tools",
+      href: "/blog/herramientas",
     },
     {
       key: "nav.contact",

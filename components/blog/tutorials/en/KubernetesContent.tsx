@@ -320,9 +320,9 @@ kubectl rollout undo deployment/my-api`}</BlogCode>
 
       <BlogCallout type="info">
         The <BlogInlineCode>matchLabels</BlogInlineCode> selector is the key to
-        everything: k8s relates objects (Deployment ↔ pods ↔ Service) by labels,
-        not by name. Keep the labels consistent between the Deployment selector
-        and the pod template.
+        everything: k8s relates objects (Deployment ↔ pods ↔ Service) by
+        labels, not by name. Keep the labels consistent between the Deployment
+        selector and the pod template.
       </BlogCallout>
 
       <BlogH2 id="services">Services</BlogH2>
@@ -358,9 +358,9 @@ spec:
         (30000-32767). Practical locally or for tests.
       </BlogP>
       <BlogP>
-        <strong>LoadBalancer</strong>: provisions a cloud provider load
-        balancer (ELB, GCP LB...) that distributes external traffic. The
-        standard path in the cloud.
+        <strong>LoadBalancer</strong>: provisions a cloud provider load balancer
+        (ELB, GCP LB...) that distributes external traffic. The standard path in
+        the cloud.
       </BlogP>
 
       <BlogCode>{`kubectl apply -f service.yaml
@@ -374,10 +374,10 @@ minikube service my-api`}</BlogCode>
       <BlogH2 id="configmaps-secrets">ConfigMaps and Secrets</BlogH2>
 
       <BlogP>
-        Separate configuration from the image:{" "}
-        <strong>ConfigMaps</strong> hold non-sensitive values and{" "}
-        <strong>Secrets</strong> (base64, not encrypted by default) hold
-        sensitive ones. Both are mounted as environment variables or as files:
+        Separate configuration from the image: <strong>ConfigMaps</strong> hold
+        non-sensitive values and <strong>Secrets</strong> (base64, not encrypted
+        by default) hold sensitive ones. Both are mounted as environment
+        variables or as files:
       </BlogP>
 
       <BlogCode>{`# configmap.yaml
@@ -462,9 +462,9 @@ spec:
                   number: 80`}</BlogCode>
 
       <BlogP>
-        The Ingress requires an <strong>Ingress Controller</strong> installed
-        in the cluster (nginx-ingress, Traefik, or the cloud provider's own)
-        that materializes those rules into a real proxy. On minikube:
+        The Ingress requires an <strong>Ingress Controller</strong> installed in
+        the cluster (nginx-ingress, Traefik, or the cloud provider's own) that
+        materializes those rules into a real proxy. On minikube:
       </BlogP>
 
       <BlogCode>{`minikube addons enable ingress
@@ -642,8 +642,8 @@ kubectl get pods`}
         Kubernetes changes your mindset: you stop managing processes and start
         declaring states the system reconciles on its own. With pods,
         deployments, services, configmaps and ingress you already have the
-        essential vocabulary to work with any cluster — the next step is
-        GitOps: describing that state in Git and letting the cluster apply it.
+        essential vocabulary to work with any cluster — the next step is GitOps:
+        describing that state in Git and letting the cluster apply it.
       </BlogP>
     </article>
   );

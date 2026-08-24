@@ -5,8 +5,6 @@ import { GoogleDriveConnectCard } from "./GoogleDriveConnectCard";
 
 import { useT } from "@/hooks/useT";
 import { apiFetch } from "@/services/apiClient";
-import { tokenStore } from "@/services/tokenStore";
-import { env } from "@/config/env";
 import {
   googleDriveService,
   type DriveStatus,
@@ -53,18 +51,11 @@ async function uploadVersion(
   destination: UploadDestination,
 ): Promise<MobileAppVersion> {
   // Use raw fetch to avoid apiFetch overriding Content-Type for multipart
-  const headers: Record<string, string> = {};
-
-  if (env.apiKey) headers["X-API-Key"] = env.apiKey;
-  const token = tokenStore.get();
-
-  if (token) headers["Authorization"] = `Bearer ${token}`;
   formData.set("upload_destination", destination);
-  const res = await fetch(`${env.apiUrl}${API}/upload`, {
+  const res = await fetch(`${API}/upload`, {
     method: "POST",
     body: formData,
-    headers,
-    credentials: "include",
+    credentials: "same-origin",
   });
   const json = await res.json();
 

@@ -175,8 +175,8 @@ export default function DockerContentEn() {
         manages images, containers, networks and volumes; and the{" "}
         <strong>client</strong> (<BlogInlineCode>docker</BlogInlineCode>), the
         CLI you use to issue commands. When you type{" "}
-        <BlogInlineCode>docker run</BlogInlineCode>, the client sends the request
-        to the daemon over a local REST API.
+        <BlogInlineCode>docker run</BlogInlineCode>, the client sends the
+        request to the daemon over a local REST API.
       </BlogP>
 
       <BlogP>
@@ -197,9 +197,7 @@ export default function DockerContentEn() {
         2. Open it for the first time and accept the hypervisor usage (it may
         ask for administrator permissions).
       </BlogP>
-      <BlogP>
-        3. Verify the installation — the daemon must be running:
-      </BlogP>
+      <BlogP>3. Verify the installation — the daemon must be running:</BlogP>
 
       <BlogCode>{`docker version
 # Client: ... Engine: ... -> all good
@@ -354,8 +352,8 @@ dist
       <BlogP>
         Build the image from the Dockerfile with{" "}
         <BlogInlineCode>build</BlogInlineCode> and name it with{" "}
-        <BlogInlineCode>-t</BlogInlineCode>. The tag goes after the registry, the
-        repository and the version:
+        <BlogInlineCode>-t</BlogInlineCode>. The tag goes after the registry,
+        the repository and the version:
       </BlogP>
 
       <BlogCode>{`# Build with name:version tag

@@ -138,10 +138,9 @@ export default function RendimientoFrontendContent() {
 
       <BlogP>
         Los Core Web Vitals son tres métricas que Google usa para evaluar la
-        experiencia de usuario. Se miden en dos contextos:{" "}
-        <strong>lab</strong> (entorno controlado, Lighthouse) y{" "}
-        <strong>field</strong> (datos reales de usuarios, CrUX). Cada una tiene
-        un umbral "bueno" y uno "mejorar".
+        experiencia de usuario. Se miden en dos contextos: <strong>lab</strong>{" "}
+        (entorno controlado, Lighthouse) y <strong>field</strong> (datos reales
+        de usuarios, CrUX). Cada una tiene un umbral "bueno" y uno "mejorar".
       </BlogP>
 
       <BlogH3 id="lcp">LCP — Largest Contentful Paint</BlogH3>
@@ -162,8 +161,8 @@ export default function RendimientoFrontendContent() {
       </BlogUl>
 
       <BlogP>
-        Para mejorarlo: optimiza el TTFB (servidor/CDN), precarga la imagen
-        hero con <BlogInlineCode>priority</BlogInlineCode>, sirve imágenes en
+        Para mejorarlo: optimiza el TTFB (servidor/CDN), precarga la imagen hero
+        con <BlogInlineCode>priority</BlogInlineCode>, sirve imágenes en
         WebP/AVIF y evita que el CSS bloqueante retrase el primer paint.
       </BlogP>
 
@@ -223,9 +222,7 @@ export default function RendimientoFrontendContent() {
 
       <BlogH2 id="herramientas">Lighthouse y herramientas</BlogH2>
 
-      <BlogP>
-        Antes de optimizar, mide. El flujo habitual:
-      </BlogP>
+      <BlogP>Antes de optimizar, mide. El flujo habitual:</BlogP>
 
       <BlogUl>
         <BlogLi>
@@ -257,9 +254,8 @@ ANALYZE=true npm run build`}</BlogCode>
 
       <BlogCallout type="warn">
         Un único Lighthouse en tu máquina no basta: la red, la CPU y el
-        dispositivo cambian el resultado. Corre varias veces, usa el modo
-        móvil (más exigente) y compara con los datos de campo de PageSpeed
-        Insights.
+        dispositivo cambian el resultado. Corre varias veces, usa el modo móvil
+        (más exigente) y compara con los datos de campo de PageSpeed Insights.
       </BlogCallout>
 
       <BlogH2 id="carga">Optimización de carga</BlogH2>
@@ -332,9 +328,9 @@ export default function Loading() {
 
       <BlogP>
         El prefetch descarga recursos antes de que el usuario los pida. Next.js
-        prefetchea los enlaces <BlogInlineCode>Link</BlogInlineCode> visibles
-        en el viewport automáticamente. Para datos, React Query permite
-        prefetchar queries:
+        prefetchea los enlaces <BlogInlineCode>Link</BlogInlineCode> visibles en
+        el viewport automáticamente. Para datos, React Query permite prefetchar
+        queries:
       </BlogP>
 
       <BlogCode>{`import { useQueryClient } from "@tanstack/react-query";
@@ -367,8 +363,8 @@ export function usePrefetchPost(id: string) {
 
       <BlogP>
         WebP y AVIF comprimen mucho mejor que JPEG/PNG con calidad visual
-        similar. AVIF suele ganar en peso, WebP en compatibilidad. Sirve
-        siempre el formato más ligero que soporte el navegador.
+        similar. AVIF suele ganar en peso, WebP en compatibilidad. Sirve siempre
+        el formato más ligero que soporte el navegador.
       </BlogP>
 
       <BlogH3 id="next-image">next/image</BlogH3>
@@ -402,7 +398,8 @@ export function Hero() {
         </BlogLi>
         <BlogLi>
           <strong>sizes:</strong> le dice al navegador qué ancho usará, para
-          elegir la variante correcta del <BlogInlineCode>srcset</BlogInlineCode>.
+          elegir la variante correcta del{" "}
+          <BlogInlineCode>srcset</BlogInlineCode>.
         </BlogLi>
         <BlogLi>
           <strong>priority:</strong> precarga la imagen (solo para la hero o
@@ -424,8 +421,8 @@ export function Hero() {
       <BlogH2 id="caching">Caching y revalidación</BlogH2>
 
       <BlogP>
-        La caché evita repetir trabajo. A nivel HTTP, las respuestas se
-        cachean con <BlogInlineCode>Cache-Control</BlogInlineCode>:
+        La caché evita repetir trabajo. A nivel HTTP, las respuestas se cachean
+        con <BlogInlineCode>Cache-Control</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`// Respuesta de una API pública
@@ -461,9 +458,8 @@ export async function getStaticPaths() {
       <BlogCallout type="info">
         <BlogInlineCode>stale-while-revalidate</BlogInlineCode> y el ISR
         comparten la misma filosofía: el usuario nunca espera por contenido
-        fresco; recibe la copia en caché y la actualización llega después. Es
-        la diferencia entre "rápido pero desactualizado" y "lento pero
-        perfecto".
+        fresco; recibe la copia en caché y la actualización llega después. Es la
+        diferencia entre "rápido pero desactualizado" y "lento pero perfecto".
       </BlogCallout>
 
       <BlogH2 id="memoizacion">Memoización en React</BlogH2>
@@ -499,8 +495,8 @@ const Row = memo(function Row({ id, name, onSelect }: RowProps) {
       <BlogP>
         <BlogInlineCode>useMemo</BlogInlineCode> cachea un valor calculado;{" "}
         <BlogInlineCode>useCallback</BlogInlineCode> cachea una función. Ambos
-        estabilizan referencias para que <BlogInlineCode>React.memo</BlogInlineCode>{" "}
-        funcione:
+        estabilizan referencias para que{" "}
+        <BlogInlineCode>React.memo</BlogInlineCode> funcione:
       </BlogP>
 
       <BlogCode>{`import { useCallback, useMemo } from "react";
@@ -518,11 +514,11 @@ export function Parent() {
 }`}</BlogCode>
 
       <BlogCallout type="warn">
-        No memoices todo. Si el componente es barato o sus props cambian en
-        cada render, <BlogInlineCode>React.memo</BlogInlineCode> solo añade
-        coste. La regla: memoiza cuando hay un componente pesado, una lista
-        larga, o un valor caro de calcular — y mide antes y después. La
-        memoización prematura es una deuda de complejidad.
+        No memoices todo. Si el componente es barato o sus props cambian en cada
+        render, <BlogInlineCode>React.memo</BlogInlineCode> solo añade coste. La
+        regla: memoiza cuando hay un componente pesado, una lista larga, o un
+        valor caro de calcular — y mide antes y después. La memoización
+        prematura es una deuda de complejidad.
       </BlogCallout>
 
       <BlogH2 id="eliminar-cls">Eliminar CLS</BlogH2>
@@ -535,8 +531,9 @@ export function Parent() {
       <BlogUl>
         <BlogLi>
           <strong>Dimensiones fijas:</strong> imágenes y vídeos con{" "}
-          <BlogInlineCode>width</BlogInlineCode>/<BlogInlineCode>height</BlogInlineCode>{" "}
-          o <BlogInlineCode>aspect-ratio</BlogInlineCode>.
+          <BlogInlineCode>width</BlogInlineCode>/
+          <BlogInlineCode>height</BlogInlineCode> o{" "}
+          <BlogInlineCode>aspect-ratio</BlogInlineCode>.
         </BlogLi>
         <BlogLi>
           <strong>Fuentes:</strong> usa{" "}
@@ -544,8 +541,8 @@ export function Parent() {
           se muestre con una fuente de respaldo mientras carga la real.
         </BlogLi>
         <BlogLi>
-          <strong>Contenedores:</strong> reserva altura para contenido que
-          llega tarde (ads, embeds, listas).
+          <strong>Contenedores:</strong> reserva altura para contenido que llega
+          tarde (ads, embeds, listas).
         </BlogLi>
       </BlogUl>
 
@@ -592,22 +589,22 @@ export default withBundleAnalyzer({
       <BlogUl>
         <BlogLi>
           ¿Puedo importar solo la parte que uso? (imports de árbol,{" "}
-          <BlogInlineCode>import { useMemo } from "react"</BlogInlineCode>).
+          <BlogInlineCode>{'import { useMemo } from "react"'}</BlogInlineCode>).
         </BlogLi>
         <BlogLi>
           ¿Puedo cargarla de forma diferida con{" "}
           <BlogInlineCode>dynamic</BlogInlineCode>?
         </BlogLi>
         <BlogLi>
-          ¿Hay una alternativa más ligera? (una utilidad propia en vez de
-          lodash completa).
+          ¿Hay una alternativa más ligera? (una utilidad propia en vez de lodash
+          completa).
         </BlogLi>
       </BlogUl>
 
       <BlogCallout type="tip">
-        El análisis de bundle es un hábito, no un evento: correlo en CI y
-        alerta cuando el tamaño sube por encima de un umbral. Así las
-        dependencias pesadas se detectan en el PR, no en producción.
+        El análisis de bundle es un hábito, no un evento: correlo en CI y alerta
+        cuando el tamaño sube por encima de un umbral. Así las dependencias
+        pesadas se detectan en el PR, no en producción.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />

@@ -162,28 +162,22 @@ export const dataTableService = {
   rejectInvitation: (id: string) =>
     apiFetch<void>(`${BASE}/${id}/members/reject`, { method: "POST" }),
 
-  // Import — fetch crudo con FormData (apiFetch fuerza JSON)
+  // Import — FormData through the same-origin BFF proxy (apiFetch forces JSON)
   uploadCsv: async (
     endpoint: "preview" | "import",
     file: File,
     metadata?: { name?: string; typeOverrides?: Record<number, string> },
   ) => {
-    const { tokenStore } = await import("./tokenStore");
-    const { env } = await import("@/config/env");
     const form = new FormData();
 
     form.append("file", file);
     if (metadata) form.append("metadata", JSON.stringify(metadata));
-    const token = tokenStore.get();
     const path =
       endpoint === "preview" ? `${BASE}/import/preview` : `${BASE}/import`;
-    const res = await fetch(`${env.apiUrl}${path}`, {
+    const res = await fetch(path, {
       method: "POST",
-      headers: {
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...(env.apiKey ? { "X-API-Key": env.apiKey } : {}),
-      },
       body: form,
+      credentials: "same-origin",
     });
 
     if (!res.ok) {

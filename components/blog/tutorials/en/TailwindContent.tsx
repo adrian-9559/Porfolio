@@ -136,16 +136,16 @@ export default function TailwindContentEn() {
 
       <BlogP>
         Unlike Bootstrap, which ships predefined components, Tailwind is{" "}
-        <strong>utility-first</strong>: each class applies a single property
-        (<BlogInlineCode>p-4</BlogInlineCode> is just 1rem of padding). You
+        <strong>utility-first</strong>: each class applies a single property (
+        <BlogInlineCode>p-4</BlogInlineCode> is just 1rem of padding). You
         compose the interface by combining these classes in the HTML, without
         writing CSS in separate files.
       </BlogP>
 
       <BlogUl>
         <BlogLi>
-          <strong>Speed:</strong> you style without switching files or
-          inventing class names.
+          <strong>Speed:</strong> you style without switching files or inventing
+          class names.
         </BlogLi>
         <BlogLi>
           <strong>Consistency:</strong> spacing, typography, and colors come
@@ -157,9 +157,9 @@ export default function TailwindContentEn() {
         </BlogLi>
         <BlogLi>
           <strong>Built-in responsive:</strong> the{" "}
-          <BlogInlineCode>sm:</BlogInlineCode>, <BlogInlineCode>md:</BlogInlineCode>{" "}
-          and <BlogInlineCode>lg:</BlogInlineCode> prefixes live in the same
-          class.
+          <BlogInlineCode>sm:</BlogInlineCode>,{" "}
+          <BlogInlineCode>md:</BlogInlineCode> and{" "}
+          <BlogInlineCode>lg:</BlogInlineCode> prefixes live in the same class.
         </BlogLi>
       </BlogUl>
 
@@ -167,8 +167,8 @@ export default function TailwindContentEn() {
         Version 4 (released in 2025) changes the engine to native CSS: no
         PostCSS with plugins, it uses the official{" "}
         <BlogInlineCode>@tailwindcss/vite</BlogInlineCode> plugin and a single{" "}
-        <BlogInlineCode>@import "tailwindcss"</BlogInlineCode> directive in
-        your CSS. Everything in this tutorial uses v4.
+        <BlogInlineCode>@import "tailwindcss"</BlogInlineCode> directive in your
+        CSS. Everything in this tutorial uses v4.
       </BlogCallout>
 
       <BlogH2 id="instalacion">Installation</BlogH2>
@@ -219,8 +219,7 @@ export default {
         <BlogInlineCode>@tailwind base/components/utilities</BlogInlineCode>{" "}
         directive. Everything is configured from CSS with{" "}
         <BlogInlineCode>@theme</BlogInlineCode> and content detection is
-        automatic. If you migrate from v3, check the official migration
-        guide.
+        automatic. If you migrate from v3, check the official migration guide.
       </BlogCallout>
 
       <BlogH2 id="spacing">Spacing and typography</BlogH2>
@@ -299,14 +298,12 @@ p-16 = 4rem    (64px)`}</BlogCode>
           <BlogInlineCode>gap-4</BlogInlineCode> — space between children.
         </BlogLi>
         <BlogLi>
-          <BlogInlineCode>flex-1</BlogInlineCode> — the child grows to fill
-          the remaining space.
+          <BlogInlineCode>flex-1</BlogInlineCode> — the child grows to fill the
+          remaining space.
         </BlogLi>
       </BlogUl>
 
-      <BlogP>
-        Grid:
-      </BlogP>
+      <BlogP>Grid:</BlogP>
 
       <BlogCode>{`<div class="grid grid-cols-3 gap-4">
   <div class="p-4 bg-white rounded-xl shadow">Item 1</div>
@@ -356,9 +353,9 @@ grid-flow-row / grid-flow-col → direction`}</BlogCode>
         640px, <BlogInlineCode>md</BlogInlineCode> 768px,{" "}
         <BlogInlineCode>lg</BlogInlineCode> 1024px,{" "}
         <BlogInlineCode>xl</BlogInlineCode> 1280px,{" "}
-        <BlogInlineCode>2xl</BlogInlineCode> 1536px. Since it is
-        mobile-first, <BlogInlineCode>md:grid-cols-2</BlogInlineCode> means
-        "from 768px upward".
+        <BlogInlineCode>2xl</BlogInlineCode> 1536px. Since it is mobile-first,{" "}
+        <BlogInlineCode>md:grid-cols-2</BlogInlineCode> means "from 768px
+        upward".
       </BlogP>
 
       <BlogCallout type="warn">
@@ -389,8 +386,8 @@ grid-flow-row / grid-flow-col → direction`}</BlogCode>
 
       <BlogP>
         <BlogInlineCode>group-hover:</BlogInlineCode> styles a child when you
-        hover an ancestor marked with <BlogInlineCode>group</BlogInlineCode>.
-        It is the basis of cards and menus that react to the mouse:
+        hover an ancestor marked with <BlogInlineCode>group</BlogInlineCode>. It
+        is the basis of cards and menus that react to the mouse:
       </BlogP>
 
       <BlogCode>{`<a class="group block p-4 rounded-xl hover:bg-gray-50">
@@ -413,8 +410,8 @@ grid-flow-row / grid-flow-col → direction`}</BlogCode>
       <BlogH2 id="dark-mode">Dark mode</BlogH2>
 
       <BlogP>
-        The <BlogInlineCode>dark:</BlogInlineCode> variant applies styles
-        when the system (or the HTML) is in dark theme:
+        The <BlogInlineCode>dark:</BlogInlineCode> variant applies styles when
+        the system (or the HTML) is in dark theme:
       </BlogP>
 
       <BlogCode>{`<div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -444,18 +441,19 @@ grid-flow-row / grid-flow-col → direction`}</BlogCode>
       <BlogCallout type="info">
         With the manual toggle, a small script in the{" "}
         <BlogInlineCode>&lt;head&gt;</BlogInlineCode> reads the saved value
-        (localStorage) and adds/removes the <BlogInlineCode>.dark</BlogInlineCode>{" "}
-        class on the <BlogInlineCode>&lt;html&gt;</BlogInlineCode> before the
-        first paint, avoiding a flash of the wrong theme.
+        (localStorage) and adds/removes the{" "}
+        <BlogInlineCode>.dark</BlogInlineCode> class on the{" "}
+        <BlogInlineCode>&lt;html&gt;</BlogInlineCode> before the first paint,
+        avoiding a flash of the wrong theme.
       </BlogCallout>
 
       <BlogH2 id="customizacion">Customization</BlogH2>
 
       <BlogP>
         In v4 the whole theme is declared in CSS with{" "}
-        <BlogInlineCode>@theme</BlogInlineCode>. Define your own colors,
-        fonts, and breakpoints, and Tailwind generates the corresponding
-        utilities automatically:
+        <BlogInlineCode>@theme</BlogInlineCode>. Define your own colors, fonts,
+        and breakpoints, and Tailwind generates the corresponding utilities
+        automatically:
       </BlogP>
 
       <BlogCode>{`/* globals.css */
@@ -480,8 +478,8 @@ grid-flow-row / grid-flow-col → direction`}</BlogCode>
       <BlogP>
         You can also override the existing color scale with the standard
         variables (<BlogInlineCode>--color-*</BlogInlineCode>) and spacing (
-        <BlogInlineCode>--spacing-*</BlogInlineCode>), adjusting the base of
-        the whole scale:
+        <BlogInlineCode>--spacing-*</BlogInlineCode>), adjusting the base of the
+        whole scale:
       </BlogP>
 
       <BlogCode>{`@theme {
@@ -491,8 +489,8 @@ grid-flow-row / grid-flow-col → direction`}</BlogCode>
 
       <BlogCallout type="warn">
         <BlogInlineCode>@apply</BlogInlineCode> still exists to compose
-        utilities in your own CSS, but v4 recommends preferring classes in
-        the HTML. Use <BlogInlineCode>@apply</BlogInlineCode> sparingly (for
+        utilities in your own CSS, but v4 recommends preferring classes in the
+        HTML. Use <BlogInlineCode>@apply</BlogInlineCode> sparingly (for
         example, in third-party component styles) — overuse recreates the
         "separate CSS files" problem Tailwind aims to eliminate.
       </BlogCallout>
@@ -530,8 +528,8 @@ grid-flow-row / grid-flow-col → direction`}</BlogCode>
       <BlogCallout type="info">
         Why <BlogInlineCode>@layer</BlogInlineCode>: utilities (the{" "}
         <BlogInlineCode>utilities</BlogInlineCode> layer) beat components in
-        CSS. This means <BlogInlineCode>class="card p-0"</BlogInlineCode>{" "}
-        works: the <BlogInlineCode>p-0</BlogInlineCode> utility overrides the
+        CSS. This means <BlogInlineCode>class="card p-0"</BlogInlineCode> works:
+        the <BlogInlineCode>p-0</BlogInlineCode> utility overrides the
         component's padding without specificity issues.
       </BlogCallout>
 
@@ -680,11 +678,11 @@ grid-flow-row / grid-flow-col → direction`}</BlogCode>
       <hr className="border-black/8 dark:border-white/8 my-8" />
 
       <BlogP>
-        Tailwind changes the way you think about CSS: instead of naming
-        classes and maintaining style sheets, you compose interfaces directly
-        with utilities. v4 makes it even simpler with pure CSS configuration.
-        It is the tool behind most modern interfaces — and the more you use
-        it, the more natural it feels.
+        Tailwind changes the way you think about CSS: instead of naming classes
+        and maintaining style sheets, you compose interfaces directly with
+        utilities. v4 makes it even simpler with pure CSS configuration. It is
+        the tool behind most modern interfaces — and the more you use it, the
+        more natural it feels.
       </BlogP>
     </article>
   );

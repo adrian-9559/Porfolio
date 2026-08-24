@@ -69,12 +69,17 @@ function assignConvergenceX(list: GuideMeta[]): Map<string, number> {
 
   for (const g of list) {
     const sig = [...(g.joins ?? [])].sort().join(",");
+
     if (!groups.has(sig)) groups.set(sig, []);
     groups.get(sig)!.push(g);
   }
 
   const ordered = [...groups.entries()]
-    .map(([sig, members]) => ({ sig, members, center: nodeX(members[0].joins) }))
+    .map(([sig, members]) => ({
+      sig,
+      members,
+      center: nodeX(members[0].joins),
+    }))
     .sort((a, b) => a.center - b.center);
 
   for (const grp of ordered) {
@@ -114,7 +119,10 @@ function GuideNode({
               key={b}
               className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8"
             >
-              <span aria-hidden className={`w-1.5 h-1.5 rounded-full ${BRANCH_DOTS[b]}`} />
+              <span
+                aria-hidden
+                className={`w-1.5 h-1.5 rounded-full ${BRANCH_DOTS[b]}`}
+              />
               {t(GUIDE_BRANCHES.find((x) => x.id === b)?.labelKey ?? "")}
             </span>
           ))}
@@ -127,8 +135,8 @@ function GuideNode({
         </div>
       )}
       <Link
-        href={`/campus/guias/${guide.slug}`}
         className="block group/node relative overflow-hidden rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-emerald-300/60 dark:hover:border-emerald-700/60 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all p-4"
+        href={`/campus/guias/${guide.slug}`}
       >
         <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
           <span
@@ -153,8 +161,7 @@ function GuideNode({
             {guide.curriculum.length}
           </span>
           <span className="flex items-center gap-1 text-[11px] text-[#aeaeb2] dark:text-[#636366]">
-            <IconClock className="w-3 h-3" />
-            ~{guideTotalMinutes(guide)} min
+            <IconClock className="w-3 h-3" />~{guideTotalMinutes(guide)} min
           </span>
         </div>
       </Link>
@@ -184,7 +191,10 @@ function BranchColumn({
         className={`mx-auto h-8 w-px ${LINE_CLASS} group-hover:bg-emerald-400/60 transition-colors`}
       />
       <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
-        <span aria-hidden className={`w-2 h-2 rounded-full ${BRANCH_DOTS[branch.id]}`} />
+        <span
+          aria-hidden
+          className={`w-2 h-2 rounded-full ${BRANCH_DOTS[branch.id]}`}
+        />
         <BranchIcon className="w-3.5 h-3.5 text-[#6e6e73] dark:text-[#86868b]" />
         <span className="text-xs font-bold text-[#1d1d1f] dark:text-white whitespace-nowrap">
           {t(branch.labelKey)}
@@ -213,8 +223,8 @@ function RootPill() {
   return (
     <div className="flex justify-center">
       <Link
-        href="/campus"
         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white text-sm font-semibold no-underline transition-colors"
+        href="/campus"
       >
         <IconGraduation className="w-4 h-4" />
         {t("campus.tree.root")}
@@ -238,10 +248,10 @@ function TreeDesktop({
       <RootPill />
       {/* Abanico bézier desde el tronco central (y=30) hasta cada columna (y=100) */}
       <svg
-        className="block h-14 w-full text-[#d2d2d7] dark:text-white/15"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
         aria-hidden="true"
+        className="block h-14 w-full text-[#d2d2d7] dark:text-white/15"
+        preserveAspectRatio="none"
+        viewBox="0 0 100 100"
       >
         <path
           d="M50 0 V 30 M50 30 C 40 55 20 60 11.6 100 M50 30 C 44 55 32 60 37.2 100 M50 30 C 56 55 68 60 62.8 100 M50 30 C 60 55 80 60 88.4 100 M11.6 100 H 88.4"
@@ -262,15 +272,18 @@ function TreeDesktop({
             <h3 className="text-[11px] font-bold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-widest">
               {t("campus.tree.convergence")}
             </h3>
-            <span aria-hidden className="flex-1 h-px bg-black/8 dark:bg-white/8" />
+            <span
+              aria-hidden
+              className="flex-1 h-px bg-black/8 dark:bg-white/8"
+            />
           </div>
           <div className="relative">
             {/* Curvas desde cada rama unida hasta el nodo framework */}
             <svg
-              className="block h-24 w-full text-[#d2d2d7] dark:text-white/15"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
               aria-hidden="true"
+              className="block h-24 w-full text-[#d2d2d7] dark:text-white/15"
+              preserveAspectRatio="none"
+              viewBox="0 0 100 100"
             >
               {convergence.map((g) =>
                 (g.joins ?? []).map((b) => (
@@ -298,12 +311,12 @@ function TreeDesktop({
                 >
                   <GuideNode
                     guide={g}
+                    joinedBranches={g.joins}
                     parentTitle={
                       g.dependsOn
                         ? getGuides().find((x) => x.slug === g.dependsOn)?.title
                         : undefined
                     }
-                    joinedBranches={g.joins}
                   />
                 </div>
               ))}
@@ -342,7 +355,10 @@ function TreeMobile({
                 className={`absolute left-0 top-1 w-[7px] h-[7px] rounded-full ${BRANCH_DOTS[branch.id]} ring-2 ring-white dark:ring-[#111116]`}
               />
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 justify-start">
-                <span aria-hidden className={`w-2 h-2 rounded-full ${BRANCH_DOTS[branch.id]}`} />
+                <span
+                  aria-hidden
+                  className={`w-2 h-2 rounded-full ${BRANCH_DOTS[branch.id]}`}
+                />
                 <BranchIcon className="w-3.5 h-3.5 text-[#6e6e73] dark:text-[#86868b]" />
                 <span className="text-xs font-bold text-[#1d1d1f] dark:text-white whitespace-nowrap">
                   {t(branch.labelKey)}
@@ -355,7 +371,8 @@ function TreeMobile({
                     guide={guide}
                     parentTitle={
                       guide.dependsOn
-                        ? getGuides().find((g) => g.slug === guide.dependsOn)?.title
+                        ? getGuides().find((g) => g.slug === guide.dependsOn)
+                            ?.title
                         : undefined
                     }
                   />
@@ -375,12 +392,12 @@ function TreeMobile({
               <GuideNode
                 key={g.slug}
                 guide={g}
+                joinedBranches={g.joins}
                 parentTitle={
                   g.dependsOn
                     ? getGuides().find((x) => x.slug === g.dependsOn)?.title
                     : undefined
                 }
-                joinedBranches={g.joins}
               />
             ))}
           </div>
@@ -406,8 +423,8 @@ export default function GuideTree() {
     <section aria-labelledby="guide-tree-title" className="space-y-5">
       <div className="flex items-center gap-3">
         <h2
-          id="guide-tree-title"
           className="text-xs font-bold text-muted/60 uppercase tracking-widest"
+          id="guide-tree-title"
         >
           {t("campus.tree.title")}
         </h2>

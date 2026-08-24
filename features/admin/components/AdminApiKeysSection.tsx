@@ -41,7 +41,7 @@ function CreateModal({
     setError(null);
     try {
       const result = await apiFetch<AdminApiKey & { raw_key?: string }>(
-        "/api-keys",
+        "/api/api-keys",
         {
           method: "POST",
           body: JSON.stringify({ name: name.trim() }),

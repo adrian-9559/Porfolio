@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useT } from "@/hooks/useT";
 
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
@@ -17,6 +18,7 @@ function uuidv7() {
 }
 
 export default function UuidGeneratorContent() {
+  const { t } = useT();
   const [uuids, setUuids] = useState<string[]>([]);
   const [count, setCount] = useState(1);
   const [dashes, setDashes] = useState(true);
@@ -49,20 +51,20 @@ export default function UuidGeneratorContent() {
       <div className="space-y-3 mb-8">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 border border-sky-200 dark:border-sky-800/50">
-            Herramienta
+            {t("blog.uuidGenerator.tool")}
           </span>
           <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-            Uso libre
+            {t("blog.uuidGenerator.freeToUse")}
           </span>
         </div>
         <h1
           className="text-4xl font-bold text-[#1d1d1f] dark:text-white"
           style={{ letterSpacing: "-0.02em" }}
         >
-          Generador de UUIDs
+          {t("blog.uuidGenerator.title")}
         </h1>
         <p className="text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-          Genera UUIDs v4 y v7. Copia individual o en lote, con o sin guiones.
+          {t("blog.uuidGenerator.desc")}
         </p>
       </div>
 
@@ -75,7 +77,7 @@ export default function UuidGeneratorContent() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${version === v ? "bg-white dark:bg-[#1c1c22] text-sky-600 dark:text-sky-400 shadow-sm" : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"}`}
                 onClick={() => setVersion(v)}
               >
-                {v === 4 ? "UUID v4 (aleatorio)" : "UUID v7 (ordenable)"}
+                {v === 4 ? t("blog.uuidGenerator.v4") : t("blog.uuidGenerator.v7")}
               </button>
             ))}
           </div>
@@ -104,13 +106,13 @@ export default function UuidGeneratorContent() {
             className="px-4 py-2 rounded-lg text-sm font-semibold bg-sky-500 hover:bg-sky-600 text-white transition-colors"
             onClick={generate}
           >
-            Generar
+            {t("blog.uuidGenerator.generate")}
           </button>
           <button
             className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors ${dashes ? "border-sky-200 dark:border-sky-800 text-sky-600 dark:text-sky-400" : "border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b]"}`}
             onClick={() => setDashes((d) => !d)}
           >
-            {dashes ? "Con guiones" : "Sin guiones"}
+            {dashes ? t("blog.uuidGenerator.withDashes") : t("blog.uuidGenerator.withoutDashes")}
           </button>
         </div>
 
@@ -118,13 +120,13 @@ export default function UuidGeneratorContent() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-                UUID{uuids.length > 1 ? "s" : ""} generados
+                UUID{uuids.length > 1 ? "s" : ""} {t("blog.uuidGenerator.generated")}
               </p>
               <button
                 className="text-xs text-sky-600 dark:text-sky-400 hover:underline"
                 onClick={copyAll}
               >
-                {copiedIdx === -1 ? "¡Copiados!" : "Copiar todos"}
+                {copiedIdx === -1 ? t("blog.uuidGenerator.copiedAll") : t("blog.uuidGenerator.copyAll")}
               </button>
             </div>
             <div className="space-y-1">
@@ -141,7 +143,7 @@ export default function UuidGeneratorContent() {
                       {display}
                     </code>
                     <span className="ml-2 text-[10px] text-sky-500 dark:text-sky-400 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                      {copiedIdx === i ? "✓" : "Copiar"}
+                      {copiedIdx === i ? "✓" : t("blog.uuidGenerator.copy")}
                     </span>
                   </div>
                 );

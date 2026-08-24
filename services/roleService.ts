@@ -3,10 +3,10 @@ import type { Role } from "@/types/auth";
 import { apiFetch } from "./apiClient";
 
 export const roleService = {
-  list: () => apiFetch<Role[]>("/roles"),
+  list: () => apiFetch<Role[]>("/api/roles"),
 
   create: (name: string, description?: string) =>
-    apiFetch<Role>("/roles", {
+    apiFetch<Role>("/api/roles", {
       method: "POST",
       body: JSON.stringify({ name, description }),
     }),
@@ -20,13 +20,13 @@ export const roleService = {
   delete: (id: number) => apiFetch<void>(`/roles/${id}`, { method: "DELETE" }),
 
   assign: (user_id: string, role_id: number) =>
-    apiFetch<void>("/roles/assign", {
+    apiFetch<void>("/api/roles/assign", {
       method: "POST",
       body: JSON.stringify({ user_id, role_id }),
     }),
 
   remove: (user_id: string, role_id: number) =>
-    apiFetch<void>("/roles/remove", {
+    apiFetch<void>("/api/roles/remove", {
       method: "POST",
       body: JSON.stringify({ user_id, role_id }),
     }),

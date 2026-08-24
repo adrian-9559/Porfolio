@@ -124,9 +124,9 @@ export default function KubernetesContent() {
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
         Docker ejecuta contenedores; Kubernetes los orquesta: escala, balancea
-        tráfico, reinicia fallos y despliega versiones sin tiempo de inactividad.
-        Aprende la arquitectura, los objetos principales y el flujo de trabajo
-        con kubectl.
+        tráfico, reinicia fallos y despliega versiones sin tiempo de
+        inactividad. Aprende la arquitectura, los objetos principales y el flujo
+        de trabajo con kubectl.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -136,8 +136,8 @@ export default function KubernetesContent() {
       <BlogP>
         Kubernetes (k8s) es un orquestador de contenedores open-source nacido de
         la experiencia de Google con Borg. En lugar de que tú decidas dónde
-        ejecutar cada contenedor, le <strong>declaras el estado deseado</strong>:
-        "3 réplicas de mi-api con la imagen v1.2" — y el sistema trabaja
+        ejecutar cada contenedor, le <strong>declaras el estado deseado</strong>
+        : "3 réplicas de mi-api con la imagen v1.2" — y el sistema trabaja
         continuamente para que la realidad coincida con esa declaración.
       </BlogP>
 
@@ -198,8 +198,8 @@ export default function KubernetesContent() {
       <BlogP>
         <strong>Container runtime</strong>: el motor que ejecuta contenedores
         (containerd, CRI-O). Docker no corre pods directamente en k8s moderno,
-        pero las imágenes que construyes con Docker son las mismas que corre
-        el runtime.
+        pero las imágenes que construyes con Docker son las mismas que corre el
+        runtime.
       </BlogP>
 
       <BlogH2 id="instalacion">Instalar minikube y kubectl</BlogH2>
@@ -233,10 +233,10 @@ kubectl get nodes
       <BlogH2 id="pods">Pods</BlogH2>
 
       <BlogP>
-        El <strong>pod</strong> es la unidad mínima de computación en k8s: uno
-        o más contenedores que comparten red y almacenamiento. En la práctica,
-        casi siempre es un único contenedor por pod. Los pods son efímeros —
-        no los crees a mano en producción; se gestionan con workloads:
+        El <strong>pod</strong> es la unidad mínima de computación en k8s: uno o
+        más contenedores que comparten red y almacenamiento. En la práctica,
+        casi siempre es un único contenedor por pod. Los pods son efímeros — no
+        los crees a mano en producción; se gestionan con workloads:
       </BlogP>
 
       <BlogCode>{`# Crear un pod directamente (solo para probar)
@@ -375,10 +375,10 @@ minikube service mi-api`}</BlogCode>
       <BlogH2 id="configmaps-secrets">ConfigMaps y Secrets</BlogH2>
 
       <BlogP>
-        Separa la configuración de la imagen: los{" "}
-        <strong>ConfigMaps</strong> guardan valores no sensibles y los{" "}
-        <strong>Secrets</strong> (base64, no cifrado por defecto) los sensibles.
-        Ambos se montan como variables de entorno o como archivos:
+        Separa la configuración de la imagen: los <strong>ConfigMaps</strong>{" "}
+        guardan valores no sensibles y los <strong>Secrets</strong> (base64, no
+        cifrado por defecto) los sensibles. Ambos se montan como variables de
+        entorno o como archivos:
       </BlogP>
 
       <BlogCode>{`# configmap.yaml
@@ -424,8 +424,7 @@ env:
       <BlogP>
         Un LoadBalancer por Service multiplica costes y URLs. El{" "}
         <strong>Ingress</strong> es un punto de entrada único que enruta por
-        host y por path hacia distintos Services, con TLS terminado en el
-        borde:
+        host y por path hacia distintos Services, con TLS terminado en el borde:
       </BlogP>
 
       <BlogCode>{`# ingress.yaml
@@ -478,8 +477,8 @@ kubectl get ingress`}</BlogCode>
       <BlogP>
         Los <strong>Namespaces</strong> particionan el clúster por equipos,
         entornos o aplicaciones, con límites de recursos y políticas de red
-        propios. Trabajar siempre en <BlogInlineCode>default</BlogInlineCode>{" "}
-        es una mala práctica que tarde o temprano pica:
+        propios. Trabajar siempre en <BlogInlineCode>default</BlogInlineCode> es
+        una mala práctica que tarde o temprano pica:
       </BlogP>
 
       <BlogCode>{`kubectl create namespace produccion
