@@ -1947,7 +1947,13 @@
       "badge": "Blog",
       "title": "Artículos destacados",
       "desc": "Artículos y tutoriales sobre desarrollo web, frameworks y buenas prácticas.",
-      "viewAll": "Ver todos los artículos"
+      "viewAll": "Ver todos los artículos",
+      "tabAll": "Todo",
+      "tabArticles": "Artículos",
+      "tabTools": "Herramientas",
+      "statArticles": "Artículos",
+      "statTools": "Herramientas",
+      "statTotal": "Total"
     }
   },
   "about": {

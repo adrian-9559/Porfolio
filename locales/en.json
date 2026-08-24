@@ -1940,7 +1940,13 @@
       "badge": "Blog",
       "title": "Featured articles",
       "desc": "Articles and tutorials about web development, frameworks and best practices.",
-      "viewAll": "View all articles"
+      "viewAll": "View all articles",
+      "tabAll": "All",
+      "tabArticles": "Articles",
+      "tabTools": "Tools",
+      "statArticles": "Articles",
+      "statTools": "Tools",
+      "statTotal": "Total"
     }
   },
   "about": {

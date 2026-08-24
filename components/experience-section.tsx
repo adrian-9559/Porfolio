@@ -26,6 +26,11 @@ const experiences = [
       "Virtualización",
     ],
     color: "from-violet-500 to-purple-400",
+    icon: (
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+      </svg>
+    ),
   },
   {
     company: "Consultora de Programación",
@@ -52,6 +57,11 @@ const experiences = [
       "Git",
     ],
     color: "from-blue-500 to-cyan-400",
+    icon: (
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+      </svg>
+    ),
   },
 ];
 
@@ -87,10 +97,12 @@ export function ExperienceSection() {
               {/* Header */}
               <div className="p-6">
                 <div className="flex items-start gap-4">
-                  {/* Color dot */}
+                  {/* Color dot with icon */}
                   <div
-                    className={`w-9 h-9 rounded-xl bg-gradient-to-br ${exp.color} flex-shrink-0 mt-0.5`}
-                  />
+                    className={`w-9 h-9 rounded-xl bg-gradient-to-br ${exp.color} flex items-center justify-center flex-shrink-0 mt-0.5`}
+                  >
+                    {exp.icon}
+                  </div>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
