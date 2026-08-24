@@ -22,7 +22,7 @@ const ALL_PROJECTS: Project[] = [
   {
     title: "GymGO",
     descKey: "gymgoDesc",
-    tags: ["React", "Node.js", "PostgreSQL", "React Native"],
+    tags: ["React", "Node.js", "Supabase", "React Native"],
     gradient: "from-violet-500 to-purple-600",
     accentBg: "from-violet-500/10 to-purple-500/5",
     letter: "G",

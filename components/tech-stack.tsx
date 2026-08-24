@@ -32,8 +32,7 @@ const categories: Category[] = [
     nameKey: "catDatabase",
     gradient: "from-orange-500 to-red-500",
     items: [
-      { name: "PostgreSQL", level: 4 },
-      { name: "MongoDB", level: 4 },
+      { name: "Supabase", level: 4 },
       { name: "MySQL", level: 4 },
       { name: "SQL Server", level: 4 },
     ],
@@ -46,6 +45,7 @@ const categories: Category[] = [
       { name: "Git", level: 5 },
       { name: "Vercel", level: 5 },
       { name: "AWS", level: 1 },
+      { name: "Atlassian", level: 4 },
     ],
   },
   {

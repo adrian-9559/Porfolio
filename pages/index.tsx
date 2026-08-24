@@ -40,7 +40,7 @@ export default function IndexPage() {
                 "Node.js",
                 "TypeScript",
                 "JavaScript",
-                "PostgreSQL",
+                "Supabase",
                 "C",
                 "C++",
               ],

@@ -30,7 +30,7 @@ const TIMELINE: TimelineItem[] = [
     titleKey: "tl2023Title",
     descKey: "tl2023Desc",
     gradient: "from-pink-500 to-rose-600",
-    techs: ["React", "Node.js", "PostgreSQL", "TypeScript"],
+    techs: ["React", "Node.js", "Supabase", "TypeScript"],
   },
   {
     year: "2022",

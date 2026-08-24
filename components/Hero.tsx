@@ -144,7 +144,7 @@ export default function Hero() {
         </ScrollReveal>
 
         <ScrollReveal delay={400} className="flex flex-wrap justify-center gap-2 max-w-md pt-2">
-          {["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Docker"].map((tech) => (
+          {["React", "Next.js", "TypeScript", "Node.js", "Supabase", "Docker"].map((tech) => (
             <span
               key={tech}
               className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-[#3d3d3d] dark:text-[#c0c0c5] shadow-sm hover:shadow-md hover:border-violet-300 dark:hover:border-violet-700 hover:text-violet-600 dark:hover:text-violet-400 transition-all duration-200 cursor-default"

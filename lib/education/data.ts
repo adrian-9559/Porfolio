@@ -204,8 +204,7 @@ export const educationData: EducationData[] = [
       "Node.js",
       "Express.js",
       "Java",
-      "PostgreSQL",
-      "MongoDB",
+      "Supabase",
       "HTML5 / CSS3",
       "REST APIs",
       "JWT / Auth",
@@ -243,7 +242,7 @@ export const educationData: EducationData[] = [
       },
       {
         name: "Bases de Datos",
-        description: "SQL, PostgreSQL, MongoDB y ORMs",
+        description: "SQL, Supabase, MySQL y ORMs",
       },
       {
         name: "Despliegue de Aplicaciones Web",
@@ -266,7 +265,7 @@ export const educationData: EducationData[] = [
         technologies: [
           "React",
           "Node.js",
-          "PostgreSQL",
+          "Supabase",
           "React Native",
           "Express",
         ],
@@ -281,7 +280,7 @@ export const educationData: EducationData[] = [
           "TypeScript",
           "Tailwind CSS",
           "HeroUI",
-          "PostgreSQL",
+          "Supabase",
         ],
         url: "https://github.com/adrian-9559/CodeXplore",
       },
@@ -289,7 +288,7 @@ export const educationData: EducationData[] = [
         name: "API REST de gestión de tareas",
         description:
           "API completa con autenticación JWT, roles de usuario, CRUD de tareas y documentación con Swagger.",
-        technologies: ["Node.js", "Express", "PostgreSQL", "JWT", "Swagger"],
+        technologies: ["Node.js", "Express", "Supabase", "JWT", "Swagger"],
       },
     ],
     knowledge: [
