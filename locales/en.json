@@ -1412,6 +1412,8 @@
   "campus": {
     "badge": "Learn",
     "tagline": "Your learning path",
+    "heroDesc": "Step-by-step tutorials organized in paths. From beginner to advanced.",
+    "startLearning": "Start learning",
     "stats": {
       "tutorials": "Tutorials",
       "guides": "Learning paths",
@@ -1419,12 +1421,23 @@
     },
     "section": {
       "guides": "Learning paths",
-      "tutorials": "Tutorials"
+      "tutorials": "Tutorials",
+      "featured": "Featured path",
+      "allGuides": "All paths",
+      "allTutorials": "All tutorials"
+    },
+    "filters": {
+      "category": "Category",
+      "level": "Level",
+      "clear": "Clear filters"
     },
     "startTutorial": "Start",
     "viewPath": "View path",
+    "viewTutorial": "View tutorial",
     "empty": "No tutorials match your search",
     "clearSearch": "Clear search",
+    "tutorialsCount": "{count} tutorials",
+    "minutesRead": "~{min} min read",
     "tree": {
       "title": "Learning map",
       "root": "Campus",

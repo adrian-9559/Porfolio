@@ -1412,6 +1412,8 @@
   "campus": {
     "badge": "Aprende",
     "tagline": "Tu ruta de aprendizaje",
+    "heroDesc": "Tutoriales paso a paso organizados en rutas. De cero a avanzado.",
+    "startLearning": "Empezar a aprender",
     "stats": {
       "tutorials": "Tutoriales",
       "guides": "Rutas de aprendizaje",
@@ -1419,12 +1421,23 @@
     },
     "section": {
       "guides": "Rutas de aprendizaje",
-      "tutorials": "Tutoriales"
+      "tutorials": "Tutoriales",
+      "featured": "Ruta destacada",
+      "allGuides": "Todas las rutas",
+      "allTutorials": "Todos los tutoriales"
+    },
+    "filters": {
+      "category": "Categoría",
+      "level": "Nivel",
+      "clear": "Limpiar filtros"
     },
     "startTutorial": "Empezar",
     "viewPath": "Ver ruta",
+    "viewTutorial": "Ver tutorial",
     "empty": "No hay tutoriales para tu búsqueda",
     "clearSearch": "Limpiar búsqueda",
+    "tutorialsCount": "{count} tutoriales",
+    "minutesRead": "~{min} min de lectura",
     "tree": {
       "title": "Mapa de rutas",
       "root": "Campus",
