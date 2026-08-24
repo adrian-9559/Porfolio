@@ -2,6 +2,21 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { PDFDocument, rgb } from "pdf-lib";
 import * as pdfjs from "pdfjs-dist";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { useT } from "@/hooks/useT";
 
 const WORKER = "/pdf.worker.min.mjs";
@@ -44,6 +59,55 @@ function hexToRgb(hex: string) {
   };
 }
 
+function SortableMergeItem({
+  id,
+  name,
+  removeLabel,
+  onRemove,
+}: {
+  id: string;
+  name: string;
+  removeLabel: string;
+  onRemove: () => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="flex items-center gap-2 text-xs text-[#6e6e73] dark:text-[#86868b]"
+    >
+      <button
+        className="cursor-grab active:cursor-grabbing text-[#aeaeb2] dark:text-[#636366] hover:text-[#6e6e73] dark:hover:text-[#86868b] select-none touch-none"
+        {...attributes}
+        {...listeners}
+      >
+        ⠿
+      </button>
+      <span className="flex-1 truncate">{name}</span>
+      <button
+        className="text-red-500 hover:underline shrink-0"
+        onClick={onRemove}
+      >
+        {removeLabel}
+      </button>
+    </div>
+  );
+}
+
 export default function PdfEditorContent() {
   const { t } = useT();
   const [file, setFile] = useState<File | null>(null);
@@ -82,6 +146,10 @@ export default function PdfEditorContent() {
   const inputRef = useRef<HTMLInputElement>(null);
   const mergeRef = useRef<HTMLInputElement>(null);
   const pageRef = useRef<HTMLDivElement>(null);
+
+  const mergeSensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+  );
 
   useEffect(() => {
     pdfjs.GlobalWorkerOptions.workerSrc = WORKER;
@@ -240,6 +308,31 @@ export default function PdfEditorContent() {
     if (editPageIdx === idx) setEditPageIdx(to);
     else if (editPageIdx === to) setEditPageIdx(idx);
     setSelAnn(null);
+  };
+
+  const moveMergeFile = (idx: number, dir: -1 | 1) => {
+    const to = idx + dir;
+
+    if (to < 0 || to >= mergeFiles.length) return;
+    setMergeFiles((prev) => {
+      const n = [...prev];
+
+      [n[idx], n[to]] = [n[to], n[idx]];
+
+      return n;
+    });
+  };
+
+  const handleMergeDragEnd = (e: DragEndEvent) => {
+    const { active, over } = e;
+
+    if (!over || active.id === over.id) return;
+    const oldIdx = mergeFiles.findIndex((_, i) => String(i) === String(active.id));
+    const newIdx = mergeFiles.findIndex((_, i) => String(i) === String(over.id));
+
+    if (oldIdx !== -1 && newIdx !== -1) {
+      setMergeFiles((prev) => arrayMove(prev, oldIdx, newIdx));
+    }
   };
 
   const handleMerge = async () => {
@@ -1108,26 +1201,49 @@ export default function PdfEditorContent() {
                 )}
               </div>
               {mergeFiles.length > 0 && (
-                <div className="space-y-1">
-                  {mergeFiles.map((f, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center justify-between text-xs text-[#6e6e73] dark:text-[#86868b]"
-                    >
-                      <span>{f.name}</span>
-                      <button
-                        className="text-red-500 hover:underline"
-                        onClick={() =>
-                          setMergeFiles((prev) =>
-                            prev.filter((_, j) => j !== i),
-                          )
-                        }
-                      >
-                        {t("blog.pdfEditor.remove")}
-                      </button>
+                <DndContext
+                  sensors={mergeSensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleMergeDragEnd}
+                >
+                  <SortableContext
+                    items={mergeFiles.map((_, i) => String(i))}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <div className="space-y-1">
+                      {mergeFiles.map((f, i) => (
+                        <div key={i} className="flex items-center gap-1">
+                          <SortableMergeItem
+                            id={String(i)}
+                            name={f.name}
+                            removeLabel={t("blog.pdfEditor.remove")}
+                            onRemove={() =>
+                              setMergeFiles((prev) =>
+                                prev.filter((_, j) => j !== i),
+                              )
+                            }
+                          />
+                          <div className="flex flex-col shrink-0">
+                            <button
+                              className="p-0.5 text-[10px] text-[#aeaeb2] dark:text-[#636366] hover:text-amber-600 dark:hover:text-amber-400 disabled:opacity-30"
+                              disabled={i === 0}
+                              onClick={() => moveMergeFile(i, -1)}
+                            >
+                              ↑
+                            </button>
+                            <button
+                              className="p-0.5 text-[10px] text-[#aeaeb2] dark:text-[#636366] hover:text-amber-600 dark:hover:text-amber-400 disabled:opacity-30"
+                              disabled={i === mergeFiles.length - 1}
+                              onClick={() => moveMergeFile(i, 1)}
+                            >
+                              ↓
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </SortableContext>
+                </DndContext>
               )}
             </div>
 
