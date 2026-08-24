@@ -1947,6 +1947,16 @@
       "statArticles": "Articles",
       "statTools": "Tools",
       "statTotal": "Total"
+    },
+    "campus": {
+      "badge": "Learn",
+      "title": "Campus — Learning paths",
+      "desc": "Step-by-step tutorials organized in paths. From beginner to advanced.",
+      "viewAll": "Explore Campus",
+      "featuredGuides": "Featured paths",
+      "featuredTutorials": "Featured tutorials",
+      "startPath": "Start path",
+      "startTutorial": "Start tutorial"
     }
   },
   "about": {

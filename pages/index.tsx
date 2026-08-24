@@ -2,6 +2,7 @@ import Head from "next/head";
 
 import About from "@/components/about";
 import BlogHighlights from "@/components/blog-highlights";
+import CampusHighlights from "@/components/campus-highlights";
 import CTA from "@/components/cta";
 import Experience from "@/components/experience";
 import Hero from "@/components/Hero";
@@ -57,6 +58,7 @@ export default function IndexPage() {
         <Experience />
         <Projects />
         <BlogHighlights />
+        <CampusHighlights />
         <CTA />
       </div>
     </DefaultLayout>

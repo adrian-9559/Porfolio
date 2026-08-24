@@ -1954,6 +1954,16 @@
       "statArticles": "Artículos",
       "statTools": "Herramientas",
       "statTotal": "Total"
+    },
+    "campus": {
+      "badge": "Aprende",
+      "title": "Campus — Rutas de aprendizaje",
+      "desc": "Tutoriales paso a paso organizados en rutas. De cero a avanzado.",
+      "viewAll": "Explorar Campus",
+      "featuredGuides": "Rutas destacadas",
+      "featuredTutorials": "Tutoriales destacados",
+      "startPath": "Empezar ruta",
+      "startTutorial": "Empezar tutorial"
     }
   },
   "about": {
