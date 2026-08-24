@@ -1880,7 +1880,9 @@
       "gymgoDesc": "Web and mobile application for managing workout routines with personalized progress tracking.",
       "ftircDesc": "IRC server in C++ with full support for multiple clients and real-time channels.",
       "cub3dDesc": "Raycasting 3D graphics engine in C with real-time rendering, inspired by Wolfenstein 3D.",
-      "codexploreDesc": "Educational platform for learning programming with interactive courses and progress tracking."
+      "codexploreDesc": "Educational platform for learning programming with interactive courses and progress tracking.",
+      "portfolioDesc": "Personal portfolio with blog, campus, interactive tools and admin panel.",
+      "partimosDesc": "Mobile app for shared expense management with groups, insights and markets."
     },
     "experience": {
       "title": "Professional experience",
@@ -1910,6 +1912,7 @@
       "desc": "A complete stack to build end-to-end production-quality solutions.",
       "catFrontend": "Frontend",
       "catBackend": "Backend",
+      "catDatabase": "Database",
       "catDevops": "DevOps & Tools",
       "catLanguages": "Languages"
     },
@@ -1932,6 +1935,12 @@
       "emailBtn": "Send me an email",
       "linkedinLink": "LinkedIn",
       "socialProof": "I respond within 24h · Free quote"
+    },
+    "blog": {
+      "badge": "Blog",
+      "title": "Featured articles",
+      "desc": "Articles and tutorials about web development, frameworks and best practices.",
+      "viewAll": "View all articles"
     }
   },
   "about": {

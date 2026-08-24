@@ -1887,7 +1887,9 @@
       "gymgoDesc": "Aplicación web y móvil para gestión de rutinas de entrenamiento con seguimiento de progreso personalizado.",
       "ftircDesc": "Servidor IRC en C++ con soporte completo para múltiples clientes y canales en tiempo real.",
       "cub3dDesc": "Motor gráfico 3D tipo raycasting en C con renderización en tiempo real, inspirado en Wolfenstein 3D.",
-      "codexploreDesc": "Plataforma educativa para aprender programación con cursos interactivos y seguimiento de progreso."
+      "codexploreDesc": "Plataforma educativa para aprender programación con cursos interactivos y seguimiento de progreso.",
+      "portfolioDesc": "Portfolio personal con blog, campus, herramientas interactivas y panel de administración.",
+      "partimosDesc": "App móvil para gestión de gastos compartidos con grupos, insights y mercados."
     },
     "experience": {
       "title": "Experiencia profesional",
@@ -1917,6 +1919,7 @@
       "desc": "Un stack completo para construir soluciones de extremo a extremo con calidad de producción.",
       "catFrontend": "Frontend",
       "catBackend": "Backend",
+      "catDatabase": "Base de datos",
       "catDevops": "DevOps & Tools",
       "catLanguages": "Lenguajes"
     },
@@ -1939,6 +1942,12 @@
       "emailBtn": "Enviarme un email",
       "linkedinLink": "LinkedIn",
       "socialProof": "Respondo en menos de 24h · Presupuesto sin compromiso"
+    },
+    "blog": {
+      "badge": "Blog",
+      "title": "Artículos destacados",
+      "desc": "Artículos y tutoriales sobre desarrollo web, frameworks y buenas prácticas.",
+      "viewAll": "Ver todos los artículos"
     }
   },
   "about": {
