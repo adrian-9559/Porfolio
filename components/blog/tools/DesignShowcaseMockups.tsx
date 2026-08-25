@@ -225,7 +225,7 @@ export function WebNavbar({ c, s }: { c: DesignColors; s: DesignStyle }) {
 export function WebFooter({ c, s }: { c: DesignColors; s: DesignStyle }) {
   return (
     <svg viewBox="0 0 280 180" className="w-full h-full">
-      <rect width="280" height="180" fill={c.text} opacity={s.baseOpacity * 0.5} rx={s.rx} />
+      <rect width="280" height="180" fill={c.background} rx={s.rx} />
       <rect x="16" y="16" width="48" height="10" rx={s.rx > 0 ? 2 : 0} fill={c.primary} opacity="0.6" />
       <rect x="16" y="36" width="80" height="5" rx={s.rx > 0 ? 1.5 : 0} fill={c.text} opacity="0.15" />
       <rect x="16" y="50" width="60" height="5" rx={s.rx > 0 ? 1.5 : 0} fill={c.text} opacity="0.1" />

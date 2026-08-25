@@ -126,7 +126,7 @@ export default function DesignShowcaseContent() {
   }
 
   return (
-    <article className="max-w-3xl">
+    <article className="w-full">
       {/* Header */}
       <div className="space-y-3 mb-8">
         <span className="inline-block px-3 py-1 rounded-full bg-pink-500/10 text-pink-600 dark:text-pink-400 text-xs font-semibold tracking-wide">
@@ -248,7 +248,7 @@ export default function DesignShowcaseContent() {
         </div>
 
         {/* Mockup Grid */}
-        <div className={`grid gap-4 ${tab === "web" ? "grid-cols-2" : "grid-cols-4"}`}>
+        <div className={`grid gap-4 ${tab === "web" ? "grid-cols-2 lg:grid-cols-3" : "grid-cols-3 lg:grid-cols-4"}`}>
           {mockups.map((m) => {
             const MockupComponent = m.component;
 
