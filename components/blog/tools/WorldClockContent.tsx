@@ -27,9 +27,14 @@ const TIMEZONES = [
   { value: "Pacific/Auckland", label: "Auckland (NZST)" },
 ];
 
+function getLocale(): string {
+  if (typeof navigator !== "undefined") return navigator.language || "en-US";
+  return "en-US";
+}
+
 function formatTime(timezone: string): string {
   try {
-    return new Intl.DateTimeFormat("en-US", {
+    return new Intl.DateTimeFormat(getLocale(), {
       timeZone: timezone,
       hour: "2-digit",
       minute: "2-digit",
@@ -43,7 +48,7 @@ function formatTime(timezone: string): string {
 
 function formatDate(timezone: string): string {
   try {
-    return new Intl.DateTimeFormat("en-US", {
+    return new Intl.DateTimeFormat(getLocale(), {
       timeZone: timezone,
       weekday: "short",
       month: "short",
@@ -57,7 +62,7 @@ function formatDate(timezone: string): string {
 function getTimezoneOffset(timezone: string): string {
   try {
     const now = new Date();
-    const formatter = new Intl.DateTimeFormat("en-US", {
+    const formatter = new Intl.DateTimeFormat(getLocale(), {
       timeZone: timezone,
       timeZoneName: "shortOffset",
     });
@@ -170,7 +175,7 @@ export default function WorldClockContent() {
               <button
                 onClick={() => removeClock(clock.id)}
                 className="absolute top-3 right-3 w-6 h-6 rounded-full bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#aeaeb2] dark:text-[#636366] hover:border-rose-500 dark:hover:border-rose-400 hover:text-rose-500 dark:hover:text-rose-400 transition-all text-xs flex items-center justify-center opacity-0 group-hover:opacity-100"
-                aria-label="Remove clock"
+                aria-label={t("blog.worldClock.remove")}
               >
                 ✕
               </button>

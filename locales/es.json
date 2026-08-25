@@ -1694,9 +1694,11 @@
       "desc": "Consulta la hora actual en múltiples zonas horarias del mundo.",
       "tool": "Herramienta",
       "freeToUse": "Uso libre",
-      "addTimezone": "Añadir zona horaria",
+      "selectTimezone": "Seleccionar zona horaria",
+      "add": "Añadir",
       "remove": "Eliminar",
-      "maxReached": "Máximo 8 relojes"
+      "maxReached": "Máximo 8 relojes",
+      "empty": "No hay relojes. Añade uno para empezar."
     },
     "issueTracker": {
       "title": "Gestor de Incidencias",

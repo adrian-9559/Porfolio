@@ -1692,9 +1692,11 @@
       "desc": "Check the current time in multiple time zones around the world.",
       "tool": "Tool",
       "freeToUse": "Free to use",
-      "addTimezone": "Add timezone",
+      "selectTimezone": "Select timezone",
+      "add": "Add",
       "remove": "Remove",
-      "maxReached": "Maximum 8 clocks"
+      "maxReached": "Maximum 8 clocks",
+      "empty": "No clocks yet. Add one to get started."
     },
     "issueTracker": {
       "title": "Issue Tracker",
