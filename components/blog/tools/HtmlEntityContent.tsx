@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 const ENCODE_MAP: Record<string, string> = {
   "&": "&amp;",
@@ -70,10 +71,11 @@ export default function HtmlEntityContent() {
 
   const output = mode === "encode" ? encodeToEntities(input) : decodeFromEntities(input);
 
-  const copy = () => {
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(output)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

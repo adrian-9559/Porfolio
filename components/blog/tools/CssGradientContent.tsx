@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 interface ColorStop {
   color: string;
@@ -63,10 +64,11 @@ export default function CssGradientContent() {
     setStops(preset.stops);
   };
 
-  const copy = () => {
-    navigator.clipboard.writeText(`background: ${css};`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(`background: ${css};`)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

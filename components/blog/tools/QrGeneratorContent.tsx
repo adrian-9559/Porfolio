@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 export default function QrGeneratorContent() {
   const { t } = useT();
@@ -29,10 +30,11 @@ export default function QrGeneratorContent() {
     URL.revokeObjectURL(a.href);
   };
 
-  const copyImg = () => {
-    navigator.clipboard.writeText(qrUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copyImg = async () => {
+    if (await copyToClipboard(qrUrl)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

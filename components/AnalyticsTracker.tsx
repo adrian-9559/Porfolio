@@ -96,7 +96,7 @@ function sendDuration(sessionId: string, startTime: number) {
         { type: "application/json" }
       )
     ) ?? fetch("/api/analytics/duration", {
-      method: "PATCH",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session_id: sessionId, duration_ms: durationMs }),
       keepalive: true,

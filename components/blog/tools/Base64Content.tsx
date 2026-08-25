@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 export default function Base64Content() {
   const { t } = useT();
@@ -35,10 +36,11 @@ export default function Base64Content() {
     setMode((m) => (m === "encode" ? "decode" : "encode"));
   };
 
-  const copy = () => {
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(output)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   const clear = () => {

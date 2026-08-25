@@ -167,6 +167,28 @@ import ImageToBase64Content from "@/components/blog/tools/ImageToBase64Content";
 import MockDataContent from "@/components/blog/tools/MockDataContent";
 import DesignShowcaseContent from "@/components/blog/tools/DesignShowcaseContent";
 
+// New tools batch 2
+import UnitConverterContent from "@/components/blog/tools/UnitConverterContent";
+import TipCalculatorContent from "@/components/blog/tools/TipCalculatorContent";
+import CountdownTimerContent from "@/components/blog/tools/CountdownTimerContent";
+import PomodoroContent from "@/components/blog/tools/PomodoroContent";
+import BmiCalculatorContent from "@/components/blog/tools/BmiCalculatorContent";
+import WorldClockContent from "@/components/blog/tools/WorldClockContent";
+import IssueTrackerContent from "@/components/blog/tools/IssueTrackerContent";
+import JsonYamlContent from "@/components/blog/tools/JsonYamlContent";
+import JsonCsvContent from "@/components/blog/tools/JsonCsvContent";
+import CodeMinifierContent from "@/components/blog/tools/CodeMinifierContent";
+import RegexCheatsheetContent from "@/components/blog/tools/RegexCheatsheetContent";
+import MarkdownHtmlContent from "@/components/blog/tools/MarkdownHtmlContent";
+import TextCounterContent from "@/components/blog/tools/TextCounterContent";
+import BoxShadowContent from "@/components/blog/tools/BoxShadowContent";
+import ContrastCheckerContent from "@/components/blog/tools/ContrastCheckerContent";
+import ImageCompressorContent from "@/components/blog/tools/ImageCompressorContent";
+import FaviconGeneratorContent from "@/components/blog/tools/FaviconGeneratorContent";
+import OgImageContent from "@/components/blog/tools/OgImageContent";
+import PasswordAnalyzerContent from "@/components/blog/tools/PasswordAnalyzerContent";
+import WifiQrContent from "@/components/blog/tools/WifiQrContent";
+
 // Tools — EN (removed — ES components now use useT for i18n)
 
 const PdfEditorContent = dynamic(
@@ -280,6 +302,26 @@ const contentMap: Record<
   "image-to-base64": { es: ImageToBase64Content, en: ImageToBase64Content },
   "mock-data": { es: MockDataContent, en: MockDataContent },
   "design-showcase": { es: DesignShowcaseContent, en: DesignShowcaseContent },
+  "unit-converter": { es: UnitConverterContent, en: UnitConverterContent },
+  "tip-calculator": { es: TipCalculatorContent, en: TipCalculatorContent },
+  "countdown-timer": { es: CountdownTimerContent, en: CountdownTimerContent },
+  "pomodoro-timer": { es: PomodoroContent, en: PomodoroContent },
+  "bmi-calculator": { es: BmiCalculatorContent, en: BmiCalculatorContent },
+  "world-clock": { es: WorldClockContent, en: WorldClockContent },
+  "issue-tracker": { es: IssueTrackerContent, en: IssueTrackerContent },
+  "json-yaml": { es: JsonYamlContent, en: JsonYamlContent },
+  "json-csv": { es: JsonCsvContent, en: JsonCsvContent },
+  "code-minifier": { es: CodeMinifierContent, en: CodeMinifierContent },
+  "regex-cheatsheet": { es: RegexCheatsheetContent, en: RegexCheatsheetContent },
+  "markdown-html": { es: MarkdownHtmlContent, en: MarkdownHtmlContent },
+  "text-counter": { es: TextCounterContent, en: TextCounterContent },
+  "box-shadow": { es: BoxShadowContent, en: BoxShadowContent },
+  "contrast-checker": { es: ContrastCheckerContent, en: ContrastCheckerContent },
+  "image-compressor": { es: ImageCompressorContent, en: ImageCompressorContent },
+  "favicon-generator": { es: FaviconGeneratorContent, en: FaviconGeneratorContent },
+  "og-image-generator": { es: OgImageContent, en: OgImageContent },
+  "password-analyzer": { es: PasswordAnalyzerContent, en: PasswordAnalyzerContent },
+  "wifi-qr": { es: WifiQrContent, en: WifiQrContent },
   "sql-builder-guide": { es: SQLBuilderDocContent, en: SQLBuilderDocContentEn },
   angular: { es: AngularContent, en: AngularContentEn },
   vue: { es: VueContent, en: VueContentEn },

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 const TOOLBAR_BUTTONS = [
   { id: "bold", icon: "B", wrap: ["**", "**"] as const },
@@ -136,10 +137,11 @@ export default function MarkdownPreviewContent() {
     [markdown],
   );
 
-  const copy = () => {
-    navigator.clipboard.writeText(markdown);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(markdown)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

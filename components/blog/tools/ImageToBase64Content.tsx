@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 interface ImageInfo {
   name: string;
@@ -83,11 +84,12 @@ export default function ImageToBase64Content() {
     }
   };
 
-  const copyBase64 = () => {
+  const copyBase64 = async () => {
     if (!image) return;
-    navigator.clipboard.writeText(image.base64);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    if (await copyToClipboard(image.base64)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   const clear = () => {

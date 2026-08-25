@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 type Mode = "encode" | "decode";
 
@@ -51,10 +52,11 @@ export default function UrlEncoderDecoderContent() {
     return encodeType === "full" ? encodeUrl(input, doubleEncode) : encodeComponent(input, doubleEncode);
   }, [input, mode, encodeType, doubleEncode]);
 
-  const copy = () => {
-    navigator.clipboard.writeText(result);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(result)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

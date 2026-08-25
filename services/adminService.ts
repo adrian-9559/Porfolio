@@ -99,6 +99,9 @@ export interface SystemHealth {
   status: string;
   env: string;
   ts: string;
+  uptime?: number;
+  memory?: { rss?: number; heapTotal?: number; heapUsed?: number };
+  nodeVersion?: string;
   db: {
     ok: boolean;
     tables: Record<string, boolean>;
@@ -123,6 +126,58 @@ export interface ServiceHealth {
   healthError?: string;
   errorCount: number;
   lastErrors: Array<{ action: string; metadata: any; timestamp: string }>;
+}
+
+export interface AdminIssueBoard {
+  id: string;
+  owner_id: string;
+  name: string;
+  description: string;
+  created_at: string;
+  owner_email: string;
+  ticket_count: number;
+  member_count: number;
+}
+
+export interface AdminIssueTicket {
+  id: string;
+  board_id: string;
+  title: string;
+  description: string;
+  status: string;
+  priority: string;
+  assigned_to: string;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+  board_name: string;
+}
+
+export interface AdminIssueStats {
+  totalBoards: number;
+  totalTickets: number;
+  byStatus: Record<string, number>;
+  byPriority: Record<string, number>;
+}
+
+export interface AdminIdea {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string;
+  status: string;
+  priority: string;
+  category: string;
+  tags: string[];
+  votes: number;
+  created_at: string;
+  updated_at: string;
+  owner_email: string;
+}
+
+export interface AdminIdeaStats {
+  total: number;
+  byStatus: Record<string, number>;
 }
 
 // ── Service ────────────────────────────────────────────────────────────────────
@@ -201,4 +256,39 @@ export const adminService = {
 
   // System health — public route, no auth required
   getHealth: () => apiFetch<SystemHealth>("/api/health"),
+
+  // Issue Tracker (admin)
+  listIssueBoards: () => apiFetch<AdminIssueBoard[]>("/api/admin/issues/boards"),
+  listIssueTickets: (params?: { boardId?: string; status?: string; priority?: string }) => {
+    const q = new URLSearchParams();
+    if (params?.boardId) q.set("boardId", params.boardId);
+    if (params?.status) q.set("status", params.status);
+    if (params?.priority) q.set("priority", params.priority);
+    const qs = q.toString();
+    return apiFetch<AdminIssueTicket[]>(`/api/admin/issues/tickets${qs ? `?${qs}` : ""}`);
+  },
+  getIssueStats: () => apiFetch<AdminIssueStats>("/api/admin/issues/stats"),
+  deleteIssueBoard: (id: string) =>
+    apiFetch<void>(`/api/admin/issues/boards/${id}`, { method: "DELETE" }),
+  deleteIssueTicket: (id: string) =>
+    apiFetch<void>(`/api/admin/issues/tickets/${id}`, { method: "DELETE" }),
+  deleteIssueComment: (id: string) =>
+    apiFetch<void>(`/api/admin/issues/comments/${id}`, { method: "DELETE" }),
+
+  // Ideas (admin)
+  listAllIdeas: () => apiFetch<AdminIdea[]>("/api/admin/ideas"),
+  getIdeaStats: () => apiFetch<AdminIdeaStats>("/api/admin/ideas/stats"),
+  createIdea: (data: {
+    title: string;
+    description?: string;
+    priority?: string;
+    category?: string;
+    tags?: string[];
+  }) =>
+    apiFetch<AdminIdea>("/api/ideas", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  deleteIdea: (id: string) =>
+    apiFetch<void>(`/api/admin/ideas/${id}`, { method: "DELETE" }),
 };

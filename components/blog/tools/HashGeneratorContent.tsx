@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 interface HashResult {
   algorithm: string;
@@ -234,10 +235,11 @@ export default function HashGeneratorContent() {
   const charCount = input.length;
   const byteSize = useMemo(() => new TextEncoder().encode(input).byteLength, [input]);
 
-  const copy = (text: string, algo: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(algo);
-    setTimeout(() => setCopied(null), 1500);
+  const copy = async (text: string, algo: string) => {
+    if (await copyToClipboard(text)) {
+      setCopied(algo);
+      setTimeout(() => setCopied(null), 1500);
+    }
   };
 
   return (

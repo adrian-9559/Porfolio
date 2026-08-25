@@ -39,6 +39,7 @@ import { Badge } from "./SQLBuilderBadge";
 import { apiFetch } from "@/services/apiClient";
 import { useAuthStore } from "@/store/authStore";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 const EXAMPLE_SCHEMAS: ExampleSchema[] = [
   {
@@ -209,7 +210,7 @@ export default function SQLBuilderContent() {
 
     if (!sql) return;
     try {
-      await navigator.clipboard.writeText(sql);
+      await copyToClipboard(sql);
     } catch {}
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -519,15 +520,15 @@ export default function SQLBuilderContent() {
                       <div className="flex items-center gap-1.5 flex-shrink-0">
                         {tableHasActive && (
                           <div
-                            aria-label="Cláusulas activas"
+                            aria-label={t("blog.sqlBuilder.activeClauses")}
                             className="w-2 h-2 rounded-full bg-blue-500"
                           />
                         )}
                         <button
                           aria-label={
                             allSelected
-                              ? `Deseleccionar todas las columnas de ${table.name}`
-                              : `Seleccionar todas las columnas de ${table.name}`
+                              ? `${t("blog.sqlBuilder.deselectAll")} ${table.name}`
+                              : `${t("blog.sqlBuilder.selectAll")} ${table.name}`
                           }
                           className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all flex-shrink-0"
                           onClick={(e) => {
@@ -586,7 +587,7 @@ export default function SQLBuilderContent() {
                                 <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center">
                                   {selActive ? (
                                     <CheckIcon
-                                      aria-label="Seleccionada"
+                                      aria-label={t("blog.sqlBuilder.selected")}
                                       className="w-4 h-4 text-emerald-500"
                                     />
                                   ) : (
@@ -600,13 +601,13 @@ export default function SQLBuilderContent() {
                                 <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center">
                                   {col.isPk && (
                                     <KeyIcon
-                                      aria-label="Clave primaria"
+                                      aria-label={t("blog.sqlBuilder.primaryKey")}
                                       className="w-3.5 h-3.5 text-amber-500"
                                     />
                                   )}
                                   {col.fk && !col.isPk && (
                                     <LinkIcon
-                                      aria-label={`Clave foránea a ${col.fk.table}.${col.fk.column}`}
+                                      aria-label={`${t("blog.sqlBuilder.foreignKeyTo")} ${col.fk.table}.${col.fk.column}`}
                                       className="w-3.5 h-3.5 text-blue-400 dark:text-blue-500"
                                     />
                                   )}
@@ -633,7 +634,7 @@ export default function SQLBuilderContent() {
                                 <div className="flex-1 min-w-2" />
                                 {/* Toggle badges */}
                                 <div
-                                  aria-label={`Cláusulas para ${col.name}`}
+                                  aria-label={`${t("blog.sqlBuilder.clausesFor")} ${col.name}`}
                                   className="flex items-center gap-1 flex-shrink-0"
                                   role="group"
                                   onClick={(e) => e.stopPropagation()}
@@ -678,7 +679,7 @@ export default function SQLBuilderContent() {
                                     =
                                   </span>
                                   <input
-                                    aria-label={`Valor para filtro WHERE en ${ref}`}
+                                    aria-label={`${t("blog.sqlBuilder.whereFilterFor")} ${ref}`}
                                     className="flex-1 max-w-32 px-2 py-0.5 rounded-md text-xs font-mono bg-black/[0.04] dark:bg-white/[0.04] border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 dark:focus:ring-amber-600 focus:border-transparent transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
                                     placeholder="valor"
                                     value={whrValue}
@@ -778,7 +779,7 @@ export default function SQLBuilderContent() {
           ) : (
             <>
               <div
-                aria-label="Consulta SQL generada"
+                aria-label={t("blog.sqlBuilder.generatedQuery")}
                 aria-live="polite"
                 role="region"
               >
@@ -866,7 +867,7 @@ export default function SQLBuilderContent() {
               </div>
             ) : (
               <ul
-                aria-label="Consultas guardadas"
+                aria-label={t("blog.sqlBuilder.savedQueries")}
                 className="space-y-2"
                 role="list"
               >
@@ -884,14 +885,14 @@ export default function SQLBuilderContent() {
                       </p>
                     </div>
                     <button
-                      aria-label={`Cargar consulta: ${item.sql_text.slice(0, 60)}`}
+                      aria-label={`${t("blog.sqlBuilder.loadQuery")} ${item.sql_text.slice(0, 60)}`}
                       className="px-2 py-1 rounded-lg text-[10px] font-semibold bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600"
                       onClick={() => loadHistoryItem(item)}
                     >
                       {t("blog.sqlBuilder.load")}
                     </button>
                     <button
-                      aria-label={`Eliminar consulta: ${item.sql_text.slice(0, 60)}`}
+                      aria-label={`${t("blog.sqlBuilder.deleteQuery")} ${item.sql_text.slice(0, 60)}`}
                       className="px-2 py-1 rounded-lg text-[10px] font-semibold bg-black/5 dark:bg-white/10 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-red-400 dark:focus:ring-red-600"
                       onClick={() => deleteHistoryItem(item.id)}
                     >

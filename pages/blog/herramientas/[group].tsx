@@ -201,6 +201,126 @@ const TOOL_COLORS: Record<
     hoverBorder: "hover:border-amber-300 dark:hover:border-amber-700",
     activeBg: "bg-amber-100 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700",
   },
+  "unit-converter": {
+    bg: "bg-teal-50 dark:bg-teal-950/20",
+    text: "text-teal-600 dark:text-teal-400",
+    hoverBorder: "hover:border-teal-300 dark:hover:border-teal-700",
+    activeBg: "bg-teal-100 dark:bg-teal-950/40 border-teal-300 dark:border-teal-700",
+  },
+  "tip-calculator": {
+    bg: "bg-teal-50 dark:bg-teal-950/20",
+    text: "text-teal-600 dark:text-teal-400",
+    hoverBorder: "hover:border-teal-300 dark:hover:border-teal-700",
+    activeBg: "bg-teal-100 dark:bg-teal-950/40 border-teal-300 dark:border-teal-700",
+  },
+  "countdown-timer": {
+    bg: "bg-teal-50 dark:bg-teal-950/20",
+    text: "text-teal-600 dark:text-teal-400",
+    hoverBorder: "hover:border-teal-300 dark:hover:border-teal-700",
+    activeBg: "bg-teal-100 dark:bg-teal-950/40 border-teal-300 dark:border-teal-700",
+  },
+  "pomodoro-timer": {
+    bg: "bg-teal-50 dark:bg-teal-950/20",
+    text: "text-teal-600 dark:text-teal-400",
+    hoverBorder: "hover:border-teal-300 dark:hover:border-teal-700",
+    activeBg: "bg-teal-100 dark:bg-teal-950/40 border-teal-300 dark:border-teal-700",
+  },
+  "bmi-calculator": {
+    bg: "bg-teal-50 dark:bg-teal-950/20",
+    text: "text-teal-600 dark:text-teal-400",
+    hoverBorder: "hover:border-teal-300 dark:hover:border-teal-700",
+    activeBg: "bg-teal-100 dark:bg-teal-950/40 border-teal-300 dark:border-teal-700",
+  },
+  "world-clock": {
+    bg: "bg-teal-50 dark:bg-teal-950/20",
+    text: "text-teal-600 dark:text-teal-400",
+    hoverBorder: "hover:border-teal-300 dark:hover:border-teal-700",
+    activeBg: "bg-teal-100 dark:bg-teal-950/40 border-teal-300 dark:border-teal-700",
+  },
+  "issue-tracker": {
+    bg: "bg-teal-50 dark:bg-teal-950/20",
+    text: "text-teal-600 dark:text-teal-400",
+    hoverBorder: "hover:border-teal-300 dark:hover:border-teal-700",
+    activeBg: "bg-teal-100 dark:bg-teal-950/40 border-teal-300 dark:border-teal-700",
+  },
+  "json-yaml": {
+    bg: "bg-cyan-50 dark:bg-cyan-950/20",
+    text: "text-cyan-600 dark:text-cyan-400",
+    hoverBorder: "hover:border-cyan-300 dark:hover:border-cyan-700",
+    activeBg: "bg-cyan-100 dark:bg-cyan-950/40 border-cyan-300 dark:border-cyan-700",
+  },
+  "json-csv": {
+    bg: "bg-cyan-50 dark:bg-cyan-950/20",
+    text: "text-cyan-600 dark:text-cyan-400",
+    hoverBorder: "hover:border-cyan-300 dark:hover:border-cyan-700",
+    activeBg: "bg-cyan-100 dark:bg-cyan-950/40 border-cyan-300 dark:border-cyan-700",
+  },
+  "code-minifier": {
+    bg: "bg-violet-50 dark:bg-violet-950/20",
+    text: "text-violet-600 dark:text-violet-400",
+    hoverBorder: "hover:border-violet-300 dark:hover:border-violet-700",
+    activeBg: "bg-violet-100 dark:bg-violet-950/40 border-violet-300 dark:border-violet-700",
+  },
+  "box-shadow": {
+    bg: "bg-fuchsia-50 dark:bg-fuchsia-950/20",
+    text: "text-fuchsia-600 dark:text-fuchsia-400",
+    hoverBorder: "hover:border-fuchsia-300 dark:hover:border-fuchsia-700",
+    activeBg: "bg-fuchsia-100 dark:bg-fuchsia-950/40 border-fuchsia-300 dark:border-fuchsia-700",
+  },
+  "contrast-checker": {
+    bg: "bg-amber-50 dark:bg-amber-950/20",
+    text: "text-amber-600 dark:text-amber-400",
+    hoverBorder: "hover:border-amber-300 dark:hover:border-amber-700",
+    activeBg: "bg-amber-100 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700",
+  },
+  "regex-cheatsheet": {
+    bg: "bg-indigo-50 dark:bg-indigo-950/20",
+    text: "text-indigo-600 dark:text-indigo-400",
+    hoverBorder: "hover:border-indigo-300 dark:hover:border-indigo-700",
+    activeBg: "bg-indigo-100 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700",
+  },
+  "image-compressor": {
+    bg: "bg-red-50 dark:bg-red-950/20",
+    text: "text-red-600 dark:text-red-400",
+    hoverBorder: "hover:border-red-300 dark:hover:border-red-700",
+    activeBg: "bg-red-100 dark:bg-red-950/40 border-red-300 dark:border-red-700",
+  },
+  "favicon-generator": {
+    bg: "bg-red-50 dark:bg-red-950/20",
+    text: "text-red-600 dark:text-red-400",
+    hoverBorder: "hover:border-red-300 dark:hover:border-red-700",
+    activeBg: "bg-red-100 dark:bg-red-950/40 border-red-300 dark:border-red-700",
+  },
+  "og-image-generator": {
+    bg: "bg-red-50 dark:bg-red-950/20",
+    text: "text-red-600 dark:text-red-400",
+    hoverBorder: "hover:border-red-300 dark:hover:border-red-700",
+    activeBg: "bg-red-100 dark:bg-red-950/40 border-red-300 dark:border-red-700",
+  },
+  "markdown-html": {
+    bg: "bg-indigo-50 dark:bg-indigo-950/20",
+    text: "text-indigo-600 dark:text-indigo-400",
+    hoverBorder: "hover:border-indigo-300 dark:hover:border-indigo-700",
+    activeBg: "bg-indigo-100 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700",
+  },
+  "text-counter": {
+    bg: "bg-indigo-50 dark:bg-indigo-950/20",
+    text: "text-indigo-600 dark:text-indigo-400",
+    hoverBorder: "hover:border-indigo-300 dark:hover:border-indigo-700",
+    activeBg: "bg-indigo-100 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700",
+  },
+  "password-analyzer": {
+    bg: "bg-amber-50 dark:bg-amber-950/20",
+    text: "text-amber-600 dark:text-amber-400",
+    hoverBorder: "hover:border-amber-300 dark:hover:border-amber-700",
+    activeBg: "bg-amber-100 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700",
+  },
+  "wifi-qr": {
+    bg: "bg-amber-50 dark:bg-amber-950/20",
+    text: "text-amber-600 dark:text-amber-400",
+    hoverBorder: "hover:border-amber-300 dark:hover:border-amber-700",
+    activeBg: "bg-amber-100 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700",
+  },
 };
 
 const DEFAULT_COLORS = {
@@ -239,6 +359,26 @@ const TOOL_COMPONENT_MAP: Record<string, boolean> = {
   "image-to-base64": true,
   "mock-data": true,
   "design-showcase": true,
+  "unit-converter": true,
+  "tip-calculator": true,
+  "countdown-timer": true,
+  "pomodoro-timer": true,
+  "bmi-calculator": true,
+  "world-clock": true,
+  "issue-tracker": true,
+  "json-yaml": true,
+  "json-csv": true,
+  "code-minifier": true,
+  "box-shadow": true,
+  "contrast-checker": true,
+  "regex-cheatsheet": true,
+  "image-compressor": true,
+  "favicon-generator": true,
+  "og-image-generator": true,
+  "markdown-html": true,
+  "text-counter": true,
+  "password-analyzer": true,
+  "wifi-qr": true,
 };
 
 const GROUP_ICON: Record<string, React.ReactNode> = {
@@ -282,6 +422,11 @@ const GROUP_ICON: Record<string, React.ReactNode> = {
     <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path d="M4 17l6-5-6-5" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
       <path d="M12 19h8" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    </svg>
+  ),
+  utilidades: (
+    <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
     </svg>
   ),
 };

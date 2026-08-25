@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 const WORD_BANK = [
   "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
@@ -84,10 +85,11 @@ export default function LoremIpsumContent() {
   const output = generate();
   const wordCount = output.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).length;
 
-  const copy = () => {
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(output)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   const regenerate = () => setKey((k) => k + 1);

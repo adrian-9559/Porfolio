@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 interface CronField {
   label: string;
@@ -133,10 +134,11 @@ export default function CronBuilderContent() {
     }
   };
 
-  const copy = () => {
-    navigator.clipboard.writeText(expression);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(expression)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

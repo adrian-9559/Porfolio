@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 const CHARS = {
   lowercase: "abcdefghijklmnopqrstuvwxyz",
@@ -169,9 +170,10 @@ export default function PasswordContent() {
 
   const copy = async () => {
     if (!password) return;
-    await navigator.clipboard.writeText(password);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (await copyToClipboard(password)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const strength = getStrength(password, opts, t);

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 function hexToRgb(hex: string) {
   const clean = hex.replace("#", "");
@@ -109,10 +110,11 @@ export default function ColorToolContent() {
     }
   }, []);
 
-  const copy = (text: string, key: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(key);
-    setTimeout(() => setCopied(""), 1500);
+  const copy = async (text: string, key: string) => {
+    if (await copyToClipboard(text)) {
+      setCopied(key);
+      setTimeout(() => setCopied(""), 1500);
+    }
   };
 
   const CopyBtn = ({ val, label }: { val: string; label: string }) => (

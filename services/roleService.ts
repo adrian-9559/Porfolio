@@ -12,12 +12,12 @@ export const roleService = {
     }),
 
   update: (id: number, data: Partial<Pick<Role, "name" | "description">>) =>
-    apiFetch<Role>(`/roles/${id}`, {
+    apiFetch<Role>(`/api/roles/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
     }),
 
-  delete: (id: number) => apiFetch<void>(`/roles/${id}`, { method: "DELETE" }),
+  delete: (id: number) => apiFetch<void>(`/api/roles/${id}`, { method: "DELETE" }),
 
   assign: (user_id: string, role_id: number) =>
     apiFetch<void>("/api/roles/assign", {

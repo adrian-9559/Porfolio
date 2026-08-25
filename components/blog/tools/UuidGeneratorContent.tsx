@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
@@ -32,18 +33,20 @@ export default function UuidGeneratorContent() {
     setUuids(list);
   };
 
-  const copy = (val: string, idx: number) => {
-    navigator.clipboard.writeText(dashes ? val : val.replace(/-/g, ""));
-    setCopiedIdx(idx);
-    setTimeout(() => setCopiedIdx(null), 1200);
+  const copy = async (val: string, idx: number) => {
+    if (await copyToClipboard(dashes ? val : val.replace(/-/g, ""))) {
+      setCopiedIdx(idx);
+      setTimeout(() => setCopiedIdx(null), 1200);
+    }
   };
 
-  const copyAll = () => {
-    navigator.clipboard.writeText(
+  const copyAll = async () => {
+    if (await copyToClipboard(
       uuids.map((u) => (dashes ? u : u.replace(/-/g, ""))).join("\n"),
-    );
-    setCopiedIdx(-1);
-    setTimeout(() => setCopiedIdx(null), 1200);
+    )) {
+      setCopiedIdx(-1);
+      setTimeout(() => setCopiedIdx(null), 1200);
+    }
   };
 
   return (

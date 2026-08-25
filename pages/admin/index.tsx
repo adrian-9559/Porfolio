@@ -19,6 +19,8 @@ import { AdminAppsSection } from "@/features/admin/components/AdminAppsSection";
 import { AdminSkillsSection } from "@/features/admin/components/AdminSkillsSection";
 import { AdminToolsHealthSection } from "@/features/admin/components/AdminToolsHealthSection";
 import AdminTrafficSection from "@/features/admin/components/AdminTrafficSection";
+import { AdminIssuesSection } from "@/features/admin/components/AdminIssuesSection";
+import { AdminIdeasSection } from "@/features/admin/components/AdminIdeasSection";
 
 type Section =
   | "dashboard"
@@ -36,7 +38,9 @@ type Section =
   | "services"
   | "logs"
   | "docs"
-  | "traffic";
+  | "traffic"
+  | "issues"
+  | "ideas";
 
 const NAV_LABELS: Record<string, string> = {
   dashboard: "admin.dashboard",
@@ -54,6 +58,8 @@ const NAV_LABELS: Record<string, string> = {
   services: "admin.services",
   logs: "admin.logs",
   docs: "admin.docs",
+  issues: "admin.issues",
+  ideas: "admin.ideas",
 };
 
 const GROUP_LABELS: Record<string, string> = {
@@ -61,6 +67,7 @@ const GROUP_LABELS: Record<string, string> = {
   contenido: "admin.groupContent",
   comunicacion: "admin.groupComms",
   herramientas: "admin.groupTools",
+  proyectos: "admin.groupProjects",
   sistema: "admin.groupSystem",
 };
 
@@ -116,6 +123,18 @@ const NAV: {
     icon: <IcoApps />,
     group: "herramientas",
   },
+  {
+    id: "issues",
+    labelKey: "issues",
+    icon: <IcoIssues />,
+    group: "proyectos",
+  },
+  {
+    id: "ideas",
+    labelKey: "ideas",
+    icon: <IcoIdeas />,
+    group: "proyectos",
+  },
   { id: "skills", labelKey: "skills", icon: <IcoSkills />, group: "sistema" },
   {
     id: "traffic",
@@ -138,6 +157,7 @@ const GROUPS = [
   { id: "contenido", labelKey: "contenido" },
   { id: "comunicacion", labelKey: "comunicacion" },
   { id: "herramientas", labelKey: "herramientas" },
+  { id: "proyectos", labelKey: "proyectos" },
   { id: "sistema", labelKey: "sistema" },
 ];
 
@@ -235,7 +255,7 @@ export default function AdminPage() {
 
           {/* Main content */}
           <div className="flex-1 min-w-0">
-            {section === "dashboard" && <AdminDashboard />}
+            {section === "dashboard" && <AdminDashboard onNavigate={(s) => setSection(s as Section)} />}
             {section === "users" && <AdminUsers />}
             {section === "roles" && <AdminRoles />}
             {section === "api-keys" && <AdminApiKeysSection />}
@@ -251,6 +271,8 @@ export default function AdminPage() {
             {section === "logs" && <AdminLogsSection />}
             {section === "docs" && <AdminDocsSection />}
             {section === "traffic" && <AdminTrafficSection />}
+            {section === "issues" && <AdminIssuesSection />}
+            {section === "ideas" && <AdminIdeasSection />}
           </div>
         </div>
       </div>
@@ -491,6 +513,38 @@ function IcoTraffic() {
     >
       <path d="M1 13l3-4 3 2 4-6 3 4" />
       <path d="M1 3h14" />
+    </svg>
+  );
+}
+function IcoIssues() {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <rect height="12" rx="2" width="14" x="1" y="2" />
+      <path d="M4 6h8M4 9h5M4 12h3" />
+      <circle cx="11.5" cy="11.5" r="1.5" />
+    </svg>
+  );
+}
+function IcoIdeas() {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <path d="M8 1.5a4.5 4.5 0 00-2 8.63V12h4v-1.87A4.5 4.5 0 008 1.5z" />
+      <path d="M6 13h4" />
+      <path d="M7 14.5h2" />
     </svg>
   );
 }

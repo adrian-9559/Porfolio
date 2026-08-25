@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 import type { DesignColors, DesignStyle, MockupItem, MockupVariant } from "./DesignShowcaseMockups";
 import { STYLES } from "./DesignShowcaseMockups";
@@ -298,7 +299,7 @@ export default function DesignShowcaseContent() {
   --color-text: ${colors.text};
   --border-radius: ${radius}px;
 }`;
-    navigator.clipboard.writeText(css).catch(() => {});
+    copyToClipboard(css).catch(() => {});
   }
 
   const getActiveComponent = useCallback((m: MockupItem) => {

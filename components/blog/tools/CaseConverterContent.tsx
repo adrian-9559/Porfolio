@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 const cases = [
   { id: "lower", label: "lowercase", fn: (s: string) => s.toLowerCase() },
@@ -53,10 +54,11 @@ export default function CaseConverterContent() {
   const current = cases.find((c) => c.id === active);
   const output = current ? current.fn(input) : input;
 
-  const copy = () => {
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(output)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

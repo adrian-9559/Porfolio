@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 function jsonToTs(
   obj: unknown,
@@ -89,10 +90,11 @@ export default function JsonToTsContent() {
     }
   }, [input, useType, rootName, t]);
 
-  const copy = () => {
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copy = async () => {
+    if (await copyToClipboard(output)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

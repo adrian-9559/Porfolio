@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 type Category = "person" | "commerce" | "numbers" | "text" | "date";
 
@@ -122,10 +123,11 @@ export default function MockDataContent() {
     setData(rows);
   };
 
-  const copyAll = () => {
-    navigator.clipboard.writeText(JSON.stringify(data, null, 2));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copyAll = async () => {
+    if (await copyToClipboard(JSON.stringify(data, null, 2))) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (

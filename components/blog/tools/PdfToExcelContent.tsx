@@ -2,6 +2,7 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import * as pdfjs from "pdfjs-dist";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 const WORKER = "/pdf.worker.min.mjs";
 
@@ -249,7 +250,7 @@ export default function PdfToExcelContent() {
       lines.push(cells.join("\t"));
     }
 
-    navigator.clipboard.writeText(lines.join("\n"));
+    copyToClipboard(lines.join("\n"));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }, [selectedCells, paddedRows]);

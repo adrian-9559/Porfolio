@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 interface JwtParts {
   header: Record<string, unknown>;
@@ -55,10 +56,11 @@ export default function JwtDecoderContent() {
 
   const decoded = useMemo<JwtParts | null>(() => (token ? decodeJwt(token) : null), [token]);
 
-  const copy = (text: string, key: "header" | "payload") => {
-    navigator.clipboard.writeText(text);
-    setCopied(key);
-    setTimeout(() => setCopied(null), 1500);
+  const copy = async (text: string, key: "header" | "payload") => {
+    if (await copyToClipboard(text)) {
+      setCopied(key);
+      setTimeout(() => setCopied(null), 1500);
+    }
   };
 
   const iss = decoded ? String(decoded.payload.iss ?? "") : "";

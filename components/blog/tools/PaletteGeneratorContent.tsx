@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import { useT } from "@/hooks/useT";
+import { copyToClipboard } from "@/lib/clipboard";
 
 // ── Color math ────────────────────────────────────────────────────────────────
 
@@ -433,7 +434,7 @@ function ColorSwatch({
   }
 
   function copy() {
-    navigator.clipboard.writeText(color.hex).catch(() => {});
+    copyToClipboard(color.hex).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   }
