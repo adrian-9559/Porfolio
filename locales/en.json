@@ -1494,6 +1494,20 @@
     "brandName": "Adrián Escribano",
     "copyright": "© {year} Adrián Escribano"
   },
+  "cookie": {
+    "title": "We use cookies",
+    "desc": "We use cookies to improve your experience. Choose which cookies you accept:",
+    "essential": "Essential",
+    "essentialDesc": "Required for the site to function (login, session, navigation).",
+    "essentialBadge": "Always active",
+    "analytics": "Analytics",
+    "analyticsDesc": "Help us understand how you use the site (pages visited, duration).",
+    "preferences": "Preferences",
+    "preferencesDesc": "Remember your language and theme for future visits.",
+    "rejectAll": "Reject all",
+    "acceptAll": "Accept all",
+    "save": "Save preferences"
+  },
   "contact": {
     "title": "Contact",
     "subtitle": "Tell me about your project",

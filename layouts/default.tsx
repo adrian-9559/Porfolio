@@ -4,6 +4,7 @@ import { Head } from "./head";
 
 import { Navbar } from "@/components/navbar";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
+import CookieConsent from "@/components/CookieConsent";
 import { useT } from "@/hooks/useT";
 import { siteConfig } from "@/config/site";
 
@@ -19,6 +20,7 @@ export default function DefaultLayout({ children, seo }: DefaultLayoutProps) {
     <div className="relative flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Head {...seo} />
       <AnalyticsTracker />
+      <CookieConsent />
       <Navbar />
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 md:py-12">

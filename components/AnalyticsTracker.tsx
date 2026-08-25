@@ -2,6 +2,8 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 
+import { useCookieConsentStore } from "@/store/cookieConsentStore";
+
 function generateUUID(): string {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
@@ -108,7 +110,12 @@ export default function AnalyticsTracker() {
   const sessionIdRef = useRef(getSessionId());
   const currentPathRef = useRef(router.asPath);
 
+  const hydrated = useCookieConsentStore((s) => s.hydrated);
+  const analytics = useCookieConsentStore((s) => s.analytics);
+
   useEffect(() => {
+    if (!hydrated || !analytics) return;
+
     sendPageView(router.asPath);
     currentPathRef.current = router.asPath;
 
@@ -121,9 +128,11 @@ export default function AnalyticsTracker() {
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
-  }, [router]);
+  }, [router, hydrated, analytics]);
 
   useEffect(() => {
+    if (!hydrated || !analytics) return;
+
     const handleBeforeUnload = () => {
       sendDuration(sessionIdRef.current, startTimeRef.current);
     };
@@ -142,7 +151,7 @@ export default function AnalyticsTracker() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       sendDuration(sessionIdRef.current, startTimeRef.current);
     };
-  }, []);
+  }, [hydrated, analytics]);
 
   return null;
 }

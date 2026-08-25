@@ -1496,6 +1496,20 @@
     "brandName": "Adrián Escribano",
     "copyright": "© {year} Adrián Escribano"
   },
+  "cookie": {
+    "title": "Usamos cookies",
+    "desc": "Utilizamos cookies para mejorar tu experiencia. Elige qué cookies aceptas:",
+    "essential": "Esenciales",
+    "essentialDesc": "Necesarias para el funcionamiento del sitio (login, sesión, navegación).",
+    "essentialBadge": "Siempre activa",
+    "analytics": "Analítica",
+    "analyticsDesc": "Nos ayudan a entender cómo usas el sitio (páginas visitadas, duración).",
+    "preferences": "Preferencias",
+    "preferencesDesc": "Recuerdan tu idioma y tema para futuras visitas.",
+    "rejectAll": "Rechazar todas",
+    "acceptAll": "Aceptar todas",
+    "save": "Guardar preferencias"
+  },
   "contact": {
     "title": "Contacto",
     "subtitle": "Háblame de tu proyecto",

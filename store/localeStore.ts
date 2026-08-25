@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { useCookieConsentStore } from "./cookieConsentStore";
+
 export type Locale = "es" | "en";
 
 export interface LocaleState {
@@ -8,6 +10,15 @@ export interface LocaleState {
   hydrated: boolean;
   setLocale: (locale: Locale) => void;
   hydrate: () => void;
+}
+
+function canPersist(): boolean {
+  try {
+    const { hasConsented, preferences } = useCookieConsentStore.getState();
+    return hasConsented && preferences;
+  } catch {
+    return false;
+  }
 }
 
 export const useLocaleStore = create<LocaleState>()(
@@ -19,14 +30,26 @@ export const useLocaleStore = create<LocaleState>()(
         set({ locale, hydrated: true });
       },
       hydrate: () => {
-        // hydration happens automatically via persist middleware on mount;
-        // this flag signals that the persisted value has been loaded
         set({ hydrated: true });
       },
     }),
     {
       name: "app-locale",
       partialize: (state) => ({ locale: state.locale }),
+      storage: {
+        getItem: (name) => {
+          if (!canPersist()) return null;
+          const str = localStorage.getItem(name);
+          return str ? JSON.parse(str) : null;
+        },
+        setItem: (name, value) => {
+          if (!canPersist()) return;
+          localStorage.setItem(name, JSON.stringify(value));
+        },
+        removeItem: (name) => {
+          localStorage.removeItem(name);
+        },
+      },
       onRehydrateStorage: () => () => {
         useLocaleStore.setState({ hydrated: true });
       },
