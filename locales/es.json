@@ -1717,29 +1717,48 @@
   },
   "notifications": {
     "title": "Notificaciones",
-    "empty": "No tienes notificaciones",
-    "markRead": "Marcar como leída",
-    "markAllRead": "Marcar todas como leídas",
-    "clearAll": "Limpiar todas",
-    "new": "Nueva",
-    "earlier": "Anteriores",
-    "friendRequest": "Solicitud de amistad",
-    "friendAccepted": "Solicitud aceptada",
-    "mention": "Mención",
-    "system": "Sistema",
-    "subtitle": "Gestiona tus notificaciones y mantente al día",
-    "filterAll": "Todas",
-    "filterUnread": "Sin leer ({n})",
-    "filterRead": "Leídas",
+    "subtitle": "{count} sin leer",
     "allRead": "Todo al día",
-    "noReadNotifications": "Sin notificaciones leídas",
-    "noNotificationsHint": "Las notificaciones aparecerán aquí cuando lleguen.",
-    "typeInfo": "Info",
-    "typeAdmin": "Admin",
-    "typeSystem": "Sistema",
-    "typeAgent": "Agente IA",
-    "typeRepository": "Repositorio",
-    "typeTricount": "Escote"
+    "markAllRead": "Marcar todo leído",
+    "preferences": "Preferencias",
+    "empty": "No hay notificaciones",
+    "group": {
+      "today": "Hoy",
+      "yesterday": "Ayer",
+      "thisWeek": "Esta semana",
+      "thisMonth": "Este mes",
+      "older": "Anterior"
+    },
+    "filter": {
+      "all": "Todas",
+      "unread": "Sin leer ({count})"
+    },
+    "type": {
+      "sistema": "Sistema",
+      "agente": "Agente IA",
+      "repositorio": "Repositorio",
+      "admin": "Admin",
+      "tricount": "Escote"
+    },
+    "action": {
+      "markRead": "Marcar como leída",
+      "delete": "Eliminar"
+    },
+    "time": {
+      "now": "ahora",
+      "minutesAgo": "hace {count}m",
+      "hoursAgo": "hace {count}h",
+      "daysAgo": "hace {count}d"
+    },
+    "preferencesSection": {
+      "title": "Preferencias de notificación",
+      "sistema": "Notificaciones del sistema",
+      "agente": "Alertas de agentes IA",
+      "repositorio": "Actualizaciones de repositorios",
+      "admin": "Mensajes de administración",
+      "tricount": "Actividad de escote",
+      "emailDigest": "Resumen por email"
+    }
   },
   "profile": {
     "title": "Mi perfil",

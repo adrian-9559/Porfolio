@@ -5,6 +5,7 @@ import { useState, useRef, useEffect, type ReactNode } from "react";
 import { useRouter } from "next/router";
 
 import { useNotifications } from "@/hooks/useNotifications";
+import { useT } from "@/hooks/useT";
 
 const TYPE_ICON: Record<AppNotification["type"], ReactNode> = {
   info: (
@@ -25,20 +26,21 @@ const TYPE_ICON: Record<AppNotification["type"], ReactNode> = {
   ),
 };
 
-function timeAgo(iso: string): string {
+function timeAgo(iso: string, t: (k: string, params?: Record<string, string | number>) => string): string {
   const diff = Date.now() - new Date(iso).getTime();
   const mins = Math.floor(diff / 60000);
 
-  if (mins < 1) return "ahora";
-  if (mins < 60) return `hace ${mins}m`;
+  if (mins < 1) return t("notifications.time.now");
+  if (mins < 60) return t("notifications.time.minutesAgo", { count: mins });
   const hrs = Math.floor(mins / 60);
 
-  if (hrs < 24) return `hace ${hrs}h`;
+  if (hrs < 24) return t("notifications.time.hoursAgo", { count: hrs });
 
-  return `hace ${Math.floor(hrs / 24)}d`;
+  return t("notifications.time.daysAgo", { count: Math.floor(hrs / 24) });
 }
 
 export function NotificationBell() {
+  const { t } = useT();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -64,7 +66,7 @@ export function NotificationBell() {
   return (
     <div ref={ref} className="relative">
       <button
-        aria-label="Notificaciones"
+        aria-label={t("notifications.title")}
         className="relative w-8 h-8 flex items-center justify-center rounded-xl hover:bg-default transition-colors"
         onClick={() => setOpen((o) => !o)}
       >
@@ -93,7 +95,7 @@ export function NotificationBell() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <span className="text-sm font-semibold text-foreground">
-              Notificaciones{" "}
+              {t("notifications.title")}{" "}
               {unread > 0 && <span className="text-red-500">({unread})</span>}
             </span>
             {unread > 0 && (
@@ -101,7 +103,7 @@ export function NotificationBell() {
                 className="text-xs text-accent hover:text-accent-hover font-medium"
                 onClick={markAllRead}
               >
-                Marcar todo leído
+                {t("notifications.markAllRead")}
               </button>
             )}
           </div>
@@ -120,7 +122,7 @@ export function NotificationBell() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                 </span>
-                <p className="text-sm text-muted">Sin notificaciones</p>
+                <p className="text-sm text-muted">{t("notifications.empty")}</p>
               </div>
             )}
             {!loading &&
@@ -143,7 +145,7 @@ export function NotificationBell() {
                         {n.title}
                       </p>
                       <span className="text-[10px] text-muted/60 shrink-0">
-                        {timeAgo(n.created_at)}
+                        {timeAgo(n.created_at, t)}
                       </span>
                     </div>
                     <p className="text-xs text-muted mt-0.5 line-clamp-2">
@@ -162,11 +164,11 @@ export function NotificationBell() {
             <button
               className="w-full text-center text-xs text-accent hover:text-accent-hover font-medium py-1"
               onClick={() => {
-                router.push("/notifications");
+                router.push("/dashboard?section=notifications");
                 setOpen(false);
               }}
             >
-              Ver todas las notificaciones →
+              {t("notifications.title")} →
             </button>
           </div>
         </div>

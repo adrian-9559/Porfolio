@@ -10,6 +10,15 @@ export interface AppNotification {
   created_at: string;
 }
 
+export interface NotificationPreferences {
+  sistema: boolean;
+  agente: boolean;
+  repositorio: boolean;
+  admin: boolean;
+  tricount: boolean;
+  email_digest: boolean;
+}
+
 interface NotificationsResponse {
   notifications: AppNotification[];
   unread: number;
@@ -21,7 +30,7 @@ export const notificationService = {
   },
 
   async markRead(id: string): Promise<void> {
-    await apiFetch(`/notifications/${id}/read`, { method: "PATCH" });
+    await apiFetch(`/api/notifications/${id}/read`, { method: "PATCH" });
   },
 
   async markAllRead(): Promise<void> {
@@ -29,7 +38,7 @@ export const notificationService = {
   },
 
   async deleteOne(id: string): Promise<void> {
-    await apiFetch(`/notifications/${id}`, { method: "DELETE" });
+    await apiFetch(`/api/notifications/${id}`, { method: "DELETE" });
   },
 
   async deleteAll(): Promise<void> {

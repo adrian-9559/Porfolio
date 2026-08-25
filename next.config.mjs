@@ -13,6 +13,7 @@ const nextConfig = {
 	},
 	async redirects() {
 		return [
+			{ source: "/notifications", destination: "/dashboard?section=notifications", permanent: false },
 			{ source: "/blog/tutoriales", destination: "/campus", permanent: true },
 			{ source: "/blog/tutoriales/guias", destination: "/campus/guias", permanent: true },
 			{ source: "/blog/tutoriales/guias/:path*", destination: "/campus/guias/:path*", permanent: true },

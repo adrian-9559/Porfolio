@@ -46,32 +46,26 @@ interface NavigationFlow {
 
 export const analyticsService = {
   async getStats(): Promise<AnalyticsStats> {
-    const res = await apiFetch<{ data: AnalyticsStats }>("/api/analytics/stats");
-    return (res as any).data;
+    return apiFetch<AnalyticsStats>("/api/analytics/stats");
   },
 
   async getTrafficByPage(): Promise<TrafficByPage[]> {
-    const res = await apiFetch<{ data: TrafficByPage[] }>("/api/analytics/traffic");
-    return (res as any).data;
+    return apiFetch<TrafficByPage[]>("/api/analytics/traffic");
   },
 
   async getTrafficByDay(days: number = 30): Promise<TrafficByDay[]> {
-    const res = await apiFetch<{ data: TrafficByDay[] }>(`/api/analytics/traffic-by-day?days=${days}`);
-    return (res as any).data;
+    return apiFetch<TrafficByDay[]>(`/api/analytics/traffic-by-day?days=${days}`);
   },
 
   async getRecentVisitors(limit: number = 20): Promise<RecentVisitor[]> {
-    const res = await apiFetch<{ data: RecentVisitor[] }>(`/api/analytics/visitors?limit=${limit}`);
-    return (res as any).data;
+    return apiFetch<RecentVisitor[]>(`/api/analytics/visitors?limit=${limit}`);
   },
 
   async getVisitorHistory(visitorId: string): Promise<VisitorHistory[]> {
-    const res = await apiFetch<{ data: VisitorHistory[] }>(`/api/analytics/visitor/${visitorId}`);
-    return (res as any).data;
+    return apiFetch<VisitorHistory[]>(`/api/analytics/visitor/${visitorId}`);
   },
 
   async getNavigationFlow(): Promise<NavigationFlow[]> {
-    const res = await apiFetch<{ data: NavigationFlow[] }>("/api/analytics/flow");
-    return (res as any).data;
+    return apiFetch<NavigationFlow[]>("/api/analytics/flow");
   },
 };
