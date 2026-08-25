@@ -158,6 +158,15 @@ export const adminService = {
   deleteContact: (id: string) =>
     apiFetch<void>(`/admin/contact/${id}`, { method: "DELETE" }),
 
+  // Contact Notification Recipients
+  getContactRecipients: () =>
+    apiFetch<string[]>("/api/admin/contact-recipients"),
+  setContactRecipients: (userIds: string[]) =>
+    apiFetch<{ message: string }>("/api/admin/contact-recipients", {
+      method: "PUT",
+      body: JSON.stringify({ userIds }),
+    }),
+
   // API Keys
   listApiKeys: () => apiFetch<AdminApiKey[]>("/api/admin/api-keys"),
   revokeApiKey: (id: string) =>
