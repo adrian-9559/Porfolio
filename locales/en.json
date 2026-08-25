@@ -1195,7 +1195,7 @@
     "designShowcase": {
       "badge": "Tool",
       "title": "Design Gallery",
-      "description": "16 vector mockups with real-time editable colors. Inspiration for web and mobile interfaces.",
+      "description": "64 vector mockup variants with real-time editable colors. Inspiration for web and mobile interfaces.",
       "colors": "Color Palette",
       "primary": "Primary",
       "secondary": "Secondary",
@@ -1206,30 +1206,35 @@
       "mobileTab": "Mobile",
       "exportCss": "Copy CSS",
       "styleTitle": "Design Style",
-      "style": {
-        "minimal": "Minimal",
-        "standard": "Standard",
-        "glass": "Glass"
+      "darkPreview": "Dark preview",
+      "style": { "minimal": "Minimal", "standard": "Standard", "glass": "Glass" },
+      "density": { "title": "Density", "compact": "Compact", "comfortable": "Comfortable", "spacious": "Spacious" },
+      "modal": { "variants": "variants", "close": "Close", "apply": "Apply variant" },
+      "variant": {
+        "centered": "Centered", "split": "Split", "full": "Full-screen", "minimal": "Minimal",
+        "sidebarLeft": "Sidebar left", "sidebarRight": "Sidebar right", "noSidebar": "No sidebar", "compactSidebar": "Compact sidebar",
+        "3columns": "3 columns", "2columns": "2 columns", "horizontal": "Horizontal", "featured": "Featured",
+        "grid": "Grid", "list": "List", "masonry": "Masonry",
+        "heroTop": "Hero top", "gallery": "Gallery", "fullScroll": "Full scroll",
+        "centeredNav": "Centered", "leftAligned": "Left aligned", "megaMenu": "Mega-menu", "floating": "Floating",
+        "multiColumn": "Multi-column", "splitNewsletter": "Newsletter split",
+        "cards": "Cards", "compact": "Compact", "magazine": "Magazine", "fullImage": "Full image",
+        "tabbed": "Tabbed", "scrollable": "Scrollable", "settings": "Settings", "bento": "Bento grid",
+        "socialFirst": "Social first", "illustration": "Illustration", "otp": "OTP",
+        "bubblesRight": "Bubbles right", "fullWidth": "Full width", "timeline": "Timeline",
+        "fullMap": "Full map", "listMap": "List + Map", "cardOverlay": "Card overlay",
+        "singleStep": "Single step", "multiStep": "Multi-step", "summary": "Summary",
+        "fullVisual": "Full visual", "listView": "List view", "waveform": "Waveform",
+        "cardList": "Card list", "grouped": "Grouped"
       },
       "web": {
-        "hero": "Landing Hero",
-        "dashboard": "Dashboard",
-        "pricing": "Pricing Table",
-        "blog": "Blog Cards",
-        "contact": "Contact Form",
-        "product": "Product Card",
-        "navbar": "Navbar",
-        "footer": "Footer"
+        "hero": "Landing Hero", "dashboard": "Dashboard", "pricing": "Pricing Table",
+        "blog": "Blog Cards", "contact": "Contact Form", "product": "Product Card",
+        "navbar": "Navbar", "footer": "Footer"
       },
       "mobile": {
-        "feed": "Home Feed",
-        "profile": "Profile",
-        "login": "Login",
-        "chat": "Chat",
-        "map": "Map",
-        "checkout": "Checkout",
-        "player": "Music Player",
-        "notifications": "Notifications"
+        "feed": "Home Feed", "profile": "Profile", "login": "Login", "chat": "Chat",
+        "map": "Map", "checkout": "Checkout", "player": "Music Player", "notifications": "Notifications"
       }
     },
     "qrGenerator": {

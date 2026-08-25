@@ -1197,7 +1197,7 @@
     "designShowcase": {
       "badge": "Herramienta",
       "title": "Galería de diseño",
-      "description": "16 mockups vectoriales con colores editables en tiempo real. Inspiración para interfaces web y mobile.",
+      "description": "64 variantes de mockups vectoriales con colores editables en tiempo real. Inspiración para interfaces web y mobile.",
       "colors": "Paleta de colores",
       "primary": "Primario",
       "secondary": "Secundario",
@@ -1208,30 +1208,35 @@
       "mobileTab": "Mobile",
       "exportCss": "Copiar CSS",
       "styleTitle": "Estilo de diseño",
-      "style": {
-        "minimal": "Minimal",
-        "standard": "Standard",
-        "glass": "Glass"
+      "darkPreview": "Vista previa oscura",
+      "style": { "minimal": "Minimal", "standard": "Standard", "glass": "Glass" },
+      "density": { "title": "Densidad", "compact": "Compacto", "comfortable": "Confortable", "spacious": "Espacioso" },
+      "modal": { "variants": "variantes", "close": "Cerrar", "apply": "Aplicar variante" },
+      "variant": {
+        "centered": "Centrado", "split": "Split", "full": "Full-screen", "minimal": "Minimal",
+        "sidebarLeft": "Sidebar izq.", "sidebarRight": "Sidebar der.", "noSidebar": "Sin sidebar", "compactSidebar": "Sidebar compacto",
+        "3columns": "3 columnas", "2columns": "2 columnas", "horizontal": "Horizontal", "featured": "Featured",
+        "grid": "Grid", "list": "Lista", "masonry": "Masonry",
+        "heroTop": "Hero arriba", "gallery": "Galería", "fullScroll": "Full scroll",
+        "centeredNav": "Centrado", "leftAligned": "Izquierda", "megaMenu": "Mega-menu", "floating": "Flotante",
+        "multiColumn": "Multi-columna", "splitNewsletter": "Newsletter split",
+        "cards": "Tarjetas", "compact": "Compacto", "magazine": "Revista", "fullImage": "Imagen completa",
+        "tabbed": "Con tabs", "scrollable": "Scrollable", "settings": "Ajustes", "bento": "Bento grid",
+        "socialFirst": "Social primero", "illustration": "Ilustración", "otp": "OTP",
+        "bubblesRight": "Burbujas der.", "fullWidth": "Ancho completo", "timeline": "Timeline",
+        "fullMap": "Mapa completo", "listMap": "Lista + Mapa", "cardOverlay": "Card overlay",
+        "singleStep": "Paso único", "multiStep": "Multi-paso", "summary": "Resumen",
+        "fullVisual": "Visual completo", "listView": "Vista lista", "waveform": "Waveform",
+        "cardList": "Lista cards", "grouped": "Agrupadas"
       },
       "web": {
-        "hero": "Landing Hero",
-        "dashboard": "Dashboard",
-        "pricing": "Pricing Table",
-        "blog": "Blog Cards",
-        "contact": "Formulario",
-        "product": "Producto",
-        "navbar": "Navbar",
-        "footer": "Footer"
+        "hero": "Landing Hero", "dashboard": "Dashboard", "pricing": "Pricing Table",
+        "blog": "Blog Cards", "contact": "Formulario", "product": "Producto",
+        "navbar": "Navbar", "footer": "Footer"
       },
       "mobile": {
-        "feed": "Home Feed",
-        "profile": "Perfil",
-        "login": "Login",
-        "chat": "Chat",
-        "map": "Mapa",
-        "checkout": "Checkout",
-        "player": "Player",
-        "notifications": "Notificaciones"
+        "feed": "Home Feed", "profile": "Perfil", "login": "Login", "chat": "Chat",
+        "map": "Mapa", "checkout": "Checkout", "player": "Player", "notifications": "Notificaciones"
       }
     },
     "qrGenerator": {
