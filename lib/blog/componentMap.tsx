@@ -165,6 +165,7 @@ import BarcodeGeneratorContent from "@/components/blog/tools/BarcodeGeneratorCon
 import CssGradientContent from "@/components/blog/tools/CssGradientContent";
 import ImageToBase64Content from "@/components/blog/tools/ImageToBase64Content";
 import MockDataContent from "@/components/blog/tools/MockDataContent";
+import DesignShowcaseContent from "@/components/blog/tools/DesignShowcaseContent";
 
 // Tools — EN (removed — ES components now use useT for i18n)
 
@@ -278,6 +279,7 @@ const contentMap: Record<
   "css-gradient": { es: CssGradientContent, en: CssGradientContent },
   "image-to-base64": { es: ImageToBase64Content, en: ImageToBase64Content },
   "mock-data": { es: MockDataContent, en: MockDataContent },
+  "design-showcase": { es: DesignShowcaseContent, en: DesignShowcaseContent },
   "sql-builder-guide": { es: SQLBuilderDocContent, en: SQLBuilderDocContentEn },
   angular: { es: AngularContent, en: AngularContentEn },
   vue: { es: VueContent, en: VueContentEn },

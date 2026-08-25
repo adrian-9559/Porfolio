@@ -22,7 +22,7 @@ export const TOOL_GROUPS: ToolGroup[] = [
     text: "text-fuchsia-600 dark:text-fuchsia-400",
     bg: "bg-fuchsia-50 dark:bg-fuchsia-950/20",
     hoverBorder: "hover:border-fuchsia-300 dark:hover:border-fuchsia-700",
-    toolIds: ["color-tool", "palette-generator", "css-gradient"],
+    toolIds: ["color-tool", "palette-generator", "css-gradient", "design-showcase"],
   },
   {
     id: "texto",

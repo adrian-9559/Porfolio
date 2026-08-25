@@ -183,6 +183,12 @@ const TOOL_COLORS: Record<
     hoverBorder: "hover:border-fuchsia-300 dark:hover:border-fuchsia-700",
     activeBg: "bg-fuchsia-100 dark:bg-fuchsia-950/40 border-fuchsia-300 dark:border-fuchsia-700",
   },
+  "design-showcase": {
+    bg: "bg-fuchsia-50 dark:bg-fuchsia-950/20",
+    text: "text-fuchsia-600 dark:text-fuchsia-400",
+    hoverBorder: "hover:border-fuchsia-300 dark:hover:border-fuchsia-700",
+    activeBg: "bg-fuchsia-100 dark:bg-fuchsia-950/40 border-fuchsia-300 dark:border-fuchsia-700",
+  },
   "image-to-base64": {
     bg: "bg-red-50 dark:bg-red-950/20",
     text: "text-red-600 dark:text-red-400",
@@ -232,6 +238,7 @@ const TOOL_COMPONENT_MAP: Record<string, boolean> = {
   "css-gradient": true,
   "image-to-base64": true,
   "mock-data": true,
+  "design-showcase": true,
 };
 
 const GROUP_ICON: Record<string, React.ReactNode> = {

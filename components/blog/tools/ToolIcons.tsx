@@ -618,7 +618,27 @@ export type ToolId =
   | "hash-generator"
   | "css-gradient"
   | "image-to-base64"
-  | "mock-data";
+  | "mock-data"
+  | "design-showcase";
+
+export function IconDesignShowcase({ className = "w-5 h-5" }: ToolIconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10-1a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1v-4a1 1 0 00-1-1h-4z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+    </svg>
+  );
+}
 
 const TOOL_ICON_MAP: Record<ToolId, React.ComponentType<ToolIconProps>> = {
   "json-formatter": IconJsonFormatter,
@@ -648,6 +668,7 @@ const TOOL_ICON_MAP: Record<ToolId, React.ComponentType<ToolIconProps>> = {
   "css-gradient": IconCssGradient,
   "image-to-base64": IconImageToBase64,
   "mock-data": IconMockData,
+  "design-showcase": IconDesignShowcase,
 };
 
 export function getToolIcon(

@@ -1194,6 +1194,46 @@
       "copy": "Copiar",
       "copied": "Copiado!"
     },
+    "designShowcase": {
+      "badge": "Herramienta",
+      "title": "Galería de diseño",
+      "description": "16 mockups vectoriales con colores editables en tiempo real. Inspiración para interfaces web y mobile.",
+      "colors": "Paleta de colores",
+      "primary": "Primario",
+      "secondary": "Secundario",
+      "accent": "Acento",
+      "background": "Fondo",
+      "text": "Texto",
+      "webTab": "Web",
+      "mobileTab": "Mobile",
+      "exportCss": "Copiar CSS",
+      "styleTitle": "Estilo de diseño",
+      "style": {
+        "minimal": "Minimal",
+        "standard": "Standard",
+        "glass": "Glass"
+      },
+      "web": {
+        "hero": "Landing Hero",
+        "dashboard": "Dashboard",
+        "pricing": "Pricing Table",
+        "blog": "Blog Cards",
+        "contact": "Formulario",
+        "product": "Producto",
+        "navbar": "Navbar",
+        "footer": "Footer"
+      },
+      "mobile": {
+        "feed": "Home Feed",
+        "profile": "Perfil",
+        "login": "Login",
+        "chat": "Chat",
+        "map": "Mapa",
+        "checkout": "Checkout",
+        "player": "Player",
+        "notifications": "Notificaciones"
+      }
+    },
     "qrGenerator": {
       "tool": "Herramienta",
       "freeToUse": "Uso libre",
