@@ -10,7 +10,6 @@ import { useLocaleStore } from "@/store/localeStore";
 import { userService } from "@/services/userService";
 import { authService } from "@/services/authService";
 import type { UserPreferences } from "@/types/auth";
-import { AvatarUpload } from "@/features/settings/components/AvatarUpload";
 import { PasswordField } from "@/features/settings/components/PasswordField";
 import { SessionList } from "@/features/settings/components/SessionList";
 import { DangerZone } from "@/features/settings/components/DangerZone";
@@ -178,7 +177,19 @@ function PerfilTab() {
         <p className="text-xs text-muted">{t("settings.profileInfoDesc")}</p>
       </div>
 
-      <AvatarUpload />
+      {/* Avatar */}
+      <div className="flex items-center gap-4">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden flex-shrink-0">
+          {user?.profile?.avatar_url ? (
+            <img alt="" className="w-full h-full object-cover" src={user.profile.avatar_url} />
+          ) : (
+            <svg className="w-8 h-8 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+              <circle cx="12" cy="7" r="4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+            </svg>
+          )}
+        </div>
+      </div>
 
       <div className="space-y-4">
         <Field label={t("settings.profile")}>
