@@ -2,8 +2,25 @@ import type { Role } from "@/types/auth";
 
 import { apiFetch } from "./apiClient";
 
+export interface RoleStat {
+  id: number;
+  name: string;
+  userCount: number;
+}
+
+export interface RoleUser {
+  user_id: string;
+  email: string;
+  full_name: string | null;
+  avatar_url: string | null;
+}
+
 export const roleService = {
   list: () => apiFetch<Role[]>("/api/roles"),
+
+  stats: () => apiFetch<RoleStat[]>("/api/roles/stats"),
+
+  usersByRole: (id: number) => apiFetch<RoleUser[]>(`/api/roles/${id}/users`),
 
   create: (name: string, description?: string) =>
     apiFetch<Role>("/api/roles", {
