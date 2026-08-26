@@ -41,12 +41,12 @@ function rewriteCookie(setCookie: string): string {
     attrs[key] = value;
   }
 
-  // Auth cookies must persist longer than the backend's 15-min access cookie so
-  // the backend still receives a (possibly expired) access token and can rotate
-  // it via the refresh cookie. Real expiry is enforced by the JWT server-side.
+  // Auth cookies: respect the backend's original maxAge so the browser expiry
+  // matches the JWT lifetime. The authenticate middleware handles refresh via
+  // the refresh_token cookie when the access_token is missing or expired.
   const name = parts[0].split("=")[0] ?? "";
   const isAuth = name === "access_token" || name === "refresh_token";
-  const maxAge = isAuth ? "604800" : attrs["max-age"];
+  const maxAge = isAuth ? attrs["max-age"] : attrs["max-age"];
 
   const out = [parts[0], "Path=/", "HttpOnly", "SameSite=Lax"];
 

@@ -97,14 +97,27 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [locale]);
 
   useEffect(() => {
-    // Initial hydration on mount only — NOT on every navigation
-    useAuthStore.getState().hydrate();
+    const store = useAuthStore.getState();
 
-    // Re-hydrate when the tab regains focus (handles token refresh after inactivity)
+    // Instant hydration from localStorage (no network, no spinner)
+    store.hydrateFromCache();
+
+    // Background refresh — updates cache silently if token is still valid
+    store.hydrate();
+
+    // Re-hydrate when the tab regains focus, debounced (skip if <30s since last hydrate)
+    let lastHydrateAt = Date.now();
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
     const onVisible = () => {
-      if (document.visibilityState === "visible") {
+      if (document.visibilityState !== "visible") return;
+      if (Date.now() - lastHydrateAt < 30_000) return;
+
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        lastHydrateAt = Date.now();
         useAuthStore.getState().hydrate();
-      }
+      }, 1000);
     };
 
     document.addEventListener("visibilitychange", onVisible);
@@ -116,6 +129,8 @@ export default function App({ Component, pageProps }: AppProps) {
         isAuthenticated: false,
         isAdmin: false,
       });
+      // Clear persisted auth cache so stale data isn't shown on next visit
+      try { localStorage.removeItem("auth_cache"); } catch {}
       const path = window.location.pathname;
       const protected_paths = ["/dashboard", "/admin"];
 
@@ -129,6 +144,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return () => {
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("auth:expired", onExpired);
+      if (debounceTimer) clearTimeout(debounceTimer);
     };
   }, []);
 
