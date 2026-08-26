@@ -803,7 +803,11 @@
     "tabProfile": "Profile",
     "tabSecurity": "Security",
     "tabPreferences": "Preferences",
-    "tabSession": "Session"
+    "tabSession": "Session",
+    "tabNotifications": "Notifications",
+    "tabAppearance": "Appearance",
+    "tabLanguage": "Language",
+    "tabAccount": "Account"
   },
   "blog": {
     "title": "Blog",
@@ -2180,7 +2184,27 @@
     "emailNotifications": "Email notifications",
     "emailNotificationsDesc": "Receive important alerts in your email",
     "blogUpdates": "Blog updates",
-    "blogUpdatesDesc": "Notification when new content is published"
+    "blogUpdatesDesc": "Notification when new content is published",
+    "uploadAvatar": "Upload avatar",
+    "avatarHint": "JPG, PNG or GIF · Max 2 MB",
+    "avatarUploaded": "Avatar updated",
+    "avatarError": "Error uploading avatar",
+    "changePasswordSuccess": "Password updated successfully",
+    "changePasswordError": "Error changing password",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordMismatch": "Passwords do not match",
+    "deleteAccountTitle": "Delete my account",
+    "deleteAccountDesc": "This action is irreversible. All your data will be deleted.",
+    "deleteAccountConfirm": "Type your password to confirm",
+    "deleteAccountBtn": "Delete account permanently",
+    "deleteAccountSuccess": "Account deleted",
+    "deleteAccountError": "Error deleting account",
+    "preferencesSaved": "Preferences saved",
+    "preferencesError": "Error saving preferences",
+    "soundEnabled": "Notification sound",
+    "soundEnabledDesc": "Play sound when receiving notifications",
+    "emailDigest": "Weekly digest",
+    "emailDigestDesc": "Receive a weekly activity summary"
   },
   "notifications": {
     "title": "Notifications",

@@ -52,6 +52,12 @@ export const authService = {
       body: JSON.stringify({ user_id: userId, new_password: newPassword }),
     }),
 
+  changePassword: (currentPassword: string, newPassword: string) =>
+    apiFetch<{ message: string }>("/api/auth/change-password", {
+      method: "POST",
+      body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }),
+    }),
+
   resendConfirmation: (userId: string) =>
     apiFetch<{ message: string }>("/api/auth/resend-confirmation", {
       method: "POST",

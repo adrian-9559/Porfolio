@@ -1,22 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/authStore";
+import { useLocaleStore } from "@/store/localeStore";
+import { userService } from "@/services/userService";
+import { authService } from "@/services/authService";
+import type { UserPreferences } from "@/types/auth";
+import { AvatarUpload } from "@/features/settings/components/AvatarUpload";
+import { PasswordField } from "@/features/settings/components/PasswordField";
+import { SessionList } from "@/features/settings/components/SessionList";
+import { DangerZone } from "@/features/settings/components/DangerZone";
 
-type Tab = "perfil" | "seguridad" | "preferencias";
+type Tab = "perfil" | "seguridad" | "notificaciones" | "apariencia" | "idioma" | "cuenta";
+
+const inputCls =
+  "w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/[0.03] dark:bg-white/[0.05] text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all";
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
+        {label}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function Toggle({
+  val,
+  set,
+  label,
+  desc,
+}: {
+  val: boolean;
+  set: (v: boolean) => void;
+  label: string;
+  desc: string;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4 py-3 border-b border-black/6 dark:border-white/6 last:border-0">
+      <div>
+        <p className="text-sm font-medium text-foreground">{label}</p>
+        <p className="text-xs text-muted mt-0.5">{desc}</p>
+      </div>
+      <button
+        className={`w-10 h-6 rounded-full transition-colors flex-shrink-0 relative ${val ? "bg-blue-600" : "bg-black/15 dark:bg-white/15"}`}
+        onClick={() => set(!val)}
+      >
+        <span
+          className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${val ? "translate-x-4" : "translate-x-0.5"}`}
+        />
+      </button>
+    </div>
+  );
+}
 
 export default function ConfiguracionPage() {
   const { t } = useT();
   const { isAuthenticated, loadingAuth } = useRequireAuth();
   const [tab, setTab] = useState<Tab>("perfil");
+
   const TABS: { id: Tab; label: string; icon: string }[] = [
     { id: "perfil", label: t("user.tabProfile"), icon: "👤" },
     { id: "seguridad", label: t("user.tabSecurity"), icon: "🔒" },
-    { id: "preferencias", label: t("user.tabPreferences"), icon: "⚙️" },
+    { id: "notificaciones", label: t("user.tabNotifications"), icon: "🔔" },
+    { id: "apariencia", label: t("user.tabAppearance"), icon: "🎨" },
+    { id: "idioma", label: t("user.tabLanguage"), icon: "🌐" },
+    { id: "cuenta", label: t("user.tabAccount"), icon: "⚠️" },
   ];
 
   if (loadingAuth || !isAuthenticated) {
@@ -35,28 +90,20 @@ export default function ConfiguracionPage() {
         {/* Breadcrumb + header */}
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Link
-              className="text-xs text-muted hover:text-foreground transition-colors"
-              href="/perfil"
-            >
+            <Link className="text-xs text-muted hover:text-foreground transition-colors" href="/perfil">
               {t("profile.title")}
             </Link>
             <span className="text-xs text-muted/60">/</span>
-            <span className="text-xs text-foreground font-medium">
-              {t("settings.title")}
-            </span>
+            <span className="text-xs text-foreground font-medium">{t("settings.title")}</span>
           </div>
-          <h1
-            className="text-3xl font-bold text-foreground"
-            style={{ letterSpacing: "-0.02em" }}
-          >
+          <h1 className="text-3xl font-bold text-foreground" style={{ letterSpacing: "-0.02em" }}>
             {t("settings.title")}
           </h1>
           <p className="text-sm text-muted mt-1">{t("settings.subtitle")}</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 p-1 rounded-xl bg-black/[0.04] dark:bg-white/[0.04] w-fit">
+        <div className="flex gap-1 p-1 rounded-xl bg-black/[0.04] dark:bg-white/[0.04] w-fit flex-wrap">
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -73,98 +120,65 @@ export default function ConfiguracionPage() {
         <div className="rounded-2xl border border-border bg-surface p-6">
           {tab === "perfil" && <PerfilTab />}
           {tab === "seguridad" && <SeguridadTab />}
-          {tab === "preferencias" && <PreferenciasTab />}
+          {tab === "notificaciones" && <NotificacionesTab />}
+          {tab === "apariencia" && <AparienciaTab />}
+          {tab === "idioma" && <IdiomaTab />}
+          {tab === "cuenta" && <CuentaTab />}
         </div>
       </div>
     </DefaultLayout>
   );
 }
 
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <label className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 block mb-1.5">
-        {label}
-      </label>
-      {children}
-    </div>
-  );
-}
-
-const inputCls =
-  "w-full px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 bg-black/[0.03] dark:bg-white/[0.05] text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all";
-
-function SaveBtn({ saved, onClick }: { saved: boolean; onClick: () => void }) {
-  const { t } = useT();
-
-  return (
-    <button
-      className={`flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-xl transition-all ${saved ? "bg-emerald-600 text-white" : "bg-accent hover:bg-accent-hover text-accent-foreground"}`}
-      onClick={onClick}
-    >
-      {saved ? <>✓ {t("settings.saved")}</> : t("settings.saveChanges")}
-    </button>
-  );
-}
+// ── Perfil Tab ────────────────────────────────────────────────────────────────
 
 function PerfilTab() {
   const { t } = useT();
   const { user } = useAuth();
-  const displayName = user?.profile?.full_name ?? user?.email ?? "";
-  const initials = displayName
-    .split(" ")
-    .map((w: string) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-
+  const hydrate = useAuthStore((s) => s.hydrate);
   const [name, setName] = useState(user?.profile?.full_name ?? "");
-  const [bio, setBio] = useState("");
-  const [website, setWebsite] = useState("");
+  const [bio, setBio] = useState(user?.profile?.bio ?? "");
+  const [website, setWebsite] = useState(user?.profile?.website ?? "");
+  const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
 
-  function save() {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  useEffect(() => {
+    if (user?.profile) {
+      setName(user.profile.full_name ?? "");
+      setBio(user.profile.bio ?? "");
+      setWebsite(user.profile.website ?? "");
+    }
+  }, [user]);
+
+  async function save() {
+    if (!user) return;
+    setSaving(true);
+    setError("");
+    try {
+      await userService.updateProfile(user.id, {
+        full_name: name,
+        bio: bio || null,
+        website: website || null,
+      });
+      await hydrate();
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError(t("settings.preferencesError"));
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-base font-bold text-foreground mb-1">
-          {t("settings.profileInfo")}
-        </h2>
+        <h2 className="text-base font-bold text-foreground mb-1">{t("settings.profileInfo")}</h2>
         <p className="text-xs text-muted">{t("settings.profileInfoDesc")}</p>
       </div>
 
-      {/* Avatar */}
-      <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden flex-shrink-0">
-          {user?.profile?.avatar_url ? (
-            <img
-              alt=""
-              className="w-full h-full object-cover"
-              src={user.profile.avatar_url}
-            />
-          ) : (
-            initials
-          )}
-        </div>
-        <div>
-          <button className="text-sm font-medium text-accent hover:underline">
-            {t("settings.changePhoto")}
-          </button>
-          <p className="text-xs text-muted/60 mt-0.5">
-            {t("settings.photoHint")}
-          </p>
-        </div>
-      </div>
+      <AvatarUpload />
 
       <div className="space-y-4">
         <Field label={t("settings.profile")}>
@@ -182,9 +196,7 @@ function PerfilTab() {
             className="w-full px-3 py-2 rounded-xl border border-border bg-black/[0.03] dark:bg-white/[0.03] text-sm text-muted/60 cursor-not-allowed"
             value={user?.email ?? ""}
           />
-          <p className="text-xs text-muted/60 mt-1">
-            {t("settings.emailNotChangable")}
-          </p>
+          <p className="text-xs text-muted/60 mt-1">{t("settings.emailNotChangable")}</p>
         </Field>
 
         <Field label={t("profile.bio")}>
@@ -208,10 +220,20 @@ function PerfilTab() {
         </Field>
       </div>
 
-      <SaveBtn saved={saved} onClick={save} />
+      {error && <p className="text-xs text-red-500">{error}</p>}
+
+      <button
+        className={`flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-xl transition-all ${saved ? "bg-emerald-600 text-white" : "bg-accent hover:bg-accent-hover text-accent-foreground"} disabled:opacity-50`}
+        disabled={saving}
+        onClick={save}
+      >
+        {saved ? <>✓ {t("settings.saved")}</> : t("settings.saveChanges")}
+      </button>
     </div>
   );
 }
+
+// ── Seguridad Tab ─────────────────────────────────────────────────────────────
 
 function SeguridadTab() {
   const { t } = useT();
@@ -219,238 +241,264 @@ function SeguridadTab() {
   const [newPwd, setNewPwd] = useState("");
   const [confirm, setConfirm] = useState("");
   const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  function changePassword() {
-    if (!current || !newPwd || !confirm)
-      return setMsg(t("settings.fillAllFields"));
-    if (newPwd !== confirm) return setMsg(t("auth.passwordsDontMatch"));
-    if (newPwd.length < 8) return setMsg(t("settings.minChars"));
-    setMsg(t("settings.passwordUpdated"));
-    setCurrent("");
-    setNewPwd("");
-    setConfirm("");
-    setTimeout(() => setMsg(""), 3000);
+  async function changePassword() {
+    if (!current || !newPwd || !confirm) {
+      setMsg(t("settings.fillAllFields"));
+      setError(true);
+      return;
+    }
+    if (newPwd !== confirm) {
+      setMsg(t("settings.newPasswordMismatch"));
+      setError(true);
+      return;
+    }
+    if (newPwd.length < 8) {
+      setMsg(t("settings.minChars"));
+      setError(true);
+      return;
+    }
+    setLoading(true);
+    setError(false);
+    try {
+      await authService.changePassword(current, newPwd);
+      setMsg(t("settings.changePasswordSuccess"));
+      setError(false);
+      setCurrent("");
+      setNewPwd("");
+      setConfirm("");
+    } catch {
+      setMsg(t("settings.changePasswordError"));
+      setError(true);
+    } finally {
+      setLoading(false);
+      setTimeout(() => setMsg(""), 3000);
+    }
   }
-
-  const SESSIONS = [
-    {
-      device: "Chrome en macOS",
-      location: "Madrid, España",
-      current: true,
-      date: "Ahora",
-    },
-    {
-      device: "Safari en iPhone",
-      location: "Madrid, España",
-      current: false,
-      date: "hace 2h",
-    },
-    {
-      device: "Firefox en Windows",
-      location: "Barcelona, España",
-      current: false,
-      date: "hace 3d",
-    },
-  ];
 
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-base font-bold text-foreground mb-1">
-          {t("settings.changePassword")}
-        </h2>
-        <p className="text-xs text-muted mb-5">
-          {t("settings.changePasswordSubtitle")}
-        </p>
-
+        <h2 className="text-base font-bold text-foreground mb-1">{t("settings.changePassword")}</h2>
+        <p className="text-xs text-muted mb-5">{t("settings.changePasswordSubtitle")}</p>
         <div className="space-y-3">
-          {[
-            {
-              label: t("settings.currentPassword"),
-              val: current,
-              set: setCurrent,
-            },
-            { label: t("settings.newPassword"), val: newPwd, set: setNewPwd },
-            {
-              label: t("settings.confirmNewPassword"),
-              val: confirm,
-              set: setConfirm,
-            },
-          ].map((f) => (
-            <Field key={f.label} label={f.label}>
-              <input
-                className={inputCls}
-                type="password"
-                value={f.val}
-                onChange={(e) => f.set(e.target.value)}
-              />
-            </Field>
-          ))}
+          <PasswordField
+            autoComplete="current-password"
+            label={t("settings.currentPassword")}
+            value={current}
+            onChange={setCurrent}
+          />
+          <PasswordField
+            autoComplete="new-password"
+            label={t("settings.newPassword")}
+            value={newPwd}
+            onChange={setNewPwd}
+          />
+          <PasswordField
+            autoComplete="new-password"
+            label={t("settings.confirmNewPassword")}
+            value={confirm}
+            onChange={setConfirm}
+          />
         </div>
-
         {msg && (
-          <p
-            className={`text-xs mt-2 ${msg.includes("✓") ? "text-emerald-600 dark:text-emerald-400" : "text-red-500"}`}
-          >
+          <p className={`text-xs mt-2 ${error ? "text-red-500" : "text-emerald-600 dark:text-emerald-400"}`}>
             {msg}
           </p>
         )}
-
         <button
-          className="mt-4 bg-accent hover:bg-accent-hover text-accent-foreground text-sm font-semibold px-5 py-2 rounded-xl transition-colors"
+          className="mt-4 bg-accent hover:bg-accent-hover text-accent-foreground text-sm font-semibold px-5 py-2 rounded-xl transition-colors disabled:opacity-50"
+          disabled={loading}
           onClick={changePassword}
         >
-          {t("settings.updatePassword")}
+          {loading ? "…" : t("settings.updatePassword")}
         </button>
       </div>
 
+      <SessionList />
+    </div>
+  );
+}
+
+// ── Notificaciones Tab ────────────────────────────────────────────────────────
+
+function NotificacionesTab() {
+  const { t } = useT();
+  const [prefs, setPrefs] = useState<UserPreferences | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    userService.getPreferences().then((p) => {
+      setPrefs(p);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  async function update(key: keyof UserPreferences, value: boolean) {
+    if (!prefs) return;
+    const updated = { ...prefs, [key]: value };
+    setPrefs(updated);
+    try {
+      await userService.updatePreferences({ [key]: value });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch {}
+  }
+
+  if (loading) return <div className="flex justify-center py-8"><div className="w-5 h-5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" /></div>;
+
+  return (
+    <div className="space-y-6">
       <div>
-        <h2 className="text-base font-bold text-foreground mb-1">
-          {t("settings.activeSessions")}
-        </h2>
-        <p className="text-xs text-muted mb-4">{t("settings.sessionsDesc")}</p>
-        <div className="rounded-xl border border-border divide-y divide-black/5 dark:divide-white/5">
-          {SESSIONS.map((s, i) => (
-            <div key={i} className="flex items-center gap-4 px-4 py-3">
-              <div className="w-8 h-8 rounded-lg bg-default flex items-center justify-center flex-shrink-0">
-                <svg
-                  className="w-4 h-4 text-muted"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <rect
-                    height="14"
-                    rx="2"
-                    strokeWidth="1.5"
-                    width="20"
-                    x="2"
-                    y="4"
-                  />
-                  <path
-                    d="M8 20h8M12 18v2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                  />
-                </svg>
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium text-foreground">
-                    {s.device}
-                  </p>
-                  {s.current && (
-                    <span className="px-1.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold">
-                      {t("settings.currentBadge")}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-muted/60">
-                  {s.location} · {s.date}
-                </p>
-              </div>
-              {!s.current && (
-                <button className="text-xs text-red-500 hover:underline">
-                  {t("settings.closeSession")}
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
+        <h2 className="text-base font-bold text-foreground mb-1">{t("user.tabNotifications")}</h2>
+        <p className="text-xs text-muted">{t("settings.appearanceDesc")}</p>
+      </div>
+
+      <div className="rounded-xl border border-border px-4">
+        <Toggle
+          desc={t("settings.emailNotificationsDesc")}
+          label={t("settings.emailNotifications")}
+          set={(v) => update("email_notifications", v)}
+          val={prefs?.email_notifications ?? true}
+        />
+        <Toggle
+          desc={t("settings.blogUpdatesDesc")}
+          label={t("settings.blogUpdates")}
+          set={(v) => update("blog_updates", v)}
+          val={prefs?.blog_updates ?? false}
+        />
+        <Toggle
+          desc={t("settings.soundEnabledDesc")}
+          label={t("settings.soundEnabled")}
+          set={() => {}}
+          val={true}
+        />
+        <Toggle
+          desc={t("settings.emailDigestDesc")}
+          label={t("settings.emailDigest")}
+          set={() => {}}
+          val={false}
+        />
+      </div>
+
+      {saved && (
+        <p className="text-xs text-emerald-600 dark:text-emerald-400">
+          ✓ {t("settings.preferencesSaved")}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ── Apariencia Tab ────────────────────────────────────────────────────────────
+
+function AparienciaTab() {
+  const { t } = useT();
+  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState("system");
+
+  useEffect(() => {
+    setMounted(true);
+    const stored = localStorage.getItem("theme");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setThemeState(parsed?.state?.theme ?? "system");
+    }
+  }, []);
+
+  function setTheme(id: string) {
+    setThemeState(id);
+    const root = document.documentElement;
+    if (id === "light") {
+      root.classList.remove("dark");
+      root.classList.add("light");
+    } else if (id === "dark") {
+      root.classList.remove("light");
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("light", "dark");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      root.classList.add(prefersDark ? "dark" : "light");
+    }
+  }
+
+  if (!mounted) return null;
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-base font-bold text-foreground mb-1">{t("user.tabAppearance")}</h2>
+        <p className="text-xs text-muted">{t("settings.appearanceDesc")}</p>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { id: "light", label: t("settings.themeLight"), icon: "☀️" },
+          { id: "dark", label: t("settings.themeDark"), icon: "🌙" },
+          { id: "system", label: t("settings.themeSystem"), icon: "💻" },
+        ].map((opt) => (
+          <button
+            key={opt.id}
+            className={`p-4 rounded-xl border text-center transition-all ${theme === opt.id ? "border-accent bg-accent/10" : "border-border/30 hover:bg-black/3 dark:hover:bg-white/3"}`}
+            onClick={() => setTheme(opt.id)}
+          >
+            <span className="text-2xl">{opt.icon}</span>
+            <p className="text-xs font-medium text-foreground mt-2">{opt.label}</p>
+          </button>
+        ))}
       </div>
     </div>
   );
 }
 
-function PreferenciasTab() {
+// ── Idioma Tab ────────────────────────────────────────────────────────────────
+
+function IdiomaTab() {
   const { t } = useT();
-  const router = useRouter();
-  const [emailNotifs, setEmailNotifs] = useState(true);
-  const [blogUpdates, setBlogUpdates] = useState(false);
-  const [saved, setSaved] = useState(false);
-
-  function save() {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  }
-
-  const Toggle = ({
-    val,
-    set,
-    label,
-    desc,
-  }: {
-    val: boolean;
-    set: (v: boolean) => void;
-    label: string;
-    desc: string;
-  }) => (
-    <div className="flex items-start justify-between gap-4 py-3 border-b border-black/6 dark:border-white/6 last:border-0">
-      <div>
-        <p className="text-sm font-medium text-foreground">{label}</p>
-        <p className="text-xs text-muted mt-0.5">{desc}</p>
-      </div>
-      <button
-        className={`w-10 h-6 rounded-full transition-colors flex-shrink-0 relative ${val ? "bg-blue-600" : "bg-black/15 dark:bg-white/15"}`}
-        onClick={() => set(!val)}
-      >
-        <span
-          className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${val ? "translate-x-4" : "translate-x-0.5"}`}
-        />
-      </button>
-    </div>
-  );
+  const { locale, setLocale } = useLocaleStore();
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-base font-bold text-foreground mb-1">
-          {t("user.tabPreferences")}
-        </h2>
+        <h2 className="text-base font-bold text-foreground mb-1">{t("user.tabLanguage")}</h2>
         <p className="text-xs text-muted">{t("settings.appearanceDesc")}</p>
       </div>
 
-      <div>
-        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
-          {t("notifications.title")}
-        </p>
-        <div className="rounded-xl border border-border px-4">
-          <Toggle
-            desc={t("settings.emailNotificationsDesc")}
-            label={t("settings.emailNotifications")}
-            set={setEmailNotifs}
-            val={emailNotifs}
-          />
-          <Toggle
-            desc={t("settings.blogUpdatesDesc")}
-            label={t("settings.blogUpdates")}
-            set={setBlogUpdates}
-            val={blogUpdates}
-          />
-        </div>
-      </div>
-
-      <div>
-        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
-          {t("settings.account")}
-        </p>
-        <div className="rounded-xl border border-red-200 dark:border-red-800/40 bg-red-50/50 dark:bg-red-950/10 p-4 space-y-3">
-          <div>
-            <p className="text-sm font-semibold text-red-700 dark:text-red-400">
-              {t("settings.dangerZone")}
-            </p>
-            <p className="text-xs text-red-600/80 dark:text-red-400/70 mt-0.5">
-              {t("settings.dangerZoneDesc")}
-            </p>
-          </div>
-          <button className="text-xs font-semibold text-red-600 dark:text-red-400 px-3 py-1.5 rounded-lg border border-red-300 dark:border-red-700/50 hover:bg-red-100 dark:hover:bg-red-950/30 transition-colors">
-            {t("settings.deleteAccount")}
+      <div className="grid grid-cols-2 gap-3">
+        {[
+          { id: "es" as const, label: "Español", flag: "🇪🇸" },
+          { id: "en" as const, label: "English", flag: "🇬🇧" },
+        ].map((opt) => (
+          <button
+            key={opt.id}
+            className={`flex items-center gap-3 p-4 rounded-xl border transition-all ${locale === opt.id ? "border-accent bg-accent/10" : "border-border/30 hover:bg-black/3 dark:hover:bg-white/3"}`}
+            onClick={() => setLocale(opt.id)}
+          >
+            <span className="text-2xl">{opt.flag}</span>
+            <span className="text-sm font-medium text-foreground">{opt.label}</span>
           </button>
-        </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Cuenta Tab ────────────────────────────────────────────────────────────────
+
+function CuentaTab() {
+  const { t } = useT();
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-base font-bold text-foreground mb-1">{t("user.tabAccount")}</h2>
+        <p className="text-xs text-muted">{t("settings.dangerZoneDesc")}</p>
       </div>
 
-      <SaveBtn saved={saved} onClick={save} />
+      <DangerZone />
     </div>
   );
 }

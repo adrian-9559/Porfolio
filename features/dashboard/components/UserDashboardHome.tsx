@@ -17,9 +17,7 @@ type Section =
   | "notifications"
   | "tricount"
   | "finances"
-  | "settings-profile"
-  | "settings-security"
-  | "settings-session";
+  | "settings-profile";
 
 interface Props {
   onNavigate: (s: Section) => void;

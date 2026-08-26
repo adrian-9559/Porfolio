@@ -29,9 +29,7 @@ type Section =
   | "finances"
   | "calendar"
   | "tables"
-  | "settings-profile"
-  | "settings-security"
-  | "settings-session";
+  | "settings-profile";
 
 function navItems(
   t: (k: string) => string,
@@ -107,18 +105,6 @@ function navItems(
       id: "settings-profile",
       label: t("dashboard.sidebarProfile"),
       icon: <IcoUser />,
-      group: "configuracion",
-    },
-    {
-      id: "settings-security",
-      label: t("dashboard.sidebarSecurity"),
-      icon: <IcoLock />,
-      group: "configuracion",
-    },
-    {
-      id: "settings-session",
-      label: t("dashboard.sidebarSession"),
-      icon: <IcoSession />,
       group: "configuracion",
     },
   ];
@@ -249,11 +235,7 @@ export default function DashboardPage() {
             {section === "finances" && <UserFinancesSection />}
             {section === "calendar" && <UserCalendarSection />}
             {section === "tables" && <UserTablesSection />}
-            {(section === "settings-profile" ||
-              section === "settings-security" ||
-              section === "settings-session") && (
-              <UserSettingsSection tab={section} onTabChange={setSection} />
-            )}
+            {section === "settings-profile" && <UserSettingsSection />}
           </div>
         </div>
       </div>
