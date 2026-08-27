@@ -108,7 +108,7 @@ export default function Skills() {
 
         <ScrollReveal delay={100}>
           <div className="flex justify-center">
-            <div className="inline-flex gap-1 p-1 rounded-xl bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8">
+            <div className="inline-flex gap-1 p-1 rounded-xl bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8 overflow-x-auto scrollbar-hide">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
