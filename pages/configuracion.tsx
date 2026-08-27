@@ -64,13 +64,13 @@ export default function ConfiguracionPage() {
   const { isAuthenticated, loadingAuth } = useRequireAuth();
   const [tab, setTab] = useState<Tab>("perfil");
 
-  const TABS: { id: Tab; label: string; icon: string }[] = [
-    { id: "perfil", label: t("user.tabProfile"), icon: "👤" },
-    { id: "seguridad", label: t("user.tabSecurity"), icon: "🔒" },
-    { id: "notificaciones", label: t("user.tabNotifications"), icon: "🔔" },
-    { id: "apariencia", label: t("user.tabAppearance"), icon: "🎨" },
-    { id: "idioma", label: t("user.tabLanguage"), icon: "🌐" },
-    { id: "cuenta", label: t("user.tabAccount"), icon: "⚠️" },
+  const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
+    { id: "perfil", label: t("user.tabProfile"), icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /><circle cx="12" cy="7" r="4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
+    { id: "seguridad", label: t("user.tabSecurity"), icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
+    { id: "notificaciones", label: t("user.tabNotifications"), icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
+    { id: "apariencia", label: t("user.tabAppearance"), icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
+    { id: "idioma", label: t("user.tabLanguage"), icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
+    { id: "cuenta", label: t("user.tabAccount"), icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
   ];
 
   if (loadingAuth || !isAuthenticated) {
@@ -447,16 +447,16 @@ function AparienciaTab() {
 
       <div className="grid grid-cols-3 gap-3">
         {[
-          { id: "light", label: t("settings.themeLight"), icon: "☀️" },
-          { id: "dark", label: t("settings.themeDark"), icon: "🌙" },
-          { id: "system", label: t("settings.themeSystem"), icon: "💻" },
+          { id: "light", label: t("settings.themeLight"), icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
+          { id: "dark", label: t("settings.themeDark"), icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
+          { id: "system", label: t("settings.themeSystem"), icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect height="14" rx="2" strokeWidth={1.5} width="20" x="2" y="3" /><path d="M8 21h8M12 17v4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
         ].map((opt) => (
           <button
             key={opt.id}
             className={`p-4 rounded-xl border text-center transition-all ${theme === opt.id ? "border-accent bg-accent/10" : "border-border/30 hover:bg-black/3 dark:hover:bg-white/3"}`}
             onClick={() => setTheme(opt.id)}
           >
-            <span className="text-2xl">{opt.icon}</span>
+            <div className="flex justify-center text-foreground">{opt.icon}</div>
             <p className="text-xs font-medium text-foreground mt-2">{opt.label}</p>
           </button>
         ))}
@@ -480,15 +480,15 @@ function IdiomaTab() {
 
       <div className="grid grid-cols-2 gap-3">
         {[
-          { id: "es" as const, label: "Español", flag: "🇪🇸" },
-          { id: "en" as const, label: "English", flag: "🇬🇧" },
+          { id: "es" as const, label: "Español", icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
+          { id: "en" as const, label: "English", icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} /></svg> },
         ].map((opt) => (
           <button
             key={opt.id}
             className={`flex items-center gap-3 p-4 rounded-xl border transition-all ${locale === opt.id ? "border-accent bg-accent/10" : "border-border/30 hover:bg-black/3 dark:hover:bg-white/3"}`}
             onClick={() => setLocale(opt.id)}
           >
-            <span className="text-2xl">{opt.flag}</span>
+            <div className="text-foreground">{opt.icon}</div>
             <span className="text-sm font-medium text-foreground">{opt.label}</span>
           </button>
         ))}
