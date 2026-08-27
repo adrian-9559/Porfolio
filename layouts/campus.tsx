@@ -450,6 +450,14 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
     setMobileOpen(false);
   }, [currentPath]);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   return (
     <div className="relative flex flex-col min-h-screen bg-background overflow-x-clip">
       <Head {...seo} />
@@ -469,34 +477,45 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
           aria-controls="campus-sidebar"
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? t("nav.blogClose") : t("nav.blogOpen")}
-          className="sm:hidden self-end mb-4 p-2 rounded-xl border border-black/12 dark:border-white/12 text-foreground"
+          className="sm:hidden self-end mb-4 w-8 h-8 flex flex-col items-center justify-center gap-[5px] rounded-xl border border-black/12 dark:border-white/12 text-foreground"
           onClick={() => setMobileOpen((v) => !v)}
         >
-          <svg
-            aria-hidden="true"
-            fill="none"
-            height="18"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeWidth="1.5"
-            viewBox="0 0 18 18"
-            width="18"
-          >
-            <path d="M2 4.5h14M2 9h14M2 13.5h14" />
-          </svg>
+          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 rotate-45 translate-y-[6.5px]" : "w-4"}`} />
+          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 ${mobileOpen ? "w-0 opacity-0" : "w-3"}`} />
+          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 -rotate-45 -translate-y-[6.5px]" : "w-4"}`} />
         </button>
 
         <div className="flex gap-6 flex-1 relative">
+          {/* ── Mobile backdrop ── */}
+          {mobileOpen && (
+            <div
+              className="fixed inset-0 z-40 bg-black/15 dark:bg-black/40 backdrop-blur-sm sm:hidden"
+              onClick={() => setMobileOpen(false)}
+            />
+          )}
+
           {/* ── Sidebar ── */}
           <aside
             aria-label={t("nav.campusNavigation")}
-            className={`${mobileOpen ? "block" : "hidden"} sm:block w-56 lg:w-60 shrink-0`}
+            className={`fixed top-0 left-0 z-50 h-full w-72 bg-background sm:relative sm:w-56 lg:w-60 shrink-0 transform transition-transform duration-300 ease-out sm:transform-none ${
+              mobileOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
+            }`}
             id="campus-sidebar"
           >
             <nav
               aria-label={t("nav.campusSections")}
-              className="flex flex-col gap-0.5 sticky top-20 h-[calc(100vh-6rem)] overflow-y-auto overscroll-contain pb-4"
+              className="flex flex-col gap-0.5 sticky top-20 h-[calc(100vh-6rem)] overflow-y-auto overscroll-contain pb-4 pt-14 sm:pt-0"
             >
+              {/* Mobile close button */}
+              <button
+                aria-label={t("nav.blogClose")}
+                className="sm:hidden absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/5 dark:hover:bg-white/8 transition-colors text-muted"
+                onClick={() => setMobileOpen(false)}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
               {/* Brand */}
               <Link
                 className="flex items-center gap-2.5 px-1 mb-4 no-underline group"
