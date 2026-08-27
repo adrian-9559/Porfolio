@@ -413,10 +413,13 @@ function AparienciaTab() {
 
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem("theme");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      setThemeState(parsed?.state?.theme ?? "system");
+    const root = document.documentElement;
+    if (root.classList.contains("dark")) {
+      setThemeState("dark");
+    } else if (root.classList.contains("light")) {
+      setThemeState("light");
+    } else {
+      setThemeState("system");
     }
   }, []);
 
@@ -426,13 +429,16 @@ function AparienciaTab() {
     if (id === "light") {
       root.classList.remove("dark");
       root.classList.add("light");
+      localStorage.setItem("theme", JSON.stringify({ state: { theme: "light" } }));
     } else if (id === "dark") {
       root.classList.remove("light");
       root.classList.add("dark");
+      localStorage.setItem("theme", JSON.stringify({ state: { theme: "dark" } }));
     } else {
       root.classList.remove("light", "dark");
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       root.classList.add(prefersDark ? "dark" : "light");
+      localStorage.removeItem("theme");
     }
   }
 
