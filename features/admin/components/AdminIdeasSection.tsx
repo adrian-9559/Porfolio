@@ -337,9 +337,9 @@ export function AdminIdeasSection() {
 
       {/* Description Modal */}
       {viewingDesc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => setViewingDesc(null)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200" onClick={() => setViewingDesc(null)}>
           <div
-            className="w-full max-w-lg bg-white dark:bg-[#111116] rounded-2xl border border-black/8 dark:border-white/8 shadow-2xl overflow-hidden"
+            className="w-full max-w-lg bg-white dark:bg-[#111116] rounded-2xl border border-black/8 dark:border-white/8 shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative p-6">
