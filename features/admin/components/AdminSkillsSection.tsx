@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import { SectionHeader, Card } from "./AdminShared";
-
 import { useT } from "@/hooks/useT";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -542,14 +540,28 @@ const PLUGINS: Plugin[] = [
 
 // ── Config ─────────────────────────────────────────────────────────────────────
 
-const CATEGORIES: { key: Category | "all"; label: string; icon: string }[] = [
-  { key: "all", label: "Todas", icon: "📦" },
-  { key: "design", label: "Diseño", icon: "🎨" },
-  { key: "frontend", label: "Frontend", icon: "🌐" },
-  { key: "mobile", label: "Mobile", icon: "📱" },
-  { key: "backend", label: "Backend", icon: "⚡" },
-  { key: "database", label: "Base de Datos", icon: "🗃️" },
-  { key: "tools", label: "Herramientas", icon: "🔧" },
+const CATEGORIES: { key: Category | "all"; label: string; icon: React.ReactElement }[] = [
+  { key: "all", label: "Todas", icon: (
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+  ) },
+  { key: "design", label: "Diseño", icon: (
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><circle cx="8.5" cy="15.5" r="2.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></svg>
+  ) },
+  { key: "frontend", label: "Frontend", icon: (
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+  ) },
+  { key: "mobile", label: "Mobile", icon: (
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+  ) },
+  { key: "backend", label: "Backend", icon: (
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+  ) },
+  { key: "database", label: "Base de Datos", icon: (
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+  ) },
+  { key: "tools", label: "Herramientas", icon: (
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+  ) },
 ];
 
 const CATEGORY_COLORS: Record<Category, string> = {
@@ -601,25 +613,35 @@ export function AdminSkillsSection() {
   }));
 
   return (
-    <div className="flex flex-col gap-5">
-      <SectionHeader
-        desc={`${SKILLS.length} skills · ${PLUGINS.length} plugins/MCPs · inventario completo del agente`}
-        title="Skills & Plugins"
-      />
+    <div className="relative flex flex-col gap-6">
+      {/* Decorative blobs */}
+      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-fuchsia-500/8 to-pink-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-pink-500/6 to-fuchsia-500/4 blur-3xl pointer-events-none" />
 
-      {/* Stats bar */}
-      <div className="flex gap-3 flex-wrap">
+      {/* Header */}
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-fuchsia-600 dark:text-fuchsia-400 mb-1">Herramientas</p>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
+          Skills & Plugins
+        </h1>
+        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+          {SKILLS.length} skills · {PLUGINS.length} plugins/MCPs · inventario completo del agente
+        </p>
+      </div>
+
+      {/* Category filter pills */}
+      <div className="flex gap-1.5 flex-wrap">
         {catCounts.map((c) => (
           <button
             key={c.key}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
               cat === c.key
-                ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]"
-                : "border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"
+                ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
+                : "text-[#6e6e73] dark:text-[#86868b] bg-black/5 dark:bg-white/5 hover:text-[#1d1d1f] dark:hover:text-white"
             }`}
             onClick={() => setCat(c.key)}
           >
-            <span>{c.icon}</span>
+            {c.icon}
             {c.label}
             <span className="ml-1 px-1.5 py-0.5 rounded-full bg-black/10 dark:bg-white/10 text-[10px] font-mono">
               {c.count}
@@ -630,30 +652,18 @@ export function AdminSkillsSection() {
 
       {/* Search */}
       <div className="relative">
-        <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#aeaeb2]"
-          fill="none"
-          height="13"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeWidth="1.5"
-          viewBox="0 0 16 16"
-          width="13"
-        >
-          <circle cx="7" cy="7" r="4.5" />
-          <path d="M10.5 10.5L14 14" />
-        </svg>
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         <input
-          className="w-full pl-8 pr-3 py-2 text-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2]"
+          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30 focus:border-fuchsia-500 transition-all"
           placeholder="Buscar skill por nombre o descripción…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      {/* Skills list */}
+      {/* Skills grid */}
       {filtered.length === 0 ? (
-        <Card className="p-8 text-center">
+        <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 p-8 text-center transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
           <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
             No skills match{" "}
             {search && (
@@ -662,91 +672,97 @@ export function AdminSkillsSection() {
               </span>
             )}
           </p>
-        </Card>
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {filtered.map((skill) => (
-            <Card
+            <div
               key={skill.name}
-              className="p-4 flex flex-col gap-2.5 hover:shadow-md transition-shadow"
+              className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 group"
             >
-              {/* Header */}
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
-                    {skill.name}
-                  </p>
-                  <span
-                    className={`inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[skill.category]}`}
-                  >
-                    {CATEGORIES.find((c) => c.key === skill.category)?.icon}{" "}
-                    {CATEGORIES.find((c) => c.key === skill.category)?.label}
-                  </span>
-                </div>
-              </div>
-
-              {/* Description */}
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed line-clamp-2">
-                {skill.description}
-              </p>
-
-              {/* File locations */}
-              <div className="flex flex-col gap-1 mt-1">
-                <p className="text-[10px] font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider">
-                  Ubicaciones
-                </p>
-                {skill.files.map((f, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-1.5 text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b]"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                    <span className="truncate">{f.path}</span>
-                    <span className="shrink-0 text-[9px] px-1 py-0.5 rounded bg-black/5 dark:bg-white/5 text-[#aeaeb2] font-medium">
-                      {SCOPE_LABELS[f.scope] ?? f.scope}
+              <div className="h-1 bg-gradient-to-r from-fuchsia-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="p-4 flex flex-col gap-2.5">
+                {/* Header */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
+                      {skill.name}
+                    </p>
+                    <span
+                      className={`inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[skill.category]}`}
+                    >
+                      {CATEGORIES.find((c) => c.key === skill.category)?.label}
                     </span>
                   </div>
-                ))}
+                </div>
+
+                {/* Description */}
+                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed line-clamp-2">
+                  {skill.description}
+                </p>
+
+                {/* File locations */}
+                <div className="flex flex-col gap-1 mt-1">
+                  <p className="text-[10px] font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider">
+                    Ubicaciones
+                  </p>
+                  {skill.files.map((f, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-1.5 text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b]"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 shrink-0" />
+                      <span className="truncate">{f.path}</span>
+                      <span className="shrink-0 text-[9px] px-1 py-0.5 rounded bg-black/5 dark:bg-white/5 text-[#aeaeb2] font-medium">
+                        {SCOPE_LABELS[f.scope] ?? f.scope}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       )}
 
       {/* Plugins & MCP section */}
-      <div className="mt-6">
-        <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white mb-3">
-          🔌 Plugins & MCP Servers
+      <div className="mt-2">
+        <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white mb-3 flex items-center gap-2">
+          <svg className="w-4 h-4 text-fuchsia-500" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+          Plugins & MCP Servers
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {PLUGINS.map((p) => (
-            <Card
+            <div
               key={p.name}
-              className="p-4 flex flex-col gap-2 hover:shadow-md transition-shadow"
+              className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 group"
             >
-              <div className="flex items-center gap-2">
-                <span
-                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                    p.type === "mcp"
-                      ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400"
-                      : p.type === "npm"
-                        ? "bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400"
-                        : "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400"
-                  }`}
-                >
-                  {p.type.toUpperCase()}
-                </span>
-                <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
-                  {p.name}
+              <div className="h-1 bg-gradient-to-r from-fuchsia-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="p-4 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                      p.type === "mcp"
+                        ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400"
+                        : p.type === "npm"
+                          ? "bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400"
+                          : "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400"
+                    }`}
+                  >
+                    {p.type.toUpperCase()}
+                  </span>
+                  <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                    {p.name}
+                  </p>
+                </div>
+                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+                  {p.description}
+                </p>
+                <p className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366]">
+                  {p.details}
                 </p>
               </div>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
-                {p.description}
-              </p>
-              <p className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366]">
-                {p.details}
-              </p>
-            </Card>
+            </div>
           ))}
         </div>
       </div>

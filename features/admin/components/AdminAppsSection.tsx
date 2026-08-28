@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 
-import { SectionHeader, Card, EmptyState, Spinner } from "./AdminShared";
-
 import { useT } from "@/hooks/useT";
 import {
   mobileAppService,
@@ -99,6 +97,7 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
         className="w-full max-w-md bg-white dark:bg-[#111116] rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-black/8 dark:border-white/8">
           <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white">
             {initial ? t("admin.editApp") : t("admin.newApp")}
@@ -312,6 +311,7 @@ function UploadModal({
         className="w-full max-w-md bg-white dark:bg-[#111116] rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-black/8 dark:border-white/8">
           <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white">
             {t("admin.newVersion")}
@@ -559,6 +559,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
         className="w-full max-w-2xl bg-white dark:bg-[#111116] rounded-2xl shadow-2xl overflow-hidden max-h-[80vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-black/8 dark:border-white/8">
           <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white">
             {app.icon_emoji && <span className="mr-2">{app.icon_emoji}</span>}
@@ -600,11 +601,17 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
         <div className="overflow-y-auto flex-1">
           {error && <p className="mx-6 my-3 text-sm text-red-500">{error}</p>}
           {loading ? (
-            <div className="py-8">
-              <Spinner />
+            <div className="py-8 flex justify-center">
+              <div className="w-6 h-6 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
             </div>
           ) : versions.length === 0 ? (
-            <EmptyState sub="Sube la primera versión." text="Sin versiones" />
+            <div className="p-10 text-center">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-md mx-auto mb-3">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </div>
+              <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">Sin versiones</p>
+              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">Sube la primera versión.</p>
+            </div>
           ) : (
             <table className="w-full text-sm">
               <thead>
@@ -738,29 +745,39 @@ export function AdminAppsSection() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <SectionHeader
-        action={
-          <button
-            className="flex items-center gap-2 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium px-4 py-2 rounded-xl hover:opacity-80 transition-opacity"
-            onClick={() => setShowNewApp(true)}
+    <div className="relative flex flex-col gap-6">
+      {/* Decorative blobs */}
+      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-blue-500/8 to-cyan-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-cyan-500/6 to-blue-500/4 blur-3xl pointer-events-none" />
+
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1">Distribución</p>
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
+            Aplicaciones
+          </h1>
+          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+            Gestiona las apps publicadas y sus versiones.
+          </p>
+        </div>
+        <button
+          className="flex items-center gap-2 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium px-4 py-2 rounded-xl hover:opacity-80 transition-opacity shrink-0"
+          onClick={() => setShowNewApp(true)}
+        >
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeWidth="2"
+            viewBox="0 0 16 16"
           >
-            <svg
-              className="w-3.5 h-3.5"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeWidth="2"
-              viewBox="0 0 16 16"
-            >
-              <path d="M8 2v12M2 8h12" />
-            </svg>
-            Nueva app
-          </button>
-        }
-        desc="Gestiona las apps publicadas y sus versiones."
-        title="Aplicaciones"
-      />
+            <path d="M8 2v12M2 8h12" />
+          </svg>
+          Nueva app
+        </button>
+      </div>
 
       {error && (
         <div className="px-4 py-2.5 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 text-sm text-red-600 dark:text-red-400">
@@ -768,26 +785,33 @@ export function AdminAppsSection() {
         </div>
       )}
 
-      <Card>
+      {/* Apps list */}
+      <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
+        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
         {loading ? (
-          <Spinner />
+          <div className="py-8 flex justify-center">
+            <div className="w-6 h-6 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+          </div>
         ) : apps.length === 0 ? (
-          <EmptyState
-            sub="Crea la primera con el botón de arriba."
-            text="Sin apps"
-          />
+          <div className="p-10 text-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-md mx-auto mb-3">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
+            <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">Sin apps</p>
+            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">Crea la primera con el botón de arriba.</p>
+          </div>
         ) : (
-          <div className="grid gap-3 p-1">
+          <div className="divide-y divide-black/5 dark:divide-white/5">
             {apps.map((app) => (
               <div
                 key={app.id}
-                className="flex items-center gap-4 p-4 rounded-xl border border-black/8 dark:border-white/8 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
+                className="flex items-center gap-4 px-5 py-4 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
               >
                 <div
                   className="w-10 h-10 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
                   style={{ background: `${app.accent_color}20` }}
                 >
-                  {app.icon_emoji ?? "📱"}
+                  {app.icon_emoji ?? <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -843,7 +867,7 @@ export function AdminAppsSection() {
             ))}
           </div>
         )}
-      </Card>
+      </div>
 
       {showNewApp && (
         <AppModal

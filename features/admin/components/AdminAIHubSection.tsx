@@ -215,6 +215,7 @@ export function AdminAIHubSection() {
   const [editItem, setEditItem] = useState<any>(null);
   const [form, setForm] = useState<any>({});
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -267,11 +268,11 @@ export function AdminAIHubSection() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("¿Eliminar?")) return;
     try {
       if (tab === "mcps") await aiHubService.deleteMCP(id);
       else if (tab === "skills") await aiHubService.deleteSkill(id);
       else await aiHubService.deleteModel(id);
+      setDeletingId(null);
       load();
     } catch {}
   };
@@ -434,9 +435,15 @@ export function AdminAIHubSection() {
                         <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(mcp)} type="button">
                           <IconEdit />
                         </button>
-                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => handleDelete(mcp.id)} type="button">
+                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => setDeletingId(deletingId === mcp.id ? null : mcp.id)} type="button">
                           <IconTrash />
                         </button>
+                        {deletingId === mcp.id && (
+                          <div className="flex items-center gap-1">
+                            <button className="px-2 py-1 rounded-lg bg-red-500 text-white text-[10px] font-semibold" onClick={() => handleDelete(mcp.id)} type="button">Sí</button>
+                            <button className="px-2 py-1 rounded-lg bg-black/5 dark:bg-white/8 text-[10px] text-[#6e6e73] dark:text-[#86868b]" onClick={() => setDeletingId(null)} type="button">No</button>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">{mcp.name}</h3>
@@ -462,9 +469,15 @@ export function AdminAIHubSection() {
                         <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(skill)} type="button">
                           <IconEdit />
                         </button>
-                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => handleDelete(skill.id)} type="button">
+                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => setDeletingId(deletingId === skill.id ? null : skill.id)} type="button">
                           <IconTrash />
                         </button>
+                        {deletingId === skill.id && (
+                          <div className="flex items-center gap-1">
+                            <button className="px-2 py-1 rounded-lg bg-red-500 text-white text-[10px] font-semibold" onClick={() => handleDelete(skill.id)} type="button">Sí</button>
+                            <button className="px-2 py-1 rounded-lg bg-black/5 dark:bg-white/8 text-[10px] text-[#6e6e73] dark:text-[#86868b]" onClick={() => setDeletingId(null)} type="button">No</button>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">{skill.name}</h3>
@@ -510,9 +523,15 @@ export function AdminAIHubSection() {
                         <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(model)} type="button">
                           <IconEdit />
                         </button>
-                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => handleDelete(model.id)} type="button">
+                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => setDeletingId(deletingId === model.id ? null : model.id)} type="button">
                           <IconTrash />
                         </button>
+                        {deletingId === model.id && (
+                          <div className="flex items-center gap-1">
+                            <button className="px-2 py-1 rounded-lg bg-red-500 text-white text-[10px] font-semibold" onClick={() => handleDelete(model.id)} type="button">Sí</button>
+                            <button className="px-2 py-1 rounded-lg bg-black/5 dark:bg-white/8 text-[10px] text-[#6e6e73] dark:text-[#86868b]" onClick={() => setDeletingId(null)} type="button">No</button>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">{model.name}</h3>

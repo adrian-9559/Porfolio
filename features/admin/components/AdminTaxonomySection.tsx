@@ -23,24 +23,15 @@ const RELATION_LABEL: Record<RelationType, string> = {
 };
 
 const RELATION_COLOR: Record<RelationType, string> = {
-  prerequisite:
-    "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30",
+  prerequisite: "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30",
   related: "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30",
   next: "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30",
-  deepdive:
-    "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30",
+  deepdive: "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30",
 };
 
 const TAB_ICONS: Record<Tab, React.ReactElement> = {
   categories: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14">
       <rect height="5" rx="1.5" width="5" x="1" y="1" />
       <rect height="5" rx="1.5" width="5" x="8" y="1" />
       <rect height="5" rx="1.5" width="5" x="1" y="8" />
@@ -48,38 +39,17 @@ const TAB_ICONS: Record<Tab, React.ReactElement> = {
     </svg>
   ),
   levels: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14">
       <path d="M2 11h2V7H2zM6 11h2V4H6zM10 11h2V1h-2z" />
     </svg>
   ),
   paths: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14">
       <path d="M1 13L5 7l3 3 5-7" />
     </svg>
   ),
   relationships: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14">
       <circle cx="3" cy="7" r="1.5" />
       <circle cx="11" cy="3" r="1.5" />
       <circle cx="11" cy="11" r="1.5" />
@@ -87,14 +57,7 @@ const TAB_ICONS: Record<Tab, React.ReactElement> = {
     </svg>
   ),
   tags: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14">
       <path d="M1 8.5L5.5 13l7-7-4.5-4.5H2v3.5L1 8.5z" />
       <circle cx="4.5" cy="4.5" fill="currentColor" r="1" stroke="none" />
     </svg>
@@ -116,10 +79,10 @@ function TabBtn({
 }) {
   return (
     <button
-      className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
+      className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
         active
-          ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]"
-          : "text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5"
+          ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
+          : "text-[#6e6e73] dark:text-[#86868b] bg-black/5 dark:bg-white/5 hover:text-[#1d1d1f] dark:hover:text-white"
       }`}
       onClick={onClick}
     >
@@ -163,16 +126,19 @@ function CategoriesView() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3 flex-wrap">
-        <input
-          className="flex-1 min-w-[180px] px-3 py-2 rounded-xl bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-400/20"
-          placeholder="Buscar categoría..."
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="relative flex-1 min-w-[180px]">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all"
+            placeholder="Buscar categoría..."
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <div className="flex items-center gap-1.5 flex-wrap">
           <button
-            className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${activeGroup === "all" ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]" : "border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5"}`}
+            className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${activeGroup === "all" ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/10"}`}
             onClick={() => setActiveGroup("all")}
           >
             Todos
@@ -180,7 +146,7 @@ function CategoriesView() {
           {CATEGORY_GROUPS.map((g) => (
             <button
               key={g.id}
-              className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${activeGroup === g.id ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]" : "border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5"}`}
+              className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${activeGroup === g.id ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/10"}`}
               onClick={() => setActiveGroup(g.id)}
             >
               {g.label}
@@ -189,7 +155,8 @@ function CategoriesView() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-black/8 dark:border-white/8 overflow-hidden">
+      <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
+        <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-black/8 dark:border-white/8 bg-black/[0.02] dark:bg-white/[0.02]">
@@ -274,30 +241,31 @@ function LevelsView() {
           return (
             <div
               key={lvl.id}
-              className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-5 flex items-center gap-4"
+              className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20"
             >
-              <div
-                className={`w-10 h-10 rounded-xl flex items-center justify-center ${lvl.bgColor}`}
-              >
-                <span className={`text-sm font-bold ${lvl.color}`}>
-                  {lvl.id[0].toUpperCase()}
-                </span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className={`text-sm font-semibold ${lvl.color}`}>
-                  {lvl.labelEs}
-                </p>
-                <p className="text-xs text-[#aeaeb2] dark:text-[#636366] font-mono">
-                  {lvl.id}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-xl font-bold text-[#1d1d1f] dark:text-white">
-                  {count}
-                </p>
-                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-                  contenidos
-                </p>
+              <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
+              <div className="p-5 flex items-center gap-4">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${lvl.bgColor}`}>
+                  <span className={`text-sm font-bold ${lvl.color}`}>
+                    {lvl.id[0].toUpperCase()}
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm font-semibold ${lvl.color}`}>
+                    {lvl.labelEs}
+                  </p>
+                  <p className="text-xs text-[#aeaeb2] dark:text-[#636366] font-mono">
+                    {lvl.id}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xl font-bold text-[#1d1d1f] dark:text-white">
+                    {count}
+                  </p>
+                  <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
+                    contenidos
+                  </p>
+                </div>
               </div>
             </div>
           );
@@ -329,10 +297,13 @@ function PathsView() {
         return (
           <div
             key={path.id}
-            className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden"
+            className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20"
           >
+            <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
             <div className="flex items-center gap-4 px-5 py-4">
-              <span className="text-2xl">{path.icon}</span>
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shadow-md">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
                   {path.title}
@@ -389,16 +360,19 @@ function RelationshipsView() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3 flex-wrap">
-        <input
-          className="flex-1 min-w-[180px] px-3 py-2 rounded-xl bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-400/20"
-          placeholder="Filtrar por slug..."
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="relative flex-1 min-w-[180px]">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all"
+            placeholder="Filtrar por slug..."
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <div className="flex items-center gap-1.5">
           <button
-            className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${typeFilter === "all" ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f]" : "border border-black/10 dark:border-white/10 text-[#6e6e73]"}`}
+            className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${typeFilter === "all" ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b]"}`}
             onClick={() => setTypeFilter("all")}
           >
             Todos
@@ -408,7 +382,7 @@ function RelationshipsView() {
           ).map((t) => (
             <button
               key={t}
-              className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${typeFilter === t ? `${RELATION_COLOR[t]}` : "border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b]"}`}
+              className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${typeFilter === t ? `${RELATION_COLOR[t]} shadow-md` : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b]"}`}
               onClick={() => setTypeFilter(t)}
             >
               {RELATION_LABEL[t]}
@@ -417,7 +391,8 @@ function RelationshipsView() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-black/8 dark:border-white/8 overflow-hidden">
+      <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
+        <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-black/8 dark:border-white/8 bg-black/[0.02] dark:bg-white/[0.02]">
@@ -517,13 +492,16 @@ function TagsView() {
 
   return (
     <div className="space-y-4">
-      <input
-        className="w-full max-w-sm px-3 py-2 rounded-xl bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-400/20"
-        placeholder="Buscar tag..."
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="relative max-w-sm">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input
+          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all"
+          placeholder="Buscar tag..."
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
       <div className="flex flex-wrap gap-2">
         {filtered.map((tag) => {
           const count = tagCounts[tag] ?? 0;
@@ -534,16 +512,16 @@ function TagsView() {
           return (
             <div
               key={tag}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition-all ${
                 isStandard
-                  ? "border-blue-200 dark:border-blue-800/50 bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-300"
-                  : "border-black/10 dark:border-white/10 bg-white dark:bg-[#111116] text-[#6e6e73] dark:text-[#86868b]"
+                  ? "border-emerald-200 dark:border-emerald-800/50 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300"
+                  : "border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-[#6e6e73] dark:text-[#86868b]"
               }`}
             >
               <span className="font-medium">{tag}</span>
               {count > 0 && (
                 <span
-                  className={`font-bold ${isStandard ? "text-blue-500" : "text-[#aeaeb2]"}`}
+                  className={`font-bold ${isStandard ? "text-emerald-500" : "text-[#aeaeb2]"}`}
                 >
                   {count}
                 </span>
@@ -554,7 +532,7 @@ function TagsView() {
       </div>
       <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
         {filtered.length} tags ·{" "}
-        <span className="text-blue-600 dark:text-blue-400">
+        <span className="text-emerald-600 dark:text-emerald-400">
           {STANDARD_TAGS.filter((t) => filtered.includes(t)).length} estándar
         </span>{" "}
         ·{" "}
@@ -582,11 +560,7 @@ export default function AdminTaxonomySection() {
     { id: "categories", label: "Categorías", count: CATEGORIES.length },
     { id: "levels", label: "Niveles", count: LEVELS.length },
     { id: "paths", label: "Rutas", count: LEARNING_PATHS.length },
-    {
-      id: "relationships",
-      label: "Relaciones",
-      count: CONTENT_RELATIONSHIPS.length,
-    },
+    { id: "relationships", label: "Relaciones", count: CONTENT_RELATIONSHIPS.length },
     { id: "tags", label: "Tags", count: allTagsCount },
   ];
 
@@ -594,45 +568,58 @@ export default function AdminTaxonomySection() {
     {
       label: "Contenidos",
       value: allContent.length,
-      icon: "📄",
-      color: "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400",
+      gradient: "from-emerald-500 to-teal-500",
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      ),
     },
     {
       label: "Categorías",
       value: CATEGORIES.length,
-      icon: "🏷️",
-      color:
-        "bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400",
+      gradient: "from-teal-500 to-cyan-500",
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      ),
     },
     {
       label: "Rutas",
       value: LEARNING_PATHS.length,
-      icon: "🗺️",
-      color:
-        "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400",
+      gradient: "from-green-500 to-emerald-500",
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      ),
     },
     {
       label: "Relaciones",
       value: CONTENT_RELATIONSHIPS.length,
-      icon: "🔗",
-      color:
-        "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400",
+      gradient: "from-emerald-500 to-green-500",
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+      ),
     },
     {
       label: "Tags",
       value: allTagsCount,
-      icon: "🔖",
-      color: "bg-pink-50 dark:bg-pink-950/30 text-pink-600 dark:text-pink-400",
+      gradient: "from-teal-500 to-emerald-500",
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      ),
     },
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="relative flex flex-col gap-6">
+      {/* Decorative blobs */}
+      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-emerald-500/8 to-teal-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-teal-500/6 to-emerald-500/4 blur-3xl pointer-events-none" />
+
+      {/* Header */}
       <div>
-        <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">
+        <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-1">Contenido</p>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
           Taxonomía educativa
-        </h2>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+        </h1>
+        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
           Categorías, niveles, rutas de aprendizaje, relaciones y tags del blog.
         </p>
       </div>
@@ -642,25 +629,27 @@ export default function AdminTaxonomySection() {
         {stats.map((s) => (
           <div
             key={s.label}
-            className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-4 flex items-center gap-3"
+            className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20"
           >
-            <div
-              className={`w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0 ${s.color}`}
-            >
-              {s.icon}
-            </div>
-            <div>
-              <p className="text-xl font-bold text-[#1d1d1f] dark:text-white leading-tight">
-                {s.value}
-              </p>
-              <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-                {s.label}
-              </p>
+            <div className={`h-1 bg-gradient-to-r ${s.gradient}`} />
+            <div className="p-4 flex items-center gap-3">
+              <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center text-white shadow-md shrink-0`}>
+                {s.icon}
+              </div>
+              <div>
+                <p className="text-xl font-bold text-[#1d1d1f] dark:text-white leading-tight">
+                  {s.value}
+                </p>
+                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
+                  {s.label}
+                </p>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
+      {/* Tabs */}
       <div className="flex items-center gap-1 p-1.5 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/5 dark:border-white/5 w-fit">
         {tabs.map((t) => (
           <TabBtn
