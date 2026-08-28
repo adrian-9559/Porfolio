@@ -2011,6 +2011,84 @@
       "backend": "Backend",
       "ai": "IA & Agentes",
       "systems": "Sistemas y Bajo Nivel"
+    },
+    "progress": {
+      "completed": "Completado",
+      "inProgress": "En progreso",
+      "notStarted": "Sin empezar",
+      "markComplete": "Marcar como completado",
+      "alreadyCompleted": "Ya completado"
+    },
+    "quiz": {
+      "title": "Evaluación",
+      "start": "Empezar quiz",
+      "timeLeft": "Tiempo restante",
+      "submit": "Enviar respuestas",
+      "passed": "¡Aprobado!",
+      "failed": "No aprobado",
+      "score": "Puntuación",
+      "retry": "Reintentar",
+      "attemptsLeft": "{n} intentos restantes",
+      "noAttempts": "Sin intentos hoy",
+      "passingScore": "Puntuación mínima",
+      "questions": "Preguntas",
+      "of": "de"
+    },
+    "leaderboard": {
+      "title": "Clasificación",
+      "yourRank": "Tu posición",
+      "rank": "Posición",
+      "level": "Nivel",
+      "xp": "XP",
+      "tutorials": "Tutoriales",
+      "quizzes": "Quizzes",
+      "streak": "Racha",
+      "noData": "Aún no hay datos de clasificación"
+    },
+    "badges": {
+      "title": "Logros",
+      "earned": "Obtenidos",
+      "locked": "Bloqueados",
+      "milestone": "Hito",
+      "streak": "Racha",
+      "quiz": "Evaluación",
+      "completion": "Completado",
+      "congratulations": "¡Felicitaciones!",
+      "unlocked": "desbloqueado",
+      "xpReward": "+{n} XP"
+    },
+    "streak": {
+      "current": "Racha actual",
+      "best": "Mejor racha",
+      "days": "{n} días",
+      "frozen": "Riesgo de perder racha",
+      "calendar": "Actividad reciente"
+    },
+    "notes": {
+      "title": "Mis notas",
+      "placeholder": "Escribe tus notas sobre este tutorial...",
+      "saved": "Nota guardada",
+      "empty": "Aún no tienes notas"
+    },
+    "bookmarks": {
+      "title": "Favoritos",
+      "add": "Añadir a favoritos",
+      "remove": "Quitar de favoritos",
+      "empty": "No tienes tutoriales guardados",
+      "added": "Guardado en favoritos",
+      "removed": "Eliminado de favoritos"
+    },
+    "xp": {
+      "level": "Nivel",
+      "total": "XP total",
+      "nextLevel": "XP para siguiente nivel",
+      "earned": "+{n} XP ganados"
+    },
+    "tabs": {
+      "guides": "Rutas",
+      "tutorials": "Tutoriales",
+      "ranking": "Clasificación",
+      "achievements": "Logros"
     }
   },
   "footer": {

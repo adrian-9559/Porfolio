@@ -2009,6 +2009,84 @@
       "backend": "Backend",
       "ai": "AI & Agents",
       "systems": "Systems & Low-level"
+    },
+    "progress": {
+      "completed": "Completed",
+      "inProgress": "In progress",
+      "notStarted": "Not started",
+      "markComplete": "Mark as completed",
+      "alreadyCompleted": "Already completed"
+    },
+    "quiz": {
+      "title": "Assessment",
+      "start": "Start quiz",
+      "timeLeft": "Time remaining",
+      "submit": "Submit answers",
+      "passed": "Passed!",
+      "failed": "Not passed",
+      "score": "Score",
+      "retry": "Retry",
+      "attemptsLeft": "{n} attempts remaining",
+      "noAttempts": "No attempts today",
+      "passingScore": "Passing score",
+      "questions": "Questions",
+      "of": "of"
+    },
+    "leaderboard": {
+      "title": "Leaderboard",
+      "yourRank": "Your rank",
+      "rank": "Rank",
+      "level": "Level",
+      "xp": "XP",
+      "tutorials": "Tutorials",
+      "quizzes": "Quizzes",
+      "streak": "Streak",
+      "noData": "No leaderboard data yet"
+    },
+    "badges": {
+      "title": "Achievements",
+      "earned": "Earned",
+      "locked": "Locked",
+      "milestone": "Milestone",
+      "streak": "Streak",
+      "quiz": "Quiz",
+      "completion": "Completion",
+      "congratulations": "Congratulations!",
+      "unlocked": "unlocked",
+      "xpReward": "+{n} XP"
+    },
+    "streak": {
+      "current": "Current streak",
+      "best": "Best streak",
+      "days": "{n} days",
+      "frozen": "Streak at risk",
+      "calendar": "Recent activity"
+    },
+    "notes": {
+      "title": "My notes",
+      "placeholder": "Write your notes about this tutorial...",
+      "saved": "Note saved",
+      "empty": "No notes yet"
+    },
+    "bookmarks": {
+      "title": "Bookmarks",
+      "add": "Add to bookmarks",
+      "remove": "Remove from bookmarks",
+      "empty": "No saved tutorials",
+      "added": "Saved to bookmarks",
+      "removed": "Removed from bookmarks"
+    },
+    "xp": {
+      "level": "Level",
+      "total": "Total XP",
+      "nextLevel": "XP to next level",
+      "earned": "+{n} XP earned"
+    },
+    "tabs": {
+      "guides": "Paths",
+      "tutorials": "Tutorials",
+      "ranking": "Leaderboard",
+      "achievements": "Achievements"
     }
   },
   "footer": {
