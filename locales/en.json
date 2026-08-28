@@ -1973,6 +1973,10 @@
     "tagline": "Your learning path",
     "heroDesc": "Step-by-step tutorials organized in paths. From beginner to advanced.",
     "startLearning": "Start learning",
+    "continueLearning": "Continue learning",
+    "sidebar": {
+      "yourProgress": "Your progress"
+    },
     "stats": {
       "tutorials": "Tutorials",
       "guides": "Learning paths",

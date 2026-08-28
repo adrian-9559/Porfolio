@@ -1975,6 +1975,10 @@
     "tagline": "Tu ruta de aprendizaje",
     "heroDesc": "Tutoriales paso a paso organizados en rutas. De cero a avanzado.",
     "startLearning": "Empezar a aprender",
+    "continueLearning": "Continuar aprendiendo",
+    "sidebar": {
+      "yourProgress": "Tu progreso"
+    },
     "stats": {
       "tutorials": "Tutoriales",
       "guides": "Rutas de aprendizaje",

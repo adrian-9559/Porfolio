@@ -18,6 +18,7 @@ import {
   IconBook,
   IconClock,
   IconChevronLeft,
+  IconChevronRight,
 } from "@/components/blog/shared";
 import { LevelBadge } from "@/components/blog/TaxonomyMeta";
 import { siteConfig } from "@/config/site";
@@ -30,6 +31,8 @@ interface Props {
   guide: NonNullable<ReturnType<typeof getGuideBySlug>>;
   curriculum: (ContentMeta & { optional?: boolean })[];
   totalMinutes: number;
+  prevGuide: { slug: string; title: string } | null;
+  nextGuide: { slug: string; title: string } | null;
 }
 
 function levelLabel(
@@ -40,7 +43,7 @@ function levelLabel(
   return l ? t(l.labelKey) : level;
 }
 
-export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
+export default function GuidePage({ guide, curriculum, totalMinutes, prevGuide, nextGuide }: Props) {
   const { t } = useT();
   const { isAuthenticated } = useAuth();
   const [completedSlugs, setCompletedSlugs] = useState<Set<string>>(new Set());
@@ -203,14 +206,43 @@ export default function GuidePage({ guide, curriculum, totalMinutes }: Props) {
         </section>
 
         {/* Footer */}
-        <div className="pt-6 border-t border-black/8 dark:border-white/8 flex items-center justify-between">
-          <Link
-            className="inline-flex items-center gap-2 text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
-            href="/campus/guias"
-          >
-            <IconChevronLeft className="w-4 h-4" />
-            {t("blog.allGuides")}
-          </Link>
+        <div className="pt-6 border-t border-black/8 dark:border-white/8 space-y-4">
+          {/* Prev/Next navigation */}
+          <div className="flex items-center justify-between gap-4">
+            {prevGuide ? (
+              <Link
+                className="flex items-center gap-2 text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
+                href={`/campus/guias/${prevGuide.slug}`}
+              >
+                <IconChevronLeft className="w-4 h-4" />
+                <span className="truncate max-w-[180px]">{prevGuide.title}</span>
+              </Link>
+            ) : (
+              <div />
+            )}
+            {nextGuide ? (
+              <Link
+                className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors no-underline"
+                href={`/campus/guias/${nextGuide.slug}`}
+              >
+                <span className="truncate max-w-[180px]">{nextGuide.title}</span>
+                <IconChevronRight className="w-4 h-4" />
+              </Link>
+            ) : (
+              <div />
+            )}
+          </div>
+
+          {/* Back to guides */}
+          <div className="flex justify-center">
+            <Link
+              className="inline-flex items-center gap-2 text-sm text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors no-underline"
+              href="/campus/guias"
+            >
+              <IconChevronLeft className="w-4 h-4" />
+              {t("blog.allGuides")}
+            </Link>
+          </div>
         </div>
       </div>
     </CampusLayout>
@@ -229,11 +261,23 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params?.slug as string;
   const guide = getGuideBySlug(slug);
   if (!guide) return { notFound: true };
+
+  const guides = getGuides();
+  const guideIdx = guides.findIndex((g) => g.slug === slug);
+  const prevGuide = guideIdx > 0
+    ? { slug: guides[guideIdx - 1].slug, title: guides[guideIdx - 1].title }
+    : null;
+  const nextGuide = guideIdx < guides.length - 1
+    ? { slug: guides[guideIdx + 1].slug, title: guides[guideIdx + 1].title }
+    : null;
+
   return {
     props: {
       guide,
       curriculum: resolveCurriculumMeta(guide),
       totalMinutes: guideTotalMinutes(guide),
+      prevGuide,
+      nextGuide,
     },
   };
 };

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -9,7 +9,6 @@ import {
   getGuides,
   getCategoriesByType,
   guideTotalMinutes,
-  formatDate,
   ContentMeta,
 } from "@/lib/blog/registry";
 import { LEVELS, getCategory } from "@/lib/blog/taxonomy";
@@ -32,11 +31,11 @@ import type { CampusProgress, CampusUserXP } from "@/types/campus";
 
 const allTutorials = getContentByType("tutorial");
 const allGuides = getGuides();
+const featuredGuides = allGuides.filter((g) => g.featured).slice(0, 6);
 
-// ── Tutorial card (minimal) ──────────────────────────────────────────────────
+// ── Tutorial card ─────────────────────────────────────────────────────────────
 
 function TutorialCard({ item, completed }: { item: ContentMeta; completed: boolean }) {
-  const { t } = useT();
   return (
     <Link className="group block no-underline" href={`/campus/tutoriales/${item.slug}`}>
       <div className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 ${
@@ -76,7 +75,7 @@ function TutorialCard({ item, completed }: { item: ContentMeta; completed: boole
   );
 }
 
-// ── Guide card (minimal) ─────────────────────────────────────────────────────
+// ── Guide card ────────────────────────────────────────────────────────────────
 
 function GuideCard({ guide, progress }: { guide: (typeof allGuides)[number]; progress: number }) {
   const { t } = useT();
@@ -115,6 +114,63 @@ function GuideCard({ guide, progress }: { guide: (typeof allGuides)[number]; pro
   );
 }
 
+// ── Continue Learning ─────────────────────────────────────────────────────────
+
+function ContinueLearning({ progress, guides }: { progress: CampusProgress[]; guides: typeof allGuides }) {
+  const { t } = useT();
+
+  const inProgress = useMemo(() => {
+    const completedSlugs = new Set(progress.map((p) => p.tutorial_slug));
+    return guides
+      .map((guide) => {
+        const total = guide.curriculum.length;
+        const completed = guide.curriculum.filter((s) => completedSlugs.has(s.slug)).length;
+        return { guide, total, completed, pct: total > 0 ? Math.round((completed / total) * 100) : 0 };
+      })
+      .filter((g) => g.completed > 0 && g.pct < 100)
+      .sort((a, b) => b.pct - a.pct)
+      .slice(0, 3);
+  }, [progress, guides]);
+
+  if (inProgress.length === 0) return null;
+
+  return (
+    <section className="space-y-3">
+      <div className="flex items-center gap-2">
+        <h2 className="text-[10px] font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest">
+          {t("campus.continueLearning")}
+        </h2>
+        <span className="flex-1 h-px bg-black/8 dark:bg-white/8" />
+      </div>
+      <div className="space-y-2">
+        {inProgress.map(({ guide, total, completed, pct }) => (
+          <Link
+            key={guide.id}
+            className="group flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-emerald-300/60 dark:hover:border-emerald-700/60 hover:shadow-md transition-all no-underline"
+            href={`/campus/guias/${guide.slug}`}
+          >
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+              <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{pct}%</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
+                {guide.title}
+              </h3>
+              <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
+                {completed}/{total} {t("blog.tutorialPlural").toLowerCase()}
+              </p>
+            </div>
+            <ProgressBar completed={completed} total={total} />
+            <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform flex-shrink-0">
+              →
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function CampusPage() {
@@ -138,6 +194,9 @@ export default function CampusPage() {
   );
 
   const completedSlugs = useMemo(() => new Set(progress.map((p) => p.tutorial_slug)), [progress]);
+
+  const totalCompleted = completedSlugs.size;
+  const totalTutorials = allTutorials.length;
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -202,11 +261,21 @@ export default function CampusPage() {
             </div>
           </div>
 
-          {/* XP + Streak (if authenticated) */}
-          {isAuthenticated && xp && (
-            <div className="flex items-center gap-4">
-              <XpBadge xp={xp.total_xp} level={xp.level} />
-              <StreakCalendar />
+          {/* XP + Streak + Progress (if authenticated) */}
+          {isAuthenticated && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-4">
+                <XpBadge xp={xp?.total_xp ?? 0} level={xp?.level ?? 1} />
+                <StreakCalendar />
+              </div>
+              {totalCompleted > 0 && (
+                <div className="flex items-center gap-3">
+                  <ProgressBar completed={totalCompleted} total={totalTutorials} />
+                  <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366] whitespace-nowrap">
+                    {totalCompleted}/{totalTutorials}
+                  </span>
+                </div>
+              )}
             </div>
           )}
         </header>
@@ -231,19 +300,49 @@ export default function CampusPage() {
 
         {/* Tab content */}
         {activeTab === "guides" && (
-          <section className="space-y-4">
-            <div className="flex items-center gap-2">
-              <h2 className="text-[10px] font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest">
-                {t("campus.section.guides")}
-              </h2>
-              <span className="flex-1 h-px bg-black/8 dark:bg-white/8" />
+          <div className="space-y-6">
+            {/* Continue Learning */}
+            {isAuthenticated && <ContinueLearning progress={progress} guides={allGuides} />}
+
+            {/* Featured Guides */}
+            <section className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-[10px] font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest">
+                    {t("campus.section.guides")}
+                  </h2>
+                  <span className="flex-1 h-px bg-black/8 dark:bg-white/8" />
+                </div>
+                <Link
+                  className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline"
+                  href="/campus/guias"
+                >
+                  {t("campus.section.allGuides")} →
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {featuredGuides.map((guide) => (
+                  <GuideCard key={guide.id} guide={guide} progress={guideProgress[guide.slug] ?? 0} />
+                ))}
+              </div>
+            </section>
+
+            {/* Quick Stats */}
+            <div className="flex gap-4 text-center">
+              <div className="flex-1 p-3 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+                <p className="text-lg font-black text-[#1d1d1f] dark:text-white">{allGuides.length}</p>
+                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-semibold">{t("campus.stats.guides")}</p>
+              </div>
+              <div className="flex-1 p-3 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+                <p className="text-lg font-black text-[#1d1d1f] dark:text-white">{allTutorials.length}</p>
+                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-semibold">{t("campus.stats.tutorials")}</p>
+              </div>
+              <div className="flex-1 p-3 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
+                <p className="text-lg font-black text-[#1d1d1f] dark:text-white">{tutorialCats.length}</p>
+                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-semibold">{t("campus.stats.categories")}</p>
+              </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {allGuides.map((guide) => (
-                <GuideCard key={guide.id} guide={guide} progress={guideProgress[guide.slug] ?? 0} />
-              ))}
-            </div>
-          </section>
+          </div>
         )}
 
         {activeTab === "tutorials" && (

@@ -9,8 +9,9 @@ import { Head } from "./head";
 
 import { Navbar } from "@/components/navbar";
 import { useT } from "@/hooks/useT";
+import { useAuth } from "@/hooks/useAuth";
 import { siteConfig } from "@/config/site";
-import { allContent, typeSlug, allGuides } from "@/lib/blog/registry";
+import { allContent, typeSlug, allGuides, getContentByType } from "@/lib/blog/registry";
 import { CATEGORY_GROUPS } from "@/lib/blog/taxonomy";
 import {
   IconSearch,
@@ -21,6 +22,10 @@ import {
   IconBook,
   IconGraduation,
 } from "@/components/blog/shared";
+import { campusService } from "@/services/campusService";
+import { ProgressBar } from "@/components/campus/ProgressBar";
+import { XpBadge } from "@/components/campus/XpBadge";
+import type { CampusProgress, CampusUserXP } from "@/types/campus";
 
 // ── Sidebar data model ────────────────────────────────────────────────────────
 
@@ -440,11 +445,16 @@ interface CampusLayoutProps {
 
 export default function CampusLayout({ children, seo }: CampusLayoutProps) {
   const { t } = useT();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userProgress, setUserProgress] = useState<CampusProgress[]>([]);
+  const [userXp, setUserXp] = useState<CampusUserXP | null>(null);
   const currentPath = router.asPath.split("?")[0] ?? router.asPath;
 
   const nav = buildNav(t);
+  const totalTutorials = getContentByType("tutorial").length;
+  const completedCount = userProgress.length;
 
   useEffect(() => {
     setMobileOpen(false);
@@ -457,6 +467,12 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    campusService.getProgress().then(setUserProgress).catch(() => {});
+    campusService.getXP().then(setUserXp).catch(() => {});
+  }, [isAuthenticated]);
 
   return (
     <div className="relative flex flex-col min-h-screen bg-background overflow-x-clip">
@@ -534,6 +550,22 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
                   </p>
                 </div>
               </Link>
+
+              {/* User Progress */}
+              {isAuthenticated && completedCount > 0 && (
+                <div className="px-3 py-3 rounded-xl bg-emerald-500/5 border border-emerald-300/20 dark:border-emerald-700/20 mb-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                      {t("campus.sidebar.yourProgress")}
+                    </span>
+                    <XpBadge xp={userXp?.total_xp ?? 0} level={userXp?.level ?? 1} compact />
+                  </div>
+                  <ProgressBar completed={completedCount} total={totalTutorials} />
+                  <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] mt-1">
+                    {completedCount}/{totalTutorials} {t("blog.tutorialPlural").toLowerCase()}
+                  </p>
+                </div>
+              )}
 
               <SidebarSearch currentPath={currentPath} />
 
