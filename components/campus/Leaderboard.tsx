@@ -11,14 +11,16 @@ export function Leaderboard() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [userRank, setUserRank] = useState<{ rank: number; totalXp: number } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState<"all" | "week" | "month">("all");
 
   useEffect(() => {
-    campusService.getLeaderboard().then((data) => {
+    setLoading(true);
+    campusService.getLeaderboard(period).then((data) => {
       setEntries(data.leaderboard);
       setUserRank(data.userRank);
       setLoading(false);
     }).catch(() => setLoading(false));
-  }, []);
+  }, [period]);
 
   if (loading) {
     return (
@@ -45,6 +47,24 @@ export function Leaderboard() {
 
   return (
     <div className="space-y-6">
+      {/* Period filter */}
+      <div className="flex gap-0.5 p-0.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8">
+        {(["all", "week", "month"] as const).map((p) => (
+          <button
+            key={p}
+            className={`px-3 py-1.5 rounded-md text-[10px] font-semibold transition-all ${
+              period === p
+                ? "bg-emerald-500 text-white shadow-md"
+                : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+            }`}
+            onClick={() => setPeriod(p)}
+            type="button"
+          >
+            {p === "all" ? "Todo" : p === "week" ? "Semana" : "Mes"}
+          </button>
+        ))}
+      </div>
+
       {/* Podium */}
       <div className="flex items-end justify-center gap-4 py-6">
         {podiumOrder.map((idx) => {
@@ -55,7 +75,7 @@ export function Leaderboard() {
             <div key={entry.userId} className="flex flex-col items-center gap-2 w-24">
               <div className={`w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-emerald-500/20 overflow-hidden`}>
                 {entry.avatarUrl ? (
-                  <img alt="" className="w-full h-full object-cover" src={entry.avatarUrl} />
+                  <img alt={entry.name} className="w-full h-full object-cover" src={entry.avatarUrl} />
                 ) : (
                   entry.name.charAt(0).toUpperCase()
                 )}

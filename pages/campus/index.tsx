@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import CampusLayout from "@/layouts/campus";
 import {
@@ -119,10 +120,13 @@ function GuideCard({ guide, progress }: { guide: (typeof allGuides)[number]; pro
 export default function CampusPage() {
   const { t } = useT();
   const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [activeLevel, setActiveLevel] = useState("all");
   const [activeCategory, setActiveCategory] = useState("all");
-  const [activeTab, setActiveTab] = useState<"guides" | "tutorials" | "ranking" | "achievements">("guides");
+  const [activeTab, setActiveTab] = useState<"guides" | "tutorials" | "ranking" | "achievements">(
+    (router.query.tab as "guides" | "tutorials" | "ranking" | "achievements") || "guides"
+  );
   const [progress, setProgress] = useState<CampusProgress[]>([]);
   const [xp, setXp] = useState<CampusUserXP | null>(null);
   const [guideProgress, setGuideProgress] = useState<Record<string, number>>({});
@@ -139,12 +143,13 @@ export default function CampusPage() {
     if (!isAuthenticated) return;
     campusService.getProgress().then(setProgress).catch(() => {});
     campusService.getXP().then(setXp).catch(() => {});
-    allGuides.forEach((g) => {
-      campusService.getGuideProgress(g.slug).then((p) => {
-        setGuideProgress((prev) => ({ ...prev, [g.slug]: p.length }));
-      }).catch(() => {});
-    });
+    campusService.getAllGuideProgress().then(setGuideProgress).catch(() => {});
   }, [isAuthenticated]);
+
+  const handleTabChange = (tab: "guides" | "tutorials" | "ranking" | "achievements") => {
+    setActiveTab(tab);
+    router.replace({ query: { ...router.query, tab } }, undefined, { shallow: true });
+  };
 
   const levelOptions = useMemo(
     () => [{ id: "all", labelKey: "blog.filterAll" }, ...LEVELS.map((l) => ({ id: l.id, labelKey: l.labelKey }))],
@@ -216,7 +221,7 @@ export default function CampusPage() {
                   ? "bg-emerald-500 text-white shadow-md"
                   : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
               }`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => handleTabChange(tab.id)}
               type="button"
             >
               {tab.label}

@@ -25,6 +25,9 @@ export const campusService = {
   getGuideProgress: (slug: string) =>
     apiFetch<{ tutorial_slug: string; completed_at: string }[]>(`${API}/progress/guide/${slug}`),
 
+  getAllGuideProgress: () =>
+    apiFetch<Record<string, number>>(`${API}/progress/all-guides`),
+
   getQuiz: (slug: string) => apiFetch<CampusQuiz>(`${API}/quiz/${slug}`),
 
   submitQuiz: (slug: string, answers: { questionIndex: number; selectedOption: number; timeTakenSeconds: number }[], startedAt: string) =>
@@ -33,7 +36,8 @@ export const campusService = {
       body: JSON.stringify({ answers, startedAt }),
     }),
 
-  getLeaderboard: () => apiFetch<LeaderboardData>(`${API}/leaderboard`),
+  getLeaderboard: (period: "all" | "week" | "month" = "all") =>
+    apiFetch<LeaderboardData>(`${API}/leaderboard?period=${period}`),
 
   getXP: () => apiFetch<CampusUserXP>(`${API}/xp`),
 

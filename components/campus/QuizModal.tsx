@@ -17,17 +17,24 @@ export function QuizModal({ tutorialSlug, onClose, onComplete }: QuizModalProps)
   const [answers, setAnswers] = useState<{ questionIndex: number; selectedOption: number; timeTakenSeconds: number }[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(0);
-  const [startedAt, setStartedAt] = useState<string>("");
+  const [serverStartedAt, setServerStartedAt] = useState<string>("");
   const [questionStart, setQuestionStart] = useState(0);
   const [result, setResult] = useState<QuizResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const selectedRef = useRef<number | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    selectedRef.current = selected;
+  }, [selected]);
 
   useEffect(() => {
     campusService.getQuiz(tutorialSlug).then((q) => {
       setQuiz(q);
-      setStartedAt(new Date().toISOString());
+      setServerStartedAt(q.serverStartedAt);
       setQuestionStart(Date.now());
       if (q && q.questions.length > 0) {
         setTimeLeft(q.questions[0].timeLimitSeconds);
@@ -36,12 +43,40 @@ export function QuizModal({ tutorialSlug, onClose, onComplete }: QuizModalProps)
     }).catch(() => setLoading(false));
   }, [tutorialSlug]);
 
+  const handleNext = useCallback(() => {
+    if (!quiz || submitting) return;
+    if (timerRef.current) clearInterval(timerRef.current);
+
+    const timeTaken = Math.floor((Date.now() - questionStart) / 1000);
+    const currentSelected = selectedRef.current ?? -1;
+    const newAnswers = [...answers, { questionIndex: currentQ, selectedOption: currentSelected, timeTakenSeconds: timeTaken }];
+    setAnswers(newAnswers);
+    setSelected(null);
+    selectedRef.current = null;
+
+    if (currentQ < quiz.questions.length - 1) {
+      const nextQ = currentQ + 1;
+      setCurrentQ(nextQ);
+      setQuestionStart(Date.now());
+      setTimeLeft(quiz.questions[nextQ].timeLimitSeconds);
+    } else {
+      setSubmitting(true);
+      campusService.submitQuiz(tutorialSlug, newAnswers, serverStartedAt).then((r) => {
+        setResult(r);
+        setSubmitting(false);
+        onComplete?.(r);
+      }).catch((e) => {
+        setSubmitting(false);
+        setError(e instanceof Error ? e.message : "Error al enviar quiz");
+      });
+    }
+  }, [quiz, currentQ, answers, questionStart, serverStartedAt, tutorialSlug, submitting, onComplete]);
+
   useEffect(() => {
     if (timeLeft <= 0 || result) return;
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          if (timerRef.current) clearInterval(timerRef.current);
           handleNext();
           return 0;
         }
@@ -49,28 +84,20 @@ export function QuizModal({ tutorialSlug, onClose, onComplete }: QuizModalProps)
       });
     }, 1000);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [currentQ, result]);
+  }, [currentQ, result, handleNext]);
 
-  const handleNext = useCallback(() => {
-    if (!quiz || submitting) return;
-    const timeTaken = Math.floor((Date.now() - questionStart) / 1000);
-    const newAnswers = [...answers, { questionIndex: currentQ, selectedOption: selected ?? 0, timeTakenSeconds: timeTaken }];
-    setAnswers(newAnswers);
-    setSelected(null);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "Enter" && selected !== null && !submitting) handleNext();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, selected, submitting, handleNext]);
 
-    if (currentQ < quiz.questions.length - 1) {
-      setCurrentQ(currentQ + 1);
-      setQuestionStart(Date.now());
-      setTimeLeft(quiz.questions[currentQ + 1].timeLimitSeconds);
-    } else {
-      setSubmitting(true);
-      campusService.submitQuiz(tutorialSlug, newAnswers, startedAt).then((r) => {
-        setResult(r);
-        setSubmitting(false);
-        onComplete?.(r);
-      }).catch(() => setSubmitting(false));
-    }
-  }, [quiz, currentQ, selected, answers, questionStart, startedAt, tutorialSlug, submitting, onComplete]);
+  useEffect(() => {
+    modalRef.current?.focus();
+  }, []);
 
   if (loading) {
     return (
@@ -81,6 +108,23 @@ export function QuizModal({ tutorialSlug, onClose, onComplete }: QuizModalProps)
   }
 
   if (!quiz) return null;
+
+  if (error) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div className="w-full max-w-sm bg-white dark:bg-[#111116] rounded-2xl border border-black/8 dark:border-white/8 shadow-2xl p-8 text-center space-y-4">
+          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+          <button
+            className="px-6 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-medium hover:bg-emerald-600 transition-colors"
+            onClick={onClose}
+            type="button"
+          >
+            {t("campus.quiz.submit")}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (result) {
     return (
@@ -131,7 +175,14 @@ export function QuizModal({ tutorialSlug, onClose, onComplete }: QuizModalProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg bg-white dark:bg-[#111116] rounded-2xl border border-black/8 dark:border-white/8 shadow-2xl overflow-hidden">
+      <div
+        ref={modalRef}
+        className="w-full max-w-lg bg-white dark:bg-[#111116] rounded-2xl border border-black/8 dark:border-white/8 shadow-2xl overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-label={t("campus.quiz.title")}
+        tabIndex={-1}
+      >
         {/* Header */}
         <div className="px-6 pt-5 pb-4 border-b border-black/6 dark:border-white/6">
           <div className="flex items-center justify-between mb-3">
@@ -182,7 +233,7 @@ export function QuizModal({ tutorialSlug, onClose, onComplete }: QuizModalProps)
             onClick={onClose}
             type="button"
           >
-            Cerrar
+            {t("campus.quiz.submit")}
           </button>
           <button
             className={`px-5 py-2 rounded-xl text-sm font-medium transition-colors ${
@@ -194,7 +245,7 @@ export function QuizModal({ tutorialSlug, onClose, onComplete }: QuizModalProps)
             disabled={selected === null || submitting}
             type="button"
           >
-            {submitting ? "..." : currentQ < quiz.questions.length - 1 ? "Siguiente" : t("campus.quiz.submit")}
+            {submitting ? "..." : currentQ < quiz.questions.length - 1 ? t("campus.quiz.submit") : t("campus.quiz.submit")}
           </button>
         </div>
       </div>

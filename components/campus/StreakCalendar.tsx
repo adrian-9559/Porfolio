@@ -3,6 +3,19 @@ import { useState, useEffect } from "react";
 import { useT } from "@/hooks/useT";
 import { campusService } from "@/services/campusService";
 
+function getLocalDateStr(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function dateSubtract(dateStr: string, days: number): string {
+  const d = new Date(dateStr + "T12:00:00");
+  d.setDate(d.getDate() - days);
+  return getLocalDateStr(d);
+}
+
 export function StreakCalendar() {
   const { t } = useT();
   const [streak, setStreak] = useState<{ currentStreak: number; bestStreak: number; recentDays: string[] } | null>(null);
@@ -21,17 +34,19 @@ export function StreakCalendar() {
 
   if (!streak) return null;
 
-  // Build 7 weeks of activity data
-  const today = new Date();
+  const today = getLocalDateStr(new Date());
+  const todayDate = new Date(today + "T12:00:00");
+  const dayOfWeek = todayDate.getDay();
+  const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+
   const weeks: { date: string; active: boolean }[][] = [];
   const daySet = new Set(streak.recentDays);
 
   for (let w = 6; w >= 0; w--) {
     const week: { date: string; active: boolean }[] = [];
     for (let d = 0; d < 7; d++) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - (w * 7 + (6 - d)));
-      const dateStr = date.toISOString().split("T")[0];
+      const offset = w * 7 + (6 - d) + daysFromMonday;
+      const dateStr = dateSubtract(today, offset);
       week.push({ date: dateStr, active: daySet.has(dateStr) });
     }
     weeks.push(week);

@@ -19,6 +19,7 @@ export interface CampusQuiz {
   }[];
   passingScore: number;
   xpReward: number;
+  serverStartedAt: string;
 }
 
 export interface QuizAnswer {

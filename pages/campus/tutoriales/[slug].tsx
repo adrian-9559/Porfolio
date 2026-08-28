@@ -38,6 +38,7 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
   const Component = getContentComponent(meta.id, locale);
   const [completed, setCompleted] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [showMobileActions, setShowMobileActions] = useState(false);
   const [xpEarned, setXpEarned] = useState<number | null>(null);
 
   useEffect(() => {
@@ -208,6 +209,72 @@ export default function TutorialPage({ meta, prevMeta, nextMeta }: Props) {
           )}
         </div>
       </div>
+
+      {/* Mobile floating action button */}
+      {isAuthenticated && (
+        <div className="lg:hidden fixed bottom-6 right-6 z-40">
+          <button
+            className="w-14 h-14 rounded-full bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center hover:bg-emerald-600 transition-colors"
+            onClick={() => setShowMobileActions(true)}
+            type="button"
+            aria-label={t("campus.progress.markComplete")}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {/* Mobile bottom sheet */}
+      {showMobileActions && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowMobileActions(false)} />
+          <div className="absolute bottom-0 left-0 right-0 bg-white dark:bg-[#111116] rounded-t-2xl border-t border-black/8 dark:border-white/8 p-6 space-y-3 animate-in slide-in-from-bottom duration-300">
+            <div className="w-10 h-1 bg-black/10 dark:bg-white/10 rounded-full mx-auto mb-4" />
+
+            {xpEarned !== null && (
+              <div className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-300/30 dark:border-emerald-700/30 text-center mb-2">
+                <p className="text-lg font-black text-emerald-600 dark:text-emerald-400">+{xpEarned} XP</p>
+              </div>
+            )}
+
+            <button
+              className={`w-full py-3 rounded-xl text-sm font-medium transition-all ${
+                completed
+                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-300/40 dark:border-emerald-700/40"
+                  : "bg-emerald-500 text-white hover:bg-emerald-600"
+              }`}
+              onClick={() => { if (!completed) handleMarkComplete(); setShowMobileActions(false); }}
+              type="button"
+            >
+              {completed ? t("campus.progress.alreadyCompleted") : t("campus.progress.markComplete")}
+            </button>
+
+            {completed && (
+              <button
+                className="w-full py-3 rounded-xl text-sm font-medium bg-black/5 dark:bg-white/8 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/12 transition-colors"
+                onClick={() => { setShowQuiz(true); setShowMobileActions(false); }}
+                type="button"
+              >
+                {t("campus.quiz.start")}
+              </button>
+            )}
+
+            <div className="pt-2">
+              <BookmarkButton tutorialSlug={meta.slug} />
+            </div>
+
+            <button
+              className="w-full py-3 rounded-xl text-sm font-medium text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+              onClick={() => setShowMobileActions(false)}
+              type="button"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Quiz modal */}
       {showQuiz && (
