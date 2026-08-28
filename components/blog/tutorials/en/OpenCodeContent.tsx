@@ -372,7 +372,8 @@ nvm install --lts`}</BlogCode>
 
       <BlogH3>Option 1: Global npm installation (recommended)</BlogH3>
       <BlogP>The simplest way and the one we recommend to get started:</BlogP>
-      <BlogCode>{`npm install -g @opencode/cli`}</BlogCode>
+      <BlogCode>{`curl -fsSL https://opencode.ai/install | bash
+npm install -g @opencode/cli`}</BlogCode>
       <BlogP>
         This installs OpenCode globally and adds the{" "}
         <BlogInlineCode>opencode</BlogInlineCode> command to your PATH. Once
@@ -902,7 +903,7 @@ function SectionConsejos() {
           Install it now and start coding faster. It takes less than 2 minutes.
         </p>
         <code className="inline-block mt-3 px-4 py-2 rounded-lg bg-black/20 text-sm font-mono">
-          npm install -g @opencode/cli
+          curl -fsSL https://opencode.ai/install | bash
         </code>
       </div>
 

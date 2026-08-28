@@ -375,7 +375,8 @@ nvm install --lts`}</BlogCode>
       <BlogP>
         La forma más sencilla y la que te recomendamos para empezar:
       </BlogP>
-      <BlogCode>{`npm install -g @opencode/cli`}</BlogCode>
+      <BlogCode>{`curl -fsSL https://opencode.ai/install | bash
+npm install -g @opencode/cli`}</BlogCode>
       <BlogP>
         Esto instala OpenCode globalmente y añade el comando{" "}
         <BlogInlineCode>opencode</BlogInlineCode> a tu PATH. Una vez instalado,
@@ -912,7 +913,7 @@ function SectionConsejos() {
           minutos.
         </p>
         <code className="inline-block mt-3 px-4 py-2 rounded-lg bg-black/20 text-sm font-mono">
-          npm install -g @opencode/cli
+          curl -fsSL https://opencode.ai/install | bash
         </code>
       </div>
 
