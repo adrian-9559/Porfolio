@@ -21,6 +21,7 @@ import { AdminToolsHealthSection } from "@/features/admin/components/AdminToolsH
 import AdminTrafficSection from "@/features/admin/components/AdminTrafficSection";
 import { AdminIssuesSection } from "@/features/admin/components/AdminIssuesSection";
 import { AdminIdeasSection } from "@/features/admin/components/AdminIdeasSection";
+import { AdminAIHubSection } from "@/features/admin/components/AdminAIHubSection";
 
 type Section =
   | "dashboard"
@@ -40,7 +41,8 @@ type Section =
   | "docs"
   | "traffic"
   | "issues"
-  | "ideas";
+  | "ideas"
+  | "ai-hub";
 
 const NAV_LABELS: Record<string, string> = {
   dashboard: "admin.dashboard",
@@ -121,6 +123,12 @@ const NAV: {
     id: "apps",
     labelKey: "apps",
     icon: <IcoApps />,
+    group: "herramientas",
+  },
+  {
+    id: "ai-hub",
+    labelKey: "aiHub",
+    icon: <IcoAIHub />,
     group: "herramientas",
   },
   {
@@ -273,6 +281,7 @@ export default function AdminPage() {
             {section === "traffic" && <AdminTrafficSection />}
             {section === "issues" && <AdminIssuesSection />}
             {section === "ideas" && <AdminIdeasSection />}
+            {section === "ai-hub" && <AdminAIHubSection />}
           </div>
         </div>
       </div>
@@ -545,6 +554,22 @@ function IcoIdeas() {
       <path d="M8 1.5a4.5 4.5 0 00-2 8.63V12h4v-1.87A4.5 4.5 0 008 1.5z" />
       <path d="M6 13h4" />
       <path d="M7 14.5h2" />
+    </svg>
+  );
+}
+
+function IcoAIHub() {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 16 16"
+    >
+      <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.414 1.414M11.536 11.536l1.414 1.414M3.05 12.95l1.414-1.414M11.536 4.464l1.414-1.414" />
+      <circle cx="8" cy="8" r="3" />
     </svg>
   );
 }

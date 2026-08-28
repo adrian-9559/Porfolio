@@ -321,6 +321,7 @@
     "docs": "Docs",
     "friendships": "Amistades",
     "services": "Estado de servicios",
+    "aiHub": "AI Hub",
     "traffic": "Tráfico",
     "servicesDesc": "Monitorización del estado de todas las herramientas y servicios del sistema",
     "serviceStatus": "Estado",
