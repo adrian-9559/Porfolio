@@ -36,7 +36,7 @@ const FEATURED_GUIDES: Guide[] = [
   {
     title: "Backend y APIs",
     description: "Aprende a crear APIs robustas con Node.js, Express, autenticación JWT y bases de datos.",
-    slug: "ruta-backend",
+    slug: "ruta-backend-js",
     category: "Backend",
     level: "Nivel 2-4",
     tutorials: 8,
@@ -48,7 +48,7 @@ const FEATURED_TUTORIALS: Tutorial[] = [
   {
     title: "React Hooks: Guía completa",
     description: "Domina useState, useEffect, useContext y custom hooks con ejemplos prácticos y patrones avanzados.",
-    slug: "react-hooks",
+    slug: "react-framework",
     category: "Frontend",
     readTime: "15 min",
     tags: ["React", "Hooks", "JavaScript"],
@@ -57,7 +57,7 @@ const FEATURED_TUTORIALS: Tutorial[] = [
   {
     title: "TypeScript desde cero",
     description: "Aprende TypeScript desde los fundamentos hasta tipos avanzados, interfaces y genéricos.",
-    slug: "typescript-basics",
+    slug: "typescript",
     category: "Lenguajes",
     readTime: "20 min",
     tags: ["TypeScript", "JavaScript"],

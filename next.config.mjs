@@ -8,6 +8,7 @@ const nextConfig = {
 	reactStrictMode: true,
 	poweredByHeader: false,
 	referrerPolicy: "strict-origin-when-cross-origin",
+	transpilePackages: ['three'],
 	turbopack: {
 		root: __dirname,
 	},

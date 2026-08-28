@@ -17,7 +17,7 @@ const FEATURED_POSTS: BlogPost[] = [
   {
     title: "React Hooks: Guía completa",
     excerpt: "Domina useState, useEffect, useContext y custom hooks con ejemplos prácticos y patrones avanzados.",
-    slug: "react-hooks",
+    slug: "react-framework",
     type: "article",
     tags: ["React", "Hooks", "JavaScript"],
     date: "2024",
@@ -26,7 +26,7 @@ const FEATURED_POSTS: BlogPost[] = [
   {
     title: "Next.js App Router",
     excerpt: "Todo sobre el nuevo App Router de Next.js 14: layouts, loading states y server components.",
-    slug: "nextjs-app-router",
+    slug: "nextjs-framework",
     type: "tutorial",
     tags: ["Next.js", "React"],
     date: "2024",
@@ -35,7 +35,7 @@ const FEATURED_POSTS: BlogPost[] = [
   {
     title: "TypeScript Tips",
     excerpt: "10 trucos de TypeScript que mejorarán tu desarrollo y harán tu código más robusto.",
-    slug: "typescript-tips",
+    slug: "typescript",
     type: "article",
     tags: ["TypeScript", "Tips"],
     date: "2024",

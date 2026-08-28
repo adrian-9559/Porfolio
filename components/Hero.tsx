@@ -1,11 +1,15 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, lazy, Suspense } from "react";
 import { ArrowShapeDownToLine } from "@gravity-ui/icons";
 import { Avatar, Button, Tooltip } from "@heroui/react";
 import Link from "next/link";
 
 import { useT } from "@/hooks/useT";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+
+const HeroScene = lazy(() =>
+  import("./hero/HeroScene").then((m) => ({ default: m.HeroScene }))
+);
 
 const TITLES = [
   "Full Stack Developer",
@@ -19,8 +23,10 @@ export default function Hero() {
   const [titleIdx, setTitleIdx] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const glowRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const current = TITLES[titleIdx];
@@ -51,18 +57,40 @@ export default function Hero() {
     return () => window.removeEventListener("mousemove", handleMouse);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const handleDownloadCV = () => {
-    const link = document.createElement("a");
-    link.href = "/files/Adrian_Escribano_CV.pdf";
-    link.download = "Adrian_Escribano_CV.pdf";
-    link.click();
+    window.location.href = "/CV";
   };
 
+  const parallaxSlow = scrollY * 0.3;
+  const parallaxMid = scrollY * 0.5;
+
   return (
-    <section className="relative w-full pt-10 pb-16 md:pt-16 md:pb-24 overflow-clip">
+    <section ref={sectionRef} className="relative w-full pt-10 pb-16 md:pt-16 md:pb-24 overflow-clip">
       <div ref={glowRef} className="fixed inset-0 -z-10 pointer-events-none transition-all duration-300" />
 
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+      {/* 3D Background */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{ transform: `translateY(${parallaxSlow}px)` }}
+      >
+        <Suspense fallback={null}>
+          <HeroScene />
+        </Suspense>
+      </div>
+
+      {/* Decorative blobs (parallax mid) */}
+      <div
+        className="absolute inset-0 -z-10 overflow-hidden"
+        style={{ transform: `translateY(${parallaxMid}px)` }}
+      >
         <div className="blob absolute top-[-120px] left-[10%] w-[500px] h-[500px] bg-gradient-radial from-violet-500/20 via-purple-400/10 to-transparent" />
         <div className="blob absolute top-[-60px] right-[5%] w-[400px] h-[400px] bg-gradient-to-bl from-pink-500/15 via-rose-400/8 to-transparent" />
         <div className="blob absolute bottom-[-40px] left-[20%] w-[450px] h-[350px] bg-gradient-to-tr from-cyan-400/15 via-blue-400/8 to-transparent" />
@@ -76,6 +104,7 @@ export default function Hero() {
         />
       </div>
 
+      {/* Content (parallax normal) */}
       <div className="flex flex-col items-center text-center space-y-8">
         <ScrollReveal>
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-wide bg-gradient-to-r from-violet-500/10 to-pink-500/10 border border-violet-300/40 dark:border-violet-700/40 text-violet-700 dark:text-violet-300 backdrop-blur-sm">
