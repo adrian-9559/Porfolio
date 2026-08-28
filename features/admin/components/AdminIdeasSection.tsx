@@ -26,6 +26,8 @@ export function AdminIdeasSection() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
@@ -55,8 +57,13 @@ export function AdminIdeasSection() {
     if (search && !i.title.toLowerCase().includes(search.toLowerCase()) && !i.description.toLowerCase().includes(search.toLowerCase()) && !i.owner_email.toLowerCase().includes(search.toLowerCase())) return false;
     if (statusFilter !== "all" && i.status !== statusFilter) return false;
     if (priorityFilter !== "all" && i.priority !== priorityFilter) return false;
+    if (categoryFilter !== "all" && i.category !== categoryFilter) return false;
+    if (tagFilter && !i.tags.includes(tagFilter)) return false;
     return true;
   });
+
+  const categories = [...new Set(ideas.map((i) => i.category).filter(Boolean))].sort();
+  const allTags = [...new Set(ideas.flatMap((i) => i.tags))].sort();
 
   const statusBadge = (s: string) => {
     const colors: Record<string, string> = {
@@ -186,6 +193,28 @@ export function AdminIdeasSection() {
             {p === "all" ? t("admin.allPriorities") : p}
           </button>
         ))}
+        <div className="w-px bg-black/8 dark:bg-white/8" />
+        <select
+          className="rounded-full border border-black/10 dark:border-white/10 bg-white px-3 py-1 text-xs font-medium text-[#6e6e73] dark:bg-[#1c1c1e] dark:text-[#86868b]"
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
+          <option value="all">All categories</option>
+          {categories.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+        {tagFilter && (
+          <button
+            className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400"
+            onClick={() => setTagFilter(null)}
+          >
+            #{tagFilter}
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Ideas list */}
@@ -236,7 +265,17 @@ export function AdminIdeasSection() {
                     {i.tags.length > 0 && (
                       <div className="mt-1 flex flex-wrap gap-1">
                         {i.tags.map((tag) => (
-                          <span key={tag} className="rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] text-[#6e6e73] dark:bg-white/8 dark:text-[#86868b]">{tag}</span>
+                          <button
+                            key={tag}
+                            className={`rounded-md px-1.5 py-0.5 text-[10px] transition-colors ${
+                              tagFilter === tag
+                                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                : "bg-black/5 text-[#6e6e73] dark:bg-white/8 dark:text-[#86868b] hover:bg-black/8 dark:hover:bg-white/12"
+                            }`}
+                            onClick={() => setTagFilter(tagFilter === tag ? null : tag)}
+                          >
+                            #{tag}
+                          </button>
                         ))}
                       </div>
                     )}
