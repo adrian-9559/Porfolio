@@ -30,6 +30,7 @@ export function AdminIdeasSection() {
   const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [viewingDesc, setViewingDesc] = useState<AdminIdea | null>(null);
   const [showCreate, setShowCreate] = useState(false);
 
   const load = useCallback(async () => {
@@ -307,10 +308,20 @@ export function AdminIdeasSection() {
                     </button>
                   )}
                 </div>
-                {expandedId === i.id && i.description && (
-                  <div className="mt-3 whitespace-pre-wrap rounded-xl bg-black/[0.03] p-4 text-sm leading-relaxed text-[#1d1d1f]/80 dark:bg-white/[0.03] dark:text-white/80">
-                    {i.description}
-                  </div>
+                {i.description && (
+                  <button
+                    className="mt-2 w-full text-left rounded-xl bg-black/[0.03] p-3 text-xs leading-relaxed text-[#6e6e73] dark:bg-white/[0.03] dark:text-[#86868b] hover:bg-black/[0.05] dark:hover:bg-white/[0.05] transition-colors line-clamp-2"
+                    onClick={() => setViewingDesc(i)}
+                  >
+                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      Ver descripción
+                    </span>
+                    <p>{i.description}</p>
+                  </button>
                 )}
               </div>
             ))}
@@ -323,6 +334,57 @@ export function AdminIdeasSection() {
       </p>
 
       {showCreate && <CreateIdeaModal onClose={() => setShowCreate(false)} onCreated={() => { setShowCreate(false); load(); }} />}
+
+      {/* Description Modal */}
+      {viewingDesc && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => setViewingDesc(null)}>
+          <div
+            className="w-full max-w-lg bg-white dark:bg-[#111116] rounded-2xl border border-black/8 dark:border-white/8 shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative p-6">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white">{viewingDesc.title}</h3>
+                  <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                    {statusBadge(viewingDesc.status)}
+                    {priorityBadge(viewingDesc.priority)}
+                    {viewingDesc.category && (
+                      <span className="inline-flex items-center rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-medium text-[#6e6e73] dark:bg-white/8 dark:text-[#86868b]">
+                        {viewingDesc.category}
+                      </span>
+                    )}
+                    <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                      {viewingDesc.votes} votos · {viewingDesc.owner_email} · {relativeTime(viewingDesc.created_at)}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-[#aeaeb2] hover:bg-black/5 dark:hover:bg-white/8 hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+                  onClick={() => setViewingDesc(null)}
+                >
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="whitespace-pre-wrap text-sm leading-relaxed text-[#1d1d1f]/80 dark:text-white/80 bg-black/[0.03] dark:bg-white/[0.03] rounded-xl p-4">
+                {viewingDesc.description}
+              </div>
+              {viewingDesc.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {viewingDesc.tags.map((tag) => (
+                    <span key={tag} className="rounded-md bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
