@@ -6,6 +6,152 @@ import type { AIHubMCP, AIHubSkill, AIHubModel } from "@/types/aiHub";
 
 type Tab = "mcps" | "skills" | "models";
 
+// ── SVG Icons ────────────────────────────────────────────────────────────────
+
+function IconMCP({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M7 8l-4 4 4 4" />
+      <path d="M17 8l4 4-4 4" />
+      <path d="M14 4l-4 16" />
+    </svg>
+  );
+}
+
+function IconSkills({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+    </svg>
+  );
+}
+
+function IconModel({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5m-4.75-11.396c.251.023.501.05.75.082M5 14.5l-1.43 1.43a2.25 2.25 0 000 3.18l1.81 1.81a2.25 2.25 0 003.18 0L10.5 19.5m-5.5-5h.008v.008H5v-.008zm14 0h.008v.008H19v-.008z" />
+    </svg>
+  );
+}
+
+function IconAll({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+    </svg>
+  );
+}
+
+function IconDesign({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M4.25 7.5a3 3 0 00-3 3c0 1.06.67 2.15 1.86 2.77l.19.09c1.35.63 2.66 1.42 3.7 2.47a8.94 8.94 0 003.4 2.06c.16.07.32.14.48.2l.16.07a3 3 0 003.98-1.46l.9-2.02a3 3 0 00-.48-3.13 10.5 10.5 0 00-2.87-1.85l-.15-.07a3 3 0 00-2.11-.25l-.2.05-1.15.53a10.5 10.5 0 01-3.7-2.07A10.5 10.5 0 014.25 7.5z" />
+      <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  );
+}
+
+function IconFrontend({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+    </svg>
+  );
+}
+
+function IconMobile({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+    </svg>
+  );
+}
+
+function IconBackend({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
+    </svg>
+  );
+}
+
+function IconDatabase({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+    </svg>
+  );
+}
+
+function IconTools({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M11.42 15.17l-5.384 5.384a2.025 2.025 0 01-2.864-2.864l5.384-5.384m2.864 2.864L17.5 9.5m-5.92 2.438l3.75 3.75m0 0l2.146 2.146M12 3v3m6.364 1.636l-.707.707M21 12h-3M4.22 12H1m16.78 6.78l-.707-.707M12 21v-3" />
+    </svg>
+  );
+}
+
+function IconPlugins({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.556a4.5 4.5 0 00-6.364-6.364L4.757 8.25a4.5 4.5 0 006.364 6.364l4.5-4.5z" />
+    </svg>
+  );
+}
+
+function IconSearch({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+    </svg>
+  );
+}
+
+function IconPlus({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24">
+      <path d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+  );
+}
+
+function IconEdit({ className = "w-3 h-3" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24">
+      <path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+    </svg>
+  );
+}
+
+function IconTrash({ className = "w-3 h-3" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24">
+      <path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+    </svg>
+  );
+}
+
+function IconStar({ className = "w-3 h-3" }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" />
+    </svg>
+  );
+}
+
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  all: <IconAll className="w-3 h-3" />,
+  design: <IconDesign className="w-3 h-3" />,
+  frontend: <IconFrontend className="w-3 h-3" />,
+  mobile: <IconMobile className="w-3 h-3" />,
+  backend: <IconBackend className="w-3 h-3" />,
+  database: <IconDatabase className="w-3 h-3" />,
+  tools: <IconTools className="w-3 h-3" />,
+  plugins: <IconPlugins className="w-3 h-3" />,
+};
+
+// ── Config ───────────────────────────────────────────────────────────────────
+
 const MCP_TYPES = [
   { value: "mcp", label: "MCP", color: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
   { value: "npm", label: "NPM", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
@@ -29,14 +175,14 @@ const PROVIDER_COLORS: Record<string, string> = {
 };
 
 const SKILL_CATEGORIES = [
-  { key: "all", label: "All", icon: "📦" },
-  { key: "design", label: "Design", icon: "🎨" },
-  { key: "frontend", label: "Frontend", icon: "🌐" },
-  { key: "mobile", label: "Mobile", icon: "📱" },
-  { key: "backend", label: "Backend", icon: "⚡" },
-  { key: "database", label: "Database", icon: "🗃️" },
-  { key: "tools", label: "Tools", icon: "🔧" },
-  { key: "plugins", label: "Plugins", icon: "🔌" },
+  { key: "all", label: "All" },
+  { key: "design", label: "Design" },
+  { key: "frontend", label: "Frontend" },
+  { key: "mobile", label: "Mobile" },
+  { key: "backend", label: "Backend" },
+  { key: "database", label: "Database" },
+  { key: "tools", label: "Tools" },
+  { key: "plugins", label: "Plugins" },
 ];
 
 const SCOPE_LABELS: Record<string, string> = {
@@ -175,15 +321,17 @@ export function AdminAIHubSection() {
         {/* Stat cards */}
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: "MCPs", count: mcps.length, gradient: "from-violet-500 to-purple-500", icon: "🔌" },
-            { label: "Skills", count: skills.length, gradient: "from-pink-500 to-rose-500", icon: "🧠" },
-            { label: "Modelos", count: models.length, gradient: "from-cyan-500 to-blue-500", icon: "🤖" },
+            { label: "MCPs", count: mcps.length, gradient: "from-violet-500 to-purple-500", icon: <IconMCP className="w-5 h-5 text-white" /> },
+            { label: "Skills", count: skills.length, gradient: "from-pink-500 to-rose-500", icon: <IconSkills className="w-5 h-5 text-white" /> },
+            { label: "Modelos", count: models.length, gradient: "from-cyan-500 to-blue-500", icon: <IconModel className="w-5 h-5 text-white" /> },
           ].map((s) => (
             <div key={s.label} className="relative p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden hover:shadow-xl hover:shadow-black/5 transition-shadow">
               <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${s.gradient}`} />
               <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-gradient-to-br from-violet-400/10 to-pink-400/5 blur-2xl" />
               <div className="relative flex items-center gap-3">
-                <span className="text-2xl">{s.icon}</span>
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center shadow-md`}>
+                  {s.icon}
+                </div>
                 <div>
                   <p className="text-2xl font-black text-[#1d1d1f] dark:text-white">{s.count}</p>
                   <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-semibold uppercase tracking-wide">{s.label}</p>
@@ -195,18 +343,23 @@ export function AdminAIHubSection() {
 
         {/* Tabs */}
         <div className="flex gap-0.5 p-0.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8">
-          {(["mcps", "skills", "models"] as Tab[]).map((t) => (
+          {([
+            { id: "mcps" as const, label: "MCPs", icon: <IconMCP className="w-3.5 h-3.5" /> },
+            { id: "skills" as const, label: "Skills", icon: <IconSkills className="w-3.5 h-3.5" /> },
+            { id: "models" as const, label: "Modelos", icon: <IconModel className="w-3.5 h-3.5" /> },
+          ]).map((t) => (
             <button
-              key={t}
-              className={`flex-1 px-4 py-2.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
-                tab === t
+              key={t.id}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                tab === t.id
                   ? "bg-gradient-to-r from-violet-500 to-pink-500 text-white shadow-md"
                   : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
               }`}
-              onClick={() => { setTab(t); setSearch(""); setCatFilter("all"); }}
+              onClick={() => { setTab(t.id); setSearch(""); setCatFilter("all"); }}
               type="button"
             >
-              {t === "mcps" ? "🔌 MCPs" : t === "skills" ? "🧠 Skills" : "🤖 Modelos"}
+              {t.icon}
+              {t.label}
             </button>
           ))}
         </div>
@@ -214,9 +367,7 @@ export function AdminAIHubSection() {
         {/* Actions bar */}
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+            <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2]" />
             <input
               className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20 transition-all"
               placeholder="Buscar..."
@@ -225,11 +376,12 @@ export function AdminAIHubSection() {
             />
           </div>
           <button
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-pink-500 text-white text-xs font-semibold hover:shadow-lg hover:shadow-violet-500/20 transition-all"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-pink-500 text-white text-xs font-semibold hover:shadow-lg hover:shadow-violet-500/20 transition-all"
             onClick={openCreate}
             type="button"
           >
-            + Añadir
+            <IconPlus className="w-3.5 h-3.5" />
+            Añadir
           </button>
         </div>
 
@@ -239,7 +391,7 @@ export function AdminAIHubSection() {
             {SKILL_CATEGORIES.map((c) => (
               <button
                 key={c.key}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold whitespace-nowrap transition-all ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold whitespace-nowrap transition-all ${
                   catFilter === c.key
                     ? "bg-violet-500 text-white"
                     : "bg-black/5 dark:bg-white/8 text-[#6e6e73] dark:text-[#86868b]"
@@ -247,7 +399,7 @@ export function AdminAIHubSection() {
                 onClick={() => setCatFilter(c.key)}
                 type="button"
               >
-                <span>{c.icon}</span>
+                {CATEGORY_ICONS[c.key]}
                 {c.label}
               </button>
             ))}
@@ -280,10 +432,10 @@ export function AdminAIHubSection() {
                       </div>
                       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(mcp)} type="button">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                          <IconEdit />
                         </button>
                         <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => handleDelete(mcp.id)} type="button">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                          <IconTrash />
                         </button>
                       </div>
                     </div>
@@ -302,15 +454,16 @@ export function AdminAIHubSection() {
                   <div key={skill.id} className="relative p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:shadow-xl hover:shadow-black/5 transition-all group">
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 to-rose-500 rounded-t-2xl opacity-60" />
                     <div className="flex items-start justify-between mb-2">
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400">
-                        {SKILL_CATEGORIES.find((c) => c.key === skill.category)?.icon} {skill.category}
+                      <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400">
+                        {CATEGORY_ICONS[skill.category]}
+                        {skill.category}
                       </span>
                       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(skill)} type="button">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                          <IconEdit />
                         </button>
                         <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => handleDelete(skill.id)} type="button">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                          <IconTrash />
                         </button>
                       </div>
                     </div>
@@ -347,15 +500,18 @@ export function AdminAIHubSection() {
                           {model.status}
                         </span>
                         {model.is_default && (
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">★ Default</span>
+                          <span className="flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                            <IconStar className="w-2.5 h-2.5" />
+                            Default
+                          </span>
                         )}
                       </div>
                       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(model)} type="button">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                          <IconEdit />
                         </button>
                         <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => handleDelete(model.id)} type="button">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                          <IconTrash />
                         </button>
                       </div>
                     </div>
@@ -409,7 +565,6 @@ export function AdminAIHubSection() {
                   <SelectField label="Tipo" value={form.type} options={MCP_TYPES.map((t) => ({ value: t.value, label: t.label }))} onChange={(v) => setForm({ ...form, type: v })} />
                   <SelectField label="Estado" value={form.status} options={[{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }, { value: "error", label: "Error" }]} onChange={(v) => setForm({ ...form, status: v })} />
                   <Field label="Detalles" value={form.details ?? ""} onChange={(v) => setForm({ ...form, details: v })} />
-                  <Field label="Icono (emoji)" value={form.icon ?? ""} onChange={(v) => setForm({ ...form, icon: v })} />
                 </>
               )}
 
@@ -418,7 +573,7 @@ export function AdminAIHubSection() {
                 <>
                   <Field label="Nombre" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
                   <Field label="Descripción" value={form.description ?? ""} onChange={(v) => setForm({ ...form, description: v })} />
-                  <SelectField label="Categoría" value={form.category} options={SKILL_CATEGORIES.filter((c) => c.key !== "all").map((c) => ({ value: c.key, label: `${c.icon} ${c.label}` }))} onChange={(v) => setForm({ ...form, category: v })} />
+                  <SelectField label="Categoría" value={form.category} options={SKILL_CATEGORIES.filter((c) => c.key !== "all").map((c) => ({ value: c.key, label: c.label }))} onChange={(v) => setForm({ ...form, category: v })} />
                 </>
               )}
 
