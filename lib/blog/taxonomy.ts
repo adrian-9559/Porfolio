@@ -142,7 +142,7 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
     id: "devops",
     label: "DevOps",
     labelKey: "blog.categoryGroup.devops",
-    categories: ["docker", "kubernetes", "ci-cd", "linux", "git"],
+    categories: ["docker", "kubernetes", "ci-cd", "linux", "git", "monitoring", "iac"],
   },
   {
     id: "ai",
@@ -492,6 +492,22 @@ export const CATEGORIES: CategoryMeta[] = [
     labelKey: "blog.category.git",
     color: "bg-orange-600",
     textColor: "text-orange-600 dark:text-orange-400",
+    group: "devops",
+  },
+  {
+    id: "monitoring",
+    label: "Monitoreo",
+    labelKey: "blog.category.monitoring",
+    color: "bg-emerald-600",
+    textColor: "text-emerald-600 dark:text-emerald-400",
+    group: "devops",
+  },
+  {
+    id: "iac",
+    label: "Infraestructura como código",
+    labelKey: "blog.category.iac",
+    color: "bg-amber-600",
+    textColor: "text-amber-600 dark:text-amber-400",
     group: "devops",
   },
   // ── Inteligencia Artificial ───────────────────────────────────────────────

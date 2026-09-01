@@ -68,6 +68,8 @@ import TypeScriptAvanzadoContent from "@/components/blog/tutorials/TypeScriptAva
 import EstadoGlobalContent from "@/components/blog/tutorials/EstadoGlobalContent";
 import RendimientoFrontendContent from "@/components/blog/tutorials/RendimientoFrontendContent";
 import AccesibilidadContent from "@/components/blog/tutorials/AccesibilidadContent";
+import MonitoringContent from "@/components/blog/tutorials/MonitoringContent";
+import TerraformIacContent from "@/components/blog/tutorials/TerraformIacContent";
 
 // Tutorials — EN
 import SvgContentEn from "@/components/blog/tutorials/en/SvgContent";
@@ -134,6 +136,8 @@ import TypeScriptAvanzadoContentEn from "@/components/blog/tutorials/en/TypeScri
 import EstadoGlobalContentEn from "@/components/blog/tutorials/en/EstadoGlobalContent";
 import RendimientoFrontendContentEn from "@/components/blog/tutorials/en/RendimientoFrontendContent";
 import AccesibilidadContentEn from "@/components/blog/tutorials/en/AccesibilidadContent";
+import MonitoringContentEn from "@/components/blog/tutorials/en/MonitoringContent";
+import TerraformIacContentEn from "@/components/blog/tutorials/en/TerraformIacContent";
 
 // Tools — ES
 import PasswordContent from "@/components/blog/tools/PasswordContent";
@@ -329,6 +333,8 @@ const contentMap: Record<
   docker: { es: DockerContent, en: DockerContentEn },
   "ci-cd": { es: CICDContent, en: CICDContentEn },
   kubernetes: { es: KubernetesContent, en: KubernetesContentEn },
+  monitoring: { es: MonitoringContent, en: MonitoringContentEn },
+  "terraform-iac": { es: TerraformIacContent, en: TerraformIacContentEn },
   go: { es: GoContent, en: GoContentEn },
   rust: { es: RustContent, en: RustContentEn },
   nestjs: { es: NestJsContent, en: NestJsContentEn },
