@@ -8,7 +8,7 @@ import { useT } from "@/hooks/useT";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const HeroScene = lazy(() =>
-  import("./hero/HeroScene").then((m) => ({ default: m.HeroScene }))
+  import("./hero/HeroScene").then((m) => ({ default: m.HeroScene })),
 );
 
 const TITLES = [
@@ -33,11 +33,17 @@ export default function Hero() {
     let timeout: ReturnType<typeof setTimeout>;
 
     if (!isDeleting && displayed.length < current.length) {
-      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80);
+      timeout = setTimeout(
+        () => setDisplayed(current.slice(0, displayed.length + 1)),
+        80,
+      );
     } else if (!isDeleting && displayed.length === current.length) {
       timeout = setTimeout(() => setIsDeleting(true), 2000);
     } else if (isDeleting && displayed.length > 0) {
-      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length - 1)), 40);
+      timeout = setTimeout(
+        () => setDisplayed(current.slice(0, displayed.length - 1)),
+        40,
+      );
     } else if (isDeleting && displayed.length === 0) {
       setIsDeleting(false);
       setTitleIdx((prev) => (prev + 1) % TITLES.length);
@@ -50,31 +56,43 @@ export default function Hero() {
     const handleMouse = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
       if (glowRef.current) {
-        glowRef.current.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(99,102,241,0.06), transparent 40%)`;
+        glowRef.current.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(124,58,237,0.04), transparent 40%)`;
       }
     };
+
     window.addEventListener("mousemove", handleMouse);
+
     return () => window.removeEventListener("mousemove", handleMouse);
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+    const handleScroll = () => setScrollY(window.scrollY);
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleDownloadCV = () => {
-    window.location.href = "/CV";
+    const link = document.createElement("a");
+    link.href = "/cv/Adrian_Escribano_CV.pdf";
+    link.download = "Adrian_Escribano_CV.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const parallaxSlow = scrollY * 0.3;
-  const parallaxMid = scrollY * 0.5;
 
   return (
-    <section ref={sectionRef} className="relative w-full pt-10 pb-16 md:pt-16 md:pb-24 overflow-clip">
-      <div ref={glowRef} className="fixed inset-0 -z-10 pointer-events-none transition-all duration-300" />
+    <section
+      ref={sectionRef}
+      className="relative w-full pt-10 pb-16 md:pt-16 md:pb-24"
+    >
+      <div
+        ref={glowRef}
+        className="fixed inset-0 -z-10 pointer-events-none transition-all duration-300"
+      />
 
       {/* 3D Background */}
       <div
@@ -86,28 +104,10 @@ export default function Hero() {
         </Suspense>
       </div>
 
-      {/* Decorative blobs (parallax mid) */}
-      <div
-        className="absolute inset-0 -z-10 overflow-hidden"
-        style={{ transform: `translateY(${parallaxMid}px)` }}
-      >
-        <div className="blob absolute top-[-120px] left-[10%] w-[500px] h-[500px] bg-gradient-radial from-violet-500/20 via-purple-400/10 to-transparent" />
-        <div className="blob absolute top-[-60px] right-[5%] w-[400px] h-[400px] bg-gradient-to-bl from-pink-500/15 via-rose-400/8 to-transparent" />
-        <div className="blob absolute bottom-[-40px] left-[20%] w-[450px] h-[350px] bg-gradient-to-tr from-cyan-400/15 via-blue-400/8 to-transparent" />
-        <div
-          className="absolute inset-0 opacity-[0.025] dark:opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(99,102,241,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.8) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-      </div>
-
-      {/* Content (parallax normal) */}
+      {/* Content */}
       <div className="flex flex-col items-center text-center space-y-8">
         <ScrollReveal>
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-wide bg-gradient-to-r from-violet-500/10 to-pink-500/10 border border-violet-300/40 dark:border-violet-700/40 text-violet-700 dark:text-violet-300 backdrop-blur-sm">
+          <span className="ds-badge ds-badge-accent">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
@@ -116,41 +116,86 @@ export default function Hero() {
           </span>
         </ScrollReveal>
 
-        <ScrollReveal delay={100} className="relative w-32 h-32 mx-auto">
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-400/40 via-pink-400/30 to-cyan-400/30 blur-2xl scale-110" />
-          <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/40 animate-float" />
-          <div className="absolute -bottom-1 -left-3 w-4 h-4 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 shadow-lg shadow-pink-500/40 animate-float" style={{ animationDelay: "1s" }} />
-          <div className="absolute top-1/2 -right-4 w-3 h-3 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 shadow-md shadow-cyan-400/40 animate-float" style={{ animationDelay: "2s" }} />
-          <div className="relative w-32 h-32 rounded-2xl overflow-hidden shadow-2xl shadow-black/20 rotate-1 hover:rotate-0 transition-transform duration-500">
+        <ScrollReveal className="relative mx-auto" delay={100}>
+          {/* Floating colored dots around photo */}
+          <div
+            className="absolute -inset-x-6 -inset-y-6 pointer-events-none"
+            aria-hidden
+          >
+            <div
+              className="absolute w-3 h-3 rounded-full animate-float-slow"
+              style={{
+                top: "0%",
+                right: "20%",
+                background: "#8b5cf6",
+              }}
+            />
+            <div
+              className="absolute w-2.5 h-2.5 rounded-full animate-float-slow animation-delay-2000"
+              style={{
+                top: "50%",
+                right: "0%",
+                background: "#06b6d4",
+              }}
+            />
+            <div
+              className="absolute w-3 h-3 rounded-full animate-float-slow animation-delay-4000"
+              style={{
+                bottom: "5%",
+                left: "15%",
+                background: "#ec4899",
+              }}
+            />
+          </div>
+
+          <div className="relative w-32 h-32 rounded-2xl overflow-hidden shadow-2xl rotate-1 hover:rotate-0 transition-transform duration-500 border border-[var(--border-default)]">
             <Avatar className="w-full h-full rounded-none">
-              <Avatar.Image alt="Adrián Escribano" className="object-cover" src="/images/profile.png" />
-              <Avatar.Fallback className="text-3xl font-black text-white bg-gradient-to-br from-violet-500 to-pink-500 w-full h-full rounded-none">A</Avatar.Fallback>
+              <Avatar.Image
+                alt="Adrián Escribano"
+                className="object-cover"
+                src="/images/profile.png"
+              />
+              <Avatar.Fallback className="text-3xl font-black text-[var(--text-primary)] bg-[var(--bg-surface)] w-full h-full rounded-none">
+                A
+              </Avatar.Fallback>
             </Avatar>
           </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={200} className="space-y-4 max-w-3xl">
-          <p className="text-sm font-semibold text-[#86868b] dark:text-[#636366] tracking-widest uppercase">
+        <ScrollReveal className="space-y-4 max-w-3xl" delay={200}>
+          <p
+            className="text-sm font-semibold tracking-widest uppercase"
+            style={{ color: "var(--text-muted)" }}
+          >
             {t("hero.greeting")}
           </p>
           <h1
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black"
-            style={{ letterSpacing: "-0.04em", lineHeight: 1.04 }}
+            style={{
+              letterSpacing: "-0.04em",
+              lineHeight: 1.04,
+              color: "var(--text-primary)",
+            }}
           >
-            {t("hero.title")}
-            <span className="block hero-gradient-text min-h-[1.2em]">
+            <span className="block ds-gradient-text min-h-[1.2em]">
               {displayed}
               <span className="inline-block w-[3px] h-[0.9em] bg-current ml-0.5 animate-pulse align-middle" />
             </span>
           </h1>
-          <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] leading-relaxed max-w-lg mx-auto">
+          <p
+            className="text-base md:text-lg leading-relaxed max-w-lg mx-auto"
+            style={{ color: "var(--text-secondary)" }}
+          >
             {t("hero.description")}
           </p>
         </ScrollReveal>
 
-        <ScrollReveal delay={300} className="flex flex-col sm:flex-row gap-3 items-center">
+        <ScrollReveal
+          className="flex flex-col sm:flex-row gap-3 items-center"
+          delay={300}
+        >
           <Link href="#projects">
-            <button className="rainbow-btn px-8 py-3.5 text-sm font-semibold">
+            <button className="ds-btn-primary px-8 py-3.5 text-sm font-semibold !rounded-full">
               {t("hero.viewProjects")}
             </button>
           </Link>
@@ -159,11 +204,14 @@ export default function Hero() {
               <Button
                 isIconOnly
                 aria-label={t("hero.downloadCV")}
-                className="w-11 h-11 rounded-full bg-white dark:bg-[#111116] hover:bg-[#f5f5f7] dark:hover:bg-[#1c1c22] border border-black/10 dark:border-white/10 shadow-sm"
+                className="ds-btn-icon !w-11 !h-11 !rounded-full"
                 variant="ghost"
                 onPress={handleDownloadCV}
               >
-                <ArrowShapeDownToLine className="w-4 h-4 text-[#1d1d1f] dark:text-white" />
+                <ArrowShapeDownToLine
+                  className="w-4 h-4"
+                  style={{ color: "var(--text-primary)" }}
+                />
               </Button>
             </Tooltip.Trigger>
             <Tooltip.Content>
@@ -172,22 +220,48 @@ export default function Hero() {
           </Tooltip>
         </ScrollReveal>
 
-        <ScrollReveal delay={400} className="flex flex-wrap justify-center gap-2 max-w-md pt-2">
-          {["React", "Next.js", "TypeScript", "Node.js", "Supabase", "Docker"].map((tech) => (
+        <ScrollReveal
+          className="flex flex-wrap justify-center gap-2 max-w-md pt-2"
+          delay={400}
+        >
+          {[
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Node.js",
+            "Supabase",
+            "Docker",
+          ].map((tech) => (
             <span
               key={tech}
-              className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-[#3d3d3d] dark:text-[#c0c0c5] shadow-sm hover:shadow-md hover:border-violet-300 dark:hover:border-violet-700 hover:text-violet-600 dark:hover:text-violet-400 transition-all duration-200 cursor-default"
+              className="px-3 py-1 text-xs font-medium text-[var(--text-muted)] border border-[var(--border-default)] rounded-full"
             >
               {tech}
             </span>
           ))}
         </ScrollReveal>
 
-        <ScrollReveal delay={500} className="pt-8">
-          <Link href="#about" className="inline-flex flex-col items-center gap-1 text-[#aeaeb2] dark:text-[#636366] hover:text-violet-500 dark:hover:text-violet-400 transition-colors no-underline">
-            <span className="text-xs font-medium tracking-wide uppercase">Scroll</span>
-            <svg className="w-5 h-5 animate-scroll-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        <ScrollReveal className="pt-8" delay={500}>
+          <Link
+            className="inline-flex flex-col items-center gap-1 hover:opacity-80 transition-colors no-underline"
+            href="#about"
+            style={{ color: "var(--text-muted)" }}
+          >
+            <span className="text-xs font-medium tracking-wide uppercase">
+              Scroll
+            </span>
+            <svg
+              className="w-5 h-5 animate-scroll-bounce"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+              />
             </svg>
           </Link>
         </ScrollReveal>
