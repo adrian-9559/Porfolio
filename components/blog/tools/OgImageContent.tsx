@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 
 const CANVAS_W = 1200;
@@ -10,15 +11,19 @@ export default function OgImageContent() {
   const { t } = useT();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [title, setTitle] = useState("My Blog Post");
-  const [subtitle, setSubtitle] = useState("A short description of the article");
+  const [subtitle, setSubtitle] = useState(
+    "A short description of the article",
+  );
   const [bgColor, setBgColor] = useState("#6366f1");
   const [textColor, setTextColor] = useState("#ffffff");
   const [generating, setGenerating] = useState(false);
 
   const drawPreview = useCallback(() => {
     const canvas = canvasRef.current;
+
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
+
     if (!ctx) return;
 
     // Background
@@ -33,7 +38,8 @@ export default function OgImageContent() {
 
     // Title
     ctx.fillStyle = textColor;
-    ctx.font = "bold 72px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    ctx.font =
+      "bold 72px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
@@ -57,7 +63,8 @@ export default function OgImageContent() {
     if (currentLine) lines.push(currentLine);
 
     const lineHeight = 90;
-    const titleY = CANVAS_H / 2 - (lines.length > 1 ? 30 : 0) - (subtitle ? 20 : 0);
+    const titleY =
+      CANVAS_H / 2 - (lines.length > 1 ? 30 : 0) - (subtitle ? 20 : 0);
 
     lines.forEach((line, i) => {
       ctx.fillText(line, CANVAS_W / 2, titleY + i * lineHeight, maxWidth);
@@ -65,9 +72,11 @@ export default function OgImageContent() {
 
     // Subtitle
     if (subtitle) {
-      ctx.font = "32px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      ctx.font =
+        "32px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
       ctx.fillStyle = textColor + "cc";
       const subtitleY = titleY + lines.length * lineHeight + 20;
+
       ctx.fillText(subtitle, CANVAS_W / 2, subtitleY, maxWidth);
     }
   }, [title, subtitle, bgColor, textColor]);
@@ -80,6 +89,7 @@ export default function OgImageContent() {
     setGenerating(true);
     try {
       const canvas = canvasRef.current;
+
       if (!canvas) return;
 
       const blob = await new Promise<Blob>((resolve) => {

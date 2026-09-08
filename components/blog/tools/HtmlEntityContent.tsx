@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -37,7 +38,9 @@ function encodeToEntities(input: string): string {
     .map((ch) => {
       if (ENCODE_MAP[ch]) return ENCODE_MAP[ch];
       const code = ch.charCodeAt(0);
+
       if (code > 127) return `&#x${code.toString(16).toUpperCase()};`;
+
       return ch;
     })
     .join("");
@@ -52,12 +55,15 @@ function decodeFromEntities(input: string): string {
       if (named) {
         try {
           const el = document.createElement("span");
+
           el.innerHTML = `&${named};`;
+
           return el.textContent || _;
         } catch {
           return _;
         }
       }
+
       return _;
     },
   );
@@ -69,7 +75,8 @@ export default function HtmlEntityContent() {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [copied, setCopied] = useState(false);
 
-  const output = mode === "encode" ? encodeToEntities(input) : decodeFromEntities(input);
+  const output =
+    mode === "encode" ? encodeToEntities(input) : decodeFromEntities(input);
 
   const copy = async () => {
     if (await copyToClipboard(output)) {
@@ -120,11 +127,17 @@ export default function HtmlEntityContent() {
         {/* Input */}
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            {mode === "encode" ? t("blog.htmlEntity.originalText") : t("blog.htmlEntity.encodedText")}
+            {mode === "encode"
+              ? t("blog.htmlEntity.originalText")
+              : t("blog.htmlEntity.encodedText")}
           </p>
           <textarea
             className="w-full h-28 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-            placeholder={mode === "encode" ? '<h1>Hola & "mundo"</h1>' : "&lt;h1&gt;Hola &amp; &quot;mundo&quot;&lt;/h1&gt;"}
+            placeholder={
+              mode === "encode"
+                ? '<h1>Hola & "mundo"</h1>'
+                : "&lt;h1&gt;Hola &amp; &quot;mundo&quot;&lt;/h1&gt;"
+            }
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -135,13 +148,17 @@ export default function HtmlEntityContent() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-                {mode === "encode" ? t("blog.htmlEntity.encodedText") : t("blog.htmlEntity.originalText")}
+                {mode === "encode"
+                  ? t("blog.htmlEntity.encodedText")
+                  : t("blog.htmlEntity.originalText")}
               </p>
               <button
                 className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
                 onClick={copy}
               >
-                {copied ? t("blog.htmlEntity.copied") : t("blog.htmlEntity.copy")}
+                {copied
+                  ? t("blog.htmlEntity.copied")
+                  : t("blog.htmlEntity.copy")}
               </button>
             </div>
             <div className="p-3 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-800/40 font-mono text-sm text-[#1d1d1f] dark:text-white break-all min-h-[60px]">
@@ -172,10 +189,19 @@ export default function HtmlEntityContent() {
               </thead>
               <tbody>
                 {COMMON_ENTITIES.map((e) => (
-                  <tr key={e.entity} className="border-t border-black/5 dark:border-white/5">
-                    <td className="px-3 py-1.5 font-mono text-[#1d1d1f] dark:text-white">{e.char}</td>
-                    <td className="px-3 py-1.5 font-mono text-indigo-600 dark:text-indigo-400">{e.entity}</td>
-                    <td className="px-3 py-1.5 text-[#6e6e73] dark:text-[#86868b]">{e.name}</td>
+                  <tr
+                    key={e.entity}
+                    className="border-t border-black/5 dark:border-white/5"
+                  >
+                    <td className="px-3 py-1.5 font-mono text-[#1d1d1f] dark:text-white">
+                      {e.char}
+                    </td>
+                    <td className="px-3 py-1.5 font-mono text-indigo-600 dark:text-indigo-400">
+                      {e.entity}
+                    </td>
+                    <td className="px-3 py-1.5 text-[#6e6e73] dark:text-[#86868b]">
+                      {e.name}
+                    </td>
                   </tr>
                 ))}
               </tbody>

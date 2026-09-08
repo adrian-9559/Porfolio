@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -15,7 +16,8 @@ function jsonToTs(
   if (obj === null) return "null";
   if (obj === undefined) return "undefined";
   if (typeof obj === "string") return "string";
-  if (typeof obj === "number") return Number.isInteger(obj) ? "number" : "number";
+  if (typeof obj === "number")
+    return Number.isInteger(obj) ? "number" : "number";
   if (typeof obj === "boolean") return "boolean";
   if (Array.isArray(obj)) {
     if (obj.length === 0) return "unknown[]";
@@ -25,6 +27,7 @@ function jsonToTs(
   }
   if (typeof obj === "object") {
     const entries = Object.entries(obj as Record<string, unknown>);
+
     if (entries.length === 0) return "{}";
     const lines = entries.map(([key, val]) => {
       const safeKey = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(key) ? key : `"${key}"`;
@@ -46,6 +49,7 @@ function jsonToTs(
 
 function mergeObjects(arr: Record<string, unknown>[]): Record<string, unknown> {
   const merged: Record<string, unknown> = {};
+
   for (const obj of arr) {
     for (const [k, v] of Object.entries(obj)) {
       if (!(k in merged)) merged[k] = v;
@@ -57,6 +61,7 @@ function mergeObjects(arr: Record<string, unknown>[]): Record<string, unknown> {
 
 function tryParseJson(input: string): unknown {
   const trimmed = input.trim();
+
   if (!trimmed) return undefined;
 
   return JSON.parse(trimmed);
@@ -74,9 +79,15 @@ export default function JsonToTsContent() {
     if (!input.trim()) return "";
     try {
       const parsed = tryParseJson(input);
+
       setError("");
       if (parsed === undefined) return "";
-      if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === "object" && parsed[0] !== null) {
+      if (
+        Array.isArray(parsed) &&
+        parsed.length > 0 &&
+        typeof parsed[0] === "object" &&
+        parsed[0] !== null
+      ) {
         const merged = mergeObjects(parsed as Record<string, unknown>[]);
 
         return jsonToTs(merged, 0, useType, rootName);
@@ -157,9 +168,9 @@ export default function JsonToTsContent() {
             <textarea
               className="w-full h-64 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-cyan-400 dark:focus:border-cyan-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
               placeholder='{"name": "Adrián", "age": 29, "tags": ["dev"]}'
+              spellCheck={false}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              spellCheck={false}
             />
           </div>
 
@@ -179,7 +190,9 @@ export default function JsonToTsContent() {
             </div>
             <div className="h-64 p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 overflow-auto">
               {error ? (
-                <p className="text-sm text-red-600 dark:text-red-400">⚠️ {error}</p>
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  ⚠️ {error}
+                </p>
               ) : output ? (
                 <pre className="text-sm font-mono text-[#1d1d1f] dark:text-white whitespace-pre-wrap break-all">
                   {output}

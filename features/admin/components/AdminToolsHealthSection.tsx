@@ -62,8 +62,13 @@ export function AdminToolsHealthSection() {
 
       {/* Header */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-1">Monitoreo</p>
-        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
+        <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-1">
+          Monitoreo
+        </p>
+        <h1
+          className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
+          style={{ letterSpacing: "-0.03em" }}
+        >
           {t("admin.services")}
         </h1>
         <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
@@ -81,7 +86,9 @@ export function AdminToolsHealthSection() {
         <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
           <div className="h-1 bg-gradient-to-r from-emerald-500 to-green-500" />
           <div className="p-6 text-center">
-            <p className="text-sm text-red-600 dark:text-red-400 mb-3">{error}</p>
+            <p className="text-sm text-red-600 dark:text-red-400 mb-3">
+              {error}
+            </p>
             <button
               className="px-4 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium hover:opacity-90 transition-opacity"
               onClick={fetchHealth}
@@ -106,14 +113,27 @@ export function AdminToolsHealthSection() {
       {!loading && !error && services.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((svc) => (
-            <div key={svc.key} className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 group">
+            <div
+              key={svc.key}
+              className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 group"
+            >
               <div className="h-1 bg-gradient-to-r from-emerald-500 to-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="p-5 flex flex-col gap-0">
                 {/* Header */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center text-white shadow-md shrink-0">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                      </svg>
                     </div>
                     <p className="font-semibold text-sm text-[#1d1d1f] dark:text-white truncate">
                       {svc.name}
@@ -141,7 +161,8 @@ export function AdminToolsHealthSection() {
                   )}
                   {svc.details?.memory?.heapUsed != null && (
                     <span>
-                      {(svc.details.memory.heapUsed / 1024 / 1024).toFixed(0)} MB
+                      {(svc.details.memory.heapUsed / 1024 / 1024).toFixed(0)}{" "}
+                      MB
                     </span>
                   )}
                   {svc.errorCount > 0 && (

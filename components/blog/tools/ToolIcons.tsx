@@ -502,68 +502,169 @@ export function IconBarcodeGenerator({ className = "w-5 h-5" }: ToolIconProps) {
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
-      <path d="M3 5v14M6 5v14M9 5v14M12 5v14M15 5v14M18 5v14M21 5v14" strokeLinecap="round" strokeWidth={2} />
+      <path
+        d="M3 5v14M6 5v14M9 5v14M12 5v14M15 5v14M18 5v14M21 5v14"
+        strokeLinecap="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconPdfToExcel({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M14 2v6h6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M8 13h2M14 13h2M8 17h2M14 17h2M10 15h4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M14 2v6h6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M8 13h2M14 13h2M8 17h2M14 17h2M10 15h4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconMarkdownPreview({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M3 5h18v14H3V5z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M7 9l2 2-2 2M13 13h4M13 9h4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M3 5h18v14H3V5z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M7 9l2 2-2 2M13 13h4M13 9h4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconJwtDecoder({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2l7 4.5v5c0 5.25-3.5 9.74-7 11-3.5-1.26-7-5.75-7-11v-5L12 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 2l7 4.5v5c0 5.25-3.5 9.74-7 11-3.5-1.26-7-5.75-7-11v-5L12 2z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M9 12l2 2 4-4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconUrlEncoder({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconCronBuilder({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
       <circle cx="12" cy="12" r="10" strokeWidth={2} />
-      <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path
+        d="M12 6v6l4 2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconHashGenerator({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M4 9h16M4 15h16M10 3l-2 18M16 3l-2 18" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M4 9h16M4 15h16M10 3l-2 18M16 3l-2 18"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconCssGradient({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
       <circle cx="12" cy="12" r="10" strokeWidth={2} />
       <path d="M12 2a10 10 0 010 20" fill="currentColor" opacity={0.3} />
       <path d="M12 2v20" strokeWidth={2} />
@@ -573,18 +674,40 @@ export function IconCssGradient({ className = "w-5 h-5" }: ToolIconProps) {
 
 export function IconImageToBase64({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
       <rect height="14" rx="2" strokeWidth={2} width="18" x="3" y="5" />
       <circle cx="8.5" cy="8.5" r="1.5" strokeWidth={2} />
-      <path d="M21 15l-5-5L5 21" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+      <path
+        d="M21 15l-5-5L5 21"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   );
 }
 
 export function IconMockData({ className = "w-5 h-5" }: ToolIconProps) {
   return (
-    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M4 7h16M4 12h16M4 17h10" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M4 7h16M4 12h16M4 17h10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
       <circle cx="19" cy="17" r="2" strokeWidth={2} />
       <circle cx="19" cy="12" r="2" strokeWidth={2} />
     </svg>

@@ -47,7 +47,9 @@ Porfolio/
 ## 🎯 Páginas y Componentes
 
 ### 1️⃣ **Home** (`/`)
+
 **Componentes incluidos:**
+
 - ✨ Hero Section con gradiente azul-cyan
 - 📊 Stats - Métricas de experiencia y proyectos
 - 🛠️ Skills - Habilidades por categoría
@@ -57,23 +59,27 @@ Porfolio/
 - 📞 CTA - Llamada a la acción final
 
 ### 2️⃣ **About** (`/about`)
+
 - Historia personal completa
 - Enfoque de trabajo y metodología
 - Experiencia y proyectos completados
 - Timeline de carrera profesional
 
 ### 3️⃣ **CV/Experiencia** (`/pricing`)
+
 - Experiencia profesional detallada
 - Educación y formación
 - Descarga de CV en PDF
 - Estadísticas agregadas
 
 ### 4️⃣ **Blog** (`/blog`)
+
 - Featured post destacado
 - Grid de artículos adicionales
 - Metadatos (fecha, categoría, tiempo lectura)
 
 ### 5️⃣ **Contacto** (`/contact`)
+
 - Formulario de contacto responsivo
 - Métodos de contacto directo
 - Links a redes sociales
@@ -83,6 +89,7 @@ Porfolio/
 ## 🎨 Características de Diseño
 
 ### ✨ Estilo Apple
+
 - **Tipografía clara**: Texto grande y legible
 - **Espacios en blanco**: Abundantes espacios para respiración visual
 - **Colores minimalistas**: Blanco, gris y tonos azul-cyan
@@ -90,16 +97,19 @@ Porfolio/
 - **Sombras sutiles**: No invasivas, apenas perceptibles
 
 ### 🌓 Tema Claro/Oscuro
+
 - Toggle en navbar para cambiar entre temas
 - Colores optimizados para ambos modos
 - Persistencia del tema preferido
 
 ### 📱 Responsivo
+
 - Mobile-first approach
 - Breakpoints: sm, md, lg, xl
 - Componentes adaptables a cualquier tamaño
 
 ### 🎬 Animaciones
+
 - Transiciones suaves en botones y links
 - Efectos hover mejorados
 - Animaciones CSS personalizadas (fadeIn, slideUp, float)
@@ -109,20 +119,24 @@ Porfolio/
 ## 🚀 Cómo Usar
 
 ### Instalación
+
 ```bash
 cd Porfolio
 pnpm install  # o npm install
 ```
 
 ### Desarrollo
+
 ```bash
 npm run dev
 # O con pnpm
 pnpm dev
 ```
+
 Accede a `http://localhost:3000`
 
 ### Build Producción
+
 ```bash
 npm run build
 npm run start
@@ -133,12 +147,15 @@ npm run start
 ## 📝 Personalización
 
 ### Cambiar Colores
+
 Edita `globals.css` y busca las clases con gradientes:
+
 ```css
 from-blue-600 to-cyan-600  /* Cambiar estos colores */
 ```
 
 ### Actualizar Contenido
+
 1. **Hero**: Edita [hero.tsx](components/hero.tsx) - Texto y CTA
 2. **Skills**: Edita [skills.tsx](components/skills.tsx) - Categorías y skills
 3. **Projects**: Edita [projects.tsx](components/projects.tsx) - Proyectos
@@ -146,6 +163,7 @@ from-blue-600 to-cyan-600  /* Cambiar estos colores */
 5. **Testimonials**: Edita [testimonials.tsx](components/testimonials.tsx) - Feedback
 
 ### Agregar Nuevas Páginas
+
 1. Crea carpeta en `pages/nombre/`
 2. Crea archivo `index.tsx`
 3. Importa `DefaultLayout`
@@ -155,15 +173,15 @@ from-blue-600 to-cyan-600  /* Cambiar estos colores */
 
 ## 🔧 Tecnologías Utilizadas
 
-| Tecnología | Versión | Propósito |
-|-----------|---------|----------|
-| Next.js | 16.2.6 | Framework React |
-| React | 19.2.6 | UI Library |
-| TypeScript | 5.6.3 | Type Safety |
-| Tailwind CSS | 4.1.11 | Styling |
-| HeroUI | 3.1.0 | Componentes UI |
-| next-themes | 0.4.6 | Dark Mode |
-| @gravity-ui/icons | 2.18.0 | Iconos |
+| Tecnología        | Versión | Propósito       |
+| ----------------- | ------- | --------------- |
+| Next.js           | 16.2.6  | Framework React |
+| React             | 19.2.6  | UI Library      |
+| TypeScript        | 5.6.3   | Type Safety     |
+| Tailwind CSS      | 4.1.11  | Styling         |
+| HeroUI            | 3.1.0   | Componentes UI  |
+| next-themes       | 0.4.6   | Dark Mode       |
+| @gravity-ui/icons | 2.18.0  | Iconos          |
 
 ---
 
@@ -200,6 +218,7 @@ from-blue-600 to-cyan-600  /* Cambiar estos colores */
 ## 📞 Soporte
 
 Si necesitas hacer cambios o tienes preguntas sobre la estructura, revisa:
+
 - [Documentación Next.js](https://nextjs.org/docs)
 - [Documentación Tailwind CSS](https://tailwindcss.com/docs)
 - [Documentación HeroUI](https://heroui.com/docs)

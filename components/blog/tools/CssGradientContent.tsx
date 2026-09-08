@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -17,17 +18,69 @@ interface Preset {
 }
 
 const presets: Preset[] = [
-  { id: "sunset", label: "Sunset", stops: [{ color: "#ff512f", position: 0 }, { color: "#dd2476", position: 100 }], direction: 135, type: "linear" },
-  { id: "ocean", label: "Ocean", stops: [{ color: "#2193b0", position: 0 }, { color: "#6dd5ed", position: 100 }], direction: 180, type: "linear" },
-  { id: "forest", label: "Forest", stops: [{ color: "#134e5e", position: 0 }, { color: "#71b280", position: 100 }], direction: 135, type: "linear" },
-  { id: "fire", label: "Fire", stops: [{ color: "#f12711", position: 0 }, { color: "#f5af19", position: 100 }], direction: 0, type: "linear" },
-  { id: "purpleHaze", label: "Purple Haze", stops: [{ color: "#7b2ff7", position: 0 }, { color: "#c471f5", position: 50 }, { color: "#fa71cd", position: 100 }], direction: 135, type: "linear" },
+  {
+    id: "sunset",
+    label: "Sunset",
+    stops: [
+      { color: "#ff512f", position: 0 },
+      { color: "#dd2476", position: 100 },
+    ],
+    direction: 135,
+    type: "linear",
+  },
+  {
+    id: "ocean",
+    label: "Ocean",
+    stops: [
+      { color: "#2193b0", position: 0 },
+      { color: "#6dd5ed", position: 100 },
+    ],
+    direction: 180,
+    type: "linear",
+  },
+  {
+    id: "forest",
+    label: "Forest",
+    stops: [
+      { color: "#134e5e", position: 0 },
+      { color: "#71b280", position: 100 },
+    ],
+    direction: 135,
+    type: "linear",
+  },
+  {
+    id: "fire",
+    label: "Fire",
+    stops: [
+      { color: "#f12711", position: 0 },
+      { color: "#f5af19", position: 100 },
+    ],
+    direction: 0,
+    type: "linear",
+  },
+  {
+    id: "purpleHaze",
+    label: "Purple Haze",
+    stops: [
+      { color: "#7b2ff7", position: 0 },
+      { color: "#c471f5", position: 50 },
+      { color: "#fa71cd", position: 100 },
+    ],
+    direction: 135,
+    type: "linear",
+  },
 ];
 
-function buildCSS(stops: ColorStop[], type: "linear" | "radial", direction: number): string {
+function buildCSS(
+  stops: ColorStop[],
+  type: "linear" | "radial",
+  direction: number,
+): string {
   const sorted = [...stops].sort((a, b) => a.position - b.position);
   const stopsStr = sorted.map((s) => `${s.color} ${s.position}%`).join(", ");
+
   if (type === "radial") return `radial-gradient(circle, ${stopsStr})`;
+
   return `linear-gradient(${direction}deg, ${stopsStr})`;
 }
 
@@ -46,7 +99,12 @@ export default function CssGradientContent() {
   const addStop = () => {
     const maxPos = Math.max(...stops.map((s) => s.position));
     const newPos = Math.min(maxPos + 10, 100);
-    setStops([...stops, { color: "#ffffff", position: newPos }].sort((a, b) => a.position - b.position));
+
+    setStops(
+      [...stops, { color: "#ffffff", position: newPos }].sort(
+        (a, b) => a.position - b.position,
+      ),
+    );
   };
 
   const removeStop = (idx: number) => {
@@ -54,7 +112,11 @@ export default function CssGradientContent() {
     setStops(stops.filter((_, i) => i !== idx));
   };
 
-  const updateStop = (idx: number, field: "color" | "position", value: string | number) => {
+  const updateStop = (
+    idx: number,
+    field: "color" | "position",
+    value: string | number,
+  ) => {
     setStops(stops.map((s, i) => (i === idx ? { ...s, [field]: value } : s)));
   };
 
@@ -128,14 +190,16 @@ export default function CssGradientContent() {
           </div>
           {type === "linear" && (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">{direction}°</span>
+              <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                {direction}°
+              </span>
               <input
-                type="range"
-                min={0}
+                className="w-32 accent-fuchsia-500"
                 max={360}
+                min={0}
+                type="range"
                 value={direction}
                 onChange={(e) => setDirection(Number(e.target.value))}
-                className="w-32 accent-fuchsia-500"
               />
             </div>
           )}
@@ -158,26 +222,30 @@ export default function CssGradientContent() {
             {stops.map((stop, idx) => (
               <div key={idx} className="flex items-center gap-2">
                 <input
+                  className="w-8 h-8 rounded-lg border border-black/8 dark:border-white/8 cursor-pointer bg-transparent"
                   type="color"
                   value={stop.color}
                   onChange={(e) => updateStop(idx, "color", e.target.value)}
-                  className="w-8 h-8 rounded-lg border border-black/8 dark:border-white/8 cursor-pointer bg-transparent"
                 />
                 <input
+                  className="flex-1 h-8 px-2 text-xs font-mono rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white focus:outline-none focus:border-fuchsia-400 dark:focus:border-fuchsia-600 transition-colors"
                   type="text"
                   value={stop.color}
                   onChange={(e) => updateStop(idx, "color", e.target.value)}
-                  className="flex-1 h-8 px-2 text-xs font-mono rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white focus:outline-none focus:border-fuchsia-400 dark:focus:border-fuchsia-600 transition-colors"
                 />
                 <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={stop.position}
-                  onChange={(e) => updateStop(idx, "position", Number(e.target.value))}
                   className="w-16 h-8 px-2 text-xs font-mono rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-center focus:outline-none focus:border-fuchsia-400 dark:focus:border-fuchsia-600 transition-colors"
+                  max={100}
+                  min={0}
+                  type="number"
+                  value={stop.position}
+                  onChange={(e) =>
+                    updateStop(idx, "position", Number(e.target.value))
+                  }
                 />
-                <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">%</span>
+                <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                  %
+                </span>
                 {stops.length > 2 && (
                   <button
                     className="text-xs text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 px-1"
@@ -201,7 +269,9 @@ export default function CssGradientContent() {
               className="text-xs text-fuchsia-600 dark:text-fuchsia-400 hover:underline"
               onClick={copy}
             >
-              {copied ? t("blog.cssGradient.copied") : t("blog.cssGradient.copy")}
+              {copied
+                ? t("blog.cssGradient.copied")
+                : t("blog.cssGradient.copy")}
             </button>
           </div>
           <div className="p-3 rounded-xl bg-fuchsia-50/60 dark:bg-fuchsia-950/20 border border-fuchsia-200 dark:border-fuchsia-800/40 font-mono text-sm text-[#1d1d1f] dark:text-white break-all">

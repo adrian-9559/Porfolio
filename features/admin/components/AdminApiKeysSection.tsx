@@ -287,37 +287,108 @@ export function AdminApiKeysSection() {
 
       {/* Header */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#6e6e73] dark:text-[#86868b] mb-1">Seguridad</p>
-        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
+        <p className="text-xs font-semibold uppercase tracking-widest text-[#6e6e73] dark:text-[#86868b] mb-1">
+          Seguridad
+        </p>
+        <h1
+          className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
+          style={{ letterSpacing: "-0.03em" }}
+        >
           {t("admin.apiKeysTitle")}
         </h1>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">{t("admin.apiKeysCount", { total: keys.length, active })}</p>
+        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+          {t("admin.apiKeysCount", { total: keys.length, active })}
+        </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: t("admin.apiKeyFilterAll"), value: keys.length, gradient: "from-cyan-500 to-blue-500", icon: "total" },
-          { label: t("admin.apiKeyFilterActive"), value: active, gradient: "from-emerald-500 to-teal-500", icon: "active" },
-          { label: t("admin.apiKeyFilterRevoked"), value: keys.length - active, gradient: "from-red-500 to-rose-500", icon: "revoked" },
+          {
+            label: t("admin.apiKeyFilterAll"),
+            value: keys.length,
+            gradient: "from-cyan-500 to-blue-500",
+            icon: "total",
+          },
+          {
+            label: t("admin.apiKeyFilterActive"),
+            value: active,
+            gradient: "from-emerald-500 to-teal-500",
+            icon: "active",
+          },
+          {
+            label: t("admin.apiKeyFilterRevoked"),
+            value: keys.length - active,
+            gradient: "from-red-500 to-rose-500",
+            icon: "revoked",
+          },
         ].map((s) => (
-          <div key={s.label} className="relative rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black/8 dark:hover:shadow-black/30 hover:border-black/15 dark:hover:border-white/15 group">
-            <div className={`h-1 bg-gradient-to-r ${s.gradient} opacity-80 group-hover:opacity-100 transition-opacity`} />
+          <div
+            key={s.label}
+            className="relative rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black/8 dark:hover:shadow-black/30 hover:border-black/15 dark:hover:border-white/15 group"
+          >
+            <div
+              className={`h-1 bg-gradient-to-r ${s.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}
+            />
             <div className="p-4 relative">
-              <div className={`absolute -bottom-5 -right-5 w-20 h-20 rounded-full bg-gradient-to-br ${s.gradient} opacity-10 blur-2xl`} />
+              <div
+                className={`absolute -bottom-5 -right-5 w-20 h-20 rounded-full bg-gradient-to-br ${s.gradient} opacity-10 blur-2xl`}
+              />
               <div className="flex items-center gap-2.5">
-                <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center text-white shadow-lg shrink-0`}>
+                <div
+                  className={`w-9 h-9 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center text-white shadow-lg shrink-0`}
+                >
                   {s.icon === "total" ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+                    </svg>
                   ) : s.icon === "active" ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                      <path d="M22 4L12 14.01l-3-3" />
+                    </svg>
                   ) : (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="15" x2="9" y1="9" y2="15" />
+                      <line x1="9" x2="15" y1="9" y2="15" />
+                    </svg>
                   )}
                 </div>
                 <div>
-                  <p className="text-2xl font-black tabular-nums tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.02em" }}>{s.value}</p>
-                  <p className="text-[11px] font-semibold text-[#1d1d1f] dark:text-white truncate">{s.label}</p>
+                  <p
+                    className="text-2xl font-black tabular-nums tracking-tight text-[#1d1d1f] dark:text-white"
+                    style={{ letterSpacing: "-0.02em" }}
+                  >
+                    {s.value}
+                  </p>
+                  <p className="text-[11px] font-semibold text-[#1d1d1f] dark:text-white truncate">
+                    {s.label}
+                  </p>
                 </div>
               </div>
             </div>
@@ -329,7 +400,17 @@ export function AdminApiKeysSection() {
       <div className="flex flex-col gap-3">
         <div className="flex gap-2">
           <div className="relative flex-1">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
             <input
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
               placeholder={t("admin.searchApiKey")}
@@ -341,7 +422,14 @@ export function AdminApiKeysSection() {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-md shadow-cyan-500/20"
             onClick={() => setShowCreate(true)}
           >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" viewBox="0 0 16 16">
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="2"
+              viewBox="0 0 16 16"
+            >
               <path d="M8 2v12M2 8h12" />
             </svg>
             {t("admin.apiKeyGenerate")}
@@ -373,24 +461,43 @@ export function AdminApiKeysSection() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-10 text-center text-sm text-[#6e6e73] dark:text-[#86868b]">
-            {search ? t("admin.apiKeyNoKeysSearch") : t("admin.apiKeyNoKeysHint")}
+            {search
+              ? t("admin.apiKeyNoKeysSearch")
+              : t("admin.apiKeyNoKeysHint")}
           </div>
         ) : (
           <div className="divide-y divide-black/5 dark:divide-white/5">
             {filtered.map((k) => (
-              <div key={k.id} className="flex items-center gap-3 px-5 py-3.5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors">
+              <div
+                key={k.id}
+                className="flex items-center gap-3 px-5 py-3.5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
+              >
                 <div
                   className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-md ${k.is_active ? "bg-gradient-to-br from-cyan-500 to-blue-500 text-white" : "bg-black/5 dark:bg-white/8 text-[#aeaeb2]"}`}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+                  </svg>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
                       {k.name}
                     </p>
-                    <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${k.is_active ? "bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400" : "bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-400"}`}>
-                      {k.is_active ? t("admin.apiKeyBadgeActive") : t("admin.apiKeyBadgeRevoked")}
+                    <span
+                      className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${k.is_active ? "bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400" : "bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-400"}`}
+                    >
+                      {k.is_active
+                        ? t("admin.apiKeyBadgeActive")
+                        : t("admin.apiKeyBadgeRevoked")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
@@ -435,17 +542,35 @@ export function AdminApiKeysSection() {
                 <div className="flex gap-1">
                   <button
                     className="p-2 rounded-lg text-[#aeaeb2] dark:text-[#636366] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all"
-                    title={revealed.has(k.id) ? t("admin.apiKeyHide") : t("admin.apiKeyReveal")}
+                    title={
+                      revealed.has(k.id)
+                        ? t("admin.apiKeyHide")
+                        : t("admin.apiKeyReveal")
+                    }
                     onClick={() => toggleReveal(k.id)}
                   >
                     {revealed.has(k.id) ? (
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeWidth="1.5"
+                        viewBox="0 0 14 14"
+                      >
                         <path d="M1 7s2-4 6-4 6 4 6 4-2 4-6 4-6-4-6-4z" />
                         <circle cx="7" cy="7" r="1.5" />
                         <path d="M1 1l12 12" />
                       </svg>
                     ) : (
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 14 14">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeWidth="1.5"
+                        viewBox="0 0 14 14"
+                      >
                         <path d="M1 7s2-4 6-4 6 4 6 4-2 4-6 4-6-4-6-4z" />
                         <circle cx="7" cy="7" r="1.5" />
                       </svg>
@@ -457,7 +582,17 @@ export function AdminApiKeysSection() {
                       title={t("admin.apiKeyRevoke")}
                       onClick={() => handleRevoke(k.id)}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="4.93" x2="19.07" y1="4.93" y2="19.07" />
+                      </svg>
                     </button>
                   )}
                   {confirmDeleteId === k.id ? (
@@ -481,7 +616,16 @@ export function AdminApiKeysSection() {
                       title="Eliminar"
                       onClick={() => setConfirmDeleteId(k.id)}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                      </svg>
                     </button>
                   )}
                 </div>
@@ -507,11 +651,18 @@ export function AdminApiKeysSection() {
 function relativeTime(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
   const mins = Math.floor(diff / 60000);
+
   if (mins < 1) return "ahora";
   if (mins < 60) return `hace ${mins}m`;
   const hrs = Math.floor(mins / 60);
+
   if (hrs < 24) return `hace ${hrs}h`;
   const days = Math.floor(hrs / 24);
+
   if (days < 30) return `hace ${days}d`;
-  return new Date(iso).toLocaleDateString("es-ES", { day: "numeric", month: "short" });
+
+  return new Date(iso).toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "short",
+  });
 }

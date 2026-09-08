@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import * as pdfjs from "pdfjs-dist";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -16,9 +17,14 @@ export default function PdfToExcelContent() {
   const [rows, setRows] = useState<ParsedRow[]>([]);
   const [rawText, setRawText] = useState("");
   const [copied, setCopied] = useState(false);
-  const [delimiter, setDelimiter] = useState<"auto" | "tab" | "comma" | "pipe">("auto");
+  const [delimiter, setDelimiter] = useState<"auto" | "tab" | "comma" | "pipe">(
+    "auto",
+  );
   const [selectedCells, setSelectedCells] = useState<Set<string>>(new Set());
-  const [lastClicked, setLastClicked] = useState<{ r: number; c: number } | null>(null);
+  const [lastClicked, setLastClicked] = useState<{
+    r: number;
+    c: number;
+  } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
 
@@ -43,12 +49,18 @@ export default function PdfToExcelContent() {
           counts.semicolon += (line.match(/;/g) || []).length;
         }
 
-        const max = Math.max(counts.tab, counts.comma, counts.pipe, counts.semicolon);
+        const max = Math.max(
+          counts.tab,
+          counts.comma,
+          counts.pipe,
+          counts.semicolon,
+        );
 
         if (max < 2) return "\t";
         if (counts.tab === max) return "\t";
         if (counts.pipe === max) return "|";
         if (counts.semicolon === max) return ";";
+
         return ",";
       };
 
@@ -353,9 +365,7 @@ export default function PdfToExcelContent() {
                   {t("blog.pdfToExcel.selectFile")}
                 </span>
               </p>
-              <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-                PDF
-              </p>
+              <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">PDF</p>
             </div>
             <input
               ref={inputRef}
@@ -454,7 +464,9 @@ export default function PdfToExcelContent() {
                   className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] hover:opacity-90 transition-opacity disabled:opacity-40"
                   onClick={copyAll}
                 >
-                  {copied ? t("blog.pdfToExcel.copied") : t("blog.pdfToExcel.copyAll")}
+                  {copied
+                    ? t("blog.pdfToExcel.copied")
+                    : t("blog.pdfToExcel.copyAll")}
                 </button>
               </div>
             </div>
@@ -472,8 +484,8 @@ export default function PdfToExcelContent() {
                       <th className="w-10 px-0 py-0 border-b border-r border-black/8 dark:border-white/8 bg-[#f5f5f7] dark:bg-[#2c2c2e]">
                         <button
                           className="w-full h-8 flex items-center justify-center text-[#aeaeb2] dark:text-[#636366] hover:text-[#1d1d1f] dark:hover:text-white text-[10px]"
-                          onClick={selectAll}
                           title="Select all"
+                          onClick={selectAll}
                         >
                           #
                         </button>
@@ -513,7 +525,11 @@ export default function PdfToExcelContent() {
                               title={cell || "—"}
                               onClick={(e) => handleCellClick(ri, ci, e)}
                             >
-                              {cell || <span className="text-[#d1d1d6] dark:text-[#48484a]">—</span>}
+                              {cell || (
+                                <span className="text-[#d1d1d6] dark:text-[#48484a]">
+                                  —
+                                </span>
+                              )}
                             </td>
                           );
                         })}

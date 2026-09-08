@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -12,48 +13,98 @@ function parseMarkdown(md: string): string {
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
+
     return `<pre class="bg-black/[0.06] dark:bg-white/[0.06] rounded-lg p-4 my-4 overflow-x-auto text-sm font-mono"><code class="text-[#1d1d1f] dark:text-white">${escaped}</code></pre>`;
   });
 
   // Inline code
-  html = html.replace(/`([^`]+)`/g, '<code class="bg-black/[0.06] dark:bg-white/[0.06] px-1.5 py-0.5 rounded text-sm font-mono text-[#1d1d1f] dark:text-white">$1</code>');
+  html = html.replace(
+    /`([^`]+)`/g,
+    '<code class="bg-black/[0.06] dark:bg-white/[0.06] px-1.5 py-0.5 rounded text-sm font-mono text-[#1d1d1f] dark:text-white">$1</code>',
+  );
 
   // Headers
-  html = html.replace(/^######\s+(.+)$/gm, '<h6 class="text-base font-bold text-[#1d1d1f] dark:text-white mt-4 mb-2">$1</h6>');
-  html = html.replace(/^#####\s+(.+)$/gm, '<h5 class="text-lg font-bold text-[#1d1d1f] dark:text-white mt-4 mb-2">$1</h5>');
-  html = html.replace(/^####\s+(.+)$/gm, '<h4 class="text-xl font-bold text-[#1d1d1f] dark:text-white mt-5 mb-2">$1</h4>');
-  html = html.replace(/^###\s+(.+)$/gm, '<h3 class="text-2xl font-bold text-[#1d1d1f] dark:text-white mt-6 mb-3">$1</h3>');
-  html = html.replace(/^##\s+(.+)$/gm, '<h2 class="text-3xl font-bold text-[#1d1d1f] dark:text-white mt-8 mb-3">$1</h2>');
-  html = html.replace(/^#\s+(.+)$/gm, '<h1 class="text-4xl font-bold text-[#1d1d1f] dark:text-white mt-8 mb-4">$1</h1>');
+  html = html.replace(
+    /^######\s+(.+)$/gm,
+    '<h6 class="text-base font-bold text-[#1d1d1f] dark:text-white mt-4 mb-2">$1</h6>',
+  );
+  html = html.replace(
+    /^#####\s+(.+)$/gm,
+    '<h5 class="text-lg font-bold text-[#1d1d1f] dark:text-white mt-4 mb-2">$1</h5>',
+  );
+  html = html.replace(
+    /^####\s+(.+)$/gm,
+    '<h4 class="text-xl font-bold text-[#1d1d1f] dark:text-white mt-5 mb-2">$1</h4>',
+  );
+  html = html.replace(
+    /^###\s+(.+)$/gm,
+    '<h3 class="text-2xl font-bold text-[#1d1d1f] dark:text-white mt-6 mb-3">$1</h3>',
+  );
+  html = html.replace(
+    /^##\s+(.+)$/gm,
+    '<h2 class="text-3xl font-bold text-[#1d1d1f] dark:text-white mt-8 mb-3">$1</h2>',
+  );
+  html = html.replace(
+    /^#\s+(.+)$/gm,
+    '<h1 class="text-4xl font-bold text-[#1d1d1f] dark:text-white mt-8 mb-4">$1</h1>',
+  );
 
   // Bold and italic
-  html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong class="font-bold text-[#1d1d1f] dark:text-white"><em class="italic">$1</em></strong>');
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-[#1d1d1f] dark:text-white">$1</strong>');
-  html = html.replace(/\*(.+?)\*/g, '<em class="italic text-[#1d1d1f] dark:text-white">$1</em>');
+  html = html.replace(
+    /\*\*\*(.+?)\*\*\*/g,
+    '<strong class="font-bold text-[#1d1d1f] dark:text-white"><em class="italic">$1</em></strong>',
+  );
+  html = html.replace(
+    /\*\*(.+?)\*\*/g,
+    '<strong class="font-bold text-[#1d1d1f] dark:text-white">$1</strong>',
+  );
+  html = html.replace(
+    /\*(.+?)\*/g,
+    '<em class="italic text-[#1d1d1f] dark:text-white">$1</em>',
+  );
 
   // Links
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a class="text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-700 dark:hover:text-indigo-300" href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  html = html.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a class="text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-700 dark:hover:text-indigo-300" href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+  );
 
   // Images
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" class="max-w-full rounded-lg my-4" src="$2" />');
+  html = html.replace(
+    /!\[([^\]]*)\]\(([^)]+)\)/g,
+    '<img alt="$1" class="max-w-full rounded-lg my-4" src="$2" />',
+  );
 
   // Blockquotes
-  html = html.replace(/^>\s+(.+)$/gm, '<blockquote class="border-l-4 border-indigo-400 dark:border-indigo-600 pl-4 py-1 my-4 text-[#6e6e73] dark:text-[#86868b] italic">$1</blockquote>');
+  html = html.replace(
+    /^>\s+(.+)$/gm,
+    '<blockquote class="border-l-4 border-indigo-400 dark:border-indigo-600 pl-4 py-1 my-4 text-[#6e6e73] dark:text-[#86868b] italic">$1</blockquote>',
+  );
 
   // Horizontal rule
-  html = html.replace(/^---$/gm, '<hr class="border-black/8 dark:border-white/8 my-6" />');
+  html = html.replace(
+    /^---$/gm,
+    '<hr class="border-black/8 dark:border-white/8 my-6" />',
+  );
 
   // Unordered lists
-  html = html.replace(/^[\-\*]\s+(.+)$/gm, '<li class="text-[#1d1d1f] dark:text-white ml-4 mb-1">• $1</li>');
+  html = html.replace(
+    /^[\-\*]\s+(.+)$/gm,
+    '<li class="text-[#1d1d1f] dark:text-white ml-4 mb-1">• $1</li>',
+  );
 
   // Ordered lists
-  html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="text-[#1d1d1f] dark:text-white ml-4 mb-1 list-decimal">$1</li>');
+  html = html.replace(
+    /^\d+\.\s+(.+)$/gm,
+    '<li class="text-[#1d1d1f] dark:text-white ml-4 mb-1 list-decimal">$1</li>',
+  );
 
   // Paragraphs (lines that aren't already wrapped)
   html = html
     .split("\n\n")
     .map((block) => {
       const trimmed = block.trim();
+
       if (!trimmed) return "";
       if (
         trimmed.startsWith("<h") ||
@@ -67,12 +118,16 @@ function parseMarkdown(md: string): string {
       ) {
         return trimmed;
       }
+
       return `<p class="text-[#1d1d1f] dark:text-white mb-3 leading-relaxed">${trimmed}</p>`;
     })
     .join("\n");
 
   // Wrap adjacent li elements in ul
-  html = html.replace(/((?:<li[^>]*>.*?<\/li>\n?)+)/g, '<ul class="list-disc pl-6 my-3 space-y-1">$1</ul>');
+  html = html.replace(
+    /((?:<li[^>]*>.*?<\/li>\n?)+)/g,
+    '<ul class="list-disc pl-6 my-3 space-y-1">$1</ul>',
+  );
 
   return html;
 }
@@ -143,12 +198,14 @@ export default function MarkdownHtmlContent() {
                 className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
                 onClick={copyHtml}
               >
-                {copied ? t("blog.markdownHtml.copied") : t("blog.markdownHtml.copyHtml")}
+                {copied
+                  ? t("blog.markdownHtml.copied")
+                  : t("blog.markdownHtml.copyHtml")}
               </button>
             </div>
             <div
-              className="h-80 p-4 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 overflow-y-auto prose prose-sm max-w-none"
               dangerouslySetInnerHTML={{ __html: renderedHtml }}
+              className="h-80 p-4 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 overflow-y-auto prose prose-sm max-w-none"
             />
           </div>
         </div>
@@ -163,7 +220,9 @@ export default function MarkdownHtmlContent() {
               className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
               onClick={copyHtml}
             >
-              {copied ? t("blog.markdownHtml.copied") : t("blog.markdownHtml.copyHtml")}
+              {copied
+                ? t("blog.markdownHtml.copied")
+                : t("blog.markdownHtml.copyHtml")}
             </button>
           </div>
           <textarea
@@ -179,14 +238,30 @@ export default function MarkdownHtmlContent() {
             {t("blog.markdownHtml.syntaxGuide")}
           </p>
           <div className="grid grid-cols-2 gap-2 text-xs text-indigo-700 dark:text-indigo-400">
-            <span><code className="font-mono"># Heading</code></span>
-            <span><code className="font-mono">**bold**</code></span>
-            <span><code className="font-mono">*italic*</code></span>
-            <span><code className="font-mono">`code`</code></span>
-            <span><code className="font-mono">[link](url)</code></span>
-            <span><code className="font-mono">- list item</code></span>
-            <span><code className="font-mono">{'>'} quote</code></span>
-            <span><code className="font-mono">---  (hr)</code></span>
+            <span>
+              <code className="font-mono"># Heading</code>
+            </span>
+            <span>
+              <code className="font-mono">**bold**</code>
+            </span>
+            <span>
+              <code className="font-mono">*italic*</code>
+            </span>
+            <span>
+              <code className="font-mono">`code`</code>
+            </span>
+            <span>
+              <code className="font-mono">[link](url)</code>
+            </span>
+            <span>
+              <code className="font-mono">- list item</code>
+            </span>
+            <span>
+              <code className="font-mono">{">"} quote</code>
+            </span>
+            <span>
+              <code className="font-mono">--- (hr)</code>
+            </span>
           </div>
         </div>
       </div>

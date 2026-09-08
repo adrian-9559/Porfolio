@@ -258,14 +258,23 @@ export const adminService = {
   getHealth: () => apiFetch<SystemHealth>("/api/health"),
 
   // Issue Tracker (admin)
-  listIssueBoards: () => apiFetch<AdminIssueBoard[]>("/api/admin/issues/boards"),
-  listIssueTickets: (params?: { boardId?: string; status?: string; priority?: string }) => {
+  listIssueBoards: () =>
+    apiFetch<AdminIssueBoard[]>("/api/admin/issues/boards"),
+  listIssueTickets: (params?: {
+    boardId?: string;
+    status?: string;
+    priority?: string;
+  }) => {
     const q = new URLSearchParams();
+
     if (params?.boardId) q.set("boardId", params.boardId);
     if (params?.status) q.set("status", params.status);
     if (params?.priority) q.set("priority", params.priority);
     const qs = q.toString();
-    return apiFetch<AdminIssueTicket[]>(`/api/admin/issues/tickets${qs ? `?${qs}` : ""}`);
+
+    return apiFetch<AdminIssueTicket[]>(
+      `/api/admin/issues/tickets${qs ? `?${qs}` : ""}`,
+    );
   },
   getIssueStats: () => apiFetch<AdminIssueStats>("/api/admin/issues/stats"),
   deleteIssueBoard: (id: string) =>

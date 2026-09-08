@@ -18,23 +18,31 @@ export const userService = {
 
   uploadAvatar: async (file: File): Promise<{ url: string }> => {
     const form = new FormData();
+
     form.append("file", file);
     const res = await fetch("/api/users/avatar", {
       method: "POST",
       body: form,
       credentials: "same-origin",
     });
+
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
+
       throw new Error(body.error ?? "Upload failed");
     }
     const json = await res.json();
+
     return json.data;
   },
 
   getPreferences: () => apiFetch<UserPreferences>("/api/users/preferences/me"),
 
-  updatePreferences: (data: Partial<Omit<UserPreferences, "id" | "user_id" | "created_at" | "updated_at">>) =>
+  updatePreferences: (
+    data: Partial<
+      Omit<UserPreferences, "id" | "user_id" | "created_at" | "updated_at">
+    >,
+  ) =>
     apiFetch<UserPreferences>("/api/users/preferences/me", {
       method: "PATCH",
       body: JSON.stringify(data),

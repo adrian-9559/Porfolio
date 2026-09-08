@@ -93,8 +93,8 @@ export default function MonitoringContent() {
         Los logs son eventos discretos con contexto: cada línea describe qué
         ocurrió en un momento dado. Son la fuente más rica de detalle — un log
         puede incluir el ID de usuario, el endpoint y el tiempo de ejecución —
-        pero también la más pesada. Sin centralización, buscar en logs de
-        diez servidores es inviable.
+        pero también la más pesada. Sin centralización, buscar en logs de diez
+        servidores es inviable.
       </BlogP>
 
       <BlogH3 id="trazas">Trazas distribuidas</BlogH3>
@@ -110,18 +110,18 @@ export default function MonitoringContent() {
 
       <BlogCallout type="info">
         Métricas, logs y trazas no compiten — se complementan. Las métricas te
-        dicen <em>cuántos</em> errores hay, los logs te dicen{" "}
-        <em>qué</em> falla, y las trazas te dicen <em>dónde</em> se origina el
-        problema. Empezar por las tres es el camino más seguro.
+        dicen <em>cuántos</em> errores hay, los logs te dicen <em>qué</em>{" "}
+        falla, y las trazas te dicen <em>dónde</em> se origina el problema.
+        Empezar por las tres es el camino más seguro.
       </BlogCallout>
 
       <BlogH2 id="prometheus">Métricas con Prometheus</BlogH2>
 
       <BlogP>
         Prometheus es el estándar de facto para métricas en entornos
-        containerizados. Usa un modelo de <em>pull</em>: cada servicio expone
-        un endpoint <BlogInlineCode>/metrics</BlogInlineCode> y Prometheus lo
-        raspa cada cierto intervalo.
+        containerizados. Usa un modelo de <em>pull</em>: cada servicio expone un
+        endpoint <BlogInlineCode>/metrics</BlogInlineCode> y Prometheus lo raspa
+        cada cierto intervalo.
       </BlogP>
 
       <BlogH3 id="install-prometheus">Instalación con Docker</BlogH3>
@@ -177,9 +177,9 @@ sum(rate(http_requests_total[5m]))`}</BlogCode>
       <BlogH3 id="app-metrics">Exponer métricas en Node.js</BlogH3>
 
       <BlogP>
-        La librería{" "}
-        <BlogInlineCode>prom-client</BlogInlineCode> expone métricas
-        automáticamente y crea el endpoint <BlogInlineCode>/metrics</BlogInlineCode>:
+        La librería <BlogInlineCode>prom-client</BlogInlineCode> expone métricas
+        automáticamente y crea el endpoint{" "}
+        <BlogInlineCode>/metrics</BlogInlineCode>:
       </BlogP>
 
       <BlogCode>{`import express from "express";
@@ -264,9 +264,7 @@ volumes:
 
       <BlogH3 id="paneles">Crear paneles</BlogH3>
 
-      <BlogP>
-        Grafana ofrece tres tipos de panel principales:
-      </BlogP>
+      <BlogP>Grafana ofrece tres tipos de panel principales:</BlogP>
 
       <BlogP>
         <strong>Graph:</strong>.series temporales — ideal para latencia, tasa de
@@ -303,8 +301,10 @@ histogram_quantile(0.99,
         Las variables permiten crear dashboards reutilizables. En Grafana ve a{" "}
         <strong>Dashboard Settings → Variables → New</strong> y crea una
         variable <BlogInlineCode>service</BlogInlineCode> con la query{" "}
-        <BlogInlineCode>label_values(http_requests_total, service)</BlogInlineCode>.
-        Después usa <BlogInlineCode>$service</BlogInlineCode> en tus queries
+        <BlogInlineCode>
+          label_values(http_requests_total, service)
+        </BlogInlineCode>
+        . Después usa <BlogInlineCode>$service</BlogInlineCode> en tus queries
         para filtrar.
       </BlogP>
 
@@ -323,17 +323,21 @@ histogram_quantile(0.99,
         ligero que Elasticsearch. Se integra directamente con Grafana.
       </BlogP>
 
-      <BlogH3 id="centralizado-vs-archivos">Logging centralizado vs archivos sueltos</BlogH3>
+      <BlogH3 id="centralizado-vs-archivos">
+        Logging centralizado vs archivos sueltos
+      </BlogH3>
 
       <BlogP>
         En un solo contenedor puedes leer logs con{" "}
         <BlogInlineCode>docker logs</BlogInlineCode>. Pero cuando tienes
-        múltiples servicios o réplicas, necesitas centralizar: recopilar logs
-        de todos los contenedores en un solo lugar, buscarlos y alertar sobre
+        múltiples servicios o réplicas, necesitas centralizar: recopilar logs de
+        todos los contenedores en un solo lugar, buscarlos y alertar sobre
         ellos. Eso es lo que hace Loki con Promtail.
       </BlogP>
 
-      <BlogH3 id="docker-compose-loki">Docker Compose con Loki + Promtail</BlogH3>
+      <BlogH3 id="docker-compose-loki">
+        Docker Compose con Loki + Promtail
+      </BlogH3>
 
       <BlogCode>{`services:
   loki:
@@ -402,10 +406,10 @@ rate({container="api"} |= "error" [1m])`}</BlogCode>
       <BlogCallout type="warn">
         Loki indexa <em>etiquetas</em> (como{" "}
         <BlogInlineCode>container</BlogInlineCode> o{" "}
-        <BlogInlineCode>service</BlogInlineCode>), no el contenido de los
-        logs. Usar demasiadas etiquetas de alta cardinalidad (como IDs de
-        usuario) puede degradar el rendimiento. Mantén las etiquetas bajas y
-        usa filtros de texto para el contenido.
+        <BlogInlineCode>service</BlogInlineCode>), no el contenido de los logs.
+        Usar demasiadas etiquetas de alta cardinalidad (como IDs de usuario)
+        puede degradar el rendimiento. Mantén las etiquetas bajas y usa filtros
+        de texto para el contenido.
       </BlogCallout>
 
       <BlogH2 id="trazas-otel">Trazas distribuidas con OpenTelemetry</BlogH2>
@@ -413,21 +417,22 @@ rate({container="api"} |= "error" [1m])`}</BlogCode>
       <BlogP>
         OpenTelemetry (OTel) es el estándar de la CNCF para telemetría. Provee
         APIs unificadas para métricas, logs y trazas, con SDKs para la mayoría
-        de lenguajes y un{" "}
-        <BlogInlineCode>Collector</BlogInlineCode> que recibe, procesa y
-        exporta datos a múltiples backends.
+        de lenguajes y un <BlogInlineCode>Collector</BlogInlineCode> que recibe,
+        procesa y exporta datos a múltiples backends.
       </BlogP>
 
-      <BlogH3 id="que-son-traces">Qué son traces, spans y context propagation</BlogH3>
+      <BlogH3 id="que-son-traces">
+        Qué son traces, spans y context propagation
+      </BlogH3>
 
       <BlogP>
         Una <strong>trace</strong> representa el recorrido completo de una
-        petición a través del sistema. Se compone de{" "}
-        <strong>spans</strong>, cada uno representando una unidad de trabajo —
-        una llamada HTTP, una query a la base de datos, una operación en cola.
-        Cada span tiene un <BlogInlineCode>traceId</BlogInlineCode>, un{" "}
-        <BlogInlineCode>spanId</BlogInlineCode>, un padre opcional, timestamps
-        y atributos.
+        petición a través del sistema. Se compone de <strong>spans</strong>,
+        cada uno representando una unidad de trabajo — una llamada HTTP, una
+        query a la base de datos, una operación en cola. Cada span tiene un{" "}
+        <BlogInlineCode>traceId</BlogInlineCode>, un{" "}
+        <BlogInlineCode>spanId</BlogInlineCode>, un padre opcional, timestamps y
+        atributos.
       </BlogP>
 
       <BlogP>
@@ -503,15 +508,15 @@ sdk.start();
 
       <BlogP>
         Con las auto-instrumentaciones, cada petición HTTP entrante y saliente,
-        cada query a base de datos y cada llamada a cola se convierte en un
-        span automáticamente, sin que modifiques tu código de negocio.
+        cada query a base de datos y cada llamada a cola se convierte en un span
+        automáticamente, sin que modifiques tu código de negocio.
       </BlogP>
 
       <BlogH3 id="jaeger-ui">Ver trazas en Jaeger UI</BlogH3>
 
       <BlogP>
-        Jaeger es un backend de trazas que visualiza las trazas recogidas por
-        el Collector. Añádelo al compose y accede a la UI en{" "}
+        Jaeger es un backend de trazas que visualiza las trazas recogidas por el
+        Collector. Añádelo al compose y accede a la UI en{" "}
         <BlogInlineCode>http://localhost:16686</BlogInlineCode>:
       </BlogP>
 

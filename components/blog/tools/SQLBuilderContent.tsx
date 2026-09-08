@@ -301,7 +301,8 @@ export default function SQLBuilderContent() {
           >
             <path d={showDocs ? "M4 10l4-4 4 4" : "M6 4l4 4-4 4"} />
           </svg>{" "}
-          <BookIcon aria-hidden="true" className="w-3.5 h-3.5" />           {t("blog.sqlBuilder.howToUse")}
+          <BookIcon aria-hidden="true" className="w-3.5 h-3.5" />{" "}
+          {t("blog.sqlBuilder.howToUse")}
         </button>
       </div>
 
@@ -311,7 +312,8 @@ export default function SQLBuilderContent() {
           id="sql-builder-docs"
         >
           <p className="font-semibold text-[#1d1d1f] dark:text-white flex items-center gap-1.5">
-            <BookIcon aria-hidden="true" className="w-4 h-4" /> {t("blog.sqlBuilder.quickGuide")}
+            <BookIcon aria-hidden="true" className="w-4 h-4" />{" "}
+            {t("blog.sqlBuilder.quickGuide")}
           </p>
           <ol className="list-decimal pl-4 space-y-1.5">
             <li>
@@ -396,17 +398,15 @@ export default function SQLBuilderContent() {
             </li>
           </ol>
           <p className="font-semibold text-[#1d1d1f] dark:text-white mt-3 flex items-center gap-1.5">
-            <LinkIcon aria-hidden="true" className="w-4 h-4" /> {t("blog.sqlBuilder.autoJoins")}
+            <LinkIcon aria-hidden="true" className="w-4 h-4" />{" "}
+            {t("blog.sqlBuilder.autoJoins")}
           </p>
-          <p>
-            {t("blog.sqlBuilder.autoJoinsDesc")}
-          </p>
+          <p>{t("blog.sqlBuilder.autoJoinsDesc")}</p>
           <p className="font-semibold text-[#1d1d1f] dark:text-white mt-3 flex items-center gap-1.5">
-            <DocumentIcon aria-hidden="true" className="w-4 h-4" /> {t("blog.sqlBuilder.ddlFormat")}
+            <DocumentIcon aria-hidden="true" className="w-4 h-4" />{" "}
+            {t("blog.sqlBuilder.ddlFormat")}
           </p>
-          <p>
-            {t("blog.sqlBuilder.ddlFormatDesc")}
-          </p>
+          <p>{t("blog.sqlBuilder.ddlFormatDesc")}</p>
         </div>
       )}
 
@@ -601,7 +601,9 @@ export default function SQLBuilderContent() {
                                 <div className="w-4 h-4 flex-shrink-0 flex items-center justify-center">
                                   {col.isPk && (
                                     <KeyIcon
-                                      aria-label={t("blog.sqlBuilder.primaryKey")}
+                                      aria-label={t(
+                                        "blog.sqlBuilder.primaryKey",
+                                      )}
                                       className="w-3.5 h-3.5 text-amber-500"
                                     />
                                   )}
@@ -709,7 +711,8 @@ export default function SQLBuilderContent() {
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all focus:outline-none focus:ring-2 focus:ring-red-400"
             onClick={handleStartOver}
           >
-            <TrashIcon aria-hidden="true" className="w-3.5 h-3.5" /> {t("blog.sqlBuilder.startOver")}
+            <TrashIcon aria-hidden="true" className="w-3.5 h-3.5" />{" "}
+            {t("blog.sqlBuilder.startOver")}
           </button>
         </div>
       )}
@@ -790,7 +793,9 @@ export default function SQLBuilderContent() {
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   aria-label={
-                    copied ? t("blog.sqlBuilder.copied") : t("blog.sqlBuilder.copy")
+                    copied
+                      ? t("blog.sqlBuilder.copied")
+                      : t("blog.sqlBuilder.copy")
                   }
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${copied ? "bg-emerald-500 text-white" : "bg-black/5 dark:bg-white/10 text-[#1d1d1f] dark:text-white hover:bg-black/10 dark:hover:bg-white/15"} focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 dark:focus:ring-blue-600`}
                   onClick={handleCopy}
@@ -897,7 +902,9 @@ export default function SQLBuilderContent() {
                       onClick={() => deleteHistoryItem(item.id)}
                     >
                       <TrashIcon aria-hidden="true" className="w-3.5 h-3.5" />
-                      <span className="sr-only">{t("blog.sqlBuilder.delete")}</span>
+                      <span className="sr-only">
+                        {t("blog.sqlBuilder.delete")}
+                      </span>
                     </button>
                   </li>
                 ))}

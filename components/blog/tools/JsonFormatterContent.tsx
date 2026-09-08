@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -18,7 +19,9 @@ export default function JsonFormatterContent() {
       setOutput(JSON.stringify(parsed, null, indent));
       setError("");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"));
+      setError(
+        e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"),
+      );
       setOutput("");
     }
   };
@@ -30,7 +33,9 @@ export default function JsonFormatterContent() {
       setOutput(JSON.stringify(parsed));
       setError("");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"));
+      setError(
+        e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"),
+      );
       setOutput("");
     }
   };
@@ -41,7 +46,9 @@ export default function JsonFormatterContent() {
       setError("");
       setOutput(t("blog.jsonFormatter.validJson"));
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"));
+      setError(
+        e instanceof Error ? e.message : t("blog.jsonFormatter.errorInvalid"),
+      );
       setOutput("");
     }
   };
@@ -149,7 +156,9 @@ export default function JsonFormatterContent() {
                   className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
                   onClick={copy}
                 >
-                  {copied ? t("blog.jsonFormatter.copied") : t("blog.jsonFormatter.copy")}
+                  {copied
+                    ? t("blog.jsonFormatter.copied")
+                    : t("blog.jsonFormatter.copy")}
                 </button>
               )}
             </div>

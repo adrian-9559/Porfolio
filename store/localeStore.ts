@@ -15,6 +15,7 @@ export interface LocaleState {
 function canPersist(): boolean {
   try {
     const { hasConsented, preferences } = useCookieConsentStore.getState();
+
     return hasConsented && preferences;
   } catch {
     return false;
@@ -40,6 +41,7 @@ export const useLocaleStore = create<LocaleState>()(
         getItem: (name) => {
           if (!canPersist()) return null;
           const str = localStorage.getItem(name);
+
           return str ? JSON.parse(str) : null;
         },
         setItem: (name, value) => {

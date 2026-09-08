@@ -607,10 +607,26 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
           ) : versions.length === 0 ? (
             <div className="p-10 text-center">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-md mx-auto mb-3">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <rect height="18" rx="2" ry="2" width="18" x="3" y="3" />
+                  <line x1="12" x2="12" y1="8" y2="16" />
+                  <line x1="8" x2="16" y1="12" y2="12" />
+                </svg>
               </div>
-              <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">Sin versiones</p>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">Sube la primera versión.</p>
+              <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+                Sin versiones
+              </p>
+              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">
+                Sube la primera versión.
+              </p>
             </div>
           ) : (
             <table className="w-full text-sm">
@@ -753,8 +769,13 @@ export function AdminAppsSection() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1">Distribución</p>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
+          <p className="text-xs font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1">
+            Distribución
+          </p>
+          <h1
+            className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
+            style={{ letterSpacing: "-0.03em" }}
+          >
             Aplicaciones
           </h1>
           <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
@@ -795,10 +816,25 @@ export function AdminAppsSection() {
         ) : apps.length === 0 ? (
           <div className="p-10 text-center">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-md mx-auto mb-3">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <rect height="20" rx="2" ry="2" width="14" x="5" y="2" />
+                <line x1="12" x2="12.01" y1="18" y2="18" />
+              </svg>
             </div>
-            <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">Sin apps</p>
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">Crea la primera con el botón de arriba.</p>
+            <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
+              Sin apps
+            </p>
+            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">
+              Crea la primera con el botón de arriba.
+            </p>
           </div>
         ) : (
           <div className="divide-y divide-black/5 dark:divide-white/5">
@@ -811,7 +847,20 @@ export function AdminAppsSection() {
                   className="w-10 h-10 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
                   style={{ background: `${app.accent_color}20` }}
                 >
-                  {app.icon_emoji ?? <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>}
+                  {app.icon_emoji ?? (
+                    <svg
+                      className="w-5 h-5 text-blue-500"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <rect height="20" rx="2" ry="2" width="14" x="5" y="2" />
+                      <line x1="12" x2="12.01" y1="18" y2="18" />
+                    </svg>
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">

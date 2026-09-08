@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -17,26 +18,45 @@ let nextId = 1;
 
 function shadowToCss(s: Shadow): string {
   const inset = s.inset ? "inset " : "";
+
   return `${inset}${s.x}px ${s.y}px ${s.blur}px ${s.spread}px ${s.color}`;
 }
 
 export default function BoxShadowContent() {
   const { t } = useT();
   const [shadows, setShadows] = useState<Shadow[]>([
-    { id: nextId++, x: 0, y: 4, blur: 6, spread: 0, color: "rgba(0,0,0,0.1)", inset: false },
+    {
+      id: nextId++,
+      x: 0,
+      y: 4,
+      blur: 6,
+      spread: 0,
+      color: "rgba(0,0,0,0.1)",
+      inset: false,
+    },
   ]);
   const [copied, setCopied] = useState(false);
 
   const cssCode = shadows.map(shadowToCss).join(", ");
 
   const updateShadow = (id: number, patch: Partial<Shadow>) => {
-    setShadows((prev) => prev.map((s) => (s.id === id ? { ...s, ...patch } : s)));
+    setShadows((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, ...patch } : s)),
+    );
   };
 
   const addShadow = () => {
     setShadows((prev) => [
       ...prev,
-      { id: nextId++, x: 0, y: 2, blur: 4, spread: 0, color: "rgba(0,0,0,0.15)", inset: false },
+      {
+        id: nextId++,
+        x: 0,
+        y: 2,
+        blur: 4,
+        spread: 0,
+        color: "rgba(0,0,0,0.15)",
+        inset: false,
+      },
     ]);
   };
 
@@ -95,10 +115,12 @@ export default function BoxShadowContent() {
               <div className="flex items-center gap-2">
                 <label className="flex items-center gap-1.5 text-xs text-[#6e6e73] dark:text-[#86868b]">
                   <input
-                    type="checkbox"
                     checked={shadow.inset}
-                    onChange={(e) => updateShadow(shadow.id, { inset: e.target.checked })}
                     className="rounded"
+                    type="checkbox"
+                    onChange={(e) =>
+                      updateShadow(shadow.id, { inset: e.target.checked })
+                    }
                   />
                   {t("blog.boxShadow.inset")}
                 </label>
@@ -120,12 +142,16 @@ export default function BoxShadowContent() {
                     {prop}
                   </label>
                   <input
-                    type="range"
-                    min={-50}
-                    max={50}
-                    value={shadow[prop]}
-                    onChange={(e) => updateShadow(shadow.id, { [prop]: Number(e.target.value) })}
                     className="w-full accent-fuchsia-500"
+                    max={50}
+                    min={-50}
+                    type="range"
+                    value={shadow[prop]}
+                    onChange={(e) =>
+                      updateShadow(shadow.id, {
+                        [prop]: Number(e.target.value),
+                      })
+                    }
                   />
                   <p className="text-xs font-mono text-center text-[#1d1d1f] dark:text-white">
                     {shadow[prop]}px
@@ -139,16 +165,22 @@ export default function BoxShadowContent() {
                 {t("blog.boxShadow.color")}
               </label>
               <input
-                type="color"
-                value={shadow.color.startsWith("rgba") ? "#000000" : shadow.color}
-                onChange={(e) => updateShadow(shadow.id, { color: e.target.value })}
                 className="w-8 h-8 rounded-lg border border-black/8 dark:border-white/8 cursor-pointer"
+                type="color"
+                value={
+                  shadow.color.startsWith("rgba") ? "#000000" : shadow.color
+                }
+                onChange={(e) =>
+                  updateShadow(shadow.id, { color: e.target.value })
+                }
               />
               <input
+                className="flex-1 px-2 py-1 text-xs font-mono rounded-lg bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white focus:outline-none"
                 type="text"
                 value={shadow.color}
-                onChange={(e) => updateShadow(shadow.id, { color: e.target.value })}
-                className="flex-1 px-2 py-1 text-xs font-mono rounded-lg bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white focus:outline-none"
+                onChange={(e) =>
+                  updateShadow(shadow.id, { color: e.target.value })
+                }
               />
             </div>
           </div>

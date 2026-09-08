@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 
 interface Analysis {
@@ -15,9 +16,27 @@ interface Analysis {
 }
 
 const COMMON_PASSWORDS = [
-  "password", "123456", "12345678", "qwerty", "abc123", "monkey", "master",
-  "dragon", "letmein", "login", "princess", "football", "shadow", "sunshine",
-  "trustno1", "iloveyou", "batman", "access", "hello", "charlie", "password1",
+  "password",
+  "123456",
+  "12345678",
+  "qwerty",
+  "abc123",
+  "monkey",
+  "master",
+  "dragon",
+  "letmein",
+  "login",
+  "princess",
+  "football",
+  "shadow",
+  "sunshine",
+  "trustno1",
+  "iloveyou",
+  "batman",
+  "access",
+  "hello",
+  "charlie",
+  "password1",
 ];
 
 const COMMON_PATTERNS = [
@@ -55,10 +74,14 @@ function analyzePassword(pw: string): Analysis {
   else if (seconds < 60) crackTime = `${Math.round(seconds)} seconds`;
   else if (seconds < 3600) crackTime = `${Math.round(seconds / 60)} minutes`;
   else if (seconds < 86400) crackTime = `${Math.round(seconds / 3600)} hours`;
-  else if (seconds < 31536000) crackTime = `${Math.round(seconds / 86400)} days`;
-  else if (seconds < 31536000 * 1000) crackTime = `${Math.round(seconds / 31536000)} years`;
-  else if (seconds < 31536000 * 1_000_000) crackTime = `${Math.round(seconds / 31536000 / 1000)}k years`;
-  else if (seconds < 31536000 * 1_000_000_000) crackTime = `${Math.round(seconds / 31536000 / 1_000_000)}M years`;
+  else if (seconds < 31536000)
+    crackTime = `${Math.round(seconds / 86400)} days`;
+  else if (seconds < 31536000 * 1000)
+    crackTime = `${Math.round(seconds / 31536000)} years`;
+  else if (seconds < 31536000 * 1_000_000)
+    crackTime = `${Math.round(seconds / 31536000 / 1000)}k years`;
+  else if (seconds < 31536000 * 1_000_000_000)
+    crackTime = `${Math.round(seconds / 31536000 / 1_000_000)}M years`;
   else crackTime = "centuries+";
 
   // Strength score
@@ -95,15 +118,45 @@ function analyzePassword(pw: string): Analysis {
     suggestions.push("blog.passwordAnalyzer.suggestPattern");
   }
 
-  return { length, hasLowercase, hasUppercase, hasNumbers, hasSymbols, entropy, crackTime, strength, suggestions };
+  return {
+    length,
+    hasLowercase,
+    hasUppercase,
+    hasNumbers,
+    hasSymbols,
+    entropy,
+    crackTime,
+    strength,
+    suggestions,
+  };
 }
 
 const STRENGTH_CONFIG = [
-  { label: "blog.passwordAnalyzer.veryWeak", color: "bg-red-500", textColor: "text-red-500" },
-  { label: "blog.passwordAnalyzer.weak", color: "bg-orange-500", textColor: "text-orange-500" },
-  { label: "blog.passwordAnalyzer.fair", color: "bg-amber-500", textColor: "text-amber-500" },
-  { label: "blog.passwordAnalyzer.strong", color: "bg-emerald-500", textColor: "text-emerald-500" },
-  { label: "blog.passwordAnalyzer.veryStrong", color: "bg-blue-500", textColor: "text-blue-500" },
+  {
+    label: "blog.passwordAnalyzer.veryWeak",
+    color: "bg-red-500",
+    textColor: "text-red-500",
+  },
+  {
+    label: "blog.passwordAnalyzer.weak",
+    color: "bg-orange-500",
+    textColor: "text-orange-500",
+  },
+  {
+    label: "blog.passwordAnalyzer.fair",
+    color: "bg-amber-500",
+    textColor: "text-amber-500",
+  },
+  {
+    label: "blog.passwordAnalyzer.strong",
+    color: "bg-emerald-500",
+    textColor: "text-emerald-500",
+  },
+  {
+    label: "blog.passwordAnalyzer.veryStrong",
+    color: "bg-blue-500",
+    textColor: "text-blue-500",
+  },
 ];
 
 export default function PasswordAnalyzerContent() {
@@ -156,7 +209,12 @@ export default function PasswordAnalyzerContent() {
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
                       strokeLinecap="round"
@@ -165,7 +223,12 @@ export default function PasswordAnalyzerContent() {
                     />
                   </svg>
                 ) : (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                       strokeLinecap="round"
@@ -200,7 +263,9 @@ export default function PasswordAnalyzerContent() {
                   <div
                     key={s}
                     className={`h-2 flex-1 rounded-full transition-colors duration-300 ${
-                      s <= analysis.strength ? config.color : "bg-black/8 dark:bg-white/10"
+                      s <= analysis.strength
+                        ? config.color
+                        : "bg-black/8 dark:bg-white/10"
                     }`}
                   />
                 ))}

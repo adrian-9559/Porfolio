@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -211,7 +212,11 @@ export default function ColorToolContent() {
             </p>
             {(["r", "g", "b"] as const).map((ch, idx) => {
               const colors = ["#ef4444", "#22c55e", "#3b82f6"];
-              const labels = [t("blog.colorTool.red"), t("blog.colorTool.green"), t("blog.colorTool.blue")];
+              const labels = [
+                t("blog.colorTool.red"),
+                t("blog.colorTool.green"),
+                t("blog.colorTool.blue"),
+              ];
 
               return (
                 <div key={ch} className="flex items-center gap-3">
@@ -247,7 +252,7 @@ export default function ColorToolContent() {
         {/* Palettes */}
         <div className="space-y-3">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-              {t("blog.colorTool.presetPalettes")}
+            {t("blog.colorTool.presetPalettes")}
           </p>
           {PALETTES.map((pal) => (
             <div key={pal.name}>

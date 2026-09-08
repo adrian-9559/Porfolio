@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -7,6 +8,7 @@ type Mode = "encode" | "decode";
 
 function encodeUrl(input: string, double: boolean): string {
   let result = encodeURIComponent(input);
+
   if (double) result = encodeURIComponent(result);
 
   return result;
@@ -14,6 +16,7 @@ function encodeUrl(input: string, double: boolean): string {
 
 function encodeComponent(input: string, double: boolean): string {
   let result = encodeURI(input);
+
   if (double) result = encodeURI(result);
 
   return result;
@@ -43,13 +46,18 @@ export default function UrlEncoderDecoderContent() {
   const [doubleEncode, setDoubleEncode] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const autoDetected = useMemo(() => (input ? isEncoded(input) : null), [input]);
+  const autoDetected = useMemo(
+    () => (input ? isEncoded(input) : null),
+    [input],
+  );
 
   const result = useMemo(() => {
     if (!input) return "";
     if (mode === "decode") return decodeUrl(input);
 
-    return encodeType === "full" ? encodeUrl(input, doubleEncode) : encodeComponent(input, doubleEncode);
+    return encodeType === "full"
+      ? encodeUrl(input, doubleEncode)
+      : encodeComponent(input, doubleEncode);
   }, [input, mode, encodeType, doubleEncode]);
 
   const copy = async () => {
@@ -105,17 +113,23 @@ export default function UrlEncoderDecoderContent() {
               <select
                 className="px-2 py-1 text-xs font-mono rounded-lg bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white focus:outline-none"
                 value={encodeType}
-                onChange={(e) => setEncodeType(e.target.value as "full" | "component")}
+                onChange={(e) =>
+                  setEncodeType(e.target.value as "full" | "component")
+                }
               >
-                <option value="full">{t("blog.urlEncoderDecoder.fullEncode")}</option>
-                <option value="component">{t("blog.urlEncoderDecoder.componentEncode")}</option>
+                <option value="full">
+                  {t("blog.urlEncoderDecoder.fullEncode")}
+                </option>
+                <option value="component">
+                  {t("blog.urlEncoderDecoder.componentEncode")}
+                </option>
               </select>
             </div>
             <label className="flex items-center gap-2 cursor-pointer select-none">
               <input
-                type="checkbox"
-                className="w-4 h-4 rounded accent-cyan-500"
                 checked={doubleEncode}
+                className="w-4 h-4 rounded accent-cyan-500"
+                type="checkbox"
                 onChange={(e) => setDoubleEncode(e.target.checked)}
               />
               <span className="text-xs font-medium text-[#6e6e73] dark:text-[#86868b]">
@@ -127,8 +141,12 @@ export default function UrlEncoderDecoderContent() {
 
         {/* Auto-detect badge */}
         {autoDetected !== null && (
-          <div className={`p-2 rounded-lg text-xs font-medium ${autoDetected ? "bg-cyan-50 dark:bg-cyan-950/20 text-cyan-700 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800/40" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b]"}`}>
-            {autoDetected ? t("blog.urlEncoderDecoder.detectedEncoded") : t("blog.urlEncoderDecoder.detectedPlain")}
+          <div
+            className={`p-2 rounded-lg text-xs font-medium ${autoDetected ? "bg-cyan-50 dark:bg-cyan-950/20 text-cyan-700 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-800/40" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b]"}`}
+          >
+            {autoDetected
+              ? t("blog.urlEncoderDecoder.detectedEncoded")
+              : t("blog.urlEncoderDecoder.detectedPlain")}
           </div>
         )}
 
@@ -139,7 +157,11 @@ export default function UrlEncoderDecoderContent() {
           </p>
           <textarea
             className="w-full h-24 p-3 text-xs font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-cyan-400 dark:focus:border-cyan-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-            placeholder={mode === "encode" ? "Hello World! https://example.com" : "Hello%20World%21%20https%3A%2F%2Fexample.com"}
+            placeholder={
+              mode === "encode"
+                ? "Hello World! https://example.com"
+                : "Hello%20World%21%20https%3A%2F%2Fexample.com"
+            }
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -150,13 +172,17 @@ export default function UrlEncoderDecoderContent() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-                {mode === "encode" ? t("blog.urlEncoderDecoder.encoded") : t("blog.urlEncoderDecoder.decoded")}
+                {mode === "encode"
+                  ? t("blog.urlEncoderDecoder.encoded")
+                  : t("blog.urlEncoderDecoder.decoded")}
               </p>
               <button
                 className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline"
                 onClick={copy}
               >
-                {copied ? t("blog.urlEncoderDecoder.copied") : t("blog.urlEncoderDecoder.copy")}
+                {copied
+                  ? t("blog.urlEncoderDecoder.copied")
+                  : t("blog.urlEncoderDecoder.copy")}
               </button>
             </div>
             <div className="p-3 rounded-xl bg-cyan-50/60 dark:bg-cyan-950/20 border border-cyan-200 dark:border-cyan-800/40 font-mono text-xs text-[#1d1d1f] dark:text-white break-all">

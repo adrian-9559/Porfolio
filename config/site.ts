@@ -12,23 +12,13 @@ export const siteConfig = {
   navItems: [
     {
       key: "nav.home",
-      label: "Home",
+      label: "Inicio",
       href: "/",
     },
     {
-      key: "nav.about",
-      label: "About",
-      href: "/about",
-    },
-    {
-      key: "nav.cv",
-      label: "CV",
-      href: "/CV",
-    },
-    {
-      key: "nav.blog",
-      label: "Blog",
-      href: "/blog",
+      key: "nav.projects",
+      label: "Proyectos",
+      href: "/projects",
     },
     {
       key: "nav.campus",
@@ -37,35 +27,25 @@ export const siteConfig = {
     },
     {
       key: "nav.tools",
-      label: "Tools",
-      href: "/blog/herramientas",
+      label: "Herramientas",
+      href: "/tools",
     },
     {
       key: "nav.contact",
-      label: "Contact",
+      label: "Contacto",
       href: "/contact",
     },
   ],
   navMenuItems: [
     {
       key: "nav.home",
-      label: "Home",
+      label: "Inicio",
       href: "/",
     },
     {
-      key: "nav.about",
-      label: "About",
-      href: "/about",
-    },
-    {
-      key: "nav.cv",
-      label: "CV",
-      href: "/CV",
-    },
-    {
-      key: "nav.blog",
-      label: "Blog",
-      href: "/blog",
+      key: "nav.projects",
+      label: "Proyectos",
+      href: "/projects",
     },
     {
       key: "nav.campus",
@@ -74,12 +54,12 @@ export const siteConfig = {
     },
     {
       key: "nav.tools",
-      label: "Tools",
-      href: "/blog/herramientas",
+      label: "Herramientas",
+      href: "/tools",
     },
     {
       key: "nav.contact",
-      label: "Contact",
+      label: "Contacto",
       href: "/contact",
     },
   ],

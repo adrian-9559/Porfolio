@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -344,7 +345,13 @@ function evaluatePalette(colors: PaletteColor[]): {
 
 // ── Components ────────────────────────────────────────────────────────────────
 
-function ScoreRing({ value, t }: { value: number; t: (key: string) => string }) {
+function ScoreRing({
+  value,
+  t,
+}: {
+  value: number;
+  t: (key: string) => string;
+}) {
   const radius = 52;
   const circ = 2 * Math.PI * radius;
   const dash = (value / 100) * circ;
@@ -528,7 +535,9 @@ function ColorSwatch({
           className="text-[10px] text-[#aeaeb2] hover:text-[#6e6e73] dark:hover:text-[#aeaeb2] transition-colors text-left"
           onClick={copy}
         >
-          {copied ? t("blog.paletteGenerator.copiedHex") : t("blog.paletteGenerator.copyHex")}
+          {copied
+            ? t("blog.paletteGenerator.copiedHex")
+            : t("blog.paletteGenerator.copyHex")}
         </button>
       </div>
     </div>
@@ -785,7 +794,7 @@ export default function PaletteGeneratorContent() {
         {/* Presets */}
         <div className="mt-4 pt-4 border-t border-black/6 dark:border-white/6">
           <p className="text-xs font-medium text-[#aeaeb2] dark:text-[#636366] mb-2">
-              {t("blog.paletteGenerator.quickPresets")}
+            {t("blog.paletteGenerator.quickPresets")}
           </p>
           <div className="flex flex-wrap gap-2">
             {PRESETS.map((preset) => (
@@ -837,15 +846,15 @@ export default function PaletteGeneratorContent() {
       {activeTab === "palette" && (
         <div>
           <p className="text-xs text-[#aeaeb2] dark:text-[#636366] mb-4">
-              {t("blog.paletteGenerator.paletteHint")}
+            {t("blog.paletteGenerator.paletteHint")}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {colors.map((c) => (
               <ColorSwatch
                 key={c.id}
                 color={c}
-                onChange={(hex) => updateColor(c.id, hex)}
                 t={t}
+                onChange={(hex) => updateColor(c.id, hex)}
               />
             ))}
           </div>
@@ -866,7 +875,7 @@ export default function PaletteGeneratorContent() {
       {activeTab === "preview" && (
         <div className="space-y-4">
           <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-              {t("blog.paletteGenerator.previewHint")}
+            {t("blog.paletteGenerator.previewHint")}
           </p>
           <PreviewUI colors={colors} />
         </div>
@@ -876,7 +885,7 @@ export default function PaletteGeneratorContent() {
       {activeTab === "score" && (
         <div className="space-y-4">
           <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] p-6 flex flex-col sm:flex-row gap-6 items-center">
-            <ScoreRing value={score.total} t={t} />
+            <ScoreRing t={t} value={score.total} />
             <div className="flex-1 space-y-3 w-full">
               {score.details.map((d) => {
                 const pct = (d.score / d.max) * 100;

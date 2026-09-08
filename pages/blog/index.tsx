@@ -33,8 +33,6 @@ const typeConfig: Record<
     icon: React.ReactNode;
     pill: string;
     cardAccent: string;
-    iconBg: string;
-    gradient: string;
     href: string;
   }
 > = {
@@ -43,8 +41,6 @@ const typeConfig: Record<
     href: "/blog/articulos",
     pill: "text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/50",
     cardAccent: "from-amber-400 to-orange-400",
-    iconBg: "bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400",
-    gradient: "from-amber-50 via-orange-50 to-yellow-50 dark:from-amber-950/20 dark:via-orange-950/15 dark:to-yellow-950/10",
     icon: <IconArticle className="w-4 h-4" />,
   },
   tool: {
@@ -52,48 +48,68 @@ const typeConfig: Record<
     href: "/blog/herramientas",
     pill: "text-violet-700 dark:text-violet-300 bg-violet-100 dark:bg-violet-950/50 border border-violet-200 dark:border-violet-800/50",
     cardAccent: "from-violet-400 to-purple-400",
-    iconBg: "bg-violet-100 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400",
-    gradient: "from-violet-50 via-purple-50 to-fuchsia-50 dark:from-violet-950/20 dark:via-purple-950/15 dark:to-fuchsia-950/10",
     icon: <IconTool className="w-4 h-4" />,
   },
 };
 
 const cfgFor = (type: ContentType) => typeConfig[type as BlogContentType];
 
-function ContentCard({ item, showType = false }: { item: ContentMeta; showType?: boolean }) {
+function ContentCard({
+  item,
+  showType = false,
+}: {
+  item: ContentMeta;
+  showType?: boolean;
+}) {
   const { t } = useT();
   const cfg = cfgFor(item.type);
 
   return (
     <Link
-      className="group block relative overflow-hidden rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-black/15 dark:hover:border-white/15 hover:shadow-xl transition-all duration-300 no-underline h-full"
+      className="group block relative overflow-hidden rounded-2xl ds-card hover:border-[var(--accent)]/20 hover:shadow-xl transition-all duration-300 no-underline h-full"
       href={contentHref(item.type, item.slug)}
     >
-      <div aria-hidden="true" className={`h-1 w-full bg-gradient-to-r ${cfg.cardAccent}`} />
+      <div
+        aria-hidden="true"
+        className={`h-1 w-full bg-gradient-to-r ${cfg.cardAccent}`}
+      />
       <div className="p-5">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-2 flex-wrap">
             {showType && (
-              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${cfg.pill}`}>
+              <span
+                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${cfg.pill}`}
+              >
                 {cfg.icon}
                 {t(cfg.labelKey)}
               </span>
             )}
-            <span aria-hidden="true" className={`w-2 h-2 rounded-full flex-shrink-0 ${item.categoryColor}`} />
-            <span className="text-xs text-[#6e6e73] dark:text-[#86868b] font-medium">{item.category}</span>
-            <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">· {item.readTime}</span>
+            <span
+              aria-hidden="true"
+              className={`w-2 h-2 rounded-full flex-shrink-0 ${item.categoryColor}`}
+            />
+            <span className="text-xs text-[var(--text-secondary)] font-medium">
+              {item.category}
+            </span>
+            <span className="text-xs text-[var(--text-secondary)]">
+              · {item.readTime}
+            </span>
           </div>
           {item.level && <LevelBadge level={item.level} size="xs" />}
         </div>
-        <h3 className="font-bold text-sm text-[#1d1d1f] dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors leading-snug mb-2 line-clamp-2">
+        <h3 className="font-bold text-sm text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-snug mb-2 line-clamp-2">
           {item.title}
         </h3>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed line-clamp-2 mb-4">
+        <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-2 mb-4">
           {item.description}
         </p>
         <div className="flex items-center justify-between">
-          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">{formatDate(item.publishedAt)}</span>
-          <span className={`text-xs font-semibold ${item.type === "article" ? "text-amber-600 dark:text-amber-400" : "text-violet-600 dark:text-violet-400"} group-hover:translate-x-0.5 transition-transform inline-block`}>
+          <span className="text-xs text-[var(--text-muted)]">
+            {formatDate(item.publishedAt)}
+          </span>
+          <span
+            className={`text-xs font-semibold ${item.type === "article" ? "text-amber-600 dark:text-amber-400" : "text-violet-600 dark:text-violet-400"} group-hover:translate-x-0.5 transition-transform inline-block`}
+          >
             {item.type === "tool" ? t("blog.exploreLink") : t("blog.readLink")}
           </span>
         </div>
@@ -108,40 +124,45 @@ export default function BlogHome() {
 
   const searchResults = useMemo(() => {
     if (!query.trim()) return [];
+
     return searchContent(query).filter((c) => c.type !== "tutorial");
   }, [query]);
 
   const isSearching = query.trim().length > 0;
-
   const articles = getContentByType("article").slice(0, 6);
   const tools = getContentByType("tool").slice(0, 6);
 
   return (
-    <BlogLayout seo={{ title: t("meta.blog.title"), description: t("meta.blog.desc") }}>
+    <BlogLayout
+      seo={{ title: t("meta.blog.title"), description: t("meta.blog.desc") }}
+    >
       <div className="space-y-14 py-4">
         {/* Hero */}
-        <section aria-labelledby="hero-title" className="relative overflow-clip">
-          <div aria-hidden="true" className="blob absolute -top-20 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-violet-400/12 via-pink-400/8 to-transparent -z-10" />
-          <div aria-hidden="true" className="blob absolute top-0 right-0 w-[250px] h-[250px] bg-gradient-to-bl from-amber-400/10 to-transparent -z-10" />
-          <div aria-hidden="true" className="blob absolute top-10 left-0 w-[200px] h-[200px] bg-gradient-to-br from-cyan-400/10 to-transparent -z-10" />
-
+        <section
+          aria-labelledby="hero-title"
+          className="relative overflow-clip"
+        >
           <div className="text-center space-y-5 py-8">
             <ScrollReveal>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-violet-500/10 to-pink-500/10 border border-violet-300/40 dark:border-violet-700/40">
-                <IconExternal className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
-                <span className="text-xs font-bold tracking-widest uppercase text-violet-700 dark:text-violet-300">
-                  {t("sections.blog.badge")}
-                </span>
-              </div>
+              <span className="ds-section-label">
+                <IconExternal className="w-3.5 h-3.5" />
+                {t("sections.blog.badge")}
+              </span>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black" id="hero-title" style={{ letterSpacing: "-0.04em", lineHeight: 1.05 }}>
+              <h1
+                className="text-4xl sm:text-5xl md:text-6xl font-black text-[var(--text-primary)]"
+                id="hero-title"
+                style={{ letterSpacing: "-0.04em", lineHeight: 1.05 }}
+              >
                 {t("blog.headerLine1")}
-                <span className="block hero-gradient-text">{t("blog.headerLine2")}</span>
+                <span className="block hero-gradient-text">
+                  {t("blog.headerLine2")}
+                </span>
               </h1>
             </ScrollReveal>
             <ScrollReveal delay={200}>
-              <p className="text-base md:text-lg text-[#6e6e73] dark:text-[#86868b] max-w-lg mx-auto leading-relaxed">
+              <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-lg mx-auto leading-relaxed">
                 {t("sections.blog.desc")}
               </p>
             </ScrollReveal>
@@ -151,15 +172,18 @@ export default function BlogHome() {
         {/* Search */}
         <ScrollReveal>
           <section aria-labelledby="search-title" className="max-w-2xl mx-auto">
-            <h2 className="sr-only" id="search-title">{t("blog.srSearch")}</h2>
+            <h2 className="sr-only" id="search-title">
+              {t("blog.srSearch")}
+            </h2>
             <div className="relative" role="search">
-              <label className="sr-only" htmlFor="blog-search">{t("blog.searchLabel")}</label>
-              <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" />
+              <label className="sr-only" htmlFor="blog-search">
+                {t("blog.searchLabel")}
+              </label>
+              <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
               <input
                 aria-activedescendant={undefined}
                 aria-controls="search-results"
-                aria-expanded={isSearching}
-                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:border-violet-400 dark:focus:border-violet-500 focus:ring-2 focus:ring-violet-400/20 transition-all shadow-sm"
+                className="ds-input w-full pl-11 pr-4 py-3.5"
                 id="blog-search"
                 placeholder={t("blog.searchPlaceholder")}
                 type="text"
@@ -169,7 +193,7 @@ export default function BlogHome() {
               {query && (
                 <button
                   aria-label={t("blog.searchClear")}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#aeaeb2] dark:text-[#636366] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                   onClick={() => setQuery("")}
                 >
                   <IconClose className="w-4 h-4" />
@@ -177,10 +201,12 @@ export default function BlogHome() {
               )}
             </div>
             {isSearching && (
-              <div id="search-results" className="mt-4 space-y-2">
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] font-medium">{searchResults.length} {t("blog.srResults")}</p>
+              <div className="mt-4 space-y-2" id="search-results">
+                <p className="text-xs text-[var(--text-secondary)] font-medium">
+                  {searchResults.length} {t("blog.srResults")}
+                </p>
                 {searchResults.map((item) => (
-                  <ContentCard key={item.id} item={item} showType />
+                  <ContentCard key={item.id} showType item={item} />
                 ))}
               </div>
             )}
@@ -203,14 +229,20 @@ export default function BlogHome() {
                   <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                     <IconArticle className="w-4 h-4" />
                   </div>
-                  <h2 className="text-lg font-black text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.02em" }}>
+                  <h2
+                    className="text-lg font-black text-[var(--text-primary)]"
+                    style={{ letterSpacing: "-0.02em" }}
+                  >
                     {t("blog.type.articles")}
                   </h2>
-                  <span className="text-xs text-[#aeaeb2] dark:text-[#636366] font-medium bg-black/5 dark:bg-white/10 px-2 py-0.5 rounded-full">
+                  <span className="text-xs text-[var(--text-muted)] font-medium bg-[var(--bg-surface)] px-2 py-0.5 rounded-full">
                     {allContent.filter((c) => c.type === "article").length}
                   </span>
                 </div>
-                <Link className="text-sm font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors no-underline" href="/blog/articulos">
+                <Link
+                  className="text-sm font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors no-underline"
+                  href="/blog/articulos"
+                >
                   {t("sections.blog.viewAll")}
                 </Link>
               </div>
@@ -234,14 +266,20 @@ export default function BlogHome() {
                   <div className="w-9 h-9 rounded-xl bg-violet-100 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 flex items-center justify-center">
                     <IconTool className="w-4 h-4" />
                   </div>
-                  <h2 className="text-lg font-black text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.02em" }}>
+                  <h2
+                    className="text-lg font-black text-[var(--text-primary)]"
+                    style={{ letterSpacing: "-0.02em" }}
+                  >
                     {t("blog.type.tools")}
                   </h2>
-                  <span className="text-xs text-[#aeaeb2] dark:text-[#636366] font-medium bg-black/5 dark:bg-white/10 px-2 py-0.5 rounded-full">
+                  <span className="text-xs text-[var(--text-muted)] font-medium bg-[var(--bg-surface)] px-2 py-0.5 rounded-full">
                     {allContent.filter((c) => c.type === "tool").length}
                   </span>
                 </div>
-                <Link className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors no-underline" href="/blog/herramientas">
+                <Link
+                  className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors no-underline"
+                  href="/blog/herramientas"
+                >
                   {t("sections.blog.viewAll")}
                 </Link>
               </div>

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 
 function playBeep() {
@@ -67,8 +68,10 @@ export default function CountdownTimerContent() {
           if (prev <= 1) {
             playBeep();
             setRunning(false);
+
             return 0;
           }
+
           return prev - 1;
         });
       }, 1000);
@@ -107,25 +110,25 @@ export default function CountdownTimerContent() {
           <div className="relative w-40 h-40">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
               <circle
+                className="text-black/5 dark:text-white/5"
                 cx="60"
                 cy="60"
-                r="54"
                 fill="none"
+                r="54"
                 stroke="currentColor"
                 strokeWidth="6"
-                className="text-black/5 dark:text-white/5"
               />
               <circle
+                className="text-orange-500 dark:text-orange-400 transition-[stroke-dashoffset] duration-1000"
                 cx="60"
                 cy="60"
-                r="54"
                 fill="none"
+                r="54"
                 stroke="currentColor"
-                strokeWidth="6"
-                strokeLinecap="round"
                 strokeDasharray={circumference}
                 strokeDashoffset={dashOffset}
-                className="text-orange-500 dark:text-orange-400 transition-[stroke-dashoffset] duration-1000"
+                strokeLinecap="round"
+                strokeWidth="6"
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
@@ -138,25 +141,27 @@ export default function CountdownTimerContent() {
           {/* Time input */}
           <div className="flex items-center gap-2">
             <input
+              className="w-16 px-2 py-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-center text-xl font-mono focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 transition-colors"
+              disabled={running}
+              max="99"
+              min="0"
+              placeholder="MM"
               type="number"
               value={inputMinutes}
               onChange={(e) => setInputMinutes(e.target.value)}
-              className="w-16 px-2 py-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-center text-xl font-mono focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 transition-colors"
-              min="0"
-              max="99"
-              placeholder="MM"
-              disabled={running}
             />
-            <span className="text-xl font-bold text-[#6e6e73] dark:text-[#86868b]">:</span>
+            <span className="text-xl font-bold text-[#6e6e73] dark:text-[#86868b]">
+              :
+            </span>
             <input
+              className="w-16 px-2 py-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-center text-xl font-mono focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 transition-colors"
+              disabled={running}
+              max="59"
+              min="0"
+              placeholder="SS"
               type="number"
               value={inputSeconds}
               onChange={(e) => setInputSeconds(e.target.value)}
-              className="w-16 px-2 py-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-center text-xl font-mono focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 transition-colors"
-              min="0"
-              max="59"
-              placeholder="SS"
-              disabled={running}
             />
           </div>
 
@@ -164,22 +169,22 @@ export default function CountdownTimerContent() {
           <div className="flex gap-3">
             {!running ? (
               <button
-                onClick={start}
                 className="px-6 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-colors"
+                onClick={start}
               >
                 {t("blog.countdownTimer.start")}
               </button>
             ) : (
               <button
-                onClick={pause}
                 className="px-6 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-colors"
+                onClick={pause}
               >
                 {t("blog.countdownTimer.pause")}
               </button>
             )}
             <button
-              onClick={reset}
               className="px-6 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b] hover:border-orange-500 dark:hover:border-orange-400 font-semibold transition-all"
+              onClick={reset}
             >
               {t("blog.countdownTimer.reset")}
             </button>

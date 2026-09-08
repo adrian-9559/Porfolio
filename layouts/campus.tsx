@@ -1,5 +1,6 @@
 "use client";
 import type { HeadProps } from "./head";
+import type { CampusProgress, CampusUserXP } from "@/types/campus";
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
@@ -11,7 +12,12 @@ import { Navbar } from "@/components/navbar";
 import { useT } from "@/hooks/useT";
 import { useAuth } from "@/hooks/useAuth";
 import { siteConfig } from "@/config/site";
-import { allContent, typeSlug, allGuides, getContentByType } from "@/lib/blog/registry";
+import {
+  allContent,
+  typeSlug,
+  allGuides,
+  getContentByType,
+} from "@/lib/blog/registry";
 import { CATEGORY_GROUPS } from "@/lib/blog/taxonomy";
 import {
   IconSearch,
@@ -25,7 +31,6 @@ import {
 import { campusService } from "@/services/campusService";
 import { ProgressBar } from "@/components/campus/ProgressBar";
 import { XpBadge } from "@/components/campus/XpBadge";
-import type { CampusProgress, CampusUserXP } from "@/types/campus";
 
 // ── Sidebar data model ────────────────────────────────────────────────────────
 
@@ -88,13 +93,55 @@ function buildNav(t: (key: string) => string): NavGroup[] {
 
   const groups: NavGroup[] = [];
 
-  // 1. Guides section
+  // 0. Retos section (collapsed by default)
+  groups.push({
+    id: "retos",
+    label: "Retos",
+    href: "/campus/retos",
+    color: "text-[var(--accent)]",
+    icon: <span className="text-xs">⚡</span>,
+    items: [
+      {
+        id: "retos-hub",
+        label: "Todos los Retos",
+        href: "/campus/retos",
+        color: "text-[var(--accent)]",
+      },
+      {
+        id: "plan-fundamentos",
+        label: "Fundamentos JS",
+        href: "/campus/plan-de-estudio/fundamentos-javascript",
+        color: "text-amber-500",
+      },
+      {
+        id: "plan-react",
+        label: "React desde cero",
+        href: "/campus/plan-de-estudio/react-desde-cero",
+        color: "text-cyan-500",
+      },
+      {
+        id: "plan-node",
+        label: "Node.js Backend",
+        href: "/campus/plan-de-estudio/nodejs-backend",
+        color: "text-green-500",
+      },
+      {
+        id: "plan-python",
+        label: "Python para IA",
+        href: "/campus/plan-de-estudio/python-para-ia",
+        color: "text-violet-500",
+      },
+    ],
+    defaultOpen: false,
+  });
+
+  // 1. Guides section (closed by default to avoid overwhelming)
   if (allGuides.length > 0) {
     groups.push({
       id: "guias",
       label: t("nav.campusGuides"),
       href: "/campus/guias",
-      color: "text-emerald-500",
+      color: "text-[var(--accent)]",
       icon: <IconBook className="w-3.5 h-3.5" />,
       items: allGuides.map((g) => ({
         id: g.id,
@@ -102,11 +149,11 @@ function buildNav(t: (key: string) => string): NavGroup[] {
         href: `/campus/guias/${g.slug}`,
         color: g.categoryColor,
       })),
-      defaultOpen: true,
+      defaultOpen: false,
     });
   }
 
-  // 2. Category groups from taxonomy (tutorials only)
+  // 2. Category groups from taxonomy (tutorials only) - closed by default
   for (const catGroup of CATEGORY_GROUPS) {
     const items = tutorials.filter((c) =>
       catGroup.categories.includes(c.categoryId),
@@ -127,7 +174,7 @@ function buildNav(t: (key: string) => string): NavGroup[] {
         href: `/campus/tutoriales/${c.slug}`,
         color: c.categoryColor,
       })),
-      defaultOpen: true,
+      defaultOpen: false,
     });
   }
 
@@ -167,7 +214,7 @@ function useCollapseState(key: string, defaultOpen: boolean) {
 function Chevron({ open }: { open: boolean }) {
   return (
     <IconChevronRight
-      className={`w-3 h-3 text-muted/60 transition-transform duration-200 flex-shrink-0 motion-safe:transition-transform ${open ? "rotate-90" : ""}`}
+      className={`w-3 h-3 text-[var(--text-muted)] transition-transform duration-200 flex-shrink-0 motion-safe:transition-transform ${open ? "rotate-90" : ""}`}
     />
   );
 }
@@ -179,6 +226,8 @@ function itemTypeIcon(href: string): React.ReactNode {
     return <IconTutorial className="w-3 h-3" />;
   if (href.startsWith("/campus/guias/"))
     return <IconBook className="w-3 h-3" />;
+  if (href.startsWith("/campus/retos") || href.startsWith("/campus/plan-de-estudio"))
+    return <span className="text-xs">⚡</span>;
 
   return <IconHome className="w-3 h-3" />;
 }
@@ -192,15 +241,15 @@ function SidebarItem({ item, active }: { item: NavItem; active: boolean }) {
       {...(active ? { "aria-current": "page" as const } : {})}
       className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all no-underline motion-safe:transition-all ${
         active
-          ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300"
-          : "text-muted hover:text-foreground hover:bg-default"
+          ? "bg-[var(--accent-light)] text-[var(--accent)]"
+          : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
       }`}
     >
       <span
         aria-hidden="true"
         className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.color ?? "bg-gray-400"}`}
       />
-      <span className="flex-shrink-0 text-muted/60">
+      <span className="flex-shrink-0 text-[var(--text-muted)]">
         {itemTypeIcon(item.href)}
       </span>
       <span className="truncate">{item.label}</span>
@@ -229,12 +278,12 @@ function SubGroup({
         onClick={toggle}
       >
         <Chevron open={open} />
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted/60 flex-1 text-left">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] flex-1 text-left">
           {group.label}
         </span>
         <span
           aria-hidden="true"
-          className="text-[10px] font-medium text-muted/60"
+          className="text-[10px] font-medium text-[var(--text-muted)]"
         >
           {group.items?.length}
         </span>
@@ -297,15 +346,15 @@ function TopGroup({
         <span
           className={`text-[10px] font-semibold uppercase tracking-wider flex-1 text-left ${
             isGroupActive
-              ? "text-emerald-700 dark:text-emerald-300"
-              : "text-muted/60"
+              ? "text-[var(--accent)]"
+              : "text-[var(--text-muted)]"
           }`}
         >
           {group.label}
         </span>
         <span
           aria-hidden="true"
-          className="text-[10px] font-medium text-muted/60"
+          className="text-[10px] font-medium text-[var(--text-muted)]"
         >
           {allItems.length}
         </span>
@@ -375,12 +424,12 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
         {t("nav.campusSearch")}
       </label>
       <div className="relative">
-        <IconSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-muted/60" />
+        <IconSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-[var(--text-muted)]" />
         <input
           aria-autocomplete="list"
           aria-controls={resultsId}
           aria-expanded={results.length > 0}
-          className="w-full pl-7 pr-3 py-2 rounded-xl bg-black/[0.04] dark:bg-white/[0.04] border border-border text-xs text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-300 dark:focus:border-emerald-600 transition-all motion-safe:transition-all"
+          className="w-full pl-7 pr-3 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)] transition-all motion-safe:transition-all"
           id={searchId}
           placeholder={t("nav.campusSearchPlaceholder")}
           type="text"
@@ -390,7 +439,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
         {q && (
           <button
             aria-label={t("nav.campusSearchClear")}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted/60 hover:text-muted"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-muted"
             onClick={() => setQ("")}
           >
             <IconClose className="w-3 h-3" />
@@ -412,7 +461,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
               <Link
                 key={item.id}
                 aria-selected={currentPath === href}
-                className={`flex items-center gap-2 px-3 py-2 hover:bg-black/[0.03] dark:hover:bg-white/[0.03] no-underline ${currentPath === href ? "bg-emerald-50 dark:bg-emerald-950/20" : ""}`}
+                className={`flex items-center gap-2 px-3 py-2 hover:hover:bg-[var(--bg-hover)] no-underline ${currentPath === href ? "bg-[var(--accent-light)]" : ""}`}
                 href={href}
                 role="option"
                 onClick={() => setQ("")}
@@ -424,7 +473,7 @@ function SidebarSearch({ currentPath }: { currentPath: string }) {
                   aria-hidden="true"
                   className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.categoryColor}`}
                 />
-                <span className="text-xs text-foreground truncate">
+                <span className="text-xs text-[var(--text-primary)] truncate">
                   {item.title}
                 </span>
               </Link>
@@ -470,8 +519,14 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    campusService.getProgress().then(setUserProgress).catch(() => {});
-    campusService.getXP().then(setUserXp).catch(() => {});
+    campusService
+      .getProgress()
+      .then(setUserProgress)
+      .catch(() => {});
+    campusService
+      .getXP()
+      .then(setUserXp)
+      .catch(() => {});
   }, [isAuthenticated]);
 
   return (
@@ -481,7 +536,7 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
 
       {/* Skip link */}
       <a
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-xl focus:text-sm focus:font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-400"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[var(--accent)] focus:text-[var(--text-interactive)] focus:rounded-xl focus:text-sm focus:font-semibold focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
         href="#main-content"
       >
         {t("nav.skipToContent")}
@@ -493,19 +548,25 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
           aria-controls="campus-sidebar"
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? t("nav.blogClose") : t("nav.blogOpen")}
-          className="sm:hidden self-end mb-4 w-8 h-8 flex flex-col items-center justify-center gap-[5px] rounded-xl border border-black/12 dark:border-white/12 text-foreground"
+          className="sm:hidden self-end mb-4 w-8 h-8 flex flex-col items-center justify-center gap-[5px] rounded-xl border border-black/12 dark:border-white/12 text-[var(--text-primary)]"
           onClick={() => setMobileOpen((v) => !v)}
         >
-          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 rotate-45 translate-y-[6.5px]" : "w-4"}`} />
-          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 ${mobileOpen ? "w-0 opacity-0" : "w-3"}`} />
-          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 -rotate-45 -translate-y-[6.5px]" : "w-4"}`} />
+          <span
+            className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 rotate-45 translate-y-[6.5px]" : "w-4"}`}
+          />
+          <span
+            className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 ${mobileOpen ? "w-0 opacity-0" : "w-3"}`}
+          />
+          <span
+            className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 -rotate-45 -translate-y-[6.5px]" : "w-4"}`}
+          />
         </button>
 
         <div className="flex gap-6 flex-1 relative">
           {/* ── Mobile backdrop ── */}
           {mobileOpen && (
             <div
-              className="fixed inset-0 z-40 bg-black/15 dark:bg-black/40 backdrop-blur-sm sm:hidden"
+              className="fixed inset-0 z-40 bg-[var(--bg-overlay)] backdrop-blur-sm sm:hidden"
               onClick={() => setMobileOpen(false)}
             />
           )}
@@ -514,7 +575,9 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
           <aside
             aria-label={t("nav.campusNavigation")}
             className={`fixed top-0 left-0 z-50 h-full w-72 bg-background sm:relative sm:w-56 lg:w-60 shrink-0 transform transition-transform duration-300 ease-out sm:transform-none ${
-              mobileOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
+              mobileOpen
+                ? "translate-x-0"
+                : "-translate-x-full sm:translate-x-0"
             }`}
             id="campus-sidebar"
           >
@@ -525,11 +588,21 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
               {/* Mobile close button */}
               <button
                 aria-label={t("nav.blogClose")}
-                className="sm:hidden absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/5 dark:hover:bg-white/8 transition-colors text-muted"
+                className="sm:hidden absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[var(--bg-hover)] transition-colors text-muted"
                 onClick={() => setMobileOpen(false)}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M6 18L18 6M6 6l12 12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
                 </svg>
               </button>
               {/* Brand */}
@@ -538,14 +611,14 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
                 href="/campus"
                 onClick={() => setMobileOpen(false)}
               >
-                <div className="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+                <div className="w-8 h-8 rounded-xl bg-[var(--accent-light)] text-[var(--accent)] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
                   <IconGraduation className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-[#1d1d1f] dark:text-white leading-tight">
+                  <p className="text-sm font-bold text-[var(--text-primary)] leading-tight">
                     Campus
                   </p>
-                  <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] truncate">
+                  <p className="text-[10px] text-[var(--text-muted)] truncate">
                     {t("campus.tagline")}
                   </p>
                 </div>
@@ -553,16 +626,24 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
 
               {/* User Progress */}
               {isAuthenticated && completedCount > 0 && (
-                <div className="px-3 py-3 rounded-xl bg-emerald-500/5 border border-emerald-300/20 dark:border-emerald-700/20 mb-3">
+                <div className="px-3 py-3 rounded-xl bg-[var(--accent-light)] border border-[var(--border-default)] mb-3">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                    <span className="text-[10px] font-semibold text-[var(--accent)] uppercase tracking-wider">
                       {t("campus.sidebar.yourProgress")}
                     </span>
-                    <XpBadge xp={userXp?.total_xp ?? 0} level={userXp?.level ?? 1} compact />
+                    <XpBadge
+                      compact
+                      level={userXp?.level ?? 1}
+                      xp={userXp?.total_xp ?? 0}
+                    />
                   </div>
-                  <ProgressBar completed={completedCount} total={totalTutorials} />
-                  <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] mt-1">
-                    {completedCount}/{totalTutorials} {t("blog.tutorialPlural").toLowerCase()}
+                  <ProgressBar
+                    completed={completedCount}
+                    total={totalTutorials}
+                  />
+                  <p className="text-[10px] text-[var(--text-muted)] mt-1">
+                    {completedCount}/{totalTutorials}{" "}
+                    {t("blog.tutorialPlural").toLowerCase()}
                   </p>
                 </div>
               )}
@@ -577,8 +658,8 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
                   : {})}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all no-underline mb-3 motion-safe:transition-all ${
                   currentPath === "/campus"
-                    ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300"
-                    : "text-muted hover:text-foreground hover:bg-default"
+                    ? "bg-[var(--accent-light)] text-[var(--accent)]"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
                 }`}
               >
                 <IconHome className="w-4 h-4 flex-shrink-0" />
@@ -605,20 +686,20 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
       </div>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-border">
+      <footer className="mt-auto border-t border-[var(--border-default)]">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 py-10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-6 h-6 rounded-md bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-xs">
+              <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[var(--color-brand-from)] via-[var(--color-brand-via)] to-[var(--color-brand-to)] flex items-center justify-center text-white font-bold text-xs">
                 A
               </div>
-              <span className="text-sm font-medium text-foreground">
+              <span className="text-sm font-medium text-[var(--text-primary)]">
                 {t("footer.brandName")}
               </span>
             </div>
             <div className="flex items-center gap-6">
               <a
-                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
+                className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
                 href={siteConfig.links.github}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -626,7 +707,7 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
                 GitHub
               </a>
               <a
-                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
+                className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
                 href={siteConfig.links.linkedin}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -634,13 +715,13 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
                 LinkedIn
               </a>
               <a
-                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
+                className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
                 href={`mailto:${siteConfig.contact.email}`}
               >
                 {t("contact.email")}
               </a>
             </div>
-            <p className="text-xs text-muted/60">
+            <p className="text-xs text-[var(--text-muted)]">
               {t("footer.copyright", { year: new Date().getFullYear() })}
             </p>
           </div>

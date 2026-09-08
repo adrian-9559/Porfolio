@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -118,7 +119,9 @@ export default function CaseConverterContent() {
                 className="text-xs text-rose-600 dark:text-rose-400 hover:underline"
                 onClick={copy}
               >
-                {copied ? t("blog.caseConverter.copied") : t("blog.caseConverter.copy")}
+                {copied
+                  ? t("blog.caseConverter.copied")
+                  : t("blog.caseConverter.copy")}
               </button>
             </div>
             <div className="p-3 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/40 font-mono text-sm text-[#1d1d1f] dark:text-white break-all">

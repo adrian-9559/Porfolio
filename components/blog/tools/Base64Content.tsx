@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -84,7 +85,9 @@ export default function Base64Content() {
                 setError("");
               }}
             >
-              {m === "encode" ? t("blog.base64.encode") : t("blog.base64.decode")}
+              {m === "encode"
+                ? t("blog.base64.encode")
+                : t("blog.base64.decode")}
             </button>
           ))}
         </div>
@@ -92,12 +95,16 @@ export default function Base64Content() {
         {/* Input */}
         <div className="space-y-1.5">
           <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-            {mode === "encode" ? t("blog.base64.originalText") : t("blog.base64.base64String")}
+            {mode === "encode"
+              ? t("blog.base64.originalText")
+              : t("blog.base64.base64String")}
           </p>
           <textarea
             className="w-full h-36 p-3 text-sm font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-sky-400 dark:focus:border-sky-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
             placeholder={
-              mode === "encode" ? t("blog.base64.placeholderEncode") : t("blog.base64.placeholderDecode")
+              mode === "encode"
+                ? t("blog.base64.placeholderEncode")
+                : t("blog.base64.placeholderDecode")
             }
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -110,7 +117,9 @@ export default function Base64Content() {
             className="px-4 py-2 rounded-lg text-sm font-semibold bg-sky-500 hover:bg-sky-600 text-white transition-colors"
             onClick={process}
           >
-            {mode === "encode" ? t("blog.base64.encodeBtn") : t("blog.base64.decodeBtn")}
+            {mode === "encode"
+              ? t("blog.base64.encodeBtn")
+              : t("blog.base64.decodeBtn")}
           </button>
           <button
             className="px-3 py-2 rounded-lg text-sm font-semibold bg-black/8 dark:bg-white/8 text-[#1d1d1f] dark:text-white hover:bg-black/12 dark:hover:bg-white/12 transition-colors disabled:opacity-40"
@@ -167,9 +176,7 @@ export default function Base64Content() {
               • {t("blog.base64.infoItem2")}{" "}
               <code className="font-mono">data:image/png;base64,...</code>
             </li>
-            <li>
-              • {t("blog.base64.infoItem3")}
-            </li>
+            <li>• {t("blog.base64.infoItem3")}</li>
             <li>• {t("blog.base64.infoItem4")}</li>
           </ul>
         </div>

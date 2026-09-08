@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 
 const TIP_PRESETS = [10, 15, 18, 20, 25];
@@ -12,7 +13,7 @@ export default function TipCalculatorContent() {
   const [useCustom, setUseCustom] = useState(false);
   const [people, setPeople] = useState(1);
 
-  const effectiveTip = useCustom ? (parseFloat(customTip) || 0) : tipPct;
+  const effectiveTip = useCustom ? parseFloat(customTip) || 0 : tipPct;
   const billNum = parseFloat(bill) || 0;
   const tipAmount = billNum * (effectiveTip / 100);
   const total = billNum + tipAmount;
@@ -55,13 +56,13 @@ export default function TipCalculatorContent() {
                 $
               </span>
               <input
+                className="w-full pl-8 pr-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                min="0"
+                placeholder="0.00"
+                step="0.01"
                 type="number"
                 value={bill}
                 onChange={(e) => setBill(e.target.value)}
-                className="w-full pl-8 pr-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
-                placeholder="0.00"
-                min="0"
-                step="0.01"
               />
             </div>
           </div>
@@ -75,26 +76,26 @@ export default function TipCalculatorContent() {
               {TIP_PRESETS.map((pct) => (
                 <button
                   key={pct}
-                  onClick={() => {
-                    setTipPct(pct);
-                    setUseCustom(false);
-                  }}
                   className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                     !useCustom && tipPct === pct
                       ? "bg-emerald-500 text-white"
                       : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b] hover:border-emerald-500 dark:hover:border-emerald-400"
                   }`}
+                  onClick={() => {
+                    setTipPct(pct);
+                    setUseCustom(false);
+                  }}
                 >
                   {pct}%
                 </button>
               ))}
               <button
-                onClick={() => setUseCustom(true)}
                 className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   useCustom
                     ? "bg-emerald-500 text-white"
                     : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b] hover:border-emerald-500 dark:hover:border-emerald-400"
                 }`}
+                onClick={() => setUseCustom(true)}
               >
                 {t("blog.tipCalculator.custom")}
               </button>
@@ -102,13 +103,13 @@ export default function TipCalculatorContent() {
             {useCustom && (
               <div className="relative">
                 <input
+                  className="w-full px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                  max="100"
+                  min="0"
+                  placeholder="0"
                   type="number"
                   value={customTip}
                   onChange={(e) => setCustomTip(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
-                  placeholder="0"
-                  min="0"
-                  max="100"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6e6e73] dark:text-[#86868b] font-medium">
                   %
@@ -124,8 +125,8 @@ export default function TipCalculatorContent() {
             </label>
             <div className="flex items-center gap-3">
               <button
-                onClick={() => setPeople(Math.max(1, people - 1))}
                 className="w-10 h-10 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b] hover:border-emerald-500 dark:hover:border-emerald-400 transition-all text-lg font-bold flex items-center justify-center"
+                onClick={() => setPeople(Math.max(1, people - 1))}
               >
                 −
               </button>
@@ -133,8 +134,8 @@ export default function TipCalculatorContent() {
                 {people}
               </span>
               <button
-                onClick={() => setPeople(people + 1)}
                 className="w-10 h-10 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b] hover:border-emerald-500 dark:hover:border-emerald-400 transition-all text-lg font-bold flex items-center justify-center"
+                onClick={() => setPeople(people + 1)}
               >
                 +
               </button>

@@ -1,4 +1,3 @@
-import { apiFetch } from "./apiClient";
 import type {
   CampusProgress,
   CampusQuiz,
@@ -11,26 +10,49 @@ import type {
   CampusBadge,
 } from "@/types/campus";
 
+import { apiFetch } from "./apiClient";
+
 const API = "/api/campus";
 
 export const campusService = {
   getProgress: () => apiFetch<CampusProgress[]>(`${API}/progress`),
 
-  markComplete: (tutorialSlug: string, guideSlug?: string, timeSpentSeconds = 0) =>
-    apiFetch<{ xpEarned: number; totalXp: number; level: number }>(`${API}/progress`, {
-      method: "POST",
-      body: JSON.stringify({ tutorialSlug, guideSlug: guideSlug ?? null, timeSpentSeconds }),
-    }),
+  markComplete: (
+    tutorialSlug: string,
+    guideSlug?: string,
+    timeSpentSeconds = 0,
+  ) =>
+    apiFetch<{ xpEarned: number; totalXp: number; level: number }>(
+      `${API}/progress`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          tutorialSlug,
+          guideSlug: guideSlug ?? null,
+          timeSpentSeconds,
+        }),
+      },
+    ),
 
   getGuideProgress: (slug: string) =>
-    apiFetch<{ tutorial_slug: string; completed_at: string }[]>(`${API}/progress/guide/${slug}`),
+    apiFetch<{ tutorial_slug: string; completed_at: string }[]>(
+      `${API}/progress/guide/${slug}`,
+    ),
 
   getAllGuideProgress: () =>
     apiFetch<Record<string, number>>(`${API}/progress/all-guides`),
 
   getQuiz: (slug: string) => apiFetch<CampusQuiz>(`${API}/quiz/${slug}`),
 
-  submitQuiz: (slug: string, answers: { questionIndex: number; selectedOption: number; timeTakenSeconds: number }[], startedAt: string) =>
+  submitQuiz: (
+    slug: string,
+    answers: {
+      questionIndex: number;
+      selectedOption: number;
+      timeTakenSeconds: number;
+    }[],
+    startedAt: string,
+  ) =>
     apiFetch<QuizResult>(`${API}/quiz/${slug}/submit`, {
       method: "POST",
       body: JSON.stringify({ answers, startedAt }),
@@ -56,7 +78,8 @@ export const campusService = {
       method: "DELETE",
     }),
 
-  getNote: (slug: string) => apiFetch<CampusNote | null>(`${API}/notes/${slug}`),
+  getNote: (slug: string) =>
+    apiFetch<CampusNote | null>(`${API}/notes/${slug}`),
 
   upsertNote: (slug: string, content: string) =>
     apiFetch<CampusNote>(`${API}/notes/${slug}`, {

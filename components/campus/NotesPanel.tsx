@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 import { campusService } from "@/services/campusService";
 
@@ -14,9 +15,12 @@ export function NotesPanel({ tutorialSlug }: NotesPanelProps) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    campusService.getNote(tutorialSlug).then((note) => {
-      if (note) setContent(note.content);
-    }).catch(() => {});
+    campusService
+      .getNote(tutorialSlug)
+      .then((note) => {
+        if (note) setContent(note.content);
+      })
+      .catch(() => {});
   }, [tutorialSlug]);
 
   const save = useCallback(async () => {
@@ -36,21 +40,24 @@ export function NotesPanel({ tutorialSlug }: NotesPanelProps) {
     const timer = setTimeout(() => {
       if (content.trim()) save();
     }, 1500);
+
     return () => clearTimeout(timer);
   }, [content, save]);
 
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <h4 className="text-xs font-semibold text-[#1d1d1f] dark:text-white">{t("campus.notes.title")}</h4>
+        <h4 className="text-xs font-semibold text-[var(--text-primary)]">
+          {t("campus.notes.title")}
+        </h4>
         {saved && (
-          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium animate-in fade-in">
+          <span className="text-[10px] text-[var(--accent)] font-medium animate-in fade-in">
             ✓ {t("campus.notes.saved")}
           </span>
         )}
       </div>
       <textarea
-        className="w-full h-32 p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-xs text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:border-emerald-400 dark:focus:border-emerald-500 focus:ring-1 focus:ring-emerald-400/20 transition-all resize-none"
+        className="w-full h-32 p-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/20 transition-all resize-none"
         placeholder={t("campus.notes.placeholder")}
         value={content}
         onChange={(e) => setContent(e.target.value)}

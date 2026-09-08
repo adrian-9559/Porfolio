@@ -6,9 +6,20 @@ import { adminService, AdminNotification } from "@/services/adminService";
 import { userService } from "@/services/userService";
 
 const typeColors: Record<string, { gradient: string; badge: string }> = {
-  info: { gradient: "from-blue-500 to-cyan-500", badge: "bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400" },
-  admin: { gradient: "from-purple-500 to-violet-600", badge: "bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400" },
-  system: { gradient: "from-amber-500 to-orange-500", badge: "bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400" },
+  info: {
+    gradient: "from-blue-500 to-cyan-500",
+    badge: "bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400",
+  },
+  admin: {
+    gradient: "from-purple-500 to-violet-600",
+    badge:
+      "bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400",
+  },
+  system: {
+    gradient: "from-amber-500 to-orange-500",
+    badge:
+      "bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400",
+  },
 };
 
 export function AdminNotificationsSection() {
@@ -120,8 +131,13 @@ export function AdminNotificationsSection() {
 
       {/* Header */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#6e6e73] dark:text-[#86868b] mb-1">Comunicación</p>
-        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
+        <p className="text-xs font-semibold uppercase tracking-widest text-[#6e6e73] dark:text-[#86868b] mb-1">
+          Comunicación
+        </p>
+        <h1
+          className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
+          style={{ letterSpacing: "-0.03em" }}
+        >
           Notificaciones
         </h1>
         <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
@@ -132,27 +148,92 @@ export function AdminNotificationsSection() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Totales", value: notifications.length, gradient: "from-blue-500 to-cyan-500", icon: "total" },
-          { label: "Sin leer", value: unread, gradient: "from-amber-500 to-orange-500", icon: "unread" },
-          { label: "Leídas", value: notifications.length - unread, gradient: "from-emerald-500 to-teal-500", icon: "read" },
+          {
+            label: "Totales",
+            value: notifications.length,
+            gradient: "from-blue-500 to-cyan-500",
+            icon: "total",
+          },
+          {
+            label: "Sin leer",
+            value: unread,
+            gradient: "from-amber-500 to-orange-500",
+            icon: "unread",
+          },
+          {
+            label: "Leídas",
+            value: notifications.length - unread,
+            gradient: "from-emerald-500 to-teal-500",
+            icon: "read",
+          },
         ].map((s) => (
-          <div key={s.label} className="relative rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black/8 dark:hover:shadow-black/30 hover:border-black/15 dark:hover:border-white/15 group">
-            <div className={`h-1 bg-gradient-to-r ${s.gradient} opacity-80 group-hover:opacity-100 transition-opacity`} />
+          <div
+            key={s.label}
+            className="relative rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black/8 dark:hover:shadow-black/30 hover:border-black/15 dark:hover:border-white/15 group"
+          >
+            <div
+              className={`h-1 bg-gradient-to-r ${s.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}
+            />
             <div className="p-4 relative">
-              <div className={`absolute -bottom-5 -right-5 w-20 h-20 rounded-full bg-gradient-to-br ${s.gradient} opacity-10 blur-2xl`} />
+              <div
+                className={`absolute -bottom-5 -right-5 w-20 h-20 rounded-full bg-gradient-to-br ${s.gradient} opacity-10 blur-2xl`}
+              />
               <div className="flex items-center gap-2.5">
-                <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center text-white shadow-lg shrink-0`}>
+                <div
+                  className={`w-9 h-9 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center text-white shadow-lg shrink-0`}
+                >
                   {s.icon === "total" ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                      <path d="M13.73 21a2 2 0 01-3.46 0" />
+                    </svg>
                   ) : s.icon === "unread" ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" x2="12" y1="8" y2="12" />
+                      <line x1="12" x2="12.01" y1="16" y2="16" />
+                    </svg>
                   ) : (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                      <path d="M22 4L12 14.01l-3-3" />
+                    </svg>
                   )}
                 </div>
                 <div>
-                  <p className="text-2xl font-black tabular-nums tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.02em" }}>{s.value}</p>
-                  <p className="text-[11px] font-semibold text-[#1d1d1f] dark:text-white truncate">{s.label}</p>
+                  <p
+                    className="text-2xl font-black tabular-nums tracking-tight text-[#1d1d1f] dark:text-white"
+                    style={{ letterSpacing: "-0.02em" }}
+                  >
+                    {s.value}
+                  </p>
+                  <p className="text-[11px] font-semibold text-[#1d1d1f] dark:text-white truncate">
+                    {s.label}
+                  </p>
                 </div>
               </div>
             </div>
@@ -223,7 +304,18 @@ export function AdminNotificationsSection() {
                 disabled={sending || !sendTitle.trim() || !sendMsg.trim()}
                 type="submit"
               >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <line x1="22" x2="11" y1="2" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
                 Enviar
               </button>
               {sendResult && (
@@ -239,7 +331,17 @@ export function AdminNotificationsSection() {
       {/* Search + filters */}
       <div className="flex flex-col gap-3">
         <div className="relative flex-1">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
           <input
             className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
             placeholder="Buscar notificación…"
@@ -282,13 +384,49 @@ export function AdminNotificationsSection() {
                 key={n.id}
                 className={`flex items-start gap-3 px-5 py-3.5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors ${!n.read ? "bg-blue-50/30 dark:bg-blue-950/10" : ""}`}
               >
-                <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${typeColors[n.type]?.gradient ?? "from-gray-500 to-gray-600"} flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-md`}>
+                <div
+                  className={`w-9 h-9 rounded-xl bg-gradient-to-br ${typeColors[n.type]?.gradient ?? "from-gray-500 to-gray-600"} flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-md`}
+                >
                   {n.type === "info" ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" x2="12" y1="16" y2="12" />
+                      <line x1="12" x2="12.01" y1="8" y2="8" />
+                    </svg>
                   ) : n.type === "admin" ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
                   ) : (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" x2="12" y1="8" y2="12" />
+                      <line x1="12" x2="12.01" y1="16" y2="16" />
+                    </svg>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -296,7 +434,9 @@ export function AdminNotificationsSection() {
                     <p className="text-sm font-medium text-[#1d1d1f] dark:text-white truncate">
                       {n.title}
                     </p>
-                    <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${typeColors[n.type]?.badge ?? "bg-gray-100 text-gray-700"}`}>
+                    <span
+                      className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${typeColors[n.type]?.badge ?? "bg-gray-100 text-gray-700"}`}
+                    >
                       {n.type}
                     </span>
                     {!n.read && (
@@ -338,7 +478,16 @@ export function AdminNotificationsSection() {
                     title="Eliminar"
                     onClick={() => setConfirmDeleteId(n.id)}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeWidth="1.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                    </svg>
                   </button>
                 )}
               </div>
@@ -357,11 +506,18 @@ export function AdminNotificationsSection() {
 function relativeTime(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
   const mins = Math.floor(diff / 60000);
+
   if (mins < 1) return "ahora";
   if (mins < 60) return `hace ${mins}m`;
   const hrs = Math.floor(mins / 60);
+
   if (hrs < 24) return `hace ${hrs}h`;
   const days = Math.floor(hrs / 24);
+
   if (days < 30) return `hace ${days}d`;
-  return new Date(iso).toLocaleDateString("es-ES", { day: "numeric", month: "short" });
+
+  return new Date(iso).toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "short",
+  });
 }

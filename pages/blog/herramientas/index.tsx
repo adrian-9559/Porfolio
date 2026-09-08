@@ -11,8 +11,19 @@ const allTools = getContentByType("tool");
 
 const GROUP_ICONS: Record<string, React.ReactNode> = {
   colores: (
-    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.1 0 2-.9 2-2 0-.51-.2-.98-.54-1.34-.33-.35-.53-.82-.53-1.32 0-1.1.9-2 2-2h2.36c3.08 0 5.64-2.56 5.64-5.72C22.93 5.68 18.17 2 12 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.1 0 2-.9 2-2 0-.51-.2-.98-.54-1.34-.33-.35-.53-.82-.53-1.32 0-1.1.9-2 2-2h2.36c3.08 0 5.64-2.56 5.64-5.72C22.93 5.68 18.17 2 12 2z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
       <circle cx="7.5" cy="11.5" fill="currentColor" r="1.5" />
       <circle cx="10.5" cy="7.5" fill="currentColor" r="1.5" />
       <circle cx="15.5" cy="7.5" fill="currentColor" r="1.5" />
@@ -20,41 +31,147 @@ const GROUP_ICONS: Record<string, React.ReactNode> = {
     </svg>
   ),
   texto: (
-    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M4 7V4h16v3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M9 20h6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M12 4v16" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M4 7V4h16v3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M9 20h6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M12 4v16"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   ),
   datos: (
-    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M12 22V11" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M20 6.5L12 11 4 6.5" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M12 22V11"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M20 6.5L12 11 4 6.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   ),
   documentos: (
-    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M14 2v6h6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M14 2v6h6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   ),
   generadores: (
-    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M8 9l-3 3 3 3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M16 9l3 3-3 3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M14 4l-4 16" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M8 9l-3 3 3 3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M16 9l3 3-3 3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M14 4l-4 16"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   ),
   sql: (
-    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M4 17l6-5-6-5" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-      <path d="M12 19h8" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M4 17l6-5-6-5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
+      <path
+        d="M12 19h8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   ),
   utilidades: (
-    <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <svg
+      aria-hidden="true"
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      />
     </svg>
   ),
 };
@@ -88,7 +205,9 @@ export default function HerramientasPage() {
             >
               {t("blog.breadcrumb")}
             </Link>
-            <span aria-hidden="true" className="text-xs text-muted/60">/</span>
+            <span aria-hidden="true" className="text-xs text-muted/60">
+              /
+            </span>
             <span
               aria-current="page"
               className="text-xs font-medium text-foreground"
@@ -154,7 +273,9 @@ export default function HerramientasPage() {
                 <div
                   className={`w-12 h-12 rounded-2xl flex items-center justify-center ${group.color} ${group.text} group-hover:scale-105 transition-transform duration-200`}
                 >
-                  {GROUP_ICONS[group.id] ?? <span className="text-xl font-bold">•</span>}
+                  {GROUP_ICONS[group.id] ?? (
+                    <span className="text-xl font-bold">•</span>
+                  )}
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-foreground group-hover:text-accent transition-colors">
@@ -162,7 +283,9 @@ export default function HerramientasPage() {
                   </h2>
                   <span className="text-xs text-muted/60">
                     {group.count}{" "}
-                    {group.count === 1 ? t("blog.toolSingular") : t("blog.toolPlural")}
+                    {group.count === 1
+                      ? t("blog.toolSingular")
+                      : t("blog.toolPlural")}
                   </span>
                 </div>
               </div>

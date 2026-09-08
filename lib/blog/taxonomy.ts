@@ -142,7 +142,15 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
     id: "devops",
     label: "DevOps",
     labelKey: "blog.categoryGroup.devops",
-    categories: ["docker", "kubernetes", "ci-cd", "linux", "git", "monitoring", "iac"],
+    categories: [
+      "docker",
+      "kubernetes",
+      "ci-cd",
+      "linux",
+      "git",
+      "monitoring",
+      "iac",
+    ],
   },
   {
     id: "ai",

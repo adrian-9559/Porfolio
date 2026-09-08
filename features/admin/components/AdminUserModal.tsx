@@ -1,6 +1,8 @@
 "use client";
 import type { UserWithProfile, Role } from "@/types/auth";
+
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { userService } from "@/services/userService";
 import { authService } from "@/services/authService";
@@ -16,7 +18,14 @@ interface Props {
 
 type Tab = "profile" | "roles" | "security";
 
-export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRemoveRole }: Props) {
+export function AdminUserModal({
+  user,
+  open,
+  onClose,
+  roles,
+  onAssignRole,
+  onRemoveRole,
+}: Props) {
   const { t } = useT();
   const [tab, setTab] = useState<Tab>("profile");
   const [fullName, setFullName] = useState(user.profile?.full_name ?? "");
@@ -40,7 +49,9 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
       await userService.updateProfile(user.id, { full_name: fullName, bio });
       setSuccess(t("admin.userModalSaved"));
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : t("admin.userModalSaveError"));
+      setError(
+        err instanceof Error ? err.message : t("admin.userModalSaveError"),
+      );
     } finally {
       setLoadingSave(false);
     }
@@ -49,8 +60,16 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
   const handleChangePassword = async () => {
     setError("");
     setSuccess("");
-    if (newPassword.length < 8) { setError("Mínimo 8 caracteres"); return; }
-    if (newPassword !== confirmPassword) { setError("Las contraseñas no coinciden"); return; }
+    if (newPassword.length < 8) {
+      setError("Mínimo 8 caracteres");
+
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError("Las contraseñas no coinciden");
+
+      return;
+    }
     setLoadingPassword(true);
     try {
       await authService.adminChangePassword(user.id, newPassword);
@@ -92,11 +111,23 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
     }
   };
 
-  const initials = (user.profile?.full_name ?? user.email).split(" ").map((w) => w[0] ?? "").join("").slice(0, 2).toUpperCase() || "?";
+  const initials =
+    (user.profile?.full_name ?? user.email)
+      .split(" ")
+      .map((w) => w[0] ?? "")
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "?";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={onClose}>
-      <div onClick={(e) => e.stopPropagation()} className="w-full max-w-lg mx-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-lg mx-4"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden shadow-2xl">
           {/* Header */}
           <div className="relative px-6 pt-6 pb-4">
@@ -107,12 +138,28 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
                   {initials}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white">{user.profile?.full_name ?? "—"}</h3>
-                  <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">{user.email}</p>
+                  <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white">
+                    {user.profile?.full_name ?? "—"}
+                  </h3>
+                  <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                    {user.email}
+                  </p>
                 </div>
               </div>
-              <button onClick={onClose} className="p-2 rounded-lg text-[#aeaeb2] dark:text-[#636366] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              <button
+                className="p-2 rounded-lg text-[#aeaeb2] dark:text-[#636366] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all"
+                onClick={onClose}
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
               </button>
             </div>
           </div>
@@ -133,27 +180,68 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
           {/* Content */}
           <div className="px-6 py-5 max-h-[60vh] overflow-y-auto">
             {/* Error/Success */}
-            {error && <div className="mb-4 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-xs font-medium">{error}</div>}
-            {success && <div className="mb-4 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-medium">{success}</div>}
+            {error && (
+              <div className="mb-4 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-xs font-medium">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="mb-4 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
+                {success}
+              </div>
+            )}
 
             {/* Profile Tab */}
             {tab === "profile" && (
               <div className="flex flex-col gap-4">
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">{t("admin.tableName")}</label>
-                  <input className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">
+                    {t("admin.tableName")}
+                  </label>
+                  <input
+                    className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                  />
                 </div>
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">Bio</label>
-                  <textarea className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all resize-none" rows={3} value={bio} onChange={(e) => setBio(e.target.value)} maxLength={500} />
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">
+                    Bio
+                  </label>
+                  <textarea
+                    className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all resize-none"
+                    maxLength={500}
+                    rows={3}
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                  />
                 </div>
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">{t("admin.tableEmail")}</label>
-                  <input className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-black/3 dark:bg-white/5 text-sm text-[#6e6e73] dark:text-[#86868b] cursor-not-allowed" value={user.email} disabled />
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">
+                    {t("admin.tableEmail")}
+                  </label>
+                  <input
+                    disabled
+                    className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-black/3 dark:bg-white/5 text-sm text-[#6e6e73] dark:text-[#86868b] cursor-not-allowed"
+                    value={user.email}
+                  />
                 </div>
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">{t("admin.tableRegistered")}</label>
-                  <input className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-black/3 dark:bg-white/5 text-sm text-[#6e6e73] dark:text-[#86868b] cursor-not-allowed" value={user.profile?.created_at ? new Date(user.profile.created_at).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" }) : "—"} disabled />
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">
+                    {t("admin.tableRegistered")}
+                  </label>
+                  <input
+                    disabled
+                    className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-black/3 dark:bg-white/5 text-sm text-[#6e6e73] dark:text-[#86868b] cursor-not-allowed"
+                    value={
+                      user.profile?.created_at
+                        ? new Date(user.profile.created_at).toLocaleDateString(
+                            "es-ES",
+                            { day: "numeric", month: "long", year: "numeric" },
+                          )
+                        : "—"
+                    }
+                  />
                 </div>
               </div>
             )}
@@ -162,24 +250,42 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
             {tab === "roles" && (
               <div className="flex flex-col gap-4">
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">{t("admin.tableRoles")}</label>
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">
+                    {t("admin.tableRoles")}
+                  </label>
                   <div className="flex flex-wrap gap-2">
                     {user.roles.map((r) => (
-                      <span key={r.id} className="group/role inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-950/40 dark:to-indigo-950/30 text-blue-700 dark:text-blue-400 text-xs font-bold">
+                      <span
+                        key={r.id}
+                        className="group/role inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-950/40 dark:to-indigo-950/30 text-blue-700 dark:text-blue-400 text-xs font-bold"
+                      >
                         {r.name}
-                        <button className="opacity-0 group-hover/role:opacity-100 transition-opacity text-blue-500 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-100 leading-none" onClick={() => onRemoveRole(user.id, r.id)}>×</button>
+                        <button
+                          className="opacity-0 group-hover/role:opacity-100 transition-opacity text-blue-500 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-100 leading-none"
+                          onClick={() => onRemoveRole(user.id, r.id)}
+                        >
+                          ×
+                        </button>
                       </span>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">{t("admin.filterByRole")}</label>
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">
+                    {t("admin.filterByRole")}
+                  </label>
                   <div className="flex flex-wrap gap-1.5">
-                    {roles.filter((r) => !user.roles.some((ur) => ur.id === r.id)).map((r) => (
-                      <button key={r.id} className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-black/8 dark:border-white/8 hover:bg-[#1d1d1f] dark:hover:bg-white hover:text-white dark:hover:text-[#1d1d1f] transition-all" onClick={() => onAssignRole(user.id, r.id)}>
-                        + {r.name}
-                      </button>
-                    ))}
+                    {roles
+                      .filter((r) => !user.roles.some((ur) => ur.id === r.id))
+                      .map((r) => (
+                        <button
+                          key={r.id}
+                          className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-black/8 dark:border-white/8 hover:bg-[#1d1d1f] dark:hover:bg-white hover:text-white dark:hover:text-[#1d1d1f] transition-all"
+                          onClick={() => onAssignRole(user.id, r.id)}
+                        >
+                          + {r.name}
+                        </button>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -190,11 +296,29 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
               <div className="flex flex-col gap-5">
                 {/* Password */}
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">Cambiar contraseña</label>
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">
+                    Cambiar contraseña
+                  </label>
                   <div className="flex flex-col gap-2">
-                    <input className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" type="password" placeholder="Nueva contraseña (min 8)" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                    <input className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" type="password" placeholder="Confirmar contraseña" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                    <button className="self-start px-4 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40" onClick={handleChangePassword} disabled={loadingPassword || !newPassword}>
+                    <input
+                      className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                      placeholder="Nueva contraseña (min 8)"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                    <input
+                      className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                      placeholder="Confirmar contraseña"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                    <button
+                      className="self-start px-4 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40"
+                      disabled={loadingPassword || !newPassword}
+                      onClick={handleChangePassword}
+                    >
                       {loadingPassword ? "…" : "Actualizar"}
                     </button>
                   </div>
@@ -202,18 +326,38 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
 
                 {/* Email confirmation */}
                 <div className="border-t border-black/6 dark:border-white/6 pt-4">
-                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">Confirmación de email</label>
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">
+                    Confirmación de email
+                  </label>
                   {user.email_confirmed ? (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                        <path d="M22 4L12 14.01l-3-3" />
+                      </svg>
                       Confirmado
                     </span>
                   ) : (
                     <div className="flex gap-2">
-                      <button className="px-3 py-1.5 rounded-lg border border-black/8 dark:border-white/8 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-all disabled:opacity-40" onClick={handleResendConfirmation} disabled={loadingConfirm}>
+                      <button
+                        className="px-3 py-1.5 rounded-lg border border-black/8 dark:border-white/8 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-all disabled:opacity-40"
+                        disabled={loadingConfirm}
+                        onClick={handleResendConfirmation}
+                      >
                         {loadingConfirm ? "…" : "Reenviar email"}
                       </button>
-                      <button className="px-3 py-1.5 rounded-lg bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40" onClick={handleManualConfirm} disabled={loadingManualConfirm}>
+                      <button
+                        className="px-3 py-1.5 rounded-lg bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40"
+                        disabled={loadingManualConfirm}
+                        onClick={handleManualConfirm}
+                      >
                         {loadingManualConfirm ? "…" : "Confirmar manualmente"}
                       </button>
                     </div>
@@ -225,10 +369,19 @@ export function AdminUserModal({ user, open, onClose, roles, onAssignRole, onRem
 
           {/* Footer */}
           <div className="px-6 py-4 border-t border-black/6 dark:border-white/6 flex items-center justify-between">
-            <button className="px-4 py-2 rounded-xl text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-all" onClick={onClose}>{t("admin.cancel")}</button>
+            <button
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-all"
+              onClick={onClose}
+            >
+              {t("admin.cancel")}
+            </button>
             {tab === "profile" && (
-              <button className="px-5 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40" onClick={handleSave} disabled={loadingSave}>
-                {loadingSave ? "…" : t("admin.save") ?? "Guardar"}
+              <button
+                className="px-5 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40"
+                disabled={loadingSave}
+                onClick={handleSave}
+              >
+                {loadingSave ? "…" : (t("admin.save") ?? "Guardar")}
               </button>
             )}
           </div>

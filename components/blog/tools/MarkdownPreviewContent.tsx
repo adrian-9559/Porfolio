@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -62,46 +63,91 @@ function parseMarkdown(md: string): string {
   });
 
   // Inline code
-  html = html.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10 text-sm font-mono">$1</code>');
+  html = html.replace(
+    /`([^`]+)`/g,
+    '<code class="px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10 text-sm font-mono">$1</code>',
+  );
 
   // Images
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full rounded-lg" />');
+  html = html.replace(
+    /!\[([^\]]*)\]\(([^)]+)\)/g,
+    '<img src="$2" alt="$1" class="max-w-full rounded-lg" />',
+  );
 
   // Links
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-indigo-600 dark:text-indigo-400 underline hover:no-underline" target="_blank" rel="noopener noreferrer">$1</a>');
+  html = html.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" class="text-indigo-600 dark:text-indigo-400 underline hover:no-underline" target="_blank" rel="noopener noreferrer">$1</a>',
+  );
 
   // Headings
-  html = html.replace(/^### (.+)$/gm, '<h3 class="text-lg font-bold text-[#1d1d1f] dark:text-white mt-6 mb-2">$1</h3>');
-  html = html.replace(/^## (.+)$/gm, '<h2 class="text-xl font-bold text-[#1d1d1f] dark:text-white mt-8 mb-3">$1</h2>');
-  html = html.replace(/^# (.+)$/gm, '<h1 class="text-2xl font-bold text-[#1d1d1f] dark:text-white mt-8 mb-4">$1</h1>');
+  html = html.replace(
+    /^### (.+)$/gm,
+    '<h3 class="text-lg font-bold text-[#1d1d1f] dark:text-white mt-6 mb-2">$1</h3>',
+  );
+  html = html.replace(
+    /^## (.+)$/gm,
+    '<h2 class="text-xl font-bold text-[#1d1d1f] dark:text-white mt-8 mb-3">$1</h2>',
+  );
+  html = html.replace(
+    /^# (.+)$/gm,
+    '<h1 class="text-2xl font-bold text-[#1d1d1f] dark:text-white mt-8 mb-4">$1</h1>',
+  );
 
   // Horizontal rules
-  html = html.replace(/^---$/gm, '<hr class="my-6 border-black/10 dark:border-white/10" />');
+  html = html.replace(
+    /^---$/gm,
+    '<hr class="my-6 border-black/10 dark:border-white/10" />',
+  );
 
   // Blockquotes
-  html = html.replace(/^&gt; (.+)$/gm, '<blockquote class="pl-4 border-l-4 border-indigo-300 dark:border-indigo-700 text-[#6e6e73] dark:text-[#86868b] italic my-2">$1</blockquote>');
+  html = html.replace(
+    /^&gt; (.+)$/gm,
+    '<blockquote class="pl-4 border-l-4 border-indigo-300 dark:border-indigo-700 text-[#6e6e73] dark:text-[#86868b] italic my-2">$1</blockquote>',
+  );
 
   // Bold and italic
-  html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong class="font-bold"><em>$1</em></strong>');
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold">$1</strong>');
+  html = html.replace(
+    /\*\*\*(.+?)\*\*\*/g,
+    '<strong class="font-bold"><em>$1</em></strong>',
+  );
+  html = html.replace(
+    /\*\*(.+?)\*\*/g,
+    '<strong class="font-bold">$1</strong>',
+  );
   html = html.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>');
   html = html.replace(/_(.+?)_/g, '<em class="italic">$1</em>');
 
   // Unordered lists
-  html = html.replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-[#1d1d1f] dark:text-white">$1</li>');
+  html = html.replace(
+    /^- (.+)$/gm,
+    '<li class="ml-4 list-disc text-[#1d1d1f] dark:text-white">$1</li>',
+  );
 
   // Ordered lists
-  html = html.replace(/^\d+\. (.+)$/gm, '<li class="ml-4 list-decimal text-[#1d1d1f] dark:text-white">$1</li>');
+  html = html.replace(
+    /^\d+\. (.+)$/gm,
+    '<li class="ml-4 list-decimal text-[#1d1d1f] dark:text-white">$1</li>',
+  );
 
   // Wrap consecutive <li> in <ul>/<ol>
-  html = html.replace(/((?:<li class="ml-4 list-disc[^"]*">.*<\/li>\n?)+)/g, '<ul class="my-2 space-y-1">$1</ul>');
-  html = html.replace(/((?:<li class="ml-4 list-decimal[^"]*">.*<\/li>\n?)+)/g, '<ol class="my-2 space-y-1">$1</ol>');
+  html = html.replace(
+    /((?:<li class="ml-4 list-disc[^"]*">.*<\/li>\n?)+)/g,
+    '<ul class="my-2 space-y-1">$1</ul>',
+  );
+  html = html.replace(
+    /((?:<li class="ml-4 list-decimal[^"]*">.*<\/li>\n?)+)/g,
+    '<ol class="my-2 space-y-1">$1</ol>',
+  );
 
   // Paragraphs (double newline)
-  html = html.replace(/\n\n/g, '</p><p class="mb-3 text-[#1d1d1f] dark:text-white leading-relaxed">');
+  html = html.replace(
+    /\n\n/g,
+    '</p><p class="mb-3 text-[#1d1d1f] dark:text-white leading-relaxed">',
+  );
 
   // Single newlines to <br>
-  html = html.replace(/\n/g, '<br />');
+  html = html.replace(/\n/g, "<br />");
 
   // Wrap in paragraph
   html = `<p class="mb-3 text-[#1d1d1f] dark:text-white leading-relaxed">${html}</p>`;
@@ -125,7 +171,8 @@ export default function MarkdownPreviewContent() {
       const end = ta.selectionEnd;
       const selected = markdown.substring(start, end);
       const replacement = before + selected + after;
-      const next = markdown.substring(0, start) + replacement + markdown.substring(end);
+      const next =
+        markdown.substring(0, start) + replacement + markdown.substring(end);
 
       setMarkdown(next);
       setTimeout(() => {
@@ -184,7 +231,9 @@ export default function MarkdownPreviewContent() {
             className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
             onClick={copy}
           >
-            {copied ? t("blog.markdownPreview.copied") : t("blog.markdownPreview.copy")}
+            {copied
+              ? t("blog.markdownPreview.copied")
+              : t("blog.markdownPreview.copy")}
           </button>
         </div>
 
@@ -195,8 +244,8 @@ export default function MarkdownPreviewContent() {
               {t("blog.markdownPreview.markdown")}
             </p>
             <textarea
-              id="md-editor"
               className="w-full h-80 p-3 text-xs font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
+              id="md-editor"
               placeholder={t("blog.markdownPreview.placeholder")}
               value={markdown}
               onChange={(e) => setMarkdown(e.target.value)}
@@ -207,8 +256,8 @@ export default function MarkdownPreviewContent() {
               {t("blog.markdownPreview.preview")}
             </p>
             <div
-              className="w-full h-80 p-4 overflow-auto text-sm rounded-xl bg-[#f5f5f7] dark:bg-[#1c1c22] border border-black/8 dark:border-white/8 prose prose-sm dark:prose-invert max-w-none"
               dangerouslySetInnerHTML={{ __html: html }}
+              className="w-full h-80 p-4 overflow-auto text-sm rounded-xl bg-[#f5f5f7] dark:bg-[#1c1c22] border border-black/8 dark:border-white/8 prose prose-sm dark:prose-invert max-w-none"
             />
           </div>
         </div>

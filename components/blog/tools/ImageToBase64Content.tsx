@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -12,11 +13,18 @@ interface ImageInfo {
   base64: string;
 }
 
-const ALLOWED = ["image/jpeg", "image/png", "image/gif", "image/svg+xml", "image/webp"];
+const ALLOWED = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/svg+xml",
+  "image/webp",
+];
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
@@ -34,12 +42,15 @@ export default function ImageToBase64Content() {
     setError("");
     if (!ALLOWED.includes(file.type)) {
       setError(t("blog.imageToBase64.invalidType"));
+
       return;
     }
     const reader = new FileReader();
+
     reader.onload = () => {
       const result = reader.result as string;
       const img = new Image();
+
       img.onload = () => {
         setImage({
           name: file.name,
@@ -59,20 +70,24 @@ export default function ImageToBase64Content() {
     e.preventDefault();
     setDragOver(false);
     const file = e.dataTransfer.files[0];
+
     if (file) processFile(file);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) processFile(file);
   };
 
   const handleDecode = () => {
     setError("");
     const trimmed = decodeInput.trim();
+
     if (!trimmed) return;
     try {
       const img = new Image();
+
       img.onload = () => setDecodePreview(trimmed);
       img.onerror = () => {
         setError(t("blog.imageToBase64.invalidBase64"));
@@ -125,13 +140,26 @@ export default function ImageToBase64Content() {
         {/* Drop zone */}
         <div
           className={`relative w-full h-48 rounded-xl border-2 border-dashed transition-colors cursor-pointer flex flex-col items-center justify-center gap-2 ${dragOver ? "border-red-400 bg-red-50/30 dark:bg-red-950/20" : "border-black/15 dark:border-white/15 hover:border-red-300 dark:hover:border-red-700"}`}
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-          onDragLeave={() => setDragOver(false)}
-          onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
+          onDragLeave={() => setDragOver(false)}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragOver(true);
+          }}
+          onDrop={handleDrop}
         >
-          <svg className="w-8 h-8 text-[#aeaeb2] dark:text-[#636366]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 16V4m0 0L8 8m4-4l4 4" />
+          <svg
+            className="w-8 h-8 text-[#aeaeb2] dark:text-[#636366]"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 16V4m0 0L8 8m4-4l4 4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+            />
           </svg>
           <span className="text-sm text-[#6e6e73] dark:text-[#86868b]">
             {t("blog.imageToBase64.dropHere")}
@@ -141,9 +169,9 @@ export default function ImageToBase64Content() {
           </span>
           <input
             ref={fileInputRef}
-            type="file"
             accept="image/jpeg,image/png,image/gif,image/svg+xml,image/webp"
             className="hidden"
+            type="file"
             onChange={handleFileChange}
           />
         </div>
@@ -154,16 +182,18 @@ export default function ImageToBase64Content() {
             <div className="flex items-center gap-4 text-xs text-[#6e6e73] dark:text-[#86868b]">
               <span>{image.name}</span>
               <span>{formatSize(image.size)}</span>
-              <span>{image.width} × {image.height}</span>
+              <span>
+                {image.width} × {image.height}
+              </span>
               <span>{image.type.split("/")[1].toUpperCase()}</span>
             </div>
 
             {/* Preview */}
             <div className="p-3 rounded-xl bg-red-50/60 dark:bg-red-950/20 border border-red-200 dark:border-red-800/40">
               <img
-                src={image.base64}
                 alt={image.name}
                 className="max-h-48 rounded-lg object-contain mx-auto"
+                src={image.base64}
               />
             </div>
 
@@ -177,7 +207,9 @@ export default function ImageToBase64Content() {
                   className="text-xs text-red-600 dark:text-red-400 hover:underline"
                   onClick={copyBase64}
                 >
-                  {copied ? t("blog.imageToBase64.copied") : t("blog.imageToBase64.copy")}
+                  {copied
+                    ? t("blog.imageToBase64.copied")
+                    : t("blog.imageToBase64.copy")}
                 </button>
               </div>
               <textarea
@@ -217,9 +249,9 @@ export default function ImageToBase64Content() {
           {decodePreview && (
             <div className="p-3 rounded-xl bg-red-50/60 dark:bg-red-950/20 border border-red-200 dark:border-red-800/40">
               <img
-                src={decodePreview}
                 alt="Decoded"
                 className="max-h-48 rounded-lg object-contain mx-auto"
+                src={decodePreview}
               />
             </div>
           )}

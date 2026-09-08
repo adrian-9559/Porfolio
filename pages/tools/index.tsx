@@ -1,273 +1,291 @@
-import { useState, useMemo } from "react";
+"use client";
+import { useMemo, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
-import { allContent } from "@/lib/blog/registry";
+import { getContentByType } from "@/lib/blog/registry";
+import { TOOL_GROUPS } from "@/lib/blog/toolGroups";
 
-const toolsMeta = allContent.filter((c) => c.type === "tool");
+const allTools = getContentByType("tool");
 
-const TOOLS_INFO: Record<
-  string,
-  { endpoint: string; example: string; category: string; color: string }
-> = {
-  "prompt-compressor": {
-    endpoint: "POST /tools/compress-prompt",
-    example:
-      '"Necesito que me ayudes con algo, si puedes, por favor, a ser posible…" → "Ayúdame con…"',
-    category: "Prompts",
-    color: "bg-fuchsia-500",
-  },
-  "token-optimizer": {
-    endpoint: "POST /tools/optimize-tokens",
-    example:
-      '"You should not use" → "Don\'t use" — aplica contracciones y compresión semántica.',
-    category: "Tokens",
-    color: "bg-violet-500",
-  },
-  "context-summarizer": {
-    endpoint: "POST /tools/summarize-context",
-    example:
-      "Conversación de 2000 palabras → resumen de 400 palabras con los puntos clave.",
-    category: "Contexto",
-    color: "bg-indigo-500",
-  },
-  "instruction-cleaner": {
-    endpoint: "POST /tools/clean-instructions",
-    example:
-      '"Necesito que... y también que... y además..." → bullet list estructurado.',
-    category: "Instrucciones",
-    color: "bg-blue-500",
-  },
-  "json-prompt-formatter": {
-    endpoint: "POST /tools/format-json-prompt",
-    example:
-      '"Eres un asistente de cocina, sé conciso…" → { system, constraints, format }',
-    category: "JSON / API",
-    color: "bg-cyan-500",
-  },
-  password: {
-    endpoint: "(client-side)",
-    example:
-      "Genera contraseñas con longitud y tipos de caracteres configurables.",
-    category: "Seguridad",
-    color: "bg-violet-500",
-  },
-};
-
-const categoryToKey: Record<string, string> = {
-  Todas: "tools.filterCategoryAll",
-  Prompts: "tools.catPrompts",
-  Tokens: "tools.catTokens",
-  Contexto: "tools.catContext",
-  Instrucciones: "tools.catInstructions",
-  "JSON / API": "tools.catJsonApi",
-  Seguridad: "tools.catSecurity",
+const GROUP_ICONS: Record<string, React.ReactNode> = {
+  colores: (
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="12" r="4" />
+    </svg>
+  ),
+  texto: (
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <path d="M4 7V4h16v3M9 20h6M12 4v16" />
+    </svg>
+  ),
+  datos: (
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <ellipse cx="12" cy="5" rx="9" ry="3" />
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+    </svg>
+  ),
+  documentos: (
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+    </svg>
+  ),
+  generadores: (
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+    </svg>
+  ),
+  sql: (
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <path d="M4 7h16M4 12h16M4 17h10" />
+    </svg>
+  ),
+  utilidades: (
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+    </svg>
+  ),
 };
 
 export default function ToolsPage() {
   const { t } = useT();
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Todas");
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    return toolsMeta.filter((t) => {
-      const info = TOOLS_INFO[t.slug];
-      const matchCat = category === "Todas" || info?.category === category;
+    return allTools.filter((tool) => {
+      const matchGroup =
+        !selectedGroup ||
+        TOOL_GROUPS.some(
+          (g) => g.id === selectedGroup && g.toolIds.includes(tool.slug),
+        );
       const q = search.toLowerCase();
       const matchSearch =
         !q ||
-        t.title.toLowerCase().includes(q) ||
-        t.description.toLowerCase().includes(q) ||
-        info?.category.toLowerCase().includes(q);
+        tool.title.toLowerCase().includes(q) ||
+        tool.description.toLowerCase().includes(q) ||
+        tool.category.toLowerCase().includes(q);
 
-      return matchCat && matchSearch;
+      return matchGroup && matchSearch;
     });
-  }, [search, category]);
+  }, [search, selectedGroup]);
+
+  const activeGroup = selectedGroup
+    ? TOOL_GROUPS.find((g) => g.id === selectedGroup)
+    : null;
 
   return (
-    <>
+    <DefaultLayout>
       <Head>
-        <title>{t("meta.tools.title")}</title>
-        <meta content={t("meta.tools.desc")} name="description" />
-        <meta content={t("meta.tools.title")} property="og:title" />
-        <meta content={t("meta.tools.desc")} property="og:description" />
-        <meta content="summary_large_image" name="twitter:card" />
+        <title>{t("tools.pageTitle")} | Adrián Escribano</title>
+        <meta content={t("tools.pageDesc")} name="description" />
+        <meta content={t("tools.pageTitle")} property="og:title" />
+        <meta content={t("tools.pageDesc")} property="og:description" />
       </Head>
 
-      <div className="min-h-screen bg-background">
-        <div className="max-w-5xl mx-auto px-5 sm:px-6 py-12">
-          {/* Header */}
-          <div className="mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-fuchsia-50 dark:bg-fuchsia-950/30 border border-fuchsia-200 dark:border-fuchsia-800 mb-4">
-              <span className="text-xs font-semibold text-fuchsia-600 dark:text-fuchsia-400">
-                {t("tools.aiTokensBadge")}
-              </span>
-            </div>
-            <h1 className="text-4xl font-bold text-foreground mb-3">
-              {t("tools.header")}
-            </h1>
-            <p className="text-lg text-muted max-w-xl">{t("tools.subtitle")}</p>
-          </div>
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-3">
+            {t("tools.header")}
+          </h1>
+          <p className="text-lg text-[var(--text-secondary)] max-w-xl">
+            {t("tools.pageDesc")}
+          </p>
+        </div>
 
-          {/* Search + filter */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-8">
-            <div className="relative flex-1">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted/60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <input
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-black/12 dark:border-white/12 bg-surface text-sm text-foreground placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50"
-                placeholder={t("tools.searchPlaceholder")}
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-            <div className="flex gap-1 p-1 rounded-xl bg-default">
-              {Object.keys(categoryToKey).map((cat) => (
-                <button
-                  key={cat}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    category === cat
-                      ? "bg-surface text-foreground shadow-sm"
-                      : "text-muted hover:text-foreground"
-                  }`}
-                  onClick={() => setCategory(cat)}
-                >
-                  {t(categoryToKey[cat])}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Grid */}
-          {filtered.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-muted">{t("tools.noResults", { search })}</p>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filtered.map((tool) => {
-              const info = TOOLS_INFO[tool.slug];
-
-              return (
-                <button
-                  key={tool.slug}
-                  className="group text-left border-border rounded-2xl p-5 hover:border-fuchsia-300 dark:hover:border-fuchsia-700 hover:shadow-lg hover:shadow-fuchsia-500/5 transition-all bg-surface"
-                  onClick={() => router.push(`/blog/herramientas/${tool.slug}`)}
-                >
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div
-                      className={`w-9 h-9 rounded-xl ${info?.color ?? "bg-fuchsia-500"} flex items-center justify-center text-white text-sm font-bold`}
-                    >
-                      {tool.title[0]}
-                    </div>
-                    <span className="text-xs text-muted/60 bg-default px-2 py-0.5 rounded-full">
-                      {info?.category}
-                    </span>
-                  </div>
-
-                  <h3 className="text-base font-semibold text-foreground mb-1 group-hover:text-fuchsia-600 dark:group-hover:text-fuchsia-400 transition-colors">
-                    {tool.title}
-                  </h3>
-                  <p className="text-sm text-muted mb-4 leading-relaxed">
-                    {tool.description}
-                  </p>
-
-                  {info?.endpoint && (
-                    <div className="mb-3">
-                      <p className="text-[10px] font-semibold text-muted/60 uppercase tracking-wider mb-1">
-                        {t("tools.endpointLabel")}
-                      </p>
-                      <code className="text-xs bg-default px-2 py-1 rounded-lg text-[#1d1d1f] dark:text-[#e5e5ea] font-mono">
-                        {info.endpoint}
-                      </code>
-                    </div>
-                  )}
-
-                  {info?.example && (
-                    <div>
-                      <p className="text-[10px] font-semibold text-muted/60 uppercase tracking-wider mb-1">
-                        {t("tools.exampleLabel")}
-                      </p>
-                      <p className="text-xs text-muted italic">
-                        {info.example}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="mt-4 flex items-center text-xs text-fuchsia-500 font-medium group-hover:gap-1.5 gap-1 transition-all">
-                    {t("tools.useTool")}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Git Repositories CTA */}
-          <div className="mt-8 flex items-center gap-4 p-5 rounded-2xl border-border bg-[#0d1117] dark:bg-[#0d1117]">
-            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
-              <svg
-                fill="none"
-                height="20"
-                stroke="white"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                viewBox="0 0 24 24"
-                width="20"
-              >
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
-              </svg>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-white">
-                {t("tools.gitManager")}
-              </p>
-              <p className="text-xs text-white/60 mt-0.5">
-                {t("tools.gitManagerDesc")}
-              </p>
-            </div>
-            <Link
-              className="flex-shrink-0 px-4 py-2 rounded-xl bg-white text-[#0d1117] text-sm font-medium hover:bg-white/90 transition-colors"
-              href="/tools/git-repositories"
+        {/* Search */}
+        <div className="mb-8">
+          <div className="relative max-w-md">
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
             >
-              {t("tools.openBtn")}
-            </Link>
-          </div>
-
-          {/* API Info */}
-          <div className="mt-6 p-6 rounded-2xl bg-default border-border">
-            <h3 className="text-base font-semibold text-foreground mb-2">
-              {t("tools.apiTitle")}
-            </h3>
-            <p className="text-sm text-muted mb-4">{t("tools.apiDesc")}</p>
-            <pre className="bg-[#0d1117] rounded-xl p-4 text-xs text-[#e6edf3] overflow-x-auto">
-              <code>{`{
-  "original":      "texto original",
-  "result":        "texto procesado",
-  "originalTokens": 45,
-  "resultTokens":   28,
-  "savedPercent":  37.8
-}`}</code>
-            </pre>
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" strokeLinecap="round" />
+            </svg>
+            <input
+              className="ds-input pl-9"
+              placeholder={t("tools.searchPlaceholder")}
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
         </div>
+
+        {/* Group filters */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          <button
+            className={`ds-tab ${!selectedGroup ? "ds-tab-active" : ""}`}
+            onClick={() => setSelectedGroup(null)}
+          >
+            {t("tools.allGroups")}
+          </button>
+          {TOOL_GROUPS.map((group) => (
+            <button
+              key={group.id}
+              className={`ds-tab ${selectedGroup === group.id ? "ds-tab-active" : ""}`}
+              onClick={() => setSelectedGroup(group.id)}
+            >
+              {t(group.titleKey)}
+            </button>
+          ))}
+        </div>
+
+        {/* Active group info */}
+        {activeGroup && (
+          <div className="mb-6 p-4 rounded-xl bg-[var(--accent-light)] border border-[var(--border-default)]">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[var(--accent)] text-[var(--accent-text)] flex items-center justify-center">
+                {GROUP_ICONS[activeGroup.id] || GROUP_ICONS["texto"]}
+              </div>
+              <div>
+                <h2 className="text-sm font-semibold text-[var(--text-primary)]">
+                  {t(activeGroup.titleKey)}
+                </h2>
+                <p className="text-xs text-[var(--text-secondary)]">
+                  {filtered.length} {t("tools.toolsCount")}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Grid */}
+        {filtered.length === 0 ? (
+          <div className="ds-empty">
+            <p className="text-[var(--text-muted)]">
+              {t("tools.noResults", { search })}
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filtered.map((tool) => (
+              <button
+                key={tool.slug}
+                className="ds-card ds-card-compact ds-card-interactive group text-left"
+                onClick={() => router.push(`/tools/${tool.slug}`)}
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-via)] flex items-center justify-center text-white text-sm font-bold">
+                    {tool.title[0]}
+                  </div>
+                  <span className="ds-badge ds-badge-accent">
+                    {tool.category}
+                  </span>
+                </div>
+                <h3 className="text-base font-semibold text-[var(--text-primary)] mb-1 group-hover:text-[var(--accent)] transition-colors">
+                  {tool.title}
+                </h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                  {tool.description}
+                </p>
+                <div className="mt-3 text-xs text-[var(--accent)] font-medium">
+                  {t("tools.useTool")} →
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Git Repositories CTA */}
+        <div className="mt-10 ds-card ds-card-compact flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-[var(--bg-surface)] flex items-center justify-center flex-shrink-0">
+            <svg
+              className="w-5 h-5 text-[var(--text-secondary)]"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+            </svg>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-[var(--text-primary)]">
+              {t("tools.gitManager")}
+            </p>
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+              {t("tools.gitManagerDesc")}
+            </p>
+          </div>
+          <Link
+            className="ds-btn-primary !text-sm no-underline flex-shrink-0"
+            href="/tools/git-repositories"
+          >
+            {t("tools.openBtn")}
+          </Link>
+        </div>
       </div>
-    </>
+    </DefaultLayout>
   );
 }

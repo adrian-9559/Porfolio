@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 
 type Category = "length" | "weight" | "temperature" | "volume" | "speed";
@@ -9,7 +10,10 @@ interface UnitDef {
   factor: number;
 }
 
-const CATEGORIES: Record<Category, { label: string; units: Record<string, UnitDef> }> = {
+const CATEGORIES: Record<
+  Category,
+  { label: string; units: Record<string, UnitDef> }
+> = {
   length: {
     label: "Length",
     units: {
@@ -94,7 +98,12 @@ function convertTemperature(value: number, from: string, to: string): number {
   }
 }
 
-function convert(value: number, from: string, to: string, category: Category): number {
+function convert(
+  value: number,
+  from: string,
+  to: string,
+  category: Category,
+): number {
   if (category === "temperature") return convertTemperature(value, from, to);
 
   const units = CATEGORIES[category].units;
@@ -165,12 +174,12 @@ export default function UnitConverterContent() {
           {(Object.keys(CATEGORIES) as Category[]).map((cat) => (
             <button
               key={cat}
-              onClick={() => handleCategoryChange(cat)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 category === cat
                   ? "bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300"
                   : "bg-black/[0.03] dark:bg-white/[0.03] text-[#6e6e73] dark:text-[#86868b] hover:bg-black/[0.06] dark:hover:bg-white/[0.06]"
               }`}
+              onClick={() => handleCategoryChange(cat)}
             >
               {t(`blog.unitConverter.${cat}`)}
             </button>
@@ -186,16 +195,16 @@ export default function UnitConverterContent() {
             </label>
             <div className="flex gap-3">
               <input
+                className="flex-1 px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-teal-500 dark:focus:border-teal-400 transition-colors"
+                placeholder="0"
                 type="number"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="flex-1 px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-teal-500 dark:focus:border-teal-400 transition-colors"
-                placeholder="0"
               />
               <select
+                className="px-3 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm focus:outline-none focus:border-teal-500 dark:focus:border-teal-400 transition-colors min-w-[120px]"
                 value={fromUnit}
                 onChange={(e) => setFromUnit(e.target.value)}
-                className="px-3 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm focus:outline-none focus:border-teal-500 dark:focus:border-teal-400 transition-colors min-w-[120px]"
               >
                 {unitOptions(toUnit)}
               </select>
@@ -205,12 +214,22 @@ export default function UnitConverterContent() {
           {/* Swap button */}
           <div className="flex justify-center">
             <button
-              onClick={swap}
-              className="p-2 rounded-full bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b] hover:border-teal-500 dark:hover:border-teal-400 hover:text-teal-600 dark:hover:text-teal-400 transition-all"
               aria-label={t("blog.unitConverter.swap")}
+              className="p-2 rounded-full bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b] hover:border-teal-500 dark:hover:border-teal-400 hover:text-teal-600 dark:hover:text-teal-400 transition-all"
+              onClick={swap}
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </div>
@@ -222,12 +241,14 @@ export default function UnitConverterContent() {
             </label>
             <div className="flex gap-3">
               <div className="flex-1 px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono">
-                {Number.isFinite(result) ? result.toFixed(6).replace(/\.?0+$/, "") : "—"}
+                {Number.isFinite(result)
+                  ? result.toFixed(6).replace(/\.?0+$/, "")
+                  : "—"}
               </div>
               <select
+                className="px-3 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm focus:outline-none focus:border-teal-500 dark:focus:border-teal-400 transition-colors min-w-[120px]"
                 value={toUnit}
                 onChange={(e) => setToUnit(e.target.value)}
-                className="px-3 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm focus:outline-none focus:border-teal-500 dark:focus:border-teal-400 transition-colors min-w-[120px]"
               >
                 {unitOptions(fromUnit)}
               </select>
@@ -238,7 +259,11 @@ export default function UnitConverterContent() {
         {/* Quick formulas */}
         <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-black/[0.02] dark:bg-white/[0.02] p-4">
           <p className="text-xs text-[#aeaeb2] dark:text-[#636366] font-mono text-center">
-            {numValue} {CATEGORIES[category].units[fromUnit]?.label} = {Number.isFinite(result) ? result.toFixed(6).replace(/\.?0+$/, "") : "—"} {CATEGORIES[category].units[toUnit]?.label}
+            {numValue} {CATEGORIES[category].units[fromUnit]?.label} ={" "}
+            {Number.isFinite(result)
+              ? result.toFixed(6).replace(/\.?0+$/, "")
+              : "—"}{" "}
+            {CATEGORIES[category].units[toUnit]?.label}
           </p>
         </div>
       </div>

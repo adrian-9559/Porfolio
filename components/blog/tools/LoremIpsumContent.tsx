@@ -1,42 +1,161 @@
 "use client";
 import { useState, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
 const WORD_BANK = [
-  "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
-  "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore",
-  "magna", "aliqua", "enim", "ad", "minim", "veniam", "quis", "nostrud",
-  "exercitation", "ullamco", "laboris", "nisi", "aliquip", "ex", "ea", "commodo",
-  "consequat", "duis", "aute", "irure", "in", "reprehenderit", "voluptate",
-  "velit", "esse", "cillum", "fugiat", "nulla", "pariatur", "excepteur", "sint",
-  "occaecat", "cupidatat", "non", "proident", "sunt", "culpa", "qui", "officia",
-  "deserunt", "mollit", "anim", "id", "est", "laborum", "perspiciatis", "unde",
-  "omnis", "iste", "natus", "error", "voluptatem", "accusantium", "doloremque",
-  "laudantium", "totam", "rem", "aperiam", "eaque", "ipsa", "quae", "ab", "illo",
-  "inventore", "veritatis", "quasi", "architecto", "beatae", "vitae", "dicta",
-  "explicabo", "nemo", "ipsam", "quia", "voluptas", "aspernatur", "aut", "odit",
-  "fugit", "consequuntur", "magni", "dolores", "ratione", "sequi", "nesciunt",
-  "neque", "porro", "quisquam", "nihil", "impedit", "quo", "minus", "maxime",
-  "placeat", "facere", "possimus", "omnis", "repellat", "incidunt", "tempore",
-  "corrupti", "eos", "ratione", "tenetur", "sapiente", "delectus", "reiciendis",
-  "voluptatibus", "maiores", "alias", "perferendis", "doloribus", "asperiores",
+  "lorem",
+  "ipsum",
+  "dolor",
+  "sit",
+  "amet",
+  "consectetur",
+  "adipiscing",
+  "elit",
+  "sed",
+  "do",
+  "eiusmod",
+  "tempor",
+  "incididunt",
+  "ut",
+  "labore",
+  "et",
+  "dolore",
+  "magna",
+  "aliqua",
+  "enim",
+  "ad",
+  "minim",
+  "veniam",
+  "quis",
+  "nostrud",
+  "exercitation",
+  "ullamco",
+  "laboris",
+  "nisi",
+  "aliquip",
+  "ex",
+  "ea",
+  "commodo",
+  "consequat",
+  "duis",
+  "aute",
+  "irure",
+  "in",
+  "reprehenderit",
+  "voluptate",
+  "velit",
+  "esse",
+  "cillum",
+  "fugiat",
+  "nulla",
+  "pariatur",
+  "excepteur",
+  "sint",
+  "occaecat",
+  "cupidatat",
+  "non",
+  "proident",
+  "sunt",
+  "culpa",
+  "qui",
+  "officia",
+  "deserunt",
+  "mollit",
+  "anim",
+  "id",
+  "est",
+  "laborum",
+  "perspiciatis",
+  "unde",
+  "omnis",
+  "iste",
+  "natus",
+  "error",
+  "voluptatem",
+  "accusantium",
+  "doloremque",
+  "laudantium",
+  "totam",
+  "rem",
+  "aperiam",
+  "eaque",
+  "ipsa",
+  "quae",
+  "ab",
+  "illo",
+  "inventore",
+  "veritatis",
+  "quasi",
+  "architecto",
+  "beatae",
+  "vitae",
+  "dicta",
+  "explicabo",
+  "nemo",
+  "ipsam",
+  "quia",
+  "voluptas",
+  "aspernatur",
+  "aut",
+  "odit",
+  "fugit",
+  "consequuntur",
+  "magni",
+  "dolores",
+  "ratione",
+  "sequi",
+  "nesciunt",
+  "neque",
+  "porro",
+  "quisquam",
+  "nihil",
+  "impedit",
+  "quo",
+  "minus",
+  "maxime",
+  "placeat",
+  "facere",
+  "possimus",
+  "omnis",
+  "repellat",
+  "incidunt",
+  "tempore",
+  "corrupti",
+  "eos",
+  "ratione",
+  "tenetur",
+  "sapiente",
+  "delectus",
+  "reiciendis",
+  "voluptatibus",
+  "maiores",
+  "alias",
+  "perferendis",
+  "doloribus",
+  "asperiores",
   "reprehenderit",
 ];
 
 function pickRandom(count: number): string[] {
   const words: string[] = [];
+
   for (let i = 0; i < count; i++) {
     words.push(WORD_BANK[Math.floor(Math.random() * WORD_BANK.length)]);
   }
+
   return words;
 }
 
 function generateParagraph(wordCount: number, startIndex: number): string {
   const words: string[] = [];
-  const capitalized = WORD_BANK.filter((w) => /^[A-Z]/.test(w)).length > 0
-    ? WORD_BANK
-    : WORD_BANK.map((w, i) => (i === 0 ? w.charAt(0).toUpperCase() + w.slice(1) : w));
+  const capitalized =
+    WORD_BANK.filter((w) => /^[A-Z]/.test(w)).length > 0
+      ? WORD_BANK
+      : WORD_BANK.map((w, i) =>
+          i === 0 ? w.charAt(0).toUpperCase() + w.slice(1) : w,
+        );
 
   for (let i = 0; i < wordCount; i++) {
     if (i === 0) {
@@ -46,7 +165,9 @@ function generateParagraph(wordCount: number, startIndex: number): string {
     }
   }
 
-  words[words.length - 1] = words[words.length - 1].replace(/.$/, (ch) => ch === "." ? ch : ".");
+  words[words.length - 1] = words[words.length - 1].replace(/.$/, (ch) =>
+    ch === "." ? ch : ".",
+  );
 
   return words.join(" ");
 }
@@ -62,10 +183,13 @@ export default function LoremIpsumContent() {
 
   const generate = useCallback((): string => {
     const result: string[] = [];
+
     for (let i = 0; i < paragraphs; i++) {
       let text = generateParagraph(wordsPerParagraph, i * 7);
+
       if (i === 0 && startWithLorem) {
         const parts = text.split(" ");
+
         parts[0] = "Lorem";
         if (parts[1]) parts[1] = "ipsum";
         if (parts[2]) parts[2] = "dolor";
@@ -83,7 +207,10 @@ export default function LoremIpsumContent() {
   }, [paragraphs, wordsPerParagraph, includeHtml, startWithLorem]);
 
   const output = generate();
-  const wordCount = output.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).length;
+  const wordCount = output
+    .replace(/<[^>]*>/g, "")
+    .split(/\s+/)
+    .filter(Boolean).length;
 
   const copy = async () => {
     if (await copyToClipboard(output)) {
@@ -116,7 +243,7 @@ export default function LoremIpsumContent() {
         </p>
       </div>
 
-      <div className="space-y-4" key={key}>
+      <div key={key} className="space-y-4">
         {/* Options */}
         <div className="flex flex-wrap items-end gap-4">
           <div className="space-y-1">
@@ -125,14 +252,16 @@ export default function LoremIpsumContent() {
             </label>
             <div className="flex items-center gap-2">
               <input
-                type="range"
-                min={1}
+                className="w-24 accent-amber-500"
                 max={10}
+                min={1}
+                type="range"
                 value={paragraphs}
                 onChange={(e) => setParagraphs(Number(e.target.value))}
-                className="w-24 accent-amber-500"
               />
-              <span className="text-sm font-mono text-[#1d1d1f] dark:text-white w-6 text-center">{paragraphs}</span>
+              <span className="text-sm font-mono text-[#1d1d1f] dark:text-white w-6 text-center">
+                {paragraphs}
+              </span>
             </div>
           </div>
           <div className="space-y-1">
@@ -141,24 +270,26 @@ export default function LoremIpsumContent() {
             </label>
             <div className="flex items-center gap-2">
               <input
-                type="range"
-                min={10}
+                className="w-24 accent-amber-500"
                 max={100}
+                min={10}
                 step={5}
+                type="range"
                 value={wordsPerParagraph}
                 onChange={(e) => setWordsPerParagraph(Number(e.target.value))}
-                className="w-24 accent-amber-500"
               />
-              <span className="text-sm font-mono text-[#1d1d1f] dark:text-white w-8 text-center">{wordsPerParagraph}</span>
+              <span className="text-sm font-mono text-[#1d1d1f] dark:text-white w-8 text-center">
+                {wordsPerParagraph}
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <label className="flex items-center gap-1.5 cursor-pointer">
               <input
-                type="checkbox"
                 checked={includeHtml}
-                onChange={(e) => setIncludeHtml(e.target.checked)}
                 className="rounded accent-amber-500"
+                type="checkbox"
+                onChange={(e) => setIncludeHtml(e.target.checked)}
               />
               <span className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
                 {t("blog.loremIpsum.includeHtml")}
@@ -166,10 +297,10 @@ export default function LoremIpsumContent() {
             </label>
             <label className="flex items-center gap-1.5 cursor-pointer">
               <input
-                type="checkbox"
                 checked={startWithLorem}
-                onChange={(e) => setStartWithLorem(e.target.checked)}
                 className="rounded accent-amber-500"
+                type="checkbox"
+                onChange={(e) => setStartWithLorem(e.target.checked)}
               />
               <span className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
                 {t("blog.loremIpsum.startLorem")}
@@ -198,7 +329,9 @@ export default function LoremIpsumContent() {
                 className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
                 onClick={copy}
               >
-                {copied ? t("blog.loremIpsum.copied") : t("blog.loremIpsum.copy")}
+                {copied
+                  ? t("blog.loremIpsum.copied")
+                  : t("blog.loremIpsum.copy")}
               </button>
             </div>
           </div>

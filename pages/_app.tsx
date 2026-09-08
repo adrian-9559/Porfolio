@@ -130,7 +130,9 @@ export default function App({ Component, pageProps }: AppProps) {
         isAdmin: false,
       });
       // Clear persisted auth cache so stale data isn't shown on next visit
-      try { localStorage.removeItem("auth_cache"); } catch {}
+      try {
+        localStorage.removeItem("auth_cache");
+      } catch {}
       const path = window.location.pathname;
       const protected_paths = ["/dashboard", "/admin"];
 

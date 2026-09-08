@@ -12,13 +12,21 @@ interface ShapeProps {
   scale: number;
 }
 
-function Shape({ geometry, position, color, speed, rotationSpeed, scale }: ShapeProps) {
+function Shape({
+  geometry,
+  position,
+  color,
+  speed,
+  rotationSpeed,
+  scale,
+}: ShapeProps) {
   const ref = useRef<THREE.Mesh>(null);
   const initialY = position[1];
 
   useFrame((state) => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
+
     ref.current.rotation.x += rotationSpeed * 0.005;
     ref.current.rotation.y += rotationSpeed * 0.008;
     ref.current.position.y = initialY + Math.sin(t * speed) * 0.3;
@@ -27,14 +35,14 @@ function Shape({ geometry, position, color, speed, rotationSpeed, scale }: Shape
 
   return (
     <mesh ref={ref} position={position} scale={scale}>
-      {geometry && <primitive object={geometry} attach="geometry" />}
+      {geometry && <primitive attach="geometry" object={geometry} />}
       <meshStandardMaterial
-        color={color}
-        wireframe
         transparent
-        opacity={0.15}
+        wireframe
+        color={color}
         emissive={color}
         emissiveIntensity={0.1}
+        opacity={0.15}
       />
     </mesh>
   );

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 
 const EXAMPLES = [
@@ -39,9 +40,7 @@ export default function RegexTesterContent() {
   const { t } = useT();
   const [pattern, setPattern] = useState("");
   const [flags, setFlags] = useState("g");
-  const [text, setText] = useState(
-    t("blog.regexTester.testText"),
-  );
+  const [text, setText] = useState(t("blog.regexTester.testText"));
   const [error, setError] = useState("");
 
   const result = useMemo(() => {
@@ -59,7 +58,9 @@ export default function RegexTesterContent() {
 
       return { highlighted, matches };
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : t("blog.regexTester.errorInvalid"));
+      setError(
+        e instanceof Error ? e.message : t("blog.regexTester.errorInvalid"),
+      );
 
       return { highlighted: text, matches: [] };
     }

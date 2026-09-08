@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useT } from "@/hooks/useT";
 import { useAuth } from "@/hooks/useAuth";
 import { authService } from "@/services/authService";
+import { ThemeSwitch } from "@/components/theme-switch";
 
 interface Props {
   open: boolean;
@@ -148,43 +149,63 @@ export function AuthModal({ open, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div
+      <button
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        type="button"
         onClick={close}
       />
-      <div className="relative z-10 w-full max-w-sm bg-white dark:bg-[#111116] rounded-2xl border border-black/8 dark:border-white/8 shadow-2xl overflow-hidden">
+      <div className="relative z-10 w-full max-w-sm ds-modal-content">
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
           <div>
-            <h2 className="text-lg font-semibold text-[#1d1d1f] dark:text-white">
+            <h2
+              className="text-lg font-semibold"
+              style={{ color: "var(--text-primary)" }}
+            >
               {headerTitle}
             </h2>
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5">
+            <p
+              className="text-xs mt-0.5"
+              style={{ color: "var(--text-secondary)" }}
+            >
               {headerSub}
             </p>
           </div>
-          <button
-            className="w-7 h-7 rounded-full flex items-center justify-center text-[#6e6e73] hover:bg-black/8 dark:hover:bg-white/8 transition-colors"
-            onClick={close}
-          >
-            <svg fill="none" height="12" viewBox="0 0 12 12" width="12">
-              <path
-                d="M1 1l10 10M11 1L1 11"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="1.5"
-              />
-            </svg>
-          </button>
+          <div className="flex items-center gap-1">
+            <ThemeSwitch />
+            <button
+              className="w-7 h-7 rounded-full flex items-center justify-center ds-btn-ghost"
+              type="button"
+              onClick={close}
+            >
+              <svg fill="none" height="12" viewBox="0 0 12 12" width="12">
+                <path
+                  d="M1 1l10 10M11 1L1 11"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Tabs (only login/register) */}
         {tab !== "forgot" && (
-          <div className="flex mx-6 bg-black/5 dark:bg-white/5 rounded-xl p-1 mb-5">
+          <div
+            className="flex mx-6 rounded-xl p-1 mb-5"
+            style={{ background: "var(--bg-surface)" }}
+          >
             {(["login", "register"] as Tab[]).map((tabKey) => (
               <button
                 key={tabKey}
-                className={`flex-1 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${tab === tabKey ? "bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-sm" : "text-[#6e6e73] dark:text-[#86868b]"}`}
+                className={`flex-1 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${tab === tabKey ? "ds-btn-primary !rounded-lg" : ""}`}
+                style={
+                  tab !== tabKey
+                    ? { color: "var(--text-secondary)" }
+                    : undefined
+                }
+                type="button"
                 onClick={() => {
                   setTab(tabKey);
                   setError("");
@@ -231,16 +252,20 @@ export function AuthModal({ open, onClose }: Props) {
               <label className="flex items-center gap-2.5 cursor-pointer mt-1">
                 <input
                   checked={rememberMe}
-                  className="w-4 h-4 rounded border-black/20 dark:border-white/20 accent-blue-600"
+                  className="w-4 h-4 rounded accent-blue-600"
+                  style={{ borderColor: "var(--border-default)" }}
                   type="checkbox"
                   onChange={(e) => setRememberMe(e.target.checked)}
                 />
-                <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                <span
+                  className="text-xs"
+                  style={{ color: "var(--text-secondary)" }}
+                >
                   {t("auth.rememberSession")}
                 </span>
               </label>
               <button
-                className="mt-2 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors"
+                className="mt-2 w-full ds-btn-primary"
                 disabled={loading}
                 type="submit"
               >
@@ -295,7 +320,7 @@ export function AuthModal({ open, onClose }: Props) {
                 onChange={setConfirmPassword}
               />
               <button
-                className="mt-2 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors"
+                className="mt-2 w-full ds-btn-primary"
                 disabled={loading}
                 type="submit"
               >
@@ -315,14 +340,15 @@ export function AuthModal({ open, onClose }: Props) {
                 onChange={setResetEmail}
               />
               <button
-                className="mt-2 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors"
+                className="mt-2 w-full ds-btn-primary"
                 disabled={loading}
                 type="submit"
               >
                 {loading ? t("auth.sendingCode") : t("auth.sendCode")}
               </button>
               <button
-                className="text-xs text-[#6e6e73] dark:text-[#86868b] hover:underline text-center"
+                className="text-xs hover:underline text-center"
+                style={{ color: "var(--text-secondary)" }}
                 type="button"
                 onClick={() => {
                   setTab("login");
@@ -341,16 +367,20 @@ export function AuthModal({ open, onClose }: Props) {
               onSubmit={handleResetPassword}
             >
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-medium text-[#1d1d1f] dark:text-white">
+                <label
+                  className="text-xs font-medium"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   {t("auth.verifyCode")}
                 </label>
                 <input
                   required
-                  className="px-3 py-2.5 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all tracking-[0.5em] text-center font-mono"
+                  className="ds-input text-center font-mono"
                   inputMode="numeric"
                   maxLength={6}
                   pattern="[0-9]{6}"
                   placeholder={t("auth.verifyPlaceholder")}
+                  style={{ letterSpacing: "0.5em" }}
                   type="text"
                   value={resetCode}
                   onChange={(e) =>
@@ -375,14 +405,15 @@ export function AuthModal({ open, onClose }: Props) {
                 onChange={setResetConfirmPassword}
               />
               <button
-                className="mt-2 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium transition-colors"
+                className="mt-2 w-full ds-btn-primary"
                 disabled={loading}
                 type="submit"
               >
                 {loading ? t("auth.resetting") : t("auth.resetPassword")}
               </button>
               <button
-                className="text-xs text-[#6e6e73] dark:text-[#86868b] hover:underline text-center"
+                className="text-xs hover:underline text-center"
+                style={{ color: "var(--text-secondary)" }}
                 type="button"
                 onClick={() => {
                   setTab("login");
@@ -416,11 +447,14 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-medium text-[#1d1d1f] dark:text-white">
+      <label
+        className="text-xs font-medium"
+        style={{ color: "var(--text-primary)" }}
+      >
         {label}
       </label>
       <input
-        className="px-3 py-2.5 rounded-xl border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+        className="ds-input"
         placeholder={placeholder}
         required={required}
         type={type}

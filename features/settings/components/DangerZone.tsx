@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 import { useT } from "@/hooks/useT";
 import { userService } from "@/services/userService";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/router";
-import { useAuthStore } from "@/store/authStore";
 
 export function DangerZone() {
   const { t } = useT();
@@ -19,6 +18,7 @@ export function DangerZone() {
   async function handleDelete() {
     if (!password) {
       setError(t("settings.currentPasswordRequired"));
+
       return;
     }
     setLoading(true);
@@ -42,7 +42,9 @@ export function DangerZone() {
       <h2 className="text-base font-bold text-foreground mb-1">
         {t("settings.deleteAccountTitle")}
       </h2>
-      <p className="text-xs text-muted mb-4">{t("settings.deleteAccountDesc")}</p>
+      <p className="text-xs text-muted mb-4">
+        {t("settings.deleteAccountDesc")}
+      </p>
       <div className="rounded-xl border border-red-200 dark:border-red-800/40 bg-red-50/50 dark:bg-red-950/10 p-4 space-y-3">
         <div>
           <label className="text-[10px] font-semibold uppercase tracking-wider text-red-600/80 dark:text-red-400/70 block mb-1.5">
@@ -56,9 +58,7 @@ export function DangerZone() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {error && (
-          <p className="text-xs text-red-500">{error}</p>
-        )}
+        {error && <p className="text-xs text-red-500">{error}</p>}
         {success && (
           <p className="text-xs text-emerald-600 dark:text-emerald-400">
             ✓ {t("settings.deleteAccountSuccess")}

@@ -540,28 +540,134 @@ const PLUGINS: Plugin[] = [
 
 // ── Config ─────────────────────────────────────────────────────────────────────
 
-const CATEGORIES: { key: Category | "all"; label: string; icon: React.ReactElement }[] = [
-  { key: "all", label: "Todas", icon: (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-  ) },
-  { key: "design", label: "Diseño", icon: (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><circle cx="8.5" cy="15.5" r="2.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></svg>
-  ) },
-  { key: "frontend", label: "Frontend", icon: (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-  ) },
-  { key: "mobile", label: "Mobile", icon: (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-  ) },
-  { key: "backend", label: "Backend", icon: (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-  ) },
-  { key: "database", label: "Base de Datos", icon: (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-  ) },
-  { key: "tools", label: "Herramientas", icon: (
-    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-  ) },
+const CATEGORIES: {
+  key: Category | "all";
+  label: string;
+  icon: React.ReactElement;
+}[] = [
+  {
+    key: "all",
+    label: "Todas",
+    icon: (
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <rect height="7" width="7" x="3" y="3" />
+        <rect height="7" width="7" x="14" y="3" />
+        <rect height="7" width="7" x="14" y="14" />
+        <rect height="7" width="7" x="3" y="14" />
+      </svg>
+    ),
+  },
+  {
+    key: "design",
+    label: "Diseño",
+    icon: (
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <circle cx="13.5" cy="6.5" r="2.5" />
+        <circle cx="17.5" cy="15.5" r="2.5" />
+        <circle cx="8.5" cy="15.5" r="2.5" />
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z" />
+      </svg>
+    ),
+  },
+  {
+    key: "frontend",
+    label: "Frontend",
+    icon: (
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" x2="22" y1="12" y2="12" />
+        <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+      </svg>
+    ),
+  },
+  {
+    key: "mobile",
+    label: "Mobile",
+    icon: (
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <rect height="20" rx="2" ry="2" width="14" x="5" y="2" />
+        <line x1="12" x2="12.01" y1="18" y2="18" />
+      </svg>
+    ),
+  },
+  {
+    key: "backend",
+    label: "Backend",
+    icon: (
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+    ),
+  },
+  {
+    key: "database",
+    label: "Base de Datos",
+    icon: (
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <ellipse cx="12" cy="5" rx="9" ry="3" />
+        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+      </svg>
+    ),
+  },
+  {
+    key: "tools",
+    label: "Herramientas",
+    icon: (
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+      >
+        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+      </svg>
+    ),
+  },
 ];
 
 const CATEGORY_COLORS: Record<Category, string> = {
@@ -620,12 +726,18 @@ export function AdminSkillsSection() {
 
       {/* Header */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-fuchsia-600 dark:text-fuchsia-400 mb-1">Herramientas</p>
-        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
+        <p className="text-xs font-semibold uppercase tracking-widest text-fuchsia-600 dark:text-fuchsia-400 mb-1">
+          Herramientas
+        </p>
+        <h1
+          className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
+          style={{ letterSpacing: "-0.03em" }}
+        >
           Skills & Plugins
         </h1>
         <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
-          {SKILLS.length} skills · {PLUGINS.length} plugins/MCPs · inventario completo del agente
+          {SKILLS.length} skills · {PLUGINS.length} plugins/MCPs · inventario
+          completo del agente
         </p>
       </div>
 
@@ -652,7 +764,17 @@ export function AdminSkillsSection() {
 
       {/* Search */}
       <div className="relative">
-        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <svg
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+          viewBox="0 0 24 24"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="M21 21l-4.35-4.35" />
+        </svg>
         <input
           className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30 focus:border-fuchsia-500 transition-all"
           placeholder="Buscar skill por nombre o descripción…"
@@ -728,7 +850,18 @@ export function AdminSkillsSection() {
       {/* Plugins & MCP section */}
       <div className="mt-2">
         <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white mb-3 flex items-center gap-2">
-          <svg className="w-4 h-4 text-fuchsia-500" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+          <svg
+            className="w-4 h-4 text-fuchsia-500"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <rect height="14" rx="2" ry="2" width="20" x="2" y="7" />
+            <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+          </svg>
           Plugins & MCP Servers
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -13,7 +14,8 @@ interface WifiConfig {
 }
 
 function generateWifiString(config: WifiConfig): string {
-  const escape = (s: string) => s.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/;/g, "\\;");
+  const escape = (s: string) =>
+    s.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/;/g, "\\;");
   const parts = [`T:${config.encryption}`];
 
   parts.push(`S:${escape(config.ssid)}`);
@@ -39,6 +41,7 @@ export default function WifiQrContent() {
 
   const wifiString = useMemo(() => {
     if (!config.ssid.trim()) return "";
+
     return generateWifiString(config);
   }, [config]);
 
@@ -163,7 +166,9 @@ export default function WifiQrContent() {
                   className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
                   onClick={copyString}
                 >
-                  {copied ? t("blog.wifiQr.copied") : t("blog.wifiQr.copyString")}
+                  {copied
+                    ? t("blog.wifiQr.copied")
+                    : t("blog.wifiQr.copyString")}
                 </button>
               </div>
               <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40">
@@ -180,15 +185,21 @@ export default function WifiQrContent() {
               </p>
               <ol className="text-xs text-[#6e6e73] dark:text-[#86868b] space-y-2">
                 <li className="flex items-start gap-2">
-                  <span className="font-bold text-amber-600 dark:text-amber-400">1.</span>
+                  <span className="font-bold text-amber-600 dark:text-amber-400">
+                    1.
+                  </span>
                   {t("blog.wifiQr.step1")}
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="font-bold text-amber-600 dark:text-amber-400">2.</span>
+                  <span className="font-bold text-amber-600 dark:text-amber-400">
+                    2.
+                  </span>
                   {t("blog.wifiQr.step2")}
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="font-bold text-amber-600 dark:text-amber-400">3.</span>
+                  <span className="font-bold text-amber-600 dark:text-amber-400">
+                    3.
+                  </span>
                   {t("blog.wifiQr.step3")}
                 </li>
               </ol>

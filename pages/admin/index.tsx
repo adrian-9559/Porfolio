@@ -8,166 +8,125 @@ import { AdminUsers } from "@/features/admin/components/AdminUsersSection";
 import { AdminRoles } from "@/features/admin/components/AdminRolesSection";
 import { AdminNotificationsSection } from "@/features/admin/components/AdminNotificationsSection";
 import { AdminContactSection } from "@/features/admin/components/AdminContactSection";
-import { AdminApiKeysSection } from "@/features/admin/components/AdminApiKeysSection";
 import { AdminBlogSection } from "@/features/admin/components/AdminBlogSection";
-import { AdminLogsSection } from "@/features/admin/components/AdminLogsSection";
-import { AdminDocsSection } from "@/features/admin/components/AdminDocsSection";
 import { AdminRepositoriesSection } from "@/features/admin/components/AdminRepositoriesSection";
-import AdminTaxonomySection from "@/features/admin/components/AdminTaxonomySection";
-import { AdminFriendshipsSection } from "@/features/admin/components/AdminFriendshipsSection";
-import { AdminAppsSection } from "@/features/admin/components/AdminAppsSection";
 import { AdminSkillsSection } from "@/features/admin/components/AdminSkillsSection";
 import { AdminToolsHealthSection } from "@/features/admin/components/AdminToolsHealthSection";
-import AdminTrafficSection from "@/features/admin/components/AdminTrafficSection";
 import { AdminIssuesSection } from "@/features/admin/components/AdminIssuesSection";
-import { AdminIdeasSection } from "@/features/admin/components/AdminIdeasSection";
-import { AdminAIHubSection } from "@/features/admin/components/AdminAIHubSection";
+import {
+  IconDashboard,
+  IconUsers,
+  IconShield,
+  IconBlog,
+  IconBell,
+  IconMail,
+  IconGit,
+  IconIssues,
+  IconSkills,
+  IconServices,
+  IconMenu,
+} from "@/components/ui/Icons";
 
 type Section =
   | "dashboard"
   | "users"
   | "roles"
-  | "api-keys"
   | "blog"
   | "notifications"
   | "contact"
   | "repositories"
-  | "taxonomy"
-  | "friendships"
-  | "apps"
-  | "skills"
-  | "services"
-  | "logs"
-  | "docs"
-  | "traffic"
   | "issues"
-  | "ideas"
-  | "ai-hub";
+  | "skills"
+  | "services";
+
+const NAV_ITEMS: {
+  id: Section;
+  labelKey: string;
+  icon: React.ReactNode;
+  group: string;
+}[] = [
+  {
+    id: "dashboard",
+    labelKey: "admin.dashboard",
+    icon: <IconDashboard />,
+    group: "general",
+  },
+  {
+    id: "users",
+    labelKey: "admin.users",
+    icon: <IconUsers />,
+    group: "general",
+  },
+  {
+    id: "roles",
+    labelKey: "admin.roles",
+    icon: <IconShield />,
+    group: "general",
+  },
+  {
+    id: "blog",
+    labelKey: "admin.blog",
+    icon: <IconBlog />,
+    group: "contenido",
+  },
+  {
+    id: "notifications",
+    labelKey: "admin.notifications",
+    icon: <IconBell />,
+    group: "comunicacion",
+  },
+  {
+    id: "contact",
+    labelKey: "admin.messages",
+    icon: <IconMail />,
+    group: "comunicacion",
+  },
+  {
+    id: "repositories",
+    labelKey: "admin.repositories",
+    icon: <IconGit />,
+    group: "herramientas",
+  },
+  {
+    id: "issues",
+    labelKey: "admin.issues",
+    icon: <IconIssues />,
+    group: "herramientas",
+  },
+  {
+    id: "skills",
+    labelKey: "admin.skills",
+    icon: <IconSkills />,
+    group: "sistema",
+  },
+  {
+    id: "services",
+    labelKey: "admin.services",
+    icon: <IconServices />,
+    group: "sistema",
+  },
+];
+
+const GROUPS = [
+  { id: "general", labelKey: "admin.groupGeneral" },
+  { id: "contenido", labelKey: "admin.groupContent" },
+  { id: "comunicacion", labelKey: "admin.groupComms" },
+  { id: "herramientas", labelKey: "admin.groupTools" },
+  { id: "sistema", labelKey: "admin.groupSystem" },
+];
 
 const NAV_LABELS: Record<string, string> = {
   dashboard: "admin.dashboard",
   users: "admin.users",
   roles: "admin.roles",
-  "api-keys": "admin.apiKeys",
   blog: "admin.blog",
-  taxonomy: "admin.taxonomy",
   notifications: "admin.notifications",
   contact: "admin.messages",
   repositories: "admin.repositories",
-  friendships: "admin.friendships",
-  apps: "admin.apps",
+  issues: "admin.issues",
   skills: "admin.skills",
   services: "admin.services",
-  logs: "admin.logs",
-  docs: "admin.docs",
-  issues: "admin.issues",
-  ideas: "admin.ideas",
 };
-
-const GROUP_LABELS: Record<string, string> = {
-  general: "admin.groupGeneral",
-  contenido: "admin.groupContent",
-  comunicacion: "admin.groupComms",
-  herramientas: "admin.groupTools",
-  proyectos: "admin.groupProjects",
-  sistema: "admin.groupSystem",
-};
-
-const NAV: {
-  id: Section;
-  labelKey: string;
-  icon: React.ReactNode;
-  group?: string;
-}[] = [
-  {
-    id: "dashboard",
-    labelKey: "dashboard",
-    icon: <IcoDashboard />,
-    group: "general",
-  },
-  { id: "users", labelKey: "users", icon: <IcoUsers />, group: "general" },
-  { id: "roles", labelKey: "roles", icon: <IcoRoles />, group: "general" },
-  { id: "api-keys", labelKey: "api-keys", icon: <IcoKey />, group: "general" },
-  { id: "blog", labelKey: "blog", icon: <IcoBlog />, group: "contenido" },
-  {
-    id: "taxonomy",
-    labelKey: "taxonomy",
-    icon: <IcoTaxonomy />,
-    group: "contenido",
-  },
-  {
-    id: "notifications",
-    labelKey: "notifications",
-    icon: <IcoBell />,
-    group: "comunicacion",
-  },
-  {
-    id: "contact",
-    labelKey: "contact",
-    icon: <IcoMail />,
-    group: "comunicacion",
-  },
-  {
-    id: "repositories",
-    labelKey: "repositories",
-    icon: <IcoGit />,
-    group: "herramientas",
-  },
-  {
-    id: "friendships",
-    labelKey: "friendships",
-    icon: <IcoFriendships />,
-    group: "herramientas",
-  },
-  {
-    id: "apps",
-    labelKey: "apps",
-    icon: <IcoApps />,
-    group: "herramientas",
-  },
-  {
-    id: "ai-hub",
-    labelKey: "aiHub",
-    icon: <IcoAIHub />,
-    group: "herramientas",
-  },
-  {
-    id: "issues",
-    labelKey: "issues",
-    icon: <IcoIssues />,
-    group: "proyectos",
-  },
-  {
-    id: "ideas",
-    labelKey: "ideas",
-    icon: <IcoIdeas />,
-    group: "proyectos",
-  },
-  { id: "skills", labelKey: "skills", icon: <IcoSkills />, group: "sistema" },
-  {
-    id: "traffic",
-    labelKey: "traffic",
-    icon: <IcoTraffic />,
-    group: "sistema",
-  },
-  {
-    id: "services",
-    labelKey: "services",
-    icon: <IcoServices />,
-    group: "sistema",
-  },
-  { id: "logs", labelKey: "logs", icon: <IcoLogs />, group: "sistema" },
-  { id: "docs", labelKey: "docs", icon: <IcoDocs />, group: "sistema" },
-];
-
-const GROUPS = [
-  { id: "general", labelKey: "general" },
-  { id: "contenido", labelKey: "contenido" },
-  { id: "comunicacion", labelKey: "comunicacion" },
-  { id: "herramientas", labelKey: "herramientas" },
-  { id: "proyectos", labelKey: "proyectos" },
-  { id: "sistema", labelKey: "sistema" },
-];
 
 export default function AdminPage() {
   const { isAdmin, loadingAuth } = useRequireAdmin();
@@ -179,13 +138,11 @@ export default function AdminPage() {
     return (
       <DefaultLayout>
         <div className="flex justify-center py-20">
-          <div className="w-5 h-5 rounded-full border-2 border-blue-600/30 border-t-blue-600 animate-spin" />
+          <div className="ds-spinner" />
         </div>
       </DefaultLayout>
     );
   }
-
-  const currentNav = NAV.find((n) => n.id === section);
 
   return (
     <DefaultLayout>
@@ -194,33 +151,29 @@ export default function AdminPage() {
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 text-xs font-medium">
+              <span className="ds-badge ds-badge-info">
                 {t("admin.adminBadge")}
               </span>
             </div>
-            <h1 className="text-2xl font-semibold text-[#1d1d1f] dark:text-white">
+            <h1
+              className="text-2xl font-semibold"
+              style={{ color: "var(--text-primary)" }}
+            >
               {t("admin.panel")}
             </h1>
-            <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
+            <p
+              className="text-sm mt-1"
+              style={{ color: "var(--text-secondary)" }}
+            >
               {t("admin.subtitle")}
             </p>
           </div>
-          {/* Mobile menu toggle */}
           <button
-            className="sm:hidden p-2 rounded-xl border border-black/12 dark:border-white/12 text-[#1d1d1f] dark:text-white"
+            aria-label="Toggle menu"
+            className="ds-btn-icon sm:hidden"
             onClick={() => setMobileOpen((v) => !v)}
           >
-            <svg
-              fill="none"
-              height="18"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeWidth="1.5"
-              viewBox="0 0 18 18"
-              width="18"
-            >
-              <path d="M2 4.5h14M2 9h14M2 13.5h14" />
-            </svg>
+            <IconMenu className="w-4 h-4" />
           </button>
         </div>
 
@@ -229,23 +182,22 @@ export default function AdminPage() {
           <aside
             className={`${mobileOpen ? "block" : "hidden"} sm:block w-52 shrink-0`}
           >
-            <nav className="flex flex-col gap-0.5 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-4">
+            <nav className="flex flex-col gap-0.5 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-4 sidebar-scroll">
               {GROUPS.map((g) => {
-                const items = NAV.filter((n) => n.group === g.id);
+                const items = NAV_ITEMS.filter((n) => n.group === g.id);
 
                 return (
                   <div key={g.id} className="mb-3">
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] px-3 mb-1">
+                    <p
+                      className="text-[10px] font-semibold uppercase tracking-wider px-3 mb-1"
+                      style={{ color: "var(--text-muted)" }}
+                    >
                       {t(GROUP_LABELS[g.id] ?? g.id)}
                     </p>
                     {items.map((item) => (
                       <button
                         key={item.id}
-                        className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-left transition-all ${
-                          section === item.id
-                            ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400"
-                            : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
-                        }`}
+                        className={`ds-sidebar-item ${section === item.id ? "ds-sidebar-item-active" : ""}`}
                         onClick={() => {
                           setSection(item.id);
                           setMobileOpen(false);
@@ -263,25 +215,18 @@ export default function AdminPage() {
 
           {/* Main content */}
           <div className="flex-1 min-w-0">
-            {section === "dashboard" && <AdminDashboard onNavigate={(s) => setSection(s as Section)} />}
+            {section === "dashboard" && (
+              <AdminDashboard onNavigate={(s) => setSection(s as Section)} />
+            )}
             {section === "users" && <AdminUsers />}
             {section === "roles" && <AdminRoles />}
-            {section === "api-keys" && <AdminApiKeysSection />}
             {section === "blog" && <AdminBlogSection />}
             {section === "notifications" && <AdminNotificationsSection />}
             {section === "contact" && <AdminContactSection />}
             {section === "repositories" && <AdminRepositoriesSection />}
-            {section === "taxonomy" && <AdminTaxonomySection />}
-            {section === "friendships" && <AdminFriendshipsSection />}
-            {section === "apps" && <AdminAppsSection />}
+            {section === "issues" && <AdminIssuesSection />}
             {section === "skills" && <AdminSkillsSection />}
             {section === "services" && <AdminToolsHealthSection />}
-            {section === "logs" && <AdminLogsSection />}
-            {section === "docs" && <AdminDocsSection />}
-            {section === "traffic" && <AdminTrafficSection />}
-            {section === "issues" && <AdminIssuesSection />}
-            {section === "ideas" && <AdminIdeasSection />}
-            {section === "ai-hub" && <AdminAIHubSection />}
           </div>
         </div>
       </div>
@@ -289,287 +234,11 @@ export default function AdminPage() {
   );
 }
 
-// ── Icons ──────────────────────────────────────────────────────────────────────
-
-function IcoDashboard() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <rect height="5" rx="1" width="5" x="1.5" y="1.5" />
-      <rect height="5" rx="1" width="5" x="9.5" y="1.5" />
-      <rect height="5" rx="1" width="5" x="1.5" y="9.5" />
-      <rect height="5" rx="1" width="5" x="9.5" y="9.5" />
-    </svg>
-  );
-}
-function IcoUsers() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <circle cx="6" cy="5" r="2.5" />
-      <path d="M1 13c0-2.5 2-4 5-4s5 1.5 5 4" />
-      <path d="M12 7.5c1.5.5 2.5 1.5 2.5 3.5M10 3a2.5 2.5 0 010 4" />
-    </svg>
-  );
-}
-function IcoRoles() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <path d="M8 1.5L2 4v3c0 3 2.5 5.5 6 6.5 3.5-1 6-3.5 6-6.5V4L8 1.5z" />
-    </svg>
-  );
-}
-function IcoKey() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <circle cx="6" cy="6" r="3.5" />
-      <path d="M9 9l5 5M12 12l1.5-1.5" />
-    </svg>
-  );
-}
-function IcoBlog() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <rect height="13" rx="2" width="13" x="1.5" y="1.5" />
-      <path d="M4.5 5.5h7M4.5 8.5h5M4.5 11.5h3" />
-    </svg>
-  );
-}
-function IcoBell() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <path d="M8 2a4.5 4.5 0 014.5 4.5v3L14 11H2l1.5-1.5v-3A4.5 4.5 0 018 2zm-1.5 9h3" />
-    </svg>
-  );
-}
-function IcoMail() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <rect height="9" rx="1.5" width="14" x="1" y="3.5" />
-      <path d="M1 3.5l7 5.5 7-5.5" />
-    </svg>
-  );
-}
-function IcoServices() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <circle cx="8" cy="4" r="2.5" />
-      <path d="M4 14c0-2.5 1.5-4 4-4s4 1.5 4 4" />
-      <path d="M13 7.5a5.5 5.5 0 00-5-2.5M3 7.5a5.5 5.5 0 015-2.5" />
-    </svg>
-  );
-}
-function IcoLogs() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <path d="M2 4h12M2 8h8M2 12h5" />
-    </svg>
-  );
-}
-function IcoSkills() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <path d="M4 3l2 3-2 3M12 3l-2 3 2 3M7 1.5l2 13M3 12l4 2 4-2" />
-    </svg>
-  );
-}
-function IcoDocs() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <rect height="13" rx="1.5" width="11" x="2.5" y="1.5" />
-      <path d="M5.5 5.5h5M5.5 8.5h5M5.5 11.5h3" />
-    </svg>
-  );
-}
-function IcoGit() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <circle cx="4" cy="4" r="1.5" />
-      <circle cx="4" cy="12" r="1.5" />
-      <circle cx="12" cy="4" r="1.5" />
-      <path d="M4 5.5v5M5.5 4h3.5a1.5 1.5 0 011.5 1.5v2" />
-    </svg>
-  );
-}
-function IcoTaxonomy() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <path d="M2 4h4M2 8h6M2 12h3" />
-      <rect height="3" rx="1" width="7" x="7" y="2.5" />
-      <rect height="3" rx="1" width="5" x="9" y="6.5" />
-      <rect height="3" rx="1" width="8" x="6" y="10.5" />
-    </svg>
-  );
-}
-function IcoFriendships() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <circle cx="5" cy="5" r="2" />
-      <circle cx="11" cy="5" r="2" />
-      <path d="M1 14c0-2 1.5-3.5 4-3.5s4 1.5 4 3.5" />
-      <path d="M9 12c.5-1.5 1.5-2.5 2-2.5s1.5 1 2 2.5" />
-    </svg>
-  );
-}
-function IcoApps() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <rect height="5" rx="1" width="5" x="1.5" y="1.5" />
-      <rect height="5" rx="1" width="5" x="9.5" y="1.5" />
-      <rect height="5" rx="1" width="5" x="1.5" y="9.5" />
-      <rect height="5" rx="1" width="5" x="9.5" y="9.5" />
-    </svg>
-  );
-}
-function IcoTraffic() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <path d="M1 13l3-4 3 2 4-6 3 4" />
-      <path d="M1 3h14" />
-    </svg>
-  );
-}
-function IcoIssues() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <rect height="12" rx="2" width="14" x="1" y="2" />
-      <path d="M4 6h8M4 9h5M4 12h3" />
-      <circle cx="11.5" cy="11.5" r="1.5" />
-    </svg>
-  );
-}
-function IcoIdeas() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <path d="M8 1.5a4.5 4.5 0 00-2 8.63V12h4v-1.87A4.5 4.5 0 008 1.5z" />
-      <path d="M6 13h4" />
-      <path d="M7 14.5h2" />
-    </svg>
-  );
-}
-
-function IcoAIHub() {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      viewBox="0 0 16 16"
-    >
-      <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.414 1.414M11.536 11.536l1.414 1.414M3.05 12.95l1.414-1.414M11.536 4.464l1.414-1.414" />
-      <circle cx="8" cy="8" r="3" />
-    </svg>
-  );
-}
+const GROUP_LABELS: Record<string, string> = {
+  general: "admin.groupGeneral",
+  contenido: "admin.groupContent",
+  comunicacion: "admin.groupComms",
+  herramientas: "admin.groupTools",
+  proyectos: "admin.groupProjects",
+  sistema: "admin.groupSystem",
+};

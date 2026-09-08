@@ -280,8 +280,19 @@ export function UserDashboardHome({ onNavigate }: Props) {
         <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mb-1">
           {t("dashboard.greeting", { greeting })}
         </p>
-        <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white capitalize">
-          {name} 👋
+        <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white capitalize flex items-center gap-2">
+          {name}
+          <svg
+            className="w-6 h-6 inline-block"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+          </svg>
         </h2>
         <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-2">
           {t("dashboard.activitySummary")}
