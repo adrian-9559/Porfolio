@@ -2590,7 +2590,9 @@
 		"campusChallenges": "Challenges",
 		"menuClose": "Close menu",
 		"github": "GitHub (opens in new tab)",
-		"linkedin": "LinkedIn (opens in new tab)"
+		"linkedin": "LinkedIn (opens in new tab)",
+		"dashboard": "Dashboard",
+		"settings": "Settings"
 	},
 	"notifications": {
 		"action": {
