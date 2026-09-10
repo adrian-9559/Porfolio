@@ -7,6 +7,7 @@ import {
   AdminEmptyState,
   AdminLoadingSkeleton,
 } from "./AdminShell";
+import { Btn } from "./AdminShared";
 
 import { useT } from "@/hooks/useT";
 import { apiFetch } from "@/services/apiClient";
@@ -525,10 +526,7 @@ export function AdminMobileAppsSection() {
         title={t("admin.mobileAppsTitle")}
         description={t("admin.mobileAppsDesc")}
         actions={
-          <button
-            className="ds-btn-primary"
-            onClick={() => setShowModal(true)}
-          >
+          <Btn onClick={() => setShowModal(true)}>
             <svg
               className="w-3.5 h-3.5"
               fill="none"
@@ -540,7 +538,7 @@ export function AdminMobileAppsSection() {
               <path d="M8 2v12M2 8h12" />
             </svg>
             Nueva versión
-          </button>
+          </Btn>
         }
       />
 

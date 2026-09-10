@@ -17,6 +17,7 @@ import {
   AdminLoadingSkeleton,
   AdminFilterChip,
 } from "./AdminShell";
+import { SearchInput, IconBtn, Icons, Btn, Input, Textarea } from "./AdminShared";
 
 type Tab = "boards" | "tickets";
 
@@ -118,18 +119,12 @@ export function AdminIssuesSection() {
         description={t("admin.issuesDesc")}
         actions={
           <>
-            <button
-              className="ds-btn-primary"
-              onClick={() => setShowCreateBoard(true)}
-            >
+            <Btn onClick={() => setShowCreateBoard(true)}>
               {t("admin.newBoard")}
-            </button>
-            <button
-              className="ds-btn-secondary"
-              onClick={() => setShowCreateTicket(true)}
-            >
+            </Btn>
+            <Btn variant="ghost" onClick={() => setShowCreateTicket(true)}>
               {t("admin.newTicket")}
-            </button>
+            </Btn>
           </>
         }
       />
@@ -167,11 +162,10 @@ export function AdminIssuesSection() {
         ))}
       </div>
 
-      <input
-        className="ds-input"
-        placeholder={t("admin.searchIssues")}
+      <SearchInput
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={setSearch}
+        placeholder={t("admin.searchIssues")}
       />
 
       {tab === "tickets" && (
@@ -244,15 +238,12 @@ export function AdminIssuesSection() {
                       </button>
                     </div>
                   ) : (
-                    <button
-                      className="ds-btn-icon text-[var(--text-muted)] hover:text-[var(--color-danger)]"
-                      title={t("admin.delete")}
+                    <IconBtn
                       onClick={() => setConfirmId(b.id)}
-                    >
-                      <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                        <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
+                      title={t("admin.delete")}
+                      icon={Icons.trash}
+                      danger
+                    />
                   )}
                 </div>
               ))}
@@ -302,15 +293,12 @@ export function AdminIssuesSection() {
                     </button>
                   </div>
                 ) : (
-                  <button
-                    className="ds-btn-icon text-[var(--text-muted)] hover:text-[var(--color-danger)]"
-                    title={t("admin.delete")}
+                  <IconBtn
                     onClick={() => setConfirmId(tk.id)}
-                  >
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                      <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
+                    title={t("admin.delete")}
+                    icon={Icons.trash}
+                    danger
+                  />
                 )}
               </div>
             ))}
@@ -382,57 +370,47 @@ function CreateBoardModal({
       onClick={onClose}
     >
       <div onClick={(e) => e.stopPropagation()}>
-        <div className="w-full max-w-md mx-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] shadow-xl">
+        <div className="admin-panel w-full max-w-md mx-4">
           <form onSubmit={handleSubmit}>
-            <div className="border-b border-[var(--border-default)] px-5 py-4">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)]">
+            <div className="admin-panel-header">
+              <h3 className="admin-panel-title">
                 {t("admin.newBoard")}
               </h3>
             </div>
-            <div className="flex flex-col gap-3 px-5 py-4">
+            <div className="admin-panel-body flex flex-col gap-3">
               <div>
                 <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">
                   {t("admin.boardName")} *
                 </label>
-                <input
-                  autoFocus
-                  className="ds-input"
-                  maxLength={100}
-                  placeholder={t("admin.boardName")}
+                <Input
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={setName}
+                  placeholder={t("admin.boardName")}
                 />
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">
                   {t("admin.boardDescription")}
                 </label>
-                <textarea
-                  className="ds-input resize-none"
-                  maxLength={2000}
+                <Textarea
+                  value={description}
+                  onChange={setDescription}
                   placeholder={t("admin.boardDescription")}
                   rows={3}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
               {error && <p className="text-xs text-[var(--color-danger)]">{error}</p>}
             </div>
-            <div className="flex justify-end gap-2 border-t border-[var(--border-default)] px-5 py-3">
-              <button
-                className="ds-btn-ghost"
-                type="button"
-                onClick={onClose}
-              >
+            <div className="flex justify-end gap-2 px-5 py-3">
+              <Btn variant="ghost" onClick={onClose}>
                 {t("admin.cancel")}
-              </button>
-              <button
-                className="ds-btn-primary"
+              </Btn>
+              <Btn
+                onClick={() => handleSubmit(new Event('submit') as any)}
                 disabled={!name.trim() || loading}
-                type="submit"
               >
                 {loading ? "…" : t("admin.createBoard")}
-              </button>
+              </Btn>
             </div>
           </form>
         </div>
@@ -487,14 +465,14 @@ function CreateTicketModal({
       onClick={onClose}
     >
       <div onClick={(e) => e.stopPropagation()}>
-        <div className="w-full max-w-md mx-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] shadow-xl">
+        <div className="admin-panel w-full max-w-md mx-4">
           <form onSubmit={handleSubmit}>
-            <div className="border-b border-[var(--border-default)] px-5 py-4">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)]">
+            <div className="admin-panel-header">
+              <h3 className="admin-panel-title">
                 {t("admin.newTicket")}
               </h3>
             </div>
-            <div className="flex flex-col gap-3 px-5 py-4">
+            <div className="admin-panel-body flex flex-col gap-3">
               <div>
                 <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">
                   {t("admin.selectBoard")} *
@@ -515,26 +493,21 @@ function CreateTicketModal({
                 <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">
                   {t("admin.ticketTitle")} *
                 </label>
-                <input
-                  autoFocus
-                  className="ds-input"
-                  maxLength={200}
-                  placeholder={t("admin.ticketTitle")}
+                <Input
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={setTitle}
+                  placeholder={t("admin.ticketTitle")}
                 />
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">
                   {t("admin.ticketDescription")}
                 </label>
-                <textarea
-                  className="ds-input resize-none"
-                  maxLength={5000}
+                <Textarea
+                  value={description}
+                  onChange={setDescription}
                   placeholder={t("admin.ticketDescription")}
                   rows={3}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
               <div>
@@ -564,31 +537,25 @@ function CreateTicketModal({
                 <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">
                   {t("admin.ticketAssignTo")}
                 </label>
-                <input
-                  className="ds-input"
+                <Input
+                  value={assignedTo}
+                  onChange={setAssignedTo}
                   placeholder="email@example.com"
                   type="email"
-                  value={assignedTo}
-                  onChange={(e) => setAssignedTo(e.target.value)}
                 />
               </div>
               {error && <p className="text-xs text-[var(--color-danger)]">{error}</p>}
             </div>
-            <div className="flex justify-end gap-2 border-t border-[var(--border-default)] px-5 py-3">
-              <button
-                className="ds-btn-ghost"
-                type="button"
-                onClick={onClose}
-              >
+            <div className="flex justify-end gap-2 px-5 py-3">
+              <Btn variant="ghost" onClick={onClose}>
                 {t("admin.cancel")}
-              </button>
-              <button
-                className="ds-btn-primary"
+              </Btn>
+              <Btn
+                onClick={() => handleSubmit(new Event('submit') as any)}
                 disabled={!boardId || !title.trim() || loading}
-                type="submit"
               >
                 {loading ? "…" : t("admin.createTicket")}
-              </button>
+              </Btn>
             </div>
           </form>
         </div>

@@ -40,7 +40,6 @@ export type AdminSection =
   | "repositories"
   | "issues"
   | "skills"
-  | "services"
   | "logs"
   | "friendships"
   | "ideas"
@@ -75,10 +74,9 @@ const NAV_ITEMS: NavItem[] = [
   { id: "friendships", labelKey: "admin.friendships", icon: <IconFriendships />, group: "social" },
   { id: "skills", labelKey: "admin.skills", icon: <IconSkills />, group: "system" },
   { id: "ai-hub", labelKey: "admin.aiHub", icon: <IconAIHub />, group: "system" },
-  { id: "services", labelKey: "admin.services", icon: <IconServices />, group: "system" },
   { id: "api-keys", labelKey: "admin.apiKeys", icon: <IconKey />, group: "system" },
   { id: "apps", labelKey: "admin.apps", icon: <IconApps />, group: "system" },
-  { id: "mobile-apps", labelKey: "admin.mobileApps", icon: <IconApps />, group: "system" },
+  { id: "mobile-apps", labelKey: "admin.mobileAppsTitle", icon: <IconApps />, group: "system" },
   { id: "docs", labelKey: "admin.docs", icon: <IconDocs />, group: "system" },
 ];
 
@@ -108,10 +106,9 @@ const NAV_LABELS: Record<string, string> = {
   friendships: "admin.friendships",
   skills: "admin.skills",
   "ai-hub": "admin.aiHub",
-  services: "admin.services",
   "api-keys": "admin.apiKeys",
   apps: "admin.apps",
-  "mobile-apps": "admin.mobileApps",
+  "mobile-apps": "admin.mobileAppsTitle",
   docs: "admin.docs",
 };
 
@@ -159,10 +156,16 @@ export function AdminShell({
       <aside className={`admin-sidebar ${mobileOpen ? "admin-sidebar-open" : ""}`}>
         {/* Brand */}
         <Link href="/admin" className="admin-sidebar-brand" onClick={() => handleNav("dashboard")}>
-          <div className="admin-sidebar-brand-icon">A</div>
-          <div>
-            <div className="admin-sidebar-brand-text">Graphify</div>
-            <div className="admin-sidebar-brand-sub">Admin</div>
+          <div className="admin-sidebar-brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div className="admin-sidebar-brand-text">
+            Graphify
+            <span className="admin-sidebar-brand-badge">Admin</span>
           </div>
         </Link>
 
@@ -194,7 +197,7 @@ export function AdminShell({
 
         {/* Footer */}
         <div className="admin-sidebar-footer">
-          <div className="flex items-center gap-2">
+          <div className="admin-sidebar-footer-controls">
             <LanguageSwitcher />
             <ThemeSwitch />
           </div>
@@ -208,20 +211,31 @@ export function AdminShell({
           <div className="admin-header-inner">
             <div className="admin-header-left">
               <button
-                className="ds-btn-icon md:hidden"
+                className="admin-header-menu-btn"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open menu"
               >
-                <IconMenu className="w-4 h-4" />
+                <IconMenu className="w-5 h-5" />
               </button>
-              <span className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                {t("admin.panel")}
-              </span>
+              <nav className="admin-header-breadcrumb">
+                <Link href="/admin" className="admin-breadcrumb-item" onClick={() => handleNav("dashboard")}>
+                  {t("admin.panel")}
+                </Link>
+                <span className="admin-breadcrumb-sep">/</span>
+                <span className="admin-breadcrumb-current">
+                  {t(NAV_LABELS[section] ?? section)}
+                </span>
+              </nav>
             </div>
             <div className="admin-header-right">
+              <button className="admin-header-icon-btn" aria-label="Notifications">
+                <IconBell className="w-4 h-4" />
+                <span className="admin-header-notif-badge">3</span>
+              </button>
+              <ThemeSwitch />
               <Link
                 href="/"
-                className="text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                className="admin-header-home-link"
               >
                 {t("nav.home")}
               </Link>
@@ -254,8 +268,9 @@ export function AdminPageHeader({
           <h1 className="admin-page-title">{title}</h1>
           {description && <p className="admin-page-desc">{description}</p>}
         </div>
-        {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
+        {actions && <div className="admin-page-header-actions">{actions}</div>}
       </div>
+      <div className="admin-page-header-divider" />
     </div>
   );
 }
@@ -286,8 +301,7 @@ export function AdminStat({
   accent?: boolean;
 }) {
   return (
-    <div className="admin-stat">
-      {accent && <div className="admin-stat-accent" />}
+    <div className={`admin-stat ${accent ? "admin-stat-accented" : ""}`}>
       <div className="admin-stat-label">{label}</div>
       <div className="admin-stat-value">{value}</div>
       {sub && <div className="admin-stat-sub">{sub}</div>}
@@ -311,7 +325,7 @@ export function AdminPanel({
       {(title || actions) && (
         <div className="admin-panel-header">
           {title && <div className="admin-panel-title">{title}</div>}
-          {actions && <div className="flex items-center gap-2">{actions}</div>}
+          {actions && <div className="admin-panel-header-actions">{actions}</div>}
         </div>
       )}
       <div className={compact ? "admin-panel-body-compact" : "admin-panel-body"}>
@@ -337,16 +351,16 @@ export function AdminEmptyState({
       {icon && <div className="admin-empty-icon">{icon}</div>}
       <div className="admin-empty-title">{title}</div>
       {description && <div className="admin-empty-desc">{description}</div>}
-      {action && <div className="mt-4">{action}</div>}
+      {action && <div className="admin-empty-action">{action}</div>}
     </div>
   );
 }
 
 export function AdminLoadingSkeleton({ rows = 5 }: { rows?: number }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="admin-skeleton-list">
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="admin-skeleton h-12 w-full" />
+        <div key={i} className="admin-skeleton admin-skeleton-row" />
       ))}
     </div>
   );

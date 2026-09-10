@@ -6,7 +6,7 @@ import {
   AdminIdeaStats,
 } from "@/services/adminService";
 import { useT } from "@/hooks/useT";
-import { relativeTime } from "./AdminShared";
+import { relativeTime, SearchInput, IconBtn, Icons, Btn, Input, Textarea } from "./AdminShared";
 import {
   AdminPageHeader,
   AdminStatGrid,
@@ -111,12 +111,9 @@ export function AdminIdeasSection() {
         title={t("admin.ideas")}
         description={t("admin.ideasDesc")}
         actions={
-          <button
-            className="ds-btn-primary"
-            onClick={() => setShowCreate(true)}
-          >
+          <Btn onClick={() => setShowCreate(true)}>
             {t("admin.newIdea")}
-          </button>
+          </Btn>
         }
       />
 
@@ -145,52 +142,53 @@ export function AdminIdeasSection() {
         </AdminStatGrid>
       )}
 
-      <div className="flex flex-wrap items-center gap-2">
-        <input
-          className="ds-input"
-          placeholder={t("admin.searchIdeas")}
+      <div className="flex flex-col gap-3">
+        <SearchInput
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={setSearch}
+          placeholder={t("admin.searchIdeas")}
         />
-        {(
-          ["all", "idea", "planned", "in_progress", "done", "archived"] as const
-        ).map((s) => (
-          <AdminFilterChip
-            key={s}
-            active={statusFilter === s}
-            onClick={() => setStatusFilter(s)}
-          >
-            {s === "all" ? t("admin.allStatuses") : s.replace("_", " ")}
-          </AdminFilterChip>
-        ))}
-        <div className="w-px h-5" style={{ background: "var(--border-default)" }} />
-        {(["all", "high", "medium", "low"] as const).map((p) => (
-          <AdminFilterChip
-            key={p}
-            active={priorityFilter === p}
-            onClick={() => setPriorityFilter(p)}
-          >
-            {p === "all" ? t("admin.allPriorities") : p}
-          </AdminFilterChip>
-        ))}
-        <div className="w-px h-5" style={{ background: "var(--border-default)" }} />
-        <select
-          className="ds-input"
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-        >
-          <option value="all">All categories</option>
-          {categories.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
+        <div className="flex flex-wrap items-center gap-2">
+          {(
+            ["all", "idea", "planned", "in_progress", "done", "archived"] as const
+          ).map((s) => (
+            <AdminFilterChip
+              key={s}
+              active={statusFilter === s}
+              onClick={() => setStatusFilter(s)}
+            >
+              {s === "all" ? t("admin.allStatuses") : s.replace("_", " ")}
+            </AdminFilterChip>
           ))}
-        </select>
-        {tagFilter && (
-          <AdminFilterChip active onClick={() => setTagFilter(null)}>
-            #{tagFilter}
-          </AdminFilterChip>
-        )}
+          <div className="w-px h-5" style={{ background: "var(--border-default)" }} />
+          {(["all", "high", "medium", "low"] as const).map((p) => (
+            <AdminFilterChip
+              key={p}
+              active={priorityFilter === p}
+              onClick={() => setPriorityFilter(p)}
+            >
+              {p === "all" ? t("admin.allPriorities") : p}
+            </AdminFilterChip>
+          ))}
+          <div className="w-px h-5" style={{ background: "var(--border-default)" }} />
+          <select
+            className="ds-input"
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+          >
+            <option value="all">{t("admin.allCategories")}</option>
+            {categories.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          {tagFilter && (
+            <AdminFilterChip active onClick={() => setTagFilter(null)}>
+              #{tagFilter}
+            </AdminFilterChip>
+          )}
+        </div>
       </div>
 
       {loading ? (
@@ -227,7 +225,7 @@ export function AdminIdeasSection() {
                       )}
                     </div>
                     <p className="mt-0.5 text-xs" style={{ color: "var(--text-secondary)" }}>
-                      {i.votes} votos · {i.owner_email} · {relativeTime(i.created_at)}
+                      {i.votes} {t("admin.votes")} · {i.owner_email} · {relativeTime(i.created_at)}
                     </p>
                     {i.tags.length > 0 && (
                       <div className="mt-1 flex flex-wrap gap-1">
@@ -247,39 +245,20 @@ export function AdminIdeasSection() {
                   </div>
                   {confirmId === i.id ? (
                     <div className="flex items-center gap-1.5">
-                      <button
-                        className="ds-btn-danger text-xs"
-                        onClick={() => handleDelete(i.id)}
-                      >
+                      <Btn variant="danger" size="sm" onClick={() => handleDelete(i.id)}>
                         {t("admin.confirm")}
-                      </button>
-                      <button
-                        className="ds-btn-ghost text-xs"
-                        onClick={() => setConfirmId(null)}
-                      >
+                      </Btn>
+                      <Btn variant="ghost" size="sm" onClick={() => setConfirmId(null)}>
                         {t("admin.cancel")}
-                      </button>
+                      </Btn>
                     </div>
                   ) : (
-                    <button
-                      className="ds-btn-icon"
-                      title={t("admin.delete")}
+                    <IconBtn
                       onClick={() => setConfirmId(i.id)}
-                    >
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
+                      title={t("admin.delete")}
+                      icon={Icons.trash}
+                      danger
+                    />
                   )}
                 </div>
                 {i.description && (
@@ -289,7 +268,7 @@ export function AdminIdeasSection() {
                     onClick={() => setViewingDesc(i)}
                   >
                     <span className="inline-flex items-center gap-1 text-[10px] font-semibold mb-1" style={{ color: "var(--accent)" }}>
-                      Ver descripción
+                      {t("admin.viewDescription")}
                     </span>
                     <p>{i.description}</p>
                   </button>
@@ -333,7 +312,7 @@ export function AdminIdeasSection() {
                     <span className="admin-badge">{viewingDesc.category}</span>
                   )}
                   <span className="text-xs" style={{ color: "var(--text-muted)" }}>
-                    {viewingDesc.votes} votos · {viewingDesc.owner_email} ·{" "}
+                    {viewingDesc.votes} {t("admin.votes")} · {viewingDesc.owner_email} ·{" "}
                     {relativeTime(viewingDesc.created_at)}
                   </span>
                 </div>
@@ -438,26 +417,21 @@ function CreateIdeaModal({
                 <label className="mb-1 block text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
                   {t("admin.ideaTitle")} *
                 </label>
-                <input
-                  autoFocus
-                  className="ds-input"
-                  maxLength={100}
-                  placeholder={t("admin.ideaTitle")}
+                <Input
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={setTitle}
+                  placeholder={t("admin.ideaTitle")}
                 />
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
                   {t("admin.ideaDescription")}
                 </label>
-                <textarea
-                  className="ds-input resize-none"
-                  maxLength={2000}
+                <Textarea
+                  value={description}
+                  onChange={setDescription}
                   placeholder={t("admin.ideaDescription")}
                   rows={3}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -479,12 +453,10 @@ function CreateIdeaModal({
                   <label className="mb-1 block text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
                     {t("admin.ideaCategory")}
                   </label>
-                  <input
-                    className="ds-input"
-                    maxLength={50}
-                    placeholder="frontend, design…"
+                  <Input
                     value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    onChange={setCategory}
+                    placeholder="frontend, design…"
                   />
                 </div>
               </div>
@@ -492,30 +464,24 @@ function CreateIdeaModal({
                 <label className="mb-1 block text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
                   {t("admin.ideaTags")}
                 </label>
-                <input
-                  className="ds-input"
-                  placeholder="react, typescript, ui"
+                <Input
                   value={tagsInput}
-                  onChange={(e) => setTagsInput(e.target.value)}
+                  onChange={setTagsInput}
+                  placeholder="react, typescript, ui"
                 />
               </div>
               {error && <p className="text-xs" style={{ color: "var(--color-danger)" }}>{error}</p>}
             </div>
             <div className="flex justify-end gap-2 px-5 py-3">
-              <button
-                className="ds-btn-secondary"
-                type="button"
-                onClick={onClose}
-              >
+              <Btn variant="ghost" onClick={onClose}>
                 {t("admin.cancel")}
-              </button>
-              <button
-                className="ds-btn-primary"
+              </Btn>
+              <Btn
+                onClick={() => handleSubmit(new Event('submit') as any)}
                 disabled={!title.trim() || loading}
-                type="submit"
               >
                 {loading ? "…" : t("admin.createIdea")}
-              </button>
+              </Btn>
             </div>
           </form>
         </div>

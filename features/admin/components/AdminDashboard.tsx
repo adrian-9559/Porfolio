@@ -3,7 +3,7 @@ import type { UserWithProfile } from "@/types/auth";
 import { useEffect, useState, useMemo } from "react";
 
 import { relativeTime } from "./AdminShared";
-import { AdminBarChart, AdminDonutChart, AdminHorizontalBarChart } from "./AdminCharts";
+import { AdminBarChart, AdminHorizontalBarChart } from "./AdminCharts";
 import {
   AdminPageHeader,
   AdminStatGrid,
@@ -31,12 +31,12 @@ interface ActivityItem {
   date: string;
 }
 
-const ACTIVITY_ICONS: Record<string, string> = {
-  user: "👤",
-  notification: "🔔",
-  message: "✉️",
-  issue: "🐛",
-  idea: "💡",
+const ACTIVITY_BORDER_COLORS: Record<ActivityItem["type"], string> = {
+  user: "border-l-[var(--accent)]",
+  notification: "border-l-amber-500",
+  message: "border-l-blue-500",
+  issue: "border-l-purple-500",
+  idea: "border-l-emerald-500",
 };
 
 const QUICK_ACTIONS = [
@@ -47,6 +47,21 @@ const QUICK_ACTIONS = [
   { id: "ideas", labelKey: "admin.shortcutIdeas" },
   { id: "traffic", labelKey: "admin.shortcutTraffic" },
 ] as const;
+
+const ISSUE_STATUS_COLORS: Record<string, string> = {
+  open: "#8b5cf6",
+  in_progress: "#f59e0b",
+  resolved: "#10b981",
+  closed: "#6b7280",
+};
+
+const IDEA_STATUS_COLORS: Record<string, string> = {
+  idea: "#8b5cf6",
+  planned: "#f59e0b",
+  in_progress: "#3b82f6",
+  done: "#10b981",
+  archived: "#6b7280",
+};
 
 export function AdminDashboard({
   onNavigate,
@@ -202,20 +217,7 @@ export function AdminDashboard({
   const formatMemory = (bytes: number) =>
     `${Math.round(bytes / 1024 / 1024)} MB`;
 
-  const issueStatusColors: Record<string, string> = {
-    open: "#8b5cf6",
-    in_progress: "#f59e0b",
-    resolved: "#10b981",
-    closed: "#6b7280",
-  };
-  const ideaStatusColors: Record<string, string> = {
-    idea: "#8b5cf6",
-    planned: "#f59e0b",
-    in_progress: "#3b82f6",
-    done: "#10b981",
-    archived: "#6b7280",
-  };
-
+  /* ── Loading ──────────────────────────────────────────────────────────── */
   if (loading) {
     return (
       <div>
@@ -224,16 +226,34 @@ export function AdminDashboard({
           description={t("admin.dashboardDesc")}
         />
         <div className="space-y-6">
-          <AdminLoadingSkeleton rows={4} />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <AdminLoadingSkeleton rows={8} />
-            <AdminLoadingSkeleton rows={8} />
+          <AdminStatGrid cols={4}>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="admin-skeleton h-24 w-full rounded-xl" />
+            ))}
+          </AdminStatGrid>
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="lg:col-span-3">
+              <AdminLoadingSkeleton rows={8} />
+            </div>
+            <div className="lg:col-span-2">
+              <AdminLoadingSkeleton rows={8} />
+            </div>
           </div>
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="lg:col-span-2">
+              <AdminLoadingSkeleton rows={6} />
+            </div>
+            <div className="lg:col-span-3">
+              <AdminLoadingSkeleton rows={6} />
+            </div>
+          </div>
+          <AdminLoadingSkeleton rows={5} />
         </div>
       </div>
     );
   }
 
+  /* ── Dashboard ────────────────────────────────────────────────────────── */
   return (
     <div>
       <AdminPageHeader
@@ -241,22 +261,7 @@ export function AdminDashboard({
         description={t("admin.dashboardDesc")}
       />
 
-      {/* Quick Actions */}
-      <div className="mb-6">
-        <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-          {QUICK_ACTIONS.map((sc) => (
-            <button
-              key={sc.id}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-hover)] transition-all text-[12px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] shrink-0"
-              onClick={() => onNavigate(sc.id)}
-            >
-              {t(sc.labelKey)}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Primary Stats */}
+      {/* Row 1 — Primary Stats */}
       {stats && (
         <div className="mb-6">
           <AdminStatGrid cols={4}>
@@ -279,229 +284,299 @@ export function AdminDashboard({
             <AdminStat
               label={t("admin.agents")}
               value={stats.agents}
-              sub={`${stats.workflows} workflows`}
+              sub={`${stats.workflows} ${t("admin.subWorkflows", { n: stats.workflows }).split(" ")[1] ?? "workflows"}`}
             />
           </AdminStatGrid>
         </div>
       )}
 
-      {/* Secondary Stats */}
-      <div className="mb-6">
-        <AdminStatGrid cols={3}>
-          <AdminStat
-            label={t("admin.issueBoards")}
-            value={issueStats?.totalBoards ?? 0}
-          />
-          <AdminStat
-            label={t("admin.issueTickets")}
-            value={issueStats?.totalTickets ?? 0}
-          />
-          <AdminStat
-            label={t("admin.ideas")}
-            value={ideaStats?.total ?? 0}
-          />
-        </AdminStatGrid>
+      {/* Row 2 — Traffic Chart + Top Pages */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+        <div className="lg:col-span-3">
+          <AdminPanel title={t("admin.trafficChart")}>
+            <AdminBarChart data={trafficByDay} height={240} />
+          </AdminPanel>
+        </div>
+        <div className="lg:col-span-2">
+          <AdminPanel title={t("admin.topPages")}>
+            <AdminHorizontalBarChart data={topPages} height={240} />
+          </AdminPanel>
+        </div>
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <AdminPanel title={t("admin.trafficChart")}>
-          <AdminBarChart data={trafficByDay} height={220} />
-        </AdminPanel>
-
-        <AdminPanel title={t("admin.topPages")}>
-          <AdminHorizontalBarChart data={topPages} height={220} />
-        </AdminPanel>
-      </div>
-
-      {/* Donut Charts */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-        <AdminPanel title={t("admin.issuesByStatus")}>
-          <AdminDonutChart
-            data={issueStats?.byStatus ?? {}}
-            colors={issueStatusColors}
-            height={200}
-          />
-        </AdminPanel>
-
-        <AdminPanel title={t("admin.ideasByStatus")}>
-          <AdminDonutChart
-            data={ideaStats?.byStatus ?? {}}
-            colors={ideaStatusColors}
-            height={200}
-          />
-        </AdminPanel>
-      </div>
-
-      {/* Bottom Row: Activity + Health */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <AdminPanel title={t("admin.recentActivity")}>
-          {activityFeed.length === 0 ? (
-            <AdminEmptyState
-              title={t("admin.noActivity")}
-              description="No recent activity to display"
-            />
-          ) : (
-            <div className="divide-y divide-[var(--border-default)]">
-              {activityFeed.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 py-3 hover:bg-[var(--bg-hover)] transition-colors -mx-5 px-5"
-                >
-                  <span className="text-sm shrink-0 mt-0.5">
-                    {ACTIVITY_ICONS[item.type] ?? "📋"}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-medium text-[var(--text-primary)]">
-                      {item.title}
-                    </p>
-                    <p className="text-[12px] text-[var(--text-muted)] truncate">
-                      {item.detail}
-                    </p>
-                  </div>
-                  <span className="text-[10px] text-[var(--text-muted)] shrink-0 font-medium">
-                    {relativeTime(item.date)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </AdminPanel>
-
-        <AdminPanel title={t("admin.systemHealth")}>
-          {healthError ? (
-            <AdminEmptyState
-              title={t("admin.healthUnavailable")}
-              description="Unable to connect to the server"
-            />
-          ) : health ? (
+      {/* Row 3 — Issues · Ideas · System Health */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+        {/* Issues panel */}
+        <div className="lg:col-span-2">
+          <AdminPanel title={t("admin.issues")}>
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span
-                  className={`admin-badge ${health.status === "ok" && health.db?.ok !== false ? "admin-badge-success" : "admin-badge-danger"}`}
-                >
-                  {health.status === "ok" && health.db?.ok !== false
-                    ? t("admin.healthOk")
-                    : t("admin.healthDegraded")}
-                </span>
+              <div className="grid grid-cols-2 gap-3">
+                <AdminStat
+                  label={t("admin.issueBoards")}
+                  value={issueStats?.totalBoards ?? 0}
+                />
+                <AdminStat
+                  label={t("admin.issueTickets")}
+                  value={issueStats?.totalTickets ?? 0}
+                />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    {t("admin.healthEnv")}
+              {/* Status breakdown — only rendered if there's data */}
+              {issueStats &&
+                Object.keys(issueStats.byStatus).length > 0 && (
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2">
+                      {t("admin.issuesByStatus")}
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {Object.entries(issueStats.byStatus).map(
+                        ([status, count]) => (
+                          <span
+                            key={status}
+                            className="admin-badge"
+                            style={{
+                              borderLeft: `3px solid ${ISSUE_STATUS_COLORS[status] ?? "var(--text-muted)"}`,
+                            }}
+                          >
+                            {status}: {count}
+                          </span>
+                        ),
+                      )}
+                    </div>
                   </div>
-                  <div className="text-[13px] font-medium text-[var(--text-primary)] mt-0.5">
-                    {health.env}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    {t("admin.serverUptime")}
-                  </div>
-                  <div className="text-[13px] font-medium text-[var(--text-primary)] mt-0.5">
-                    {formatUptime(health.uptime ?? 0)}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    {t("admin.serverMemory")}
-                  </div>
-                  <div className="text-[13px] font-medium text-[var(--text-primary)] mt-0.5">
-                    {health.memory ? formatMemory(health.memory.rss ?? 0) : "—"}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    {t("admin.healthDbChecked")}
-                  </div>
-                  <div className="text-[13px] font-medium text-[var(--text-primary)] mt-0.5">
-                    {health.db ? relativeTime(health.db.checkedAt) : "—"}
-                  </div>
-                </div>
-              </div>
-              {health.db?.tables && (
-                <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2">
-                    DB Tables
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {Object.entries(health.db.tables).map(([table, ok]) => (
-                      <span
-                        key={table}
-                        className={`admin-badge ${ok ? "admin-badge-success" : "admin-badge-danger"}`}
-                      >
-                        {table}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
+                )}
             </div>
-          ) : (
-            <AdminLoadingSkeleton rows={3} />
-          )}
-        </AdminPanel>
+          </AdminPanel>
+        </div>
+
+        {/* Ideas panel */}
+        <div className="lg:col-span-1">
+          <AdminPanel title={t("admin.ideas")}>
+            <AdminStat
+              label={t("admin.ideas")}
+              value={ideaStats?.total ?? 0}
+            />
+            {ideaStats && Object.keys(ideaStats.byStatus).length > 0 && (
+              <div className="mt-3 space-y-1.5">
+                {Object.entries(ideaStats.byStatus).map(([status, count]) => (
+                  <div
+                    key={status}
+                    className="flex items-center justify-between text-[11px]"
+                  >
+                    <span className="text-[var(--text-muted)] flex items-center gap-1.5">
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{
+                          backgroundColor:
+                            IDEA_STATUS_COLORS[status] ?? "var(--text-muted)",
+                        }}
+                      />
+                      {status}
+                    </span>
+                    <span className="font-medium text-[var(--text-primary)]">
+                      {count}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </AdminPanel>
+        </div>
+
+        {/* System Health — wider */}
+        <div className="lg:col-span-2">
+          <AdminPanel title={t("admin.systemHealth")}>
+            {healthError ? (
+              <AdminEmptyState
+                title={t("admin.healthUnavailable")}
+                description={t("admin.healthConnectionError")}
+              />
+            ) : health ? (
+              <div className="space-y-3">
+                {/* Status badge */}
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`admin-badge ${health.status === "ok" && health.db?.ok !== false ? "admin-badge-success" : "admin-badge-danger"}`}
+                  >
+                    {health.status === "ok" && health.db?.ok !== false
+                      ? t("admin.healthOk")
+                      : t("admin.healthDegraded")}
+                  </span>
+                </div>
+
+                {/* Core metrics */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                      {t("admin.healthEnv")}
+                    </div>
+                    <div className="text-[13px] font-medium text-[var(--text-primary)] mt-0.5">
+                      {health.env}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                      {t("admin.serverUptime")}
+                    </div>
+                    <div className="text-[13px] font-medium text-[var(--text-primary)] mt-0.5">
+                      {formatUptime(health.uptime ?? 0)}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                      {t("admin.serverMemory")}
+                    </div>
+                    <div className="text-[13px] font-medium text-[var(--text-primary)] mt-0.5">
+                      {health.memory
+                        ? formatMemory(health.memory.rss ?? 0)
+                        : "—"}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                      {t("admin.healthDbChecked")}
+                    </div>
+                    <div className="text-[13px] font-medium text-[var(--text-primary)] mt-0.5">
+                      {health.db ? relativeTime(health.db.checkedAt) : "—"}
+                    </div>
+                  </div>
+                </div>
+
+                {/* DB Tables */}
+                {health.db?.tables && (
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5">
+                      {t("admin.dbTables")}
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {Object.entries(health.db.tables).map(([table, ok]) => (
+                        <span
+                          key={table}
+                          className={`admin-badge ${ok ? "admin-badge-success" : "admin-badge-danger"}`}
+                        >
+                          {table}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <AdminLoadingSkeleton rows={3} />
+            )}
+          </AdminPanel>
+        </div>
       </div>
 
-      {/* Recent Users */}
-      <div className="mt-6">
-        <AdminPanel
-          title={t("admin.recentUsers")}
-          actions={
-            <span className="text-[11px] text-[var(--text-muted)]">
-              {t("admin.usersShown", { n: recentUsers.length })}
-            </span>
-          }
-        >
-          {recentUsers.length === 0 ? (
-            <AdminEmptyState
-              title={t("admin.noUsers")}
-              description="No users registered yet"
-            />
-          ) : (
-            <div className="divide-y divide-[var(--border-default)]">
-              {recentUsers.map((u) => (
-                <div
-                  key={u.id}
-                  className="flex items-center gap-3 py-3 hover:bg-[var(--bg-hover)] transition-colors -mx-5 px-5"
+      {/* Row 4 — Activity Feed + Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+        <div className="lg:col-span-3">
+          <AdminPanel title={t("admin.recentActivity")}>
+            {activityFeed.length === 0 ? (
+              <AdminEmptyState
+                title={t("admin.noActivity")}
+                description={t("admin.noActivityHint")}
+              />
+            ) : (
+              <div className="space-y-0.5">
+                {activityFeed.map((item, i) => (
+                  <div
+                    key={i}
+                    className={`flex items-start gap-3 py-2.5 px-3 -mx-3 rounded-md border-l-2 hover:bg-[var(--bg-hover)] transition-colors ${ACTIVITY_BORDER_COLORS[item.type]}`}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-[12px] font-medium text-[var(--text-primary)]">
+                          {item.title}
+                        </p>
+                        <span className="text-[10px] text-[var(--text-muted)] font-medium">
+                          {relativeTime(item.date)}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-[var(--text-muted)] truncate">
+                        {item.detail}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </AdminPanel>
+        </div>
+
+        <div className="lg:col-span-2">
+          <AdminPanel title={t("admin.quickActions")}>
+            <div className="grid grid-cols-2 gap-2">
+              {QUICK_ACTIONS.map((sc) => (
+                <button
+                  key={sc.id}
+                  className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-hover)] transition-all text-[12px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  onClick={() => onNavigate(sc.id)}
                 >
-                  <div className="w-8 h-8 rounded-full bg-[var(--accent-light)] flex items-center justify-center text-[var(--accent)] text-[11px] font-bold shrink-0">
-                    {(u.profile?.full_name ?? u.email)
-                      .split(" ")
-                      .map((w) => w[0] ?? "")
-                      .join("")
-                      .slice(0, 2)
-                      .toUpperCase() || "?"}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-medium text-[var(--text-primary)] truncate">
-                      {u.profile?.full_name ?? "—"}
-                    </p>
-                    <p className="text-[11px] text-[var(--text-muted)] truncate">
-                      {u.email}
-                    </p>
-                  </div>
-                  <div className="flex gap-1 flex-wrap justify-end">
-                    {u.roles.map((r) => (
-                      <span
-                        key={r.id}
-                        className="admin-badge admin-badge-info"
-                      >
-                        {r.name}
-                      </span>
-                    ))}
-                  </div>
-                  {u.profile?.created_at && (
-                    <span className="text-[10px] text-[var(--text-muted)] shrink-0 font-medium">
-                      {relativeTime(u.profile.created_at)}
-                    </span>
-                  )}
-                </div>
+                  {t(sc.labelKey)}
+                </button>
               ))}
             </div>
-          )}
-        </AdminPanel>
+          </AdminPanel>
+        </div>
       </div>
+
+      {/* Row 5 — Recent Users */}
+      <AdminPanel
+        title={t("admin.recentUsers")}
+        actions={
+          <span className="text-[11px] text-[var(--text-muted)]">
+            {t("admin.usersShown", { n: recentUsers.length })}
+          </span>
+        }
+      >
+        {recentUsers.length === 0 ? (
+          <AdminEmptyState
+            title={t("admin.noUsers")}
+            description={t("admin.noUsersHint")}
+          />
+        ) : (
+          <div className="divide-y divide-[var(--border-default)]">
+            {recentUsers.map((u) => (
+              <div
+                key={u.id}
+                className="flex items-center gap-3 py-3 hover:bg-[var(--bg-hover)] transition-colors -mx-5 px-5"
+              >
+                <div className="w-8 h-8 rounded-full bg-[var(--accent-light)] flex items-center justify-center text-[var(--accent)] text-[11px] font-bold shrink-0">
+                  {(u.profile?.full_name ?? u.email)
+                    .split(" ")
+                    .map((w) => w[0] ?? "")
+                    .join("")
+                    .slice(0, 2)
+                    .toUpperCase() || "?"}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-medium text-[var(--text-primary)] truncate">
+                    {u.profile?.full_name ?? "—"}
+                  </p>
+                  <p className="text-[11px] text-[var(--text-muted)] truncate">
+                    {u.email}
+                  </p>
+                </div>
+                <div className="flex gap-1 flex-wrap justify-end">
+                  {u.roles.map((r) => (
+                    <span
+                      key={r.id}
+                      className="admin-badge admin-badge-info"
+                    >
+                      {r.name}
+                    </span>
+                  ))}
+                </div>
+                {u.profile?.created_at && (
+                  <span className="text-[10px] text-[var(--text-muted)] shrink-0 font-medium">
+                    {relativeTime(u.profile.created_at)}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </AdminPanel>
     </div>
   );
 }

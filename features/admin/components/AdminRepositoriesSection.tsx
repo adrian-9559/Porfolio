@@ -3,7 +3,7 @@ import type { AdminRepository } from "@/services/adminService";
 
 import { useEffect, useState } from "react";
 
-import { relativeTime } from "./AdminShared";
+import { relativeTime, SearchInput, IconBtn, Icons } from "./AdminShared";
 import {
   AdminPageHeader,
   AdminStatGrid,
@@ -67,7 +67,7 @@ export function AdminRepositoriesSection() {
   }, {});
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <AdminPageHeader
         title={t("admin.reposTitle")}
         description={t("admin.reposCount", {
@@ -76,26 +76,21 @@ export function AdminRepositoriesSection() {
         })}
       />
 
-      {/* Provider stats */}
-      <div className="mb-6">
-        <AdminStatGrid cols={3}>
-          {(["github", "gitlab", "bitbucket"] as Provider[]).map((p) => (
-            <AdminStat
-              key={p}
-              label={p}
-              value={byProvider[p] ?? 0}
-            />
-          ))}
-        </AdminStatGrid>
-      </div>
+      <AdminStatGrid cols={3}>
+        {(["github", "gitlab", "bitbucket"] as Provider[]).map((p) => (
+          <AdminStat
+            key={p}
+            label={p}
+            value={byProvider[p] ?? 0}
+          />
+        ))}
+      </AdminStatGrid>
 
-      {/* Search + filter */}
-      <div className="mb-4 flex flex-wrap gap-3">
-        <input
-          className="ds-input max-w-sm flex-1 min-w-[180px]"
-          placeholder={t("admin.searchRepo")}
+      <div className="flex flex-col gap-3">
+        <SearchInput
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={setSearch}
+          placeholder={t("admin.searchRepo")}
         />
         <div className="flex gap-1.5">
           {(["all", "github", "gitlab", "bitbucket"] as const).map((p) => (
@@ -110,7 +105,6 @@ export function AdminRepositoriesSection() {
         </div>
       </div>
 
-      {/* Repository list */}
       <AdminPanel compact>
         {loading ? (
           <div className="p-6">
@@ -171,15 +165,12 @@ export function AdminRepositoriesSection() {
                     </button>
                   </div>
                 ) : (
-                  <button
-                    className="ds-btn-icon !w-8 !h-8 hover:!text-[var(--color-danger)]"
-                    title={t("admin.delete")}
+                  <IconBtn
                     onClick={() => setConfirmDeleteId(r.id)}
-                  >
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                      <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
+                    title={t("admin.delete")}
+                    icon={Icons.trash}
+                    danger
+                  />
                 )}
               </div>
             ))}

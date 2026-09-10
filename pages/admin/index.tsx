@@ -11,7 +11,6 @@ import { AdminContactSection } from "@/features/admin/components/AdminContactSec
 import { AdminBlogSection } from "@/features/admin/components/AdminBlogSection";
 import { AdminRepositoriesSection } from "@/features/admin/components/AdminRepositoriesSection";
 import { AdminSkillsSection } from "@/features/admin/components/AdminSkillsSection";
-import { AdminToolsHealthSection } from "@/features/admin/components/AdminToolsHealthSection";
 import { AdminIssuesSection } from "@/features/admin/components/AdminIssuesSection";
 import { AdminLogsSection } from "@/features/admin/components/AdminLogsSection";
 import { AdminFriendshipsSection } from "@/features/admin/components/AdminFriendshipsSection";
@@ -58,7 +57,6 @@ export default function AdminPage() {
         {section === "friendships" && <AdminFriendshipsSection />}
         {section === "skills" && <AdminSkillsSection />}
         {section === "ai-hub" && <AdminAIHubSection />}
-        {section === "services" && <AdminToolsHealthSection />}
         {section === "api-keys" && <AdminApiKeysSection />}
         {section === "apps" && <AdminAppsSection />}
         {section === "mobile-apps" && <AdminMobileAppsSection />}

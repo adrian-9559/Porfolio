@@ -25,7 +25,7 @@ export function AdminBarChart({ data, height = 280 }: BarChartProps) {
   if (data.length === 0) {
     return (
       <div
-        className="flex items-center justify-center text-xs text-[var(--text-muted)]"
+        className="flex items-center justify-center text-xs text-[var(--text-muted)] rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)]"
         style={{ height }}
       >
         No data available
@@ -96,7 +96,7 @@ export function AdminDonutChart({
   if (total === 0) {
     return (
       <div
-        className="flex items-center justify-center text-xs text-[var(--text-muted)]"
+        className="flex items-center justify-center text-xs text-[var(--text-muted)] rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)]"
         style={{ height }}
       >
         No data available
@@ -155,7 +155,7 @@ export function AdminHorizontalBarChart({
   if (data.length === 0) {
     return (
       <div
-        className="flex items-center justify-center text-xs text-[var(--text-muted)]"
+        className="flex items-center justify-center text-xs text-[var(--text-muted)] rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)]"
         style={{ height }}
       >
         No data available
@@ -210,7 +210,7 @@ export function AdminAreaChart({
   if (data.length === 0) {
     return (
       <div
-        className="flex items-center justify-center text-xs text-[var(--text-muted)]"
+        className="flex items-center justify-center text-xs text-[var(--text-muted)] rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)]"
         style={{ height }}
       >
         No data available

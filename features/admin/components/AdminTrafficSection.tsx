@@ -11,6 +11,7 @@ import {
   AdminEmptyState,
   AdminLoadingSkeleton,
 } from "./AdminShell";
+import { Btn } from "./AdminShared";
 
 function formatDuration(ms: number): string {
   if (ms < 1000) return "< 1s";
@@ -166,7 +167,7 @@ export default function AdminTrafficSection() {
                     minHeight: day.visits > 0 ? "4px" : "0",
                     background: "var(--accent)",
                   }}
-                  title={`${day.date}: ${day.visits} visitas`}
+                  title={`${day.date}: ${day.visits} ${t("admin.visits")}`}
                 />
               ))}
             </div>

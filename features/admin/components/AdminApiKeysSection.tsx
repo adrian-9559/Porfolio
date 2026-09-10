@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useT } from "@/hooks/useT";
 import { adminService, AdminApiKey } from "@/services/adminService";
 import { apiFetch } from "@/services/apiClient";
-import { relativeTime } from "./AdminShared";
+import { relativeTime, SearchInput, IconBtn, Icons, Btn } from "./AdminShared";
 import {
   AdminPageHeader,
   AdminStatGrid,
@@ -444,7 +444,7 @@ export function AdminApiKeysSection() {
                   ) : (
                     <button
                       className="ds-btn-icon ds-btn-danger"
-                      title="Eliminar"
+                      title={t("admin.delete")}
                       onClick={() => setConfirmDeleteId(k.id)}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">

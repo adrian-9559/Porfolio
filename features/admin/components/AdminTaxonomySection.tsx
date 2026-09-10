@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React, { useState, useMemo } from "react";
 
+import { useT } from "@/hooks/useT";
 import { allContent, contentHref } from "@/lib/blog/registry";
 import {
   CATEGORIES,
@@ -20,6 +21,7 @@ import {
   AdminFilterChip,
   AdminLoadingSkeleton,
 } from "./AdminShell";
+import { SearchInput } from "./AdminShared";
 
 type Tab = "categories" | "levels" | "paths" | "relationships" | "tags";
 
@@ -589,10 +591,11 @@ const allTagsCount = Array.from(
 ).length;
 
 export default function AdminTaxonomySection() {
+  const { t } = useT();
   const [tab, setTab] = useState<Tab>("categories");
 
   const tabs: { id: Tab; label: string; count: number }[] = [
-    { id: "categories", label: "Categorías", count: CATEGORIES.length },
+    { id: "categories", label: t("admin.category"), count: CATEGORIES.length },
     { id: "levels", label: "Niveles", count: LEVELS.length },
     { id: "paths", label: "Rutas", count: LEARNING_PATHS.length },
     { id: "relationships", label: "Relaciones", count: CONTENT_RELATIONSHIPS.length },

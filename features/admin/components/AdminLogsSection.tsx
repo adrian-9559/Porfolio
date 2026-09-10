@@ -1,10 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 
-import { relativeTime } from "./AdminShared";
+import { useT } from "@/hooks/useT";
+import { relativeTime, SearchInput, IconBtn, Icons } from "./AdminShared";
 import {
   AdminPageHeader,
-  AdminStatGrid,
-  AdminStat,
   AdminPanel,
   AdminEmptyState,
   AdminLoadingSkeleton,
@@ -203,6 +202,7 @@ function LogIcon({ icon }: { icon: string }) {
 }
 
 export function AdminLogsSection() {
+  const { t } = useT();
   const [events, setEvents] = useState<LogEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<LogCategory | "all">(
@@ -252,7 +252,7 @@ export function AdminLogsSection() {
   return (
     <div className="flex flex-col gap-6">
       <AdminPageHeader
-        title="Logs y Actividad"
+        title={t("admin.logsTitle")}
         description={`${events.length} eventos · Actualizado ${lastRefresh.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}`}
         actions={
           <button
@@ -270,54 +270,41 @@ export function AdminLogsSection() {
             >
               <path d="M13.5 8A5.5 5.5 0 112.5 5M13.5 2v3h-3" />
             </svg>
-            Actualizar
+            {t("admin.refresh")}
           </button>
         }
       />
 
-      <div className="flex flex-wrap gap-2">
-        <AdminFilterChip
-          active={activeCategory === "all"}
-          onClick={() => setActiveCategory("all")}
-        >
-          Todos <span className="tabular-nums">{events.length}</span>
-        </AdminFilterChip>
-        {(
-          Object.entries(CAT_CONFIG) as [
-            LogCategory,
-            (typeof CAT_CONFIG)[LogCategory],
-          ][]
-        ).map(([cat, cfg]) => (
-          <AdminFilterChip
-            key={cat}
-            active={activeCategory === cat}
-            onClick={() => setActiveCategory(cat)}
-          >
-            <span className={`w-1.5 h-1.5 rounded-full inline-block ${cfg.dot}`} />
-            {cfg.label}
-            <span className="tabular-nums">{counts[cat]}</span>
-          </AdminFilterChip>
-        ))}
-      </div>
-
-      <div className="relative">
-        <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)] z-10"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeWidth="1.5"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="M21 21l-4.35-4.35" />
-        </svg>
-        <input
-          className="ds-input w-full pl-10"
-          placeholder="Buscar en los logs…"
+      <div className="flex flex-col gap-3">
+        <SearchInput
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={setSearch}
+          placeholder={t("admin.searchLogs")}
         />
+        <div className="flex flex-wrap gap-2">
+          <AdminFilterChip
+            active={activeCategory === "all"}
+            onClick={() => setActiveCategory("all")}
+          >
+            {t("admin.filterAll")} <span className="tabular-nums">{events.length}</span>
+          </AdminFilterChip>
+          {(
+            Object.entries(CAT_CONFIG) as [
+              LogCategory,
+              (typeof CAT_CONFIG)[LogCategory],
+            ][]
+          ).map(([cat, cfg]) => (
+            <AdminFilterChip
+              key={cat}
+              active={activeCategory === cat}
+              onClick={() => setActiveCategory(cat)}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full inline-block ${cfg.dot}`} />
+              {cfg.label}
+              <span className="tabular-nums">{counts[cat]}</span>
+            </AdminFilterChip>
+          ))}
+        </div>
       </div>
 
       <AdminPanel>
@@ -325,7 +312,7 @@ export function AdminLogsSection() {
           <AdminLoadingSkeleton rows={6} />
         ) : filtered.length === 0 ? (
           <AdminEmptyState
-            title="Sin eventos con esos filtros"
+            title={t("admin.noLogsFilter")}
           />
         ) : (
           <div className="divide-y divide-[var(--border-default)]">
@@ -369,8 +356,7 @@ export function AdminLogsSection() {
       </AdminPanel>
 
       <p className="text-xs text-[var(--text-muted)] text-center">
-        Mostrando {filtered.length} de {events.length} eventos · Datos obtenidos
-        de API Keys, Notificaciones, Contacto y Descargas de la app
+        {t("admin.showingEvents", { filtered: filtered.length, total: events.length })}
       </p>
     </div>
   );

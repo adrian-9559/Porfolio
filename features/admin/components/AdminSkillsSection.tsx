@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import { useT } from "@/hooks/useT";
 import {
   AdminPageHeader,
+  AdminStatGrid,
+  AdminStat,
   AdminPanel,
   AdminEmptyState,
   AdminFilterChip,
 } from "./AdminShell";
+import { SearchInput } from "./AdminShared";
 
 type Category =
   | "design"
@@ -114,14 +117,8 @@ const SKILLS: Skill[] = [
     category: "frontend",
     files: [
       { path: ".agents/skills/frontend-design/SKILL.md", scope: "root" },
-      {
-        path: "frontend/apps/web/.agents/skills/frontend-design/SKILL.md",
-        scope: "web",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/frontend-design/SKILL.md",
-        scope: "mobile",
-      },
+      { path: "frontend/apps/web/.agents/skills/frontend-design/SKILL.md", scope: "web" },
+      { path: "frontend/apps/Partimos/.agents/skills/frontend-design/SKILL.md", scope: "mobile" },
     ],
   },
   {
@@ -130,14 +127,8 @@ const SKILLS: Skill[] = [
       "Audit and improve web accessibility following WCAG 2.2 guidelines.",
     category: "frontend",
     files: [
-      {
-        path: "frontend/apps/web/.agents/skills/accessibility/SKILL.md",
-        scope: "web",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/accessibility/SKILL.md",
-        scope: "mobile",
-      },
+      { path: "frontend/apps/web/.agents/skills/accessibility/SKILL.md", scope: "web" },
+      { path: "frontend/apps/Partimos/.agents/skills/accessibility/SKILL.md", scope: "mobile" },
     ],
   },
   {
@@ -146,30 +137,8 @@ const SKILLS: Skill[] = [
       "React and Next.js performance optimization guidelines from Vercel Engineering.",
     category: "frontend",
     files: [
-      {
-        path: "frontend/apps/web/.agents/skills/react-best-practices/SKILL.md",
-        scope: "web",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/react-best-practices/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "vercel-composition-patterns",
-    description:
-      "React composition patterns that scale. Use when refactoring components with boolean prop proliferation.",
-    category: "frontend",
-    files: [
-      {
-        path: "frontend/apps/web/.agents/skills/composition-patterns/SKILL.md",
-        scope: "web",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/composition-patterns/SKILL.md",
-        scope: "mobile",
-      },
+      { path: "frontend/apps/web/.agents/skills/react-best-practices/SKILL.md", scope: "web" },
+      { path: "frontend/apps/Partimos/.agents/skills/react-best-practices/SKILL.md", scope: "mobile" },
     ],
   },
   {
@@ -178,22 +147,7 @@ const SKILLS: Skill[] = [
     category: "frontend",
     files: [
       { path: "frontend/apps/web/.agents/skills/seo/SKILL.md", scope: "web" },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/seo/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "tailwind-css-patterns",
-    description:
-      "Comprehensive Tailwind CSS utility-first styling patterns including responsive design, layout utilities, flexbox, grid, spacing, typography, colors.",
-    category: "frontend",
-    files: [
-      {
-        path: "frontend/apps/web/.agents/skills/tailwind-css-patterns/SKILL.md",
-        scope: "web",
-      },
+      { path: "frontend/apps/Partimos/.agents/skills/seo/SKILL.md", scope: "mobile" },
     ],
   },
   {
@@ -202,34 +156,7 @@ const SKILLS: Skill[] = [
       "Next.js best practices — file conventions, RSC boundaries, data patterns, async APIs, metadata, error handling, route handlers, image/font optimization.",
     category: "frontend",
     files: [
-      {
-        path: "frontend/apps/web/.agents/skills/next-best-practices/SKILL.md",
-        scope: "web",
-      },
-    ],
-  },
-  {
-    name: "next-cache-components",
-    description:
-      "Next.js 16 Cache Components — PPR, use cache directive, cacheLife, cacheTag, updateTag.",
-    category: "frontend",
-    files: [
-      {
-        path: "frontend/apps/web/.agents/skills/next-cache-components/SKILL.md",
-        scope: "web",
-      },
-    ],
-  },
-  {
-    name: "next-upgrade",
-    description:
-      "Upgrade Next.js to the latest version following official migration guides and codemods.",
-    category: "frontend",
-    files: [
-      {
-        path: "frontend/apps/web/.agents/skills/next-upgrade/SKILL.md",
-        scope: "web",
-      },
+      { path: "frontend/apps/web/.agents/skills/next-best-practices/SKILL.md", scope: "web" },
     ],
   },
   {
@@ -238,46 +165,7 @@ const SKILLS: Skill[] = [
       "Complete guide for building beautiful apps with Expo Router. Covers fundamentals, styling, components, navigation, animations, patterns, and native tabs.",
     category: "mobile",
     files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/building-native-ui/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "sleek-design-mobile-apps",
-    description:
-      "Design mobile apps, create screens, build UI, and interact with Sleek projects.",
-    category: "mobile",
-    files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/design-mobile-apps/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "expo-api-routes",
-    description:
-      "Guidelines for creating API routes in Expo Router with EAS Hosting.",
-    category: "mobile",
-    files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/expo-api-routes/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "expo-cicd-workflows",
-    description:
-      "Helps understand and write EAS workflow YAML files for Expo projects.",
-    category: "mobile",
-    files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/expo-cicd-workflows/SKILL.md",
-        scope: "mobile",
-      },
+      { path: "frontend/apps/Partimos/.agents/skills/building-native-ui/SKILL.md", scope: "mobile" },
     ],
   },
   {
@@ -286,70 +174,7 @@ const SKILLS: Skill[] = [
       "Deploying Expo apps to iOS App Store, Android Play Store, web hosting, and API routes.",
     category: "mobile",
     files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/expo-deployment/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "expo-dev-client",
-    description:
-      "Build and distribute Expo development clients locally or via TestFlight.",
-    category: "mobile",
-    files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/expo-dev-client/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "expo-tailwind-setup",
-    description:
-      "Set up Tailwind CSS v4 in Expo with react-native-css and NativeWind v5 for universal styling.",
-    category: "mobile",
-    files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/expo-tailwind-setup/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "native-data-fetching",
-    description:
-      "Implement and debug network requests, API calls, or data fetching. Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.",
-    category: "mobile",
-    files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/native-data-fetching/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "upgrading-expo",
-    description:
-      "Guidelines for upgrading Expo SDK versions and fixing dependency issues.",
-    category: "mobile",
-    files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/upgrading-expo/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "use-dom",
-    description:
-      "Use Expo DOM components to run web code in a webview on native and as-is on web.",
-    category: "mobile",
-    files: [
-      {
-        path: "frontend/apps/Partimos/.agents/skills/use-dom/SKILL.md",
-        scope: "mobile",
-      },
+      { path: "frontend/apps/Partimos/.agents/skills/expo-deployment/SKILL.md", scope: "mobile" },
     ],
   },
   {
@@ -358,78 +183,10 @@ const SKILLS: Skill[] = [
       "Build production-ready Node.js backend services with Express/Fastify, implementing middleware patterns, error handling, authentication, database integration, and API design best practices.",
     category: "backend",
     files: [
-      {
-        path: "backend/.agents/skills/nodejs-backend-patterns/SKILL.md",
-        scope: "backend",
-      },
-      {
-        path: "frontend/apps/web/.agents/skills/nodejs-backend-patterns/SKILL.md",
-        scope: "web",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/nodejs-backend-patterns/SKILL.md",
-        scope: "mobile",
-      },
+      { path: "backend/.agents/skills/nodejs-backend-patterns/SKILL.md", scope: "backend" },
+      { path: "frontend/apps/web/.agents/skills/nodejs-backend-patterns/SKILL.md", scope: "web" },
+      { path: "frontend/apps/Partimos/.agents/skills/nodejs-backend-patterns/SKILL.md", scope: "mobile" },
     ],
-  },
-  {
-    name: "nodejs-best-practices",
-    description:
-      "Node.js development principles and decision-making. Framework selection, async patterns, security, and architecture.",
-    category: "backend",
-    files: [
-      {
-        path: "backend/.agents/skills/nodejs-best-practices/SKILL.md",
-        scope: "backend",
-      },
-      {
-        path: "frontend/apps/web/.agents/skills/nodejs-best-practices/SKILL.md",
-        scope: "web",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/nodejs-best-practices/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "nodejs-express-server",
-    description:
-      "Build production-ready Express.js servers with middleware, authentication, routing, and database integration.",
-    category: "backend",
-    files: [
-      {
-        path: "backend/.agents/skills/nodejs-express-server/SKILL.md",
-        scope: "backend",
-      },
-    ],
-  },
-  {
-    name: "typescript-advanced-types",
-    description:
-      "Master TypeScript advanced type system including generics, conditional types, mapped types, template literals, and utility types.",
-    category: "backend",
-    files: [
-      {
-        path: "backend/.agents/skills/typescript-advanced-types/SKILL.md",
-        scope: "backend",
-      },
-      {
-        path: "frontend/apps/web/.agents/skills/typescript-advanced-types/SKILL.md",
-        scope: "web",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/typescript-advanced-types/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "zod",
-    description:
-      "Zod schema validation best practices for type safety, parsing, and error handling.",
-    category: "backend",
-    files: [{ path: "backend/.agents/skills/zod/SKILL.md", scope: "backend" }],
   },
   {
     name: "supabase-postgres-best-practices",
@@ -437,30 +194,8 @@ const SKILLS: Skill[] = [
       "Postgres performance optimization and best practices from Supabase.",
     category: "database",
     files: [
-      {
-        path: "backend/.agents/skills/supabase-postgres-best-practices/SKILL.md",
-        scope: "backend",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/supabase-postgres-best-practices/SKILL.md",
-        scope: "mobile",
-      },
-    ],
-  },
-  {
-    name: "bash-defensive-patterns",
-    description:
-      "Master defensive Bash programming techniques for production-grade scripts. Use when writing robust shell scripts, CI/CD pipelines, or system utilities requiring fault tolerance and safety.",
-    category: "tools",
-    files: [
-      {
-        path: ".agents/skills/bash-defensive-patterns/SKILL.md",
-        scope: "root",
-      },
-      {
-        path: "frontend/apps/Partimos/.agents/skills/bash-defensive-patterns/SKILL.md",
-        scope: "mobile",
-      },
+      { path: "backend/.agents/skills/supabase-postgres-best-practices/SKILL.md", scope: "backend" },
+      { path: "frontend/apps/Partimos/.agents/skills/supabase-postgres-best-practices/SKILL.md", scope: "mobile" },
     ],
   },
   {
@@ -477,207 +212,135 @@ const PLUGINS: Plugin[] = [
     name: "@opencode-ai/plugin",
     description: "OpenCode plugin runtime",
     type: "npm",
-    details: "v1.17.11 — instalado en .opencode/node_modules/",
-  },
-  {
-    name: "@heroui/react-mcp",
-    description: "HeroUI v3 React component documentation MCP server",
-    type: "mcp",
-    details:
-      "Documentado en docs/heroui/web/guides/mcp-server.md — no configurado aún",
+    details: "v1.17.11",
   },
   {
     name: "codegraph",
-    description:
-      "CodeGraph — SQLite knowledge graph indexer for code intelligence",
+    description: "SQLite knowledge graph indexer for code intelligence",
     type: "mcp",
-    details:
-      "Activo vía MCP. Indexa símbolos, edges y archivos del workspace en .codegraph/",
+    details: "Indexa símbolos, edges y archivos del workspace",
   },
   {
     name: "context7",
-    description:
-      "Context7 — up-to-date library/framework documentation fetcher",
+    description: "Up-to-date library/framework documentation fetcher",
     type: "mcp",
-    details:
-      "Activo vía MCP. Resuelve IDs de librerías y consulta docs actualizados",
+    details: "Resuelve IDs de librerías y consulta docs actualizados",
   },
   {
     name: "heroui-react",
-    description: "HeroUI v3 React MCP — documentación de componentes React",
+    description: "HeroUI v3 React component documentation",
     type: "mcp",
-    details:
-      "Activo vía MCP. get_docs, list_components, get_component_docs, get_theme_variables",
+    details: "get_docs, list_components, get_component_docs",
   },
   {
     name: "heroui-native",
-    description:
-      "HeroUI Native Beta MCP — documentación de componentes React Native",
+    description: "HeroUI Native component documentation",
     type: "mcp",
-    details:
-      "Activo vía MCP. get_docs, list_components, get_component_docs, get_theme_variables",
-  },
-  {
-    name: "Claude Preview",
-    description: "Claude Preview MCP — preview_start",
-    type: "mcp",
-    details:
-      "Configurado en .claude/settings.local.json con permiso mcp__Claude_Preview__preview_start",
+    details: "get_docs, list_components, get_component_docs",
   },
   {
     name: "Supabase MCP",
-    description: "Supabase migration MCP — apply_migration",
+    description: "Supabase migration & management",
     type: "mcp",
-    details: "Configurado en .claude/settings.local.json",
-  },
-  {
-    name: "PreToolUse Hook (Bash guard)",
-    description:
-      "Intercepta llamadas Bash (grep/rg/find) y Read/Glob para redirigir a graphify query primero",
-    type: "hook",
-    details:
-      "Configurado en .claude/settings.json — evita lectura directa cuando hay grafo disponible",
+    details: "apply_migration, execute_sql, list_tables",
   },
 ];
 
 const CATEGORIES: {
   key: Category | "all";
   label: string;
-  icon: React.ReactElement;
+  color: string;
+  count?: number;
 }[] = [
-  {
-    key: "all",
-    label: "Todas",
-    icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
-        <rect height="7" width="7" x="3" y="3" />
-        <rect height="7" width="7" x="14" y="3" />
-        <rect height="7" width="7" x="14" y="14" />
-        <rect height="7" width="7" x="3" y="14" />
-      </svg>
-    ),
-  },
-  {
-    key: "design",
-    label: "Diseño",
-    icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
-        <circle cx="13.5" cy="6.5" r="2.5" />
-        <circle cx="17.5" cy="15.5" r="2.5" />
-        <circle cx="8.5" cy="15.5" r="2.5" />
-        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z" />
-      </svg>
-    ),
-  },
-  {
-    key: "frontend",
-    label: "Frontend",
-    icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" />
-        <line x1="2" x2="22" y1="12" y2="12" />
-        <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
-      </svg>
-    ),
-  },
-  {
-    key: "mobile",
-    label: "Mobile",
-    icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
-        <rect height="20" rx="2" ry="2" width="14" x="5" y="2" />
-        <line x1="12" x2="12.01" y1="18" y2="18" />
-      </svg>
-    ),
-  },
-  {
-    key: "backend",
-    label: "Backend",
-    icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-      </svg>
-    ),
-  },
-  {
-    key: "database",
-    label: "Base de Datos",
-    icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
-        <ellipse cx="12" cy="5" rx="9" ry="3" />
-        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-      </svg>
-    ),
-  },
-  {
-    key: "tools",
-    label: "Herramientas",
-    icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
-        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
-      </svg>
-    ),
-  },
+  { key: "all", label: "All", color: "var(--text-muted)" },
+  { key: "design", label: "Design", color: "#ec4899" },
+  { key: "frontend", label: "Frontend", color: "#3b82f6" },
+  { key: "mobile", label: "Mobile", color: "#f59e0b" },
+  { key: "backend", label: "Backend", color: "#10b981" },
+  { key: "database", label: "Database", color: "#8b5cf6" },
+  { key: "tools", label: "Tools", color: "#6b7280" },
 ];
 
-const CATEGORY_BADGE: Record<Category, string> = {
-  design: "admin-badge admin-badge-info",
-  frontend: "admin-badge admin-badge-success",
-  mobile: "admin-badge admin-badge-warning",
-  backend: "admin-badge admin-badge-success",
-  database: "admin-badge admin-badge-info",
-  tools: "admin-badge",
-  plugins: "admin-badge",
+const SCOPE_COLORS: Record<string, string> = {
+  global: "bg-blue-500/10 text-blue-400",
+  claude: "bg-amber-500/10 text-amber-400",
+  root: "bg-gray-500/10 text-gray-400",
+  web: "bg-cyan-500/10 text-cyan-400",
+  mobile: "bg-orange-500/10 text-orange-400",
+  backend: "bg-green-500/10 text-green-400",
 };
 
-const SCOPE_LABELS: Record<string, string> = {
-  global: "Global",
-  claude: "Claude",
-  root: "Raíz",
-  web: "Web App",
-  mobile: "App Móvil",
-  backend: "Backend",
+const PLUGIN_TYPE_COLORS: Record<string, string> = {
+  mcp: "bg-[var(--accent-light)] text-[var(--accent)]",
+  npm: "bg-emerald-500/10 text-emerald-400",
+  hook: "bg-amber-500/10 text-amber-400",
 };
 
 export function AdminSkillsSection() {
   const { t } = useT();
   const [search, setSearch] = useState("");
   const [cat, setCat] = useState<Category | "all">("all");
+  const [expandedSkill, setExpandedSkill] = useState<string | null>(null);
 
-  const filtered = SKILLS.filter(
-    (s) =>
-      (cat === "all" || s.category === cat) &&
-      (s.name.toLowerCase().includes(search.toLowerCase()) ||
-        s.description.toLowerCase().includes(search.toLowerCase())),
+  const filtered = useMemo(
+    () =>
+      SKILLS.filter(
+        (s) =>
+          (cat === "all" || s.category === cat) &&
+          (s.name.toLowerCase().includes(search.toLowerCase()) ||
+            s.description.toLowerCase().includes(search.toLowerCase())),
+      ),
+    [search, cat],
   );
 
-  const catCounts = CATEGORIES.map((c) => ({
-    ...c,
-    count:
-      c.key === "all"
-        ? SKILLS.length
-        : SKILLS.filter((s) => s.category === c.key).length,
-  }));
+  const catCounts = useMemo(
+    () =>
+      CATEGORIES.map((c) => ({
+        ...c,
+        count:
+          c.key === "all"
+            ? SKILLS.length
+            : SKILLS.filter((s) => s.category === c.key).length,
+      })),
+    [],
+  );
+
+  const totalLocations = useMemo(
+    () => SKILLS.reduce((acc, s) => acc + s.files.length, 0),
+    [],
+  );
 
   return (
     <div className="flex flex-col gap-6">
       <AdminPageHeader
-        title="Skills & Plugins"
-        description={`${SKILLS.length} skills · ${PLUGINS.length} plugins/MCPs · inventario completo del agente`}
+        title={t("admin.skills")}
+        description={`${SKILLS.length} skills · ${PLUGINS.length} plugins/MCPs · ${totalLocations} ubicaciones`}
       />
 
-      {/* Category filters */}
+      {/* Stats */}
+      <AdminStatGrid cols={4}>
+        <AdminStat label="Skills" value={SKILLS.length} accent />
+        <AdminStat label="Plugins" value={PLUGINS.length} />
+        <AdminStat label="Categorías" value={CATEGORIES.length - 1} />
+        <AdminStat label="Ubicaciones" value={totalLocations} />
+      </AdminStatGrid>
+
+      {/* Category Filter */}
       <div className="flex gap-1.5 flex-wrap">
         {catCounts.map((c) => (
           <AdminFilterChip
             key={c.key}
             active={cat === c.key}
-            onClick={() => setCat(c.key)}
+            onClick={() => setCat(c.key as Category | "all")}
           >
-            {c.icon}
+            {c.key !== "all" && (
+              <span
+                className="w-2 h-2 rounded-full shrink-0"
+                style={{ background: c.color }}
+              />
+            )}
             {c.label}
-            <span className="ml-1 text-[10px] font-mono opacity-60">
+            <span className="text-[10px] font-mono opacity-50">
               {c.count}
             </span>
           </AdminFilterChip>
@@ -685,88 +348,110 @@ export function AdminSkillsSection() {
       </div>
 
       {/* Search */}
-      <div className="relative">
-        <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeWidth="1.5"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="M21 21l-4.35-4.35" />
-        </svg>
-        <input
-          className="ds-input pl-10"
-          placeholder="Buscar skill por nombre o descripción…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
+      <SearchInput
+        value={search}
+        onChange={setSearch}
+        placeholder="Buscar skill por nombre o descripción…"
+      />
 
-      {/* Skills grid */}
+      {/* Skills Grid */}
       {filtered.length === 0 ? (
         <AdminEmptyState
           title={`No skills match${search ? ` "${search}"` : ""}`}
+          description="Intenta con otros términos de búsqueda"
         />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {filtered.map((skill) => (
-            <AdminPanel key={skill.name} compact>
-              <div className="flex flex-col gap-2.5">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
-                      {skill.name}
-                    </p>
-                    <span className={`inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full ${CATEGORY_BADGE[skill.category]}`}>
-                      {CATEGORIES.find((c) => c.key === skill.category)?.label}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {filtered.map((skill) => {
+            const isExpanded = expandedSkill === skill.name;
+            const catInfo = CATEGORIES.find((c) => c.key === skill.category);
+
+            return (
+              <AdminPanel key={skill.name} compact>
+                <div className="flex flex-col gap-3">
+                  {/* Header */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ background: catInfo?.color ?? "var(--text-muted)" }}
+                      />
+                      <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
+                        {skill.name}
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[var(--bg-hover)] text-[var(--text-muted)] shrink-0">
+                      {skill.files.length} {skill.files.length === 1 ? "file" : "files"}
                     </span>
                   </div>
-                </div>
 
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-2">
-                  {skill.description}
-                </p>
-
-                <div className="flex flex-col gap-1 mt-1">
-                  <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                    Ubicaciones
+                  {/* Description */}
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    {skill.description}
                   </p>
-                  {skill.files.map((f, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-1.5 text-[10px] font-mono text-[var(--text-secondary)]"
+
+                  {/* Files - Expandable */}
+                  <button
+                    className="flex items-center gap-1.5 text-[11px] font-medium text-[var(--accent)] hover:underline cursor-pointer bg-transparent border-0 p-0 text-left"
+                    onClick={() => setExpandedSkill(isExpanded ? null : skill.name)}
+                  >
+                    <svg
+                      className={`w-3 h-3 transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" />
-                      <span className="truncate">{f.path}</span>
-                      <span className="shrink-0 text-[9px] px-1 py-0.5 rounded bg-[var(--bg-hover)] text-[var(--text-muted)] font-medium">
-                        {SCOPE_LABELS[f.scope] ?? f.scope}
-                      </span>
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                    {skill.files.length} ubicaciones
+                  </button>
+
+                  {isExpanded && (
+                    <div className="flex flex-col gap-1.5 pl-1 border-l-2 border-[var(--border-default)]">
+                      {skill.files.map((f, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center gap-2 text-[10px] font-mono text-[var(--text-secondary)]"
+                        >
+                          <span className="truncate flex-1">{f.path}</span>
+                          <span
+                            className={`shrink-0 text-[9px] px-1.5 py-0.5 rounded font-medium ${SCOPE_COLORS[f.scope] ?? "bg-[var(--bg-hover)] text-[var(--text-muted)]"}`}
+                          >
+                            {f.scope}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              </div>
-            </AdminPanel>
-          ))}
+              </AdminPanel>
+            );
+          })}
         </div>
       )}
 
-      {/* Plugins & MCP section */}
-      <div>
-        <h3 className="text-base font-semibold text-[var(--text-primary)] mb-3">
+      {/* Plugins Section */}
+      <div className="mt-4">
+        <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2">
+          <svg className="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24">
+            <path d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.556a4.5 4.5 0 00-6.364-6.364L4.757 8.25a4.5 4.5 0 006.364 6.364l4.5-4.5z" />
+          </svg>
           Plugins & MCP Servers
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {PLUGINS.map((p) => (
             <AdminPanel key={p.name} compact>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded admin-badge ${p.type === "mcp" ? "admin-badge-info" : p.type === "npm" ? "admin-badge-success" : "admin-badge-warning"}`}>
+                  <span
+                    className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${PLUGIN_TYPE_COLORS[p.type] ?? "bg-[var(--bg-hover)] text-[var(--text-muted)]"}`}
+                  >
                     {p.type.toUpperCase()}
                   </span>
-                  <p className="text-sm font-semibold text-[var(--text-primary)]">
+                  <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
                     {p.name}
                   </p>
                 </div>

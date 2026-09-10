@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { useT } from "@/hooks/useT";
 import { allContent, ContentType, contentHref } from "@/lib/blog/registry";
 
 import {
@@ -8,6 +9,7 @@ import {
   AdminEmptyState,
   AdminFilterChip,
 } from "./AdminShell";
+import { SearchInput } from "./AdminShared";
 
 const TYPE_ICONS: Record<ContentType, React.ReactElement> = {
   article: (
@@ -32,12 +34,6 @@ const TYPE_ICONS: Record<ContentType, React.ReactElement> = {
   ),
 };
 
-const TYPE_LABEL: Record<ContentType, string> = {
-  article: "Artículo",
-  tutorial: "Tutorial",
-  tool: "Herramienta",
-};
-
 const TYPE_BADGE_CLASS: Record<ContentType, string> = {
   article: "admin-badge-info",
   tutorial: "admin-badge-success",
@@ -45,8 +41,15 @@ const TYPE_BADGE_CLASS: Record<ContentType, string> = {
 };
 
 export function AdminBlogSection() {
+  const { t } = useT();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | ContentType>("all");
+
+  const TYPE_LABEL: Record<ContentType, string> = {
+    article: t("admin.blogArticle"),
+    tutorial: t("admin.blogTutorial"),
+    tool: t("admin.blogTool"),
+  };
 
   const filtered = allContent.filter((c) => {
     if (filter !== "all" && c.type !== filter) return false;
@@ -72,33 +75,29 @@ export function AdminBlogSection() {
   return (
     <div className="flex flex-col gap-6">
       <AdminPageHeader
-        title="Blog & Herramientas"
-        description={`${allContent.length} elementos · ${counts.articles} artículos · ${counts.tutorials} tutoriales · ${counts.tools} herramientas`}
+        title={t("admin.blogTitle")}
+        description={`${allContent.length} ${t("admin.shortcutIssues").toLowerCase()} · ${counts.articles} ${t("admin.articles").toLowerCase()} · ${counts.tutorials} ${t("admin.tutorials").toLowerCase()} · ${counts.tools} ${t("admin.tools").toLowerCase()}`}
       />
 
       <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-4 py-3">
         <p className="text-xs text-[var(--text-secondary)]">
-          <strong>Nota:</strong> El contenido del blog está gestionado desde el
-          código fuente en{" "}
-          <code className="font-mono text-[var(--text-primary)]">lib/blog/registry.ts</code>. Aquí puedes
-          visualizar el inventario actual.
+          <strong>{t("admin.blogNote").split(":")[0]}:</strong> {t("admin.blogNote").split(":").slice(1).join(":")}
         </p>
       </div>
 
       <div className="flex flex-col gap-3">
-        <input
-          className="ds-input w-full"
-          placeholder="Buscar contenido…"
+        <SearchInput
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={setSearch}
+          placeholder={t("admin.searchContent")}
         />
         <div className="flex gap-1.5 flex-wrap">
           {(
             [
-              { key: "all", label: "Todo" },
-              { key: "article", label: "Artículos" },
-              { key: "tutorial", label: "Tutoriales" },
-              { key: "tool", label: "Herramientas" },
+              { key: "all", label: t("admin.filterAll") },
+              { key: "article", label: t("admin.articles") },
+              { key: "tutorial", label: t("admin.tutorials") },
+              { key: "tool", label: t("admin.tools") },
             ] as const
           ).map((f) => (
             <AdminFilterChip
@@ -115,8 +114,8 @@ export function AdminBlogSection() {
       <AdminPanel compact>
         {filtered.length === 0 ? (
           <AdminEmptyState
-            title="Sin resultados"
-            description="No se encontró contenido que coincida con los filtros."
+            title={t("admin.noResults")}
+            description={t("admin.noResultsHint")}
           />
         ) : (
           <div className="flex flex-col">
@@ -138,7 +137,7 @@ export function AdminBlogSection() {
                     </span>
                     {c.featured && (
                       <span className="admin-badge admin-badge-warning">
-                        destacado
+                        {t("admin.featured")}
                       </span>
                     )}
                   </div>
@@ -173,7 +172,7 @@ export function AdminBlogSection() {
       </AdminPanel>
 
       <p className="text-xs text-center text-[var(--text-muted)]">
-        Mostrando {filtered.length} de {allContent.length} elementos
+        {t("admin.showingCount", { filtered: filtered.length, total: allContent.length })}
       </p>
     </div>
   );

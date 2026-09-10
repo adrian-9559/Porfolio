@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useT } from "@/hooks/useT";
 import { userService } from "@/services/userService";
 import { authService } from "@/services/authService";
+import { Btn, Input, Textarea } from "./AdminShared";
 
 interface Props {
   user: UserWithProfile;
@@ -61,23 +62,23 @@ export function AdminUserModal({
     setError("");
     setSuccess("");
     if (newPassword.length < 8) {
-      setError("Mínimo 8 caracteres");
+      setError(t("admin.userModalMinChars"));
 
       return;
     }
     if (newPassword !== confirmPassword) {
-      setError("Las contraseñas no coinciden");
+      setError(t("admin.userModalPasswordsDontMatch"));
 
       return;
     }
     setLoadingPassword(true);
     try {
       await authService.adminChangePassword(user.id, newPassword);
-      setSuccess("Contraseña actualizada");
+      setSuccess(t("admin.userModalPasswordUpdated"));
       setNewPassword("");
       setConfirmPassword("");
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Error");
+      setError(err instanceof Error ? err.message : t("admin.error"));
     } finally {
       setLoadingPassword(false);
     }
@@ -89,9 +90,9 @@ export function AdminUserModal({
     setLoadingConfirm(true);
     try {
       await authService.resendConfirmation(user.email);
-      setSuccess("Email de confirmación reenviado");
+      setSuccess(t("admin.userModalConfirmSent"));
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Error");
+      setError(err instanceof Error ? err.message : t("admin.error"));
     } finally {
       setLoadingConfirm(false);
     }
@@ -103,9 +104,9 @@ export function AdminUserModal({
     setLoadingManualConfirm(true);
     try {
       await authService.adminConfirmEmail(user.id);
-      setSuccess("Email confirmado manualmente");
+      setSuccess(t("admin.userModalConfirmedManually"));
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Error");
+      setError(err instanceof Error ? err.message : t("admin.error"));
     } finally {
       setLoadingManualConfirm(false);
     }
@@ -205,7 +206,7 @@ export function AdminUserModal({
                 </div>
                 <div>
                   <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-1.5 block">
-                    Bio
+                    {t("admin.userModalBio")}
                   </label>
                   <textarea
                     className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all resize-none"
@@ -296,19 +297,19 @@ export function AdminUserModal({
                 {/* Password */}
                 <div>
                   <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">
-                    Cambiar contraseña
+                    {t("admin.userModalChangePassword")}
                   </label>
                   <div className="flex flex-col gap-2">
                     <input
                       className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
-                      placeholder="Nueva contraseña (min 8)"
+                      placeholder={t("admin.userModalNewPassword")}
                       type="password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                     />
                     <input
                       className="w-full px-3 py-2 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c22] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
-                      placeholder="Confirmar contraseña"
+                      placeholder={t("admin.userModalConfirmPassword")}
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -318,7 +319,7 @@ export function AdminUserModal({
                       disabled={loadingPassword || !newPassword}
                       onClick={handleChangePassword}
                     >
-                      {loadingPassword ? "…" : "Actualizar"}
+                      {loadingPassword ? "…" : t("admin.save")}
                     </button>
                   </div>
                 </div>
@@ -326,7 +327,7 @@ export function AdminUserModal({
                 {/* Email confirmation */}
                 <div className="border-t border-black/6 dark:border-white/6 pt-4">
                   <label className="text-[10px] font-semibold uppercase tracking-wider text-[#aeaeb2] dark:text-[#636366] mb-2 block">
-                    Confirmación de email
+                    {t("admin.emailConfirmation")}
                   </label>
                   {user.email_confirmed ? (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
@@ -341,7 +342,7 @@ export function AdminUserModal({
                         <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
                         <path d="M22 4L12 14.01l-3-3" />
                       </svg>
-                      Confirmado
+                      {t("admin.userModalConfirmed")}
                     </span>
                   ) : (
                     <div className="flex gap-2">
@@ -350,14 +351,14 @@ export function AdminUserModal({
                         disabled={loadingConfirm}
                         onClick={handleResendConfirmation}
                       >
-                        {loadingConfirm ? "…" : "Reenviar email"}
+                        {loadingConfirm ? "…" : t("admin.userModalResendConfirm")}
                       </button>
                       <button
                         className="px-3 py-1.5 rounded-lg bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40"
                         disabled={loadingManualConfirm}
                         onClick={handleManualConfirm}
                       >
-                        {loadingManualConfirm ? "…" : "Confirmar manualmente"}
+                        {loadingManualConfirm ? "…" : t("admin.userModalConfirmManually")}
                       </button>
                     </div>
                   )}

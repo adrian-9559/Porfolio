@@ -9,6 +9,7 @@ import {
   AdminEmptyState,
   AdminFilterChip,
 } from "./AdminShell";
+import { SearchInput } from "./AdminShared";
 
 // ── Endpoint Explorer data ────────────────────────────────────────────────────
 

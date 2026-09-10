@@ -15,7 +15,7 @@ import {
   AdminLoadingSkeleton,
   AdminFilterChip,
 } from "./AdminShell";
-import { relativeTime } from "./AdminShared";
+import { relativeTime, SearchInput, IconBtn, Icons, Btn } from "./AdminShared";
 
 const statusBadgeClass: Record<string, string> = {
   pending: "admin-badge admin-badge-warning",
@@ -143,7 +143,7 @@ export function AdminContactSection() {
         <AdminStat
           label={t("admin.contactPending")}
           value={pending}
-          sub={pending > 0 ? `${pending} sin leer` : undefined}
+          sub={pending > 0 ? `${pending} ${t("admin.unread")}` : undefined}
         />
         <AdminStat
           label={t("admin.contactReviewed")}
@@ -158,18 +158,16 @@ export function AdminContactSection() {
       <AdminPanel
         title={t("admin.contactRecipientsTitle")}
         actions={
-          <button
-            className="ds-btn-primary"
-            disabled={savingRecipients}
-            type="button"
+          <Btn
             onClick={handleSaveRecipients}
+            disabled={savingRecipients}
           >
             {savingRecipients
               ? "..."
               : recipientSaved
                 ? "✓"
                 : t("admin.contactRecipientsSave")}
-          </button>
+          </Btn>
         }
       >
         <p className="text-xs text-[var(--text-muted)] mb-3">
@@ -234,25 +232,11 @@ export function AdminContactSection() {
       </AdminPanel>
 
       <div className="flex flex-col gap-3">
-        <div className="relative flex-1">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-          </svg>
-          <input
-            className="ds-input pl-10"
-            placeholder={t("admin.searchByName")}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder={t("admin.searchByName")}
+        />
         <div className="flex gap-1.5 flex-wrap">
           {FILTERS.map((f) => (
             <AdminFilterChip
@@ -349,44 +333,18 @@ export function AdminContactSection() {
 
                 <div className="flex items-center gap-1 shrink-0">
                   {m.status !== "reviewed" && (
-                    <button
-                      className="ds-btn-icon"
-                      title={t("admin.markReviewed")}
+                    <IconBtn
                       onClick={() => handleStatus(m.id, "reviewed")}
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
-                        <path d="M22 4L12 14.01l-3-3" />
-                      </svg>
-                    </button>
+                      title={t("admin.markReviewed")}
+                      icon={Icons.check}
+                    />
                   )}
                   {m.status !== "replied" && (
-                    <button
-                      className="ds-btn-icon"
-                      title={t("admin.markReplied")}
+                    <IconBtn
                       onClick={() => handleStatus(m.id, "replied")}
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                        <polyline points="22,6 12,13 2,6" />
-                      </svg>
-                    </button>
+                      title={t("admin.markReplied")}
+                      icon={Icons.mail}
+                    />
                   )}
                   <a
                     className="ds-btn-icon"
@@ -410,36 +368,20 @@ export function AdminContactSection() {
                   </a>
                   {confirmDeleteId === m.id ? (
                     <div className="flex items-center gap-1">
-                      <button
-                        className="ds-btn-danger"
-                        onClick={() => handleDelete(m.id)}
-                      >
+                      <Btn variant="danger" onClick={() => handleDelete(m.id)}>
                         {t("common.delete")}
-                      </button>
-                      <button
-                        className="ds-btn-ghost"
-                        onClick={() => setConfirmDeleteId(null)}
-                      >
+                      </Btn>
+                      <Btn variant="ghost" onClick={() => setConfirmDeleteId(null)}>
                         {t("common.cancel")}
-                      </button>
+                      </Btn>
                     </div>
                   ) : (
-                    <button
-                      className="ds-btn-icon ds-btn-danger"
-                      title={t("admin.delete")}
+                    <IconBtn
                       onClick={() => setConfirmDeleteId(m.id)}
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeWidth="1.5"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-                      </svg>
-                    </button>
+                      title={t("admin.delete")}
+                      icon={Icons.trash}
+                      danger
+                    />
                   )}
                 </div>
               </div>

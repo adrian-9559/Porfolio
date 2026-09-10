@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { adminService, AdminNotification } from "@/services/adminService";
 import { userService } from "@/services/userService";
+import { useT } from "@/hooks/useT";
 import {
   AdminPageHeader,
   AdminStatGrid,
@@ -13,7 +14,7 @@ import {
   AdminLoadingSkeleton,
   AdminFilterChip,
 } from "./AdminShell";
-import { relativeTime, Icons, SearchInput } from "./AdminShared";
+import { relativeTime, Icons, SearchInput, IconBtn, Btn, Badge, Input, Textarea } from "./AdminShared";
 
 const TYPE_BADGE: Record<string, string> = {
   info: "admin-badge-info",
@@ -44,6 +45,7 @@ const TYPE_ICON: Record<string, React.ReactNode> = {
 };
 
 export function AdminNotificationsSection() {
+  const { t } = useT();
   const [notifications, setNotifications] = useState<AdminNotification[]>([]);
   const [users, setUsers] = useState<UserWithProfile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -119,11 +121,11 @@ export function AdminNotificationsSection() {
   };
 
   const FILTERS = [
-    { key: "all", label: "Todas" },
-    { key: "unread", label: "Sin leer" },
+    { key: "all", label: t("admin.filterAll") },
+    { key: "unread", label: t("admin.unread") },
     { key: "info", label: "Info" },
     { key: "admin", label: "Admin" },
-    { key: "system", label: "Sistema" },
+    { key: "system", label: t("admin.systemBadge") },
   ] as const;
 
   const unread = notifications.filter((n) => !n.read).length;
@@ -131,24 +133,23 @@ export function AdminNotificationsSection() {
   return (
     <div className="flex flex-col gap-6">
       <AdminPageHeader
-        title="Notificaciones"
-        description={`${notifications.length} totales · ${unread} sin leer`}
+        title={t("admin.notifications")}
+        description={`${notifications.length} ${t("admin.total").toLowerCase()} · ${unread} ${t("admin.unread").toLowerCase()}`}
       />
 
       <AdminStatGrid cols={3}>
-        <AdminStat label="Totales" value={notifications.length} accent />
-        <AdminStat label="Sin leer" value={unread} />
-        <AdminStat label="Leídas" value={notifications.length - unread} />
+        <AdminStat label={t("admin.total")} value={notifications.length} accent />
+        <AdminStat label={t("admin.unread")} value={unread} />
+        <AdminStat label={t("admin.read")} value={notifications.length - unread} />
       </AdminStatGrid>
 
-      <AdminPanel title="Enviar notificación">
+      <AdminPanel title={t("admin.sendNotification")}>
         <form className="flex flex-col gap-3" onSubmit={handleSend}>
           <div className="flex gap-3">
-            <input
-              className="ds-input flex-1"
-              placeholder="Título"
+            <Input
               value={sendTitle}
-              onChange={(e) => setSendTitle(e.target.value)}
+              onChange={setSendTitle}
+              placeholder={t("admin.title")}
             />
             <select
               className="ds-input w-auto"
@@ -157,15 +158,14 @@ export function AdminNotificationsSection() {
             >
               <option value="info">Info</option>
               <option value="admin">Admin</option>
-              <option value="system">Sistema</option>
+              <option value="system">{t("admin.systemBadge")}</option>
             </select>
           </div>
-          <textarea
-            className="ds-input resize-none"
-            placeholder="Mensaje…"
-            rows={2}
+          <Textarea
             value={sendMsg}
-            onChange={(e) => setSendMsg(e.target.value)}
+            onChange={setSendMsg}
+            placeholder={t("admin.messagePlaceholder")}
+            rows={2}
           />
           <div className="flex items-center gap-3 flex-wrap">
             <select
@@ -173,9 +173,9 @@ export function AdminNotificationsSection() {
               value={sendTarget}
               onChange={(e) => setSendTarget(e.target.value as typeof sendTarget)}
             >
-              <option value="admins">Solo admins</option>
-              <option value="all">Todos los usuarios</option>
-              <option value="user">Usuario específico</option>
+              <option value="admins">{t("admin.onlyAdmins")}</option>
+              <option value="all">{t("admin.allUsers")}</option>
+              <option value="user">{t("admin.specificUser")}</option>
             </select>
             {sendTarget === "user" && (
               <select
@@ -183,7 +183,7 @@ export function AdminNotificationsSection() {
                 value={sendUserId}
                 onChange={(e) => setSendUserId(e.target.value)}
               >
-                <option value="">Seleccionar usuario…</option>
+                <option value="">{t("admin.selectUser")}</option>
                 {users.map((u) => (
                   <option key={u.id} value={u.id}>
                     {u.profile?.full_name ?? u.email}
@@ -191,14 +191,12 @@ export function AdminNotificationsSection() {
                 ))}
               </select>
             )}
-            <button
-              className="ds-btn-primary flex items-center gap-2"
+            <Btn
+              onClick={() => handleSend(new Event('submit') as any)}
               disabled={sending || !sendTitle.trim() || !sendMsg.trim()}
-              type="submit"
             >
-              {Icons.send}
-              Enviar
-            </button>
+              {Icons.send} {t("admin.send")}
+            </Btn>
             {sendResult && (
               <span className="text-xs" style={{ color: "var(--color-success)" }}>
                 {sendResult}
@@ -212,7 +210,7 @@ export function AdminNotificationsSection() {
         <SearchInput
           value={search}
           onChange={setSearch}
-          placeholder="Buscar notificación…"
+          placeholder={t("admin.searchNotifications")}
         />
         <div className="flex gap-1.5 flex-wrap">
           {FILTERS.map((f) => (
@@ -233,7 +231,7 @@ export function AdminNotificationsSection() {
         ) : filtered.length === 0 ? (
           <AdminEmptyState
             icon={Icons.bell}
-            title={search ? "Prueba con otro término" : "Sin notificaciones"}
+            title={search ? t("admin.noMessagesSearch") : t("admin.noNotifications")}
           />
         ) : (
           <div className="divide-y" style={{ borderColor: "var(--border-default)" }}>
@@ -289,24 +287,22 @@ export function AdminNotificationsSection() {
                       className="ds-btn-danger px-2.5 py-1 text-[10px]"
                       onClick={() => handleDelete(n.id)}
                     >
-                      Eliminar
+                      {t("admin.delete")}
                     </button>
                     <button
                       className="ds-btn-ghost px-2.5 py-1 text-[10px]"
                       onClick={() => setConfirmDeleteId(null)}
                     >
-                      Cancelar
+                      {t("admin.cancel")}
                     </button>
                   </div>
                 ) : (
-                  <button
-                    className="ds-btn-icon p-2"
-                    style={{ color: "var(--text-muted)" }}
-                    title="Eliminar"
+                  <IconBtn
                     onClick={() => setConfirmDeleteId(n.id)}
-                  >
-                    {Icons.trash}
-                  </button>
+                    title={t("admin.delete")}
+                    icon={Icons.trash}
+                    danger
+                  />
                 )}
               </div>
             ))}
@@ -315,7 +311,7 @@ export function AdminNotificationsSection() {
       </AdminPanel>
 
       <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
-        Mostrando {filtered.length} de {notifications.length}
+        {t("admin.showingCount", { filtered: filtered.length, total: notifications.length })}
       </p>
     </div>
   );

@@ -13,7 +13,7 @@ import {
   AdminEmptyState,
   AdminLoadingSkeleton,
 } from "./AdminShell";
-import { relativeTime } from "./AdminShared";
+import { relativeTime, Btn, Input, Textarea } from "./AdminShared";
 
 const BUILD_TYPES: Record<"android" | "ios", string[]> = {
   android: ["apk", "aab"],
@@ -526,6 +526,7 @@ interface VersionsPanelProps {
 }
 
 function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
+  const { t } = useT();
   const [versions, setVersions] = useState<MobileAppVersion[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -549,7 +550,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
 
       setVersions(updated);
     } catch {
-      setError("No se pudo activar.");
+      setError(t("admin.activateError"));
     } finally {
       setActivating(null);
     }
@@ -561,7 +562,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
       await mobileAppService.deleteVersion(id);
       setVersions((v) => v.filter((x) => x.id !== id));
     } catch {
-      setError("No se pudo eliminar.");
+      setError(t("admin.deleteError"));
     } finally {
       setDeleting(null);
     }
@@ -583,7 +584,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
         >
           <h3 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
             {app.icon_emoji && <span className="mr-2">{app.icon_emoji}</span>}
-            {app.name} — versiones
+            {app.name} — {t("admin.versionsBtn")}
           </h3>
           <div className="flex items-center gap-2">
             <button className="ds-btn-primary text-xs px-3 py-1.5" onClick={onUpload}>
@@ -618,20 +619,20 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
             <AdminLoadingSkeleton rows={4} />
           ) : versions.length === 0 ? (
             <AdminEmptyState
-              title="Sin versiones"
-              description="Sube la primera versión."
+              title={t("admin.noVersions")}
+              description={t("admin.noVersionsHint")}
             />
           ) : (
             <table className="w-full text-sm">
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border-default)" }}>
-                  {[
-                    "Versión",
-                    "Plataforma",
-                    "Tipo",
-                    "Tamaño",
-                    "Estado",
-                    "Fecha",
+                    {[
+                    t("admin.version"),
+                    t("admin.platform"),
+                    t("admin.type"),
+                    t("admin.size"),
+                    t("admin.status"),
+                    t("admin.date"),
                     "",
                   ].map((h) => (
                     <th
@@ -668,10 +669,10 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
                     <td className="px-4 py-3">
                       {v.is_active ? (
                         <span className="admin-badge admin-badge-success">
-                          Activa
+                          {t("admin.active")}
                         </span>
                       ) : (
-                        <span className="text-xs" style={{ color: "var(--text-muted)" }}>Inactiva</span>
+                        <span className="text-xs" style={{ color: "var(--text-muted)" }}>{t("admin.inactive")}</span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-xs" style={{ color: "var(--text-muted)" }}>
@@ -685,7 +686,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
                             disabled={activating === v.id}
                             onClick={() => handleActivate(v.id)}
                           >
-                            {activating === v.id ? "…" : "Activar"}
+                            {activating === v.id ? "…" : t("admin.activate")}
                           </button>
                         )}
                         <button
@@ -693,7 +694,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
                           disabled={deleting === v.id}
                           onClick={() => handleDelete(v.id)}
                         >
-                          {deleting === v.id ? "…" : "Eliminar"}
+                          {deleting === v.id ? "…" : t("admin.delete")}
                         </button>
                       </div>
                     </td>
@@ -711,6 +712,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
 // ── Main Section ──────────────────────────────────────────────────────────────
 
 export function AdminAppsSection() {
+  const { t } = useT();
   const [apps, setApps] = useState<App[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -724,7 +726,7 @@ export function AdminAppsSection() {
     mobileAppService
       .listApps()
       .then(setApps)
-      .catch(() => setError("Error al cargar apps."))
+      .catch(() => setError(t("admin.mobileLoadError")))
       .finally(() => setLoading(false));
   }, []);
 
@@ -734,7 +736,7 @@ export function AdminAppsSection() {
       await mobileAppService.deleteApp(id);
       setApps((prev) => prev.filter((a) => a.id !== id));
     } catch {
-      setError("No se pudo eliminar la app.");
+      setError(t("admin.deleteAppError"));
     } finally {
       setDeleting(null);
     }
@@ -753,8 +755,8 @@ export function AdminAppsSection() {
   return (
     <div className="flex flex-col gap-6">
       <AdminPageHeader
-        title="Aplicaciones"
-        description="Gestiona las apps publicadas y sus versiones."
+        title={t("admin.appsTitle")}
+        description={t("admin.appsDesc")}
         actions={
           <button
             className="ds-btn-primary"
@@ -770,7 +772,7 @@ export function AdminAppsSection() {
             >
               <path d="M8 2v12M2 8h12" />
             </svg>
-            Nueva app
+            {t("admin.newApp")}
           </button>
         }
       />
@@ -789,8 +791,8 @@ export function AdminAppsSection() {
           <AdminLoadingSkeleton rows={5} />
         ) : apps.length === 0 ? (
           <AdminEmptyState
-            title="Sin apps"
-            description="Crea la primera con el botón de arriba."
+            title={t("admin.noApps")}
+            description={t("admin.noAppsHint")}
           />
         ) : (
           <div className="divide-y" style={{ borderColor: "var(--border-default)" }}>
@@ -830,7 +832,7 @@ export function AdminAppsSection() {
                     </span>
                     {!app.is_published && (
                       <span className="admin-badge admin-badge-warning">
-                        Oculta
+                        {t("admin.hiddenBadge")}
                       </span>
                     )}
                   </div>
@@ -848,26 +850,26 @@ export function AdminAppsSection() {
                       setVersionsApp(null);
                     }}
                   >
-                    Nueva versión
+              {t("admin.mobileNewVersion")}
                   </button>
                   <button
                     className="ds-btn-secondary text-xs px-3 py-1.5"
                     onClick={() => setVersionsApp(app)}
                   >
-                    Versiones
+                    {t("admin.versionsBtn")}
                   </button>
                   <button
                     className="ds-btn-secondary text-xs px-3 py-1.5"
                     onClick={() => setEditingApp(app)}
                   >
-                    Editar
+                    {t("admin.editBtn")}
                   </button>
                   <button
                     className="ds-btn-danger text-xs px-3 py-1.5"
                     disabled={deleting === app.id}
                     onClick={() => handleDeleteApp(app.id)}
                   >
-                    {deleting === app.id ? "…" : "Eliminar"}
+                    {deleting === app.id ? "…" : t("admin.delete")}
                   </button>
                 </div>
               </div>
