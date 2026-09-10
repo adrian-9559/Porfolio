@@ -8,7 +8,7 @@ import { getToolIcon } from "@/components/blog/tools/ToolIcons";
 import { ToolRenderer } from "@/components/blog/tools/ToolRenderer";
 
 export async function getStaticPaths() {
-  return { paths: [], fallback: "blocking" };
+  return { paths: [], fallback: false };
 }
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
