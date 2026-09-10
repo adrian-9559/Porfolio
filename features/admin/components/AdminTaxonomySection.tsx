@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 
 import { allContent, contentHref } from "@/lib/blog/registry";
 import {
@@ -13,6 +13,14 @@ import {
   type RelationType,
 } from "@/lib/blog/taxonomy";
 
+import {
+  AdminPageHeader,
+  AdminPanel,
+  AdminEmptyState,
+  AdminFilterChip,
+  AdminLoadingSkeleton,
+} from "./AdminShell";
+
 type Tab = "categories" | "levels" | "paths" | "relationships" | "tags";
 
 const RELATION_LABEL: Record<RelationType, string> = {
@@ -22,123 +30,37 @@ const RELATION_LABEL: Record<RelationType, string> = {
   deepdive: "Profundiza",
 };
 
+const RELATION_ICON: Record<RelationType, string> = {
+  prerequisite: "→",
+  related: "↔",
+  next: "▸",
+  deepdive: "↓",
+};
+
 const RELATION_COLOR: Record<RelationType, string> = {
-  prerequisite:
-    "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30",
-  related: "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30",
-  next: "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30",
-  deepdive:
-    "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30",
+  prerequisite: "var(--color-warning)",
+  related: "var(--color-info)",
+  next: "var(--color-success)",
+  deepdive: "var(--accent)",
 };
 
-const TAB_ICONS: Record<Tab, React.ReactElement> = {
-  categories: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
-      <rect height="5" rx="1.5" width="5" x="1" y="1" />
-      <rect height="5" rx="1.5" width="5" x="8" y="1" />
-      <rect height="5" rx="1.5" width="5" x="1" y="8" />
-      <rect height="5" rx="1.5" width="5" x="8" y="8" />
-    </svg>
-  ),
-  levels: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
-      <path d="M2 11h2V7H2zM6 11h2V4H6zM10 11h2V1h-2z" />
-    </svg>
-  ),
-  paths: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
-      <path d="M1 13L5 7l3 3 5-7" />
-    </svg>
-  ),
-  relationships: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
-      <circle cx="3" cy="7" r="1.5" />
-      <circle cx="11" cy="3" r="1.5" />
-      <circle cx="11" cy="11" r="1.5" />
-      <path d="M4.5 7l4-3.5M4.5 7l4 3.5" />
-    </svg>
-  ),
-  tags: (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth="1.5"
-      viewBox="0 0 14 14"
-    >
-      <path d="M1 8.5L5.5 13l7-7-4.5-4.5H2v3.5L1 8.5z" />
-      <circle cx="4.5" cy="4.5" fill="currentColor" r="1" stroke="none" />
-    </svg>
-  ),
-};
-
-function TabBtn({
-  id,
-  label,
-  count,
-  active,
-  onClick,
-}: {
-  id: Tab;
-  label: string;
-  count?: number;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
-        active
-          ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
-          : "text-[#6e6e73] dark:text-[#86868b] bg-black/5 dark:bg-white/5 hover:text-[#1d1d1f] dark:hover:text-white"
-      }`}
-      onClick={onClick}
-    >
-      {TAB_ICONS[id]}
-      <span className="hidden sm:inline">{label}</span>
-      {count !== undefined && (
-        <span
-          className={`px-1.5 py-0.5 rounded-full tabular-nums text-[10px] ${active ? "bg-white/20 dark:bg-black/20" : "bg-black/8 dark:bg-white/8"}`}
-        >
-          {count}
-        </span>
-      )}
-    </button>
-  );
-}
+// ── Categories View ─────────────────────────────────────────────────────────
 
 function CategoriesView() {
   const [search, setSearch] = useState("");
   const [activeGroup, setActiveGroup] = useState<string>("all");
+
+  const contentCountByCategory: Record<string, number> = {};
+  allContent.forEach((item) => {
+    if (item.categoryId)
+      contentCountByCategory[item.categoryId] =
+        (contentCountByCategory[item.categoryId] ?? 0) + 1;
+  });
+
+  const maxCount = useMemo(
+    () => Math.max(...Object.values(contentCountByCategory), 1),
+    [contentCountByCategory],
+  );
 
   const filtered = CATEGORIES.filter((c) => {
     if (activeGroup !== "all" && c.group !== activeGroup) return false;
@@ -148,121 +70,133 @@ function CategoriesView() {
       !c.id.includes(search.toLowerCase())
     )
       return false;
-
     return true;
   });
 
-  const contentCountByCategory: Record<string, number> = {};
-
-  allContent.forEach((item) => {
-    if (item.categoryId)
-      contentCountByCategory[item.categoryId] =
-        (contentCountByCategory[item.categoryId] ?? 0) + 1;
-  });
+  const groupCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: CATEGORIES.length };
+    CATEGORIES.forEach((c) => {
+      counts[c.group] = (counts[c.group] ?? 0) + 1;
+    });
+    return counts;
+  }, []);
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-[180px]">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-          </svg>
-          <input
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all"
-            placeholder="Buscar categoría..."
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <button
-            className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${activeGroup === "all" ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/10"}`}
-            onClick={() => setActiveGroup("all")}
-          >
-            Todos
-          </button>
-          {CATEGORY_GROUPS.map((g) => (
+    <div className="flex flex-col gap-4">
+      {/* Summary cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {CATEGORY_GROUPS.slice(0, 4).map((g) => {
+          const count = CATEGORIES.filter((c) => c.group === g.id).length;
+          const contentCount = allContent.filter((c) => {
+            const cat = CATEGORIES.find((ca) => ca.id === c.categoryId);
+            return cat?.group === g.id;
+          }).length;
+
+          return (
             <button
               key={g.id}
-              className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${activeGroup === g.id ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/10"}`}
-              onClick={() => setActiveGroup(g.id)}
+              className={`text-left p-3 rounded-lg border transition-all ${
+                activeGroup === g.id
+                  ? "border-[var(--accent)] bg-[var(--accent-light)]"
+                  : "border-[var(--border-default)] bg-[var(--bg-card)] hover:border-[var(--border-hover)]"
+              }`}
+              onClick={() => setActiveGroup(activeGroup === g.id ? "all" : g.id)}
             >
-              {g.label}
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">
+                {g.label}
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-lg font-bold text-[var(--text-primary)]">
+                  {count}
+                </span>
+                <span className="text-[10px] text-[var(--text-muted)]">
+                  cats · {contentCount} items
+                </span>
+              </div>
             </button>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
-      <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
-        <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-black/8 dark:border-white/8 bg-black/[0.02] dark:bg-white/[0.02]">
-              <th className="text-left px-4 py-2.5 text-xs font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider">
-                ID / Etiqueta
-              </th>
-              <th className="text-left px-4 py-2.5 text-xs font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider">
-                Grupo
-              </th>
-              <th className="text-right px-4 py-2.5 text-xs font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider">
-                Contenido
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
-            {filtered.map((cat) => (
-              <tr
-                key={cat.id}
-                className="hover:bg-black/[0.02] dark:hover:bg-white/[0.02]"
-              >
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2 h-2 rounded-full ${cat.color.replace("text-", "bg-").split(" ")[0]}`}
-                    />
-                    <div>
-                      <p className={`text-xs font-semibold ${cat.color}`}>
-                        {cat.label}
-                      </p>
-                      <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-mono">
-                        {cat.id}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-4 py-3">
-                  <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
-                    {CATEGORY_GROUPS.find((g) => g.id === cat.group)?.label ??
-                      cat.group}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <span className="text-xs font-semibold text-[#1d1d1f] dark:text-white">
-                    {contentCountByCategory[cat.id] ?? 0}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {filtered.length === 0 && (
-          <div className="py-8 text-center text-sm text-[#6e6e73] dark:text-[#86868b]">
-            Sin resultados.
+      {/* Search */}
+      <input
+        className="ds-input max-w-sm"
+        placeholder="Buscar categoría..."
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {/* Categories table */}
+      <AdminPanel compact>
+        {filtered.length === 0 ? (
+          <AdminEmptyState title="Sin resultados" />
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Categoría</th>
+                  <th>Grupo</th>
+                  <th>Distribución</th>
+                  <th className="text-right">Contenido</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((cat) => {
+                  const count = contentCountByCategory[cat.id] ?? 0;
+                  const pct = (count / maxCount) * 100;
+
+                  return (
+                    <tr key={cat.id}>
+                      <td>
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className="w-2.5 h-2.5 rounded-full shrink-0"
+                            style={{ background: `var(--color-${cat.id === "javascript" ? "warning" : cat.id === "react" || cat.id === "nextjs" ? "info" : "success"})` }}
+                          />
+                          <div>
+                            <span className={`text-[12px] font-semibold ${cat.color}`}>
+                              {cat.label}
+                            </span>
+                            <span className="text-[10px] text-[var(--text-muted)] font-mono ml-2">
+                              {cat.id}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="text-[11px] text-[var(--text-secondary)]">
+                          {CATEGORY_GROUPS.find((g) => g.id === cat.group)?.label ?? cat.group}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-1.5 bg-[var(--bg-surface)] rounded-full overflow-hidden max-w-[120px]">
+                            <div
+                              className="h-full bg-[var(--accent)] rounded-full transition-all duration-500"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="text-right">
+                        <span className="text-[12px] font-bold text-[var(--text-primary)] tabular-nums">
+                          {count}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
-      </div>
-      <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+      </AdminPanel>
+
+      <p className="text-[11px] text-[var(--text-muted)]">
         {filtered.length} de {CATEGORIES.length} categorías · Definidas en{" "}
-        <code className="font-mono bg-black/5 dark:bg-white/5 px-1 rounded">
+        <code className="font-mono bg-[var(--bg-surface)] px-1.5 py-0.5 rounded text-[10px]">
           lib/blog/taxonomy.ts
         </code>
       </p>
@@ -270,67 +204,76 @@ function CategoriesView() {
   );
 }
 
+// ── Levels View ─────────────────────────────────────────────────────────────
+
 function LevelsView() {
   const contentCountByLevel: Record<string, number> = {};
-
   allContent.forEach((item) => {
     if (item.level)
       contentCountByLevel[item.level] =
         (contentCountByLevel[item.level] ?? 0) + 1;
   });
 
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {LEVELS.map((lvl) => {
-          const count = contentCountByLevel[lvl.id] ?? 0;
+  const unassigned = allContent.filter((c) => !c.level).length;
+  const total = allContent.length;
 
-          return (
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Level progression */}
+      <div className="flex items-center gap-2 px-1">
+        {LEVELS.map((lvl, i) => (
+          <React.Fragment key={lvl.id}>
             <div
-              key={lvl.id}
-              className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20"
+              className={`flex-1 p-3 rounded-lg border text-center transition-all ${
+                i === 0
+                  ? "border-[var(--color-success)]/30 bg-[var(--state-success-bg)]"
+                  : i === 1
+                    ? "border-[var(--color-warning)]/30 bg-[var(--state-warning-bg)]"
+                    : "border-[var(--color-danger)]/30 bg-[var(--state-danger-bg)]"
+              }`}
             >
-              <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
-              <div className="p-5 flex items-center gap-4">
-                <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center ${lvl.bgColor}`}
-                >
-                  <span className={`text-sm font-bold ${lvl.color}`}>
-                    {lvl.id[0].toUpperCase()}
-                  </span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className={`text-sm font-semibold ${lvl.color}`}>
-                    {lvl.labelEs}
-                  </p>
-                  <p className="text-xs text-[#aeaeb2] dark:text-[#636366] font-mono">
-                    {lvl.id}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xl font-bold text-[#1d1d1f] dark:text-white">
-                    {count}
-                  </p>
-                  <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-                    contenidos
-                  </p>
-                </div>
+              <div className={`text-[10px] font-semibold uppercase tracking-wider mb-1 ${
+                i === 0 ? "text-[var(--state-success-fg)]" : i === 1 ? "text-[var(--state-warning-fg)]" : "text-[var(--state-danger-fg)]"
+              }`}>
+                {lvl.labelEs}
+              </div>
+              <div className="text-xl font-bold text-[var(--text-primary)]">
+                {contentCountByLevel[lvl.id] ?? 0}
+              </div>
+              <div className="text-[10px] text-[var(--text-muted)]">
+                contenidos
               </div>
             </div>
-          );
-        })}
+            {i < LEVELS.length - 1 && (
+              <svg className="w-4 h-4 text-[var(--text-muted)] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            )}
+          </React.Fragment>
+        ))}
       </div>
-      <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-        {allContent.filter((c) => !c.level).length} contenidos sin nivel
-        asignado de {allContent.length} totales.
-      </p>
+
+      {/* Unassigned warning */}
+      {unassigned > 0 && (
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--state-warning-bg)] border border-[var(--state-warning-border)]">
+          <svg className="w-4 h-4 text-[var(--state-warning-fg)] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" x2="12" y1="8" y2="12" />
+            <line x1="12" x2="12.01" y1="16" y2="16" />
+          </svg>
+          <span className="text-[12px] text-[var(--state-warning-fg)]">
+            {unassigned} contenidos sin nivel asignado de {total} totales
+          </span>
+        </div>
+      )}
     </div>
   );
 }
 
+// ── Paths View ──────────────────────────────────────────────────────────────
+
 function PathsView() {
   const contentCountByPath: Record<string, number> = {};
-
   allContent.forEach((item) => {
     item.learningPaths?.forEach((p) => {
       contentCountByPath[p] = (contentCountByPath[p] ?? 0) + 1;
@@ -338,72 +281,68 @@ function PathsView() {
   });
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-4">
       {LEARNING_PATHS.map((path) => {
         const count = contentCountByPath[path.id] ?? 0;
         const steps = path.steps ?? [];
 
         return (
-          <div
-            key={path.id}
-            className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20"
-          >
-            <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
-            <div className="flex items-center gap-4 px-5 py-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shadow-md">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
+          <AdminPanel key={path.id}>
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-lg bg-[var(--accent-light)] flex items-center justify-center shrink-0">
+                <svg className="w-5 h-5 text-[var(--accent)]" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                   <circle cx="12" cy="12" r="3" />
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
-                  {path.title}
-                </p>
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] truncate">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-[13px] font-semibold text-[var(--text-primary)]">
+                    {path.title}
+                  </h3>
+                  <span className="admin-badge admin-badge-info">
+                    {count} contenidos
+                  </span>
+                </div>
+                <p className="text-[12px] text-[var(--text-muted)] mb-3">
                   {path.description}
                 </p>
-              </div>
-              <div className="text-right flex-shrink-0">
-                <p className="text-lg font-bold text-[#1d1d1f] dark:text-white">
-                  {count}
-                </p>
-                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-                  contenidos
-                </p>
+
+                {/* Steps as timeline */}
+                {steps.length > 0 && (
+                  <div className="relative">
+                    <div className="absolute left-[11px] top-2 bottom-2 w-px bg-[var(--border-default)]" />
+                    <div className="flex flex-col gap-2">
+                      {steps.map((step, i) => (
+                        <div key={step.categoryId} className="flex items-center gap-3 relative">
+                          <div className="w-6 h-6 rounded-full bg-[var(--bg-card)] border-2 border-[var(--accent)] flex items-center justify-center shrink-0 z-10">
+                            <span className="text-[9px] font-bold text-[var(--accent)]">
+                              {i + 1}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[12px] font-medium text-[var(--text-primary)]">
+                              {step.label}
+                            </span>
+                            <span className="text-[10px] text-[var(--text-muted)] font-mono">
+                              {step.categoryId}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-            {steps.length > 0 && (
-              <div className="border-t border-black/8 dark:border-white/8 px-5 py-3">
-                <p className="text-[10px] font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider mb-2">
-                  Pasos ({steps.length})
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {steps.map((step, i) => (
-                    <span
-                      key={step.categoryId}
-                      className="px-2 py-0.5 rounded-full text-[10px] bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b]"
-                    >
-                      {i + 1}. {step.label}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          </AdminPanel>
         );
       })}
     </div>
   );
 }
+
+// ── Relationships View ──────────────────────────────────────────────────────
 
 function RelationshipsView() {
   const [search, setSearch] = useState("");
@@ -413,140 +352,137 @@ function RelationshipsView() {
     if (typeFilter !== "all" && r.type !== typeFilter) return false;
     if (search && !r.fromSlug.includes(search) && !r.toSlug.includes(search))
       return false;
-
     return true;
   });
 
+  const typeCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: CONTENT_RELATIONSHIPS.length };
+    CONTENT_RELATIONSHIPS.forEach((r) => {
+      counts[r.type] = (counts[r.type] ?? 0) + 1;
+    });
+    return counts;
+  }, []);
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-[180px]">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
+    <div className="flex flex-col gap-4">
+      {/* Type filter chips with counts */}
+      <div className="flex items-center gap-1.5 flex-wrap">
+        <AdminFilterChip
+          active={typeFilter === "all"}
+          onClick={() => setTypeFilter("all")}
+        >
+          Todas ({typeCounts.all})
+        </AdminFilterChip>
+        {(["prerequisite", "related", "next", "deepdive"] as RelationType[]).map((t) => (
+          <AdminFilterChip
+            key={t}
+            active={typeFilter === t}
+            onClick={() => setTypeFilter(t)}
           >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-          </svg>
-          <input
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all"
-            placeholder="Filtrar por slug..."
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="flex items-center gap-1.5">
-          <button
-            className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${typeFilter === "all" ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md" : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b]"}`}
-            onClick={() => setTypeFilter("all")}
-          >
-            Todos
-          </button>
-          {(
-            ["prerequisite", "related", "next", "deepdive"] as RelationType[]
-          ).map((t) => (
-            <button
-              key={t}
-              className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${typeFilter === t ? `${RELATION_COLOR[t]} shadow-md` : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b]"}`}
-              onClick={() => setTypeFilter(t)}
-            >
-              {RELATION_LABEL[t]}
-            </button>
-          ))}
-        </div>
+            {RELATION_ICON[t]} {RELATION_LABEL[t]} ({typeCounts[t] ?? 0})
+          </AdminFilterChip>
+        ))}
       </div>
 
-      <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
-        <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-black/8 dark:border-white/8 bg-black/[0.02] dark:bg-white/[0.02]">
-              <th className="text-left px-4 py-2.5 text-xs font-semibold text-[#aeaeb2] uppercase tracking-wider">
-                Desde
-              </th>
-              <th className="text-left px-4 py-2.5 text-xs font-semibold text-[#aeaeb2] uppercase tracking-wider">
-                Tipo
-              </th>
-              <th className="text-left px-4 py-2.5 text-xs font-semibold text-[#aeaeb2] uppercase tracking-wider">
-                Hacia
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
+      {/* Search */}
+      <input
+        className="ds-input max-w-sm"
+        placeholder="Filtrar por slug..."
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {/* Relationships list */}
+      <AdminPanel compact>
+        {filtered.length === 0 ? (
+          <AdminEmptyState
+            title="Sin relaciones"
+            description="No se encontraron relaciones con esos filtros."
+          />
+        ) : (
+          <div className="divide-y divide-[var(--border-default)]">
             {filtered.map((rel, i) => {
-              const fromContent = allContent.find(
-                (c) => c.slug === rel.fromSlug,
-              );
+              const fromContent = allContent.find((c) => c.slug === rel.fromSlug);
               const toContent = allContent.find((c) => c.slug === rel.toSlug);
+              const color = RELATION_COLOR[rel.type];
 
               return (
-                <tr
+                <div
                   key={i}
-                  className="hover:bg-black/[0.02] dark:hover:bg-white/[0.02]"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--bg-hover)] transition-colors"
                 >
-                  <td className="px-4 py-3">
+                  {/* From */}
+                  <div className="flex-1 min-w-0 text-right">
                     {fromContent ? (
                       <Link
-                        className="text-xs text-blue-600 dark:text-blue-400 hover:underline no-underline"
+                        className="text-[12px] font-medium text-[var(--accent)] hover:underline no-underline truncate block"
                         href={contentHref(fromContent.type, fromContent.slug)}
                       >
                         {fromContent.title}
                       </Link>
                     ) : (
-                      <span className="text-xs font-mono text-[#aeaeb2]">
+                      <span className="text-[11px] font-mono text-[var(--text-muted)] truncate block">
                         {rel.fromSlug}
                       </span>
                     )}
-                  </td>
-                  <td className="px-4 py-3">
+                  </div>
+
+                  {/* Arrow with type */}
+                  <div className="flex flex-col items-center shrink-0 px-2">
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${RELATION_COLOR[rel.type]}`}
+                      className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                      style={{ background: `${color}15`, color }}
                     >
                       {RELATION_LABEL[rel.type]}
                     </span>
-                  </td>
-                  <td className="px-4 py-3">
+                    <svg
+                      className="w-4 h-4 mt-0.5"
+                      style={{ color }}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+
+                  {/* To */}
+                  <div className="flex-1 min-w-0">
                     {toContent ? (
                       <Link
-                        className="text-xs text-blue-600 dark:text-blue-400 hover:underline no-underline"
+                        className="text-[12px] font-medium text-[var(--accent)] hover:underline no-underline truncate block"
                         href={contentHref(toContent.type, toContent.slug)}
                       >
                         {toContent.title}
                       </Link>
                     ) : (
-                      <span className="text-xs font-mono text-[#aeaeb2]">
+                      <span className="text-[11px] font-mono text-[var(--text-muted)] truncate block">
                         {rel.toSlug}
                       </span>
                     )}
-                  </td>
-                </tr>
+                  </div>
+                </div>
               );
             })}
-          </tbody>
-        </table>
-        {filtered.length === 0 && (
-          <div className="py-8 text-center text-sm text-[#6e6e73] dark:text-[#86868b]">
-            Sin relaciones con esos filtros.
           </div>
         )}
-      </div>
-      <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+      </AdminPanel>
+
+      <p className="text-[11px] text-[var(--text-muted)]">
         {filtered.length} de {CONTENT_RELATIONSHIPS.length} relaciones
       </p>
     </div>
   );
 }
 
+// ── Tags View ───────────────────────────────────────────────────────────────
+
 function TagsView() {
   const [search, setSearch] = useState("");
 
   const tagCounts: Record<string, number> = {};
-
   allContent.forEach((item) => {
     item.tags?.forEach((tag) => {
       tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
@@ -560,74 +496,93 @@ function TagsView() {
     (t) => !search || t.toLowerCase().includes(search.toLowerCase()),
   );
 
-  return (
-    <div className="space-y-4">
-      <div className="relative max-w-sm">
-        <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeWidth="1.5"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="M21 21l-4.35-4.35" />
-        </svg>
-        <input
-          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all"
-          placeholder="Buscar tag..."
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {filtered.map((tag) => {
-          const count = tagCounts[tag] ?? 0;
-          const isStandard = STANDARD_TAGS.includes(
-            tag as (typeof STANDARD_TAGS)[number],
-          );
+  const maxTagCount = useMemo(
+    () => Math.max(...Object.values(tagCounts), 1),
+    [tagCounts],
+  );
 
-          return (
-            <div
-              key={tag}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition-all ${
-                isStandard
-                  ? "border-emerald-200 dark:border-emerald-800/50 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300"
-                  : "border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-[#6e6e73] dark:text-[#86868b]"
-              }`}
-            >
-              <span className="font-medium">{tag}</span>
-              {count > 0 && (
-                <span
-                  className={`font-bold ${isStandard ? "text-emerald-500" : "text-[#aeaeb2]"}`}
-                >
-                  {count}
-                </span>
-              )}
-            </div>
-          );
-        })}
+  const standardCount = STANDARD_TAGS.filter((t) => filtered.includes(t)).length;
+  const customCount = filtered.filter(
+    (t) => !(STANDARD_TAGS as readonly string[]).includes(t) && tagCounts[t] > 0,
+  ).length;
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Search */}
+      <input
+        className="ds-input max-w-sm"
+        placeholder="Buscar tag..."
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {/* Stats bar */}
+      <div className="flex items-center gap-4 text-[11px]">
+        <span className="text-[var(--text-muted)]">
+          {filtered.length} tags
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-[var(--accent)]" />
+          <span className="text-[var(--text-secondary)]">{standardCount} estándar</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-[var(--text-muted)]" />
+          <span className="text-[var(--text-secondary)]">{customCount} personalizados</span>
+        </span>
       </div>
-      <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
-        {filtered.length} tags ·{" "}
-        <span className="text-emerald-600 dark:text-emerald-400">
-          {STANDARD_TAGS.filter((t) => filtered.includes(t)).length} estándar
-        </span>{" "}
-        ·{" "}
-        {
-          filtered.filter(
-            (t) =>
-              !(STANDARD_TAGS as readonly string[]).includes(t) &&
-              tagCounts[t] > 0,
-          ).length
-        }{" "}
-        personalizados
-      </p>
+
+      {/* Tag cloud */}
+      <AdminPanel>
+        <div className="flex flex-wrap gap-2">
+          {filtered.map((tag) => {
+            const count = tagCounts[tag] ?? 0;
+            const isStandard = STANDARD_TAGS.includes(
+              tag as (typeof STANDARD_TAGS)[number],
+            );
+            const scale = 0.8 + (count / maxTagCount) * 0.4;
+
+            return (
+              <div
+                key={tag}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all hover:scale-105 cursor-default"
+                style={{
+                  borderColor: isStandard ? "var(--accent)" : "var(--border-default)",
+                  background: isStandard ? "var(--accent-light)" : "var(--bg-card)",
+                  transform: `scale(${scale})`,
+                  transformOrigin: "center",
+                }}
+              >
+                <span
+                  className="font-medium"
+                  style={{
+                    fontSize: `${11 + (count / maxTagCount) * 3}px`,
+                    color: isStandard ? "var(--accent)" : "var(--text-primary)",
+                  }}
+                >
+                  {tag}
+                </span>
+                {count > 0 && (
+                  <span
+                    className="font-bold tabular-nums"
+                    style={{
+                      fontSize: `${10 + (count / maxTagCount) * 2}px`,
+                      color: isStandard ? "var(--accent)" : "var(--text-muted)",
+                    }}
+                  >
+                    {count}
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </AdminPanel>
     </div>
   );
 }
+
+// ── Main Component ──────────────────────────────────────────────────────────
 
 const allTagsCount = Array.from(
   new Set([...STANDARD_TAGS, ...allContent.flatMap((c) => c.tags ?? [])]),
@@ -640,179 +595,32 @@ export default function AdminTaxonomySection() {
     { id: "categories", label: "Categorías", count: CATEGORIES.length },
     { id: "levels", label: "Niveles", count: LEVELS.length },
     { id: "paths", label: "Rutas", count: LEARNING_PATHS.length },
-    {
-      id: "relationships",
-      label: "Relaciones",
-      count: CONTENT_RELATIONSHIPS.length,
-    },
+    { id: "relationships", label: "Relaciones", count: CONTENT_RELATIONSHIPS.length },
     { id: "tags", label: "Tags", count: allTagsCount },
   ];
 
-  const stats = [
-    {
-      label: "Contenidos",
-      value: allContent.length,
-      gradient: "from-emerald-500 to-teal-500",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" x2="8" y1="13" y2="13" />
-          <line x1="16" x2="8" y1="17" y2="17" />
-          <polyline points="10 9 9 9 8 9" />
-        </svg>
-      ),
-    },
-    {
-      label: "Categorías",
-      value: CATEGORIES.length,
-      gradient: "from-teal-500 to-cyan-500",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
-          <line x1="7" x2="7.01" y1="7" y2="7" />
-        </svg>
-      ),
-    },
-    {
-      label: "Rutas",
-      value: LEARNING_PATHS.length,
-      gradient: "from-green-500 to-emerald-500",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
-          <line x1="8" x2="8" y1="2" y2="18" />
-          <line x1="16" x2="16" y1="6" y2="22" />
-        </svg>
-      ),
-    },
-    {
-      label: "Relaciones",
-      value: CONTENT_RELATIONSHIPS.length,
-      gradient: "from-emerald-500 to-green-500",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
-          <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
-        </svg>
-      ),
-    },
-    {
-      label: "Tags",
-      value: allTagsCount,
-      gradient: "from-teal-500 to-emerald-500",
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
-          <line x1="7" x2="7.01" y1="7" y2="7" />
-        </svg>
-      ),
-    },
-  ];
-
   return (
-    <div className="relative flex flex-col gap-6">
-      {/* Decorative blobs */}
-      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-emerald-500/8 to-teal-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-teal-500/6 to-emerald-500/4 blur-3xl pointer-events-none" />
-
-      {/* Header */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-1">
-          Contenido
-        </p>
-        <h1
-          className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
-          style={{ letterSpacing: "-0.03em" }}
-        >
-          Taxonomía educativa
-        </h1>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
-          Categorías, niveles, rutas de aprendizaje, relaciones y tags del blog.
-        </p>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-        {stats.map((s) => (
-          <div
-            key={s.label}
-            className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20"
-          >
-            <div className={`h-1 bg-gradient-to-r ${s.gradient}`} />
-            <div className="p-4 flex items-center gap-3">
-              <div
-                className={`w-9 h-9 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center text-white shadow-md shrink-0`}
-              >
-                {s.icon}
-              </div>
-              <div>
-                <p className="text-xl font-bold text-[#1d1d1f] dark:text-white leading-tight">
-                  {s.value}
-                </p>
-                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-                  {s.label}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div>
+      <AdminPageHeader
+        title="Taxonomía educativa"
+        description="Categorías, niveles, rutas de aprendizaje, relaciones y tags del blog."
+      />
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 p-1.5 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/5 dark:border-white/5 w-fit">
+      <div className="admin-tabs mb-6">
         {tabs.map((t) => (
-          <TabBtn
+          <button
             key={t.id}
-            active={tab === t.id}
-            count={t.count}
-            id={t.id}
-            label={t.label}
+            className={`admin-tab ${tab === t.id ? "admin-tab-active" : ""}`}
             onClick={() => setTab(t.id)}
-          />
+          >
+            <span>{t.label}</span>
+            <span className="ml-1.5 text-[10px] opacity-60">{t.count}</span>
+          </button>
         ))}
       </div>
 
+      {/* Tab content */}
       {tab === "categories" && <CategoriesView />}
       {tab === "levels" && <LevelsView />}
       {tab === "paths" && <PathsView />}

@@ -85,11 +85,9 @@ export function TrueFalseExercise({
                 <button
                   className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                     showResult
-                      ? stmt.text && (result?.details as { correct?: number })?.correct !== undefined
-                        ? ""
-                        : userAnswer === true
-                          ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-600"
-                          : "bg-red-500/10 border-red-500/50 text-red-600"
+                      ? userAnswer === true
+                        ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-600"
+                        : "bg-red-500/10 border-red-500/50 text-red-600"
                       : userAnswer === true
                         ? "bg-[var(--accent-light)] border-[var(--accent)] text-[var(--accent)]"
                         : "bg-[var(--bg-card)] border-[var(--border-default)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"

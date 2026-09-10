@@ -464,7 +464,7 @@ export default TarjetaPerfil;`,
   {
     id: "react-props",
     slug: "react-props",
-    title: "Props y数据流",
+    title: "Props y flujo de datos",
     description:
       "Entiende cómo fluyen los datos en React a través de props. Validación con PropTypes y valores por defecto.",
     narrative:

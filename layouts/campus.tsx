@@ -13,6 +13,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { siteConfig } from "@/config/site";
 import { campusService } from "@/services/campusService";
 import { XpBadge } from "@/components/campus/XpBadge";
+import { IconGraduation } from "@/components/ui/Icons";
 
 // ── User avatar / menu ───────────────────────────────────────────────────────
 
@@ -43,7 +44,7 @@ function UserMenu() {
       <button
         aria-expanded={open}
         aria-haspopup="menu"
-        aria-label={user?.profile?.full_name ?? "Menú de usuario"}
+        aria-label={user?.profile?.full_name ?? t("nav.userMenu")}
         className="flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-[var(--bg-hover)] transition-colors min-h-[44px]"
         type="button"
         onClick={() => setOpen(!open)}
@@ -65,13 +66,13 @@ function UserMenu() {
             onClick={() => setOpen(false)}
           />
           <div
-            aria-label="Menú de usuario"
+            aria-label={t("nav.userMenu")}
             className="absolute right-0 top-full mt-2 z-50 w-56 py-2 bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl shadow-xl"
             role="menu"
           >
             <div className="px-4 py-2 border-b border-[var(--border-default)]">
               <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
-                {user?.profile?.full_name ?? user?.email ?? "Usuario"}
+                {user?.profile?.full_name ?? user?.email ?? t("common.user")}
               </p>
               <p className="text-xs text-[var(--text-muted)] truncate">
                 {user?.email ?? ""}
@@ -115,7 +116,7 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
   const navItems = [
     { href: "/campus", label: t("nav.campusHome") },
     { href: "/campus/cursos", label: t("nav.campusGuides") },
-    { href: "/campus/retos", label: "Retos" },
+    { href: "/campus/retos", label: t("nav.campusChallenges") },
   ];
 
   return (
@@ -169,11 +170,11 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
                 </svg>
               </div>
               <span className="text-sm font-bold text-[var(--text-primary)] hidden sm:block">
-                Campus
+                {t("nav.campus")}
               </span>
             </Link>
 
-            <nav aria-label="Navegación del Campus">
+            <nav aria-label={t("nav.campusNavigation")}>
               <ul className="flex items-center gap-1" role="list">
                 {navItems.map((item) => {
                   const isActive =
@@ -204,11 +205,11 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
           {/* Right: Certificados link + User menu */}
           <div className="flex items-center gap-3">
             <Link
-              aria-label="Mis certificados"
+              aria-label={t("nav.campusCertificates")}
               className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors no-underline hidden sm:block"
               href="/campus/certificados"
             >
-              🎓 Certificados
+              <IconGraduation className="w-3.5 h-3.5 inline mr-1" /> {t("nav.campusCertificates")}
             </Link>
             <UserMenu />
           </div>
@@ -234,7 +235,7 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
             </div>
             <div className="flex items-center gap-4">
               <a
-                aria-label="GitHub (abre en nueva pestaña)"
+                aria-label={t("nav.github")}
                 className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
                 href={siteConfig.links.github}
                 rel="noopener noreferrer"
@@ -243,7 +244,7 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
                 GitHub
               </a>
               <a
-                aria-label="LinkedIn (abre en nueva pestaña)"
+                aria-label={t("nav.linkedin")}
                 className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
                 href={siteConfig.links.linkedin}
                 rel="noopener noreferrer"

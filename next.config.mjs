@@ -22,12 +22,12 @@ const nextConfig = {
       { source: "/blog/tutoriales", destination: "/campus", permanent: true },
       {
         source: "/blog/tutoriales/guias",
-        destination: "/campus/guias",
+        destination: "/campus/cursos",
         permanent: true,
       },
       {
         source: "/blog/tutoriales/guias/:path*",
-        destination: "/campus/guias/:path*",
+        destination: "/campus/cursos/:path*",
         permanent: true,
       },
       {
@@ -42,16 +42,6 @@ const nextConfig = {
         permanent: true,
       },
       // ── Campus redesign redirects ──
-      {
-        source: "/campus/guias",
-        destination: "/campus/cursos",
-        permanent: true,
-      },
-      {
-        source: "/campus/guias/:path*",
-        destination: "/campus/cursos/:path*",
-        permanent: true,
-      },
       {
         source: "/campus/plan-de-estudio",
         destination: "/campus/retos",

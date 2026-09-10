@@ -3,6 +3,13 @@ import { useState } from "react";
 import { DatabaseDiagram } from "@/components/docs/DatabaseDiagram";
 import { AppFlowDiagram } from "@/components/docs/AppFlowDiagram";
 
+import {
+  AdminPageHeader,
+  AdminPanel,
+  AdminEmptyState,
+  AdminFilterChip,
+} from "./AdminShell";
+
 // ── Endpoint Explorer data ────────────────────────────────────────────────────
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
@@ -936,12 +943,12 @@ const MODULES = [
 
 type Module = (typeof MODULES)[number];
 
-const METHOD_COLOR: Record<HttpMethod, string> = {
-  GET: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400",
-  POST: "bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400",
-  PATCH: "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-  PUT: "bg-orange-50 dark:bg-orange-950/30 text-orange-700 dark:text-orange-400",
-  DELETE: "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400",
+const METHOD_BADGE: Record<HttpMethod, string> = {
+  GET: "admin-badge-success",
+  POST: "admin-badge-info",
+  PATCH: "admin-badge-warning",
+  PUT: "admin-badge",
+  DELETE: "admin-badge-danger",
 };
 
 // ── Architecture docs ─────────────────────────────────────────────────────────
@@ -1261,38 +1268,14 @@ export function AdminDocsSection() {
 
   const currentDoc = docs.find((d) => d.id === activeDoc)!;
 
-  const tabCls = (v: View) =>
-    `px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
-      view === v
-        ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
-        : "text-[#6e6e73] dark:text-[#86868b] bg-black/5 dark:bg-white/5 hover:text-[#1d1d1f] dark:hover:text-white"
-    }`;
-
   return (
-    <div className="relative flex flex-col gap-6">
-      {/* Decorative blobs */}
-      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-amber-500/8 to-orange-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-orange-500/6 to-amber-500/4 blur-3xl pointer-events-none" />
+    <div className="flex flex-col gap-6">
+      <AdminPageHeader
+        title="Documentación"
+        description={`${ENDPOINTS.length} endpoints · 20 módulos · referencia técnica completa`}
+      />
 
-      {/* Header */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400 mb-1">
-          Referencia
-        </p>
-        <h1
-          className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
-          style={{ letterSpacing: "-0.03em" }}
-        >
-          Documentación
-        </h1>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
-          {ENDPOINTS.length} endpoints · 20 módulos · referencia técnica
-          completa
-        </p>
-      </div>
-
-      {/* View toggle */}
-      <div className="flex gap-1 bg-black/[0.04] dark:bg-white/[0.04] p-1 rounded-2xl w-fit border border-black/5 dark:border-white/5">
+      <div className="admin-tabs">
         {(
           [
             { id: "endpoints", label: "Endpoint Explorer" },
@@ -1303,7 +1286,7 @@ export function AdminDocsSection() {
         ).map((tab) => (
           <button
             key={tab.id}
-            className={tabCls(tab.id)}
+            className={`admin-tab ${view === tab.id ? "admin-tab-active" : ""}`}
             onClick={() => setView(tab.id)}
           >
             {tab.label}
@@ -1314,93 +1297,68 @@ export function AdminDocsSection() {
       {/* Endpoint Explorer */}
       {view === "endpoints" && (
         <div className="flex flex-col gap-4">
-          {/* Search + filter */}
           <div className="flex gap-3 flex-wrap">
-            <div className="relative flex-1 min-w-48">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="1.5"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="M21 21l-4.35-4.35" />
-              </svg>
-              <input
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all"
-                placeholder="Buscar endpoint o ruta…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+            <input
+              className="ds-input flex-1 min-w-48"
+              placeholder="Buscar endpoint o ruta…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
             <div className="flex gap-1 flex-wrap">
               {MODULES.map((m) => (
-                <button
+                <AdminFilterChip
                   key={m}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${
-                    activeModule === m
-                      ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
-                      : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
-                  }`}
+                  active={activeModule === m}
                   onClick={() => setActiveModule(m)}
                 >
                   {m}
-                </button>
+                </AdminFilterChip>
               ))}
             </div>
           </div>
 
-          <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+          <p className="text-xs text-[var(--text-muted)]">
             {filtered.length} endpoint{filtered.length !== 1 ? "s" : ""}
           </p>
 
-          {/* Endpoint list */}
-          <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
-            <div className="h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
+          <AdminPanel compact>
             {filtered.length === 0 ? (
-              <p className="px-5 py-8 text-sm text-center text-[#6e6e73] dark:text-[#86868b]">
-                No endpoints match
-              </p>
+              <AdminEmptyState title="No endpoints match" />
             ) : (
-              <div className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
+              <div className="flex flex-col">
                 {filtered.map((e, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--bg-hover)] transition-colors border-b border-[var(--border-default)] last:border-b-0"
                   >
                     <span
-                      className={`px-2 py-0.5 rounded-md text-[10px] font-bold font-mono w-14 text-center flex-shrink-0 ${METHOD_COLOR[e.method]}`}
+                      className={`admin-badge font-mono w-14 text-center flex-shrink-0 ${METHOD_BADGE[e.method]}`}
                     >
                       {e.method}
                     </span>
-                    <code className="text-xs font-mono text-[#1d1d1f] dark:text-white flex-1 truncate">
+                    <code className="text-xs font-mono text-[var(--text-primary)] flex-1 truncate">
                       {e.path}
                     </code>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] flex-1 min-w-0 truncate hidden sm:block">
+                    <p className="text-xs text-[var(--text-secondary)] flex-1 min-w-0 truncate hidden sm:block">
                       {e.summary}
                     </p>
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                       {e.auth ? (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] bg-amber-50 dark:bg-amber-950/30 text-amber-600 font-medium">
+                        <span className="admin-badge admin-badge-warning">
                           auth
                         </span>
                       ) : (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] bg-green-50 dark:bg-green-950/30 text-green-600 font-medium">
+                        <span className="admin-badge admin-badge-success">
                           public
                         </span>
                       )}
                       {e.roles?.map((r) => (
-                        <span
-                          key={r}
-                          className="px-1.5 py-0.5 rounded text-[9px] bg-purple-50 dark:bg-purple-950/30 text-purple-600 font-medium"
-                        >
+                        <span key={r} className="admin-badge">
                           {r}
                         </span>
                       ))}
                       {e.rateLimit && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] bg-black/[0.04] dark:bg-white/[0.04] text-[#6e6e73] dark:text-[#86868b] font-mono">
+                        <span className="admin-badge font-mono">
                           {e.rateLimit}
                         </span>
                       )}
@@ -1409,7 +1367,7 @@ export function AdminDocsSection() {
                 ))}
               </div>
             )}
-          </div>
+          </AdminPanel>
         </div>
       )}
 
@@ -1430,15 +1388,11 @@ export function AdminDocsSection() {
       {/* Architecture docs */}
       {view === "architecture" && (
         <div className="flex flex-col gap-4">
-          <div className="flex gap-1 flex-wrap">
+          <div className="admin-tabs">
             {docs.map((d) => (
               <button
                 key={d.id}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                  activeDoc === d.id
-                    ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
-                    : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
-                }`}
+                className={`admin-tab ${activeDoc === d.id ? "admin-tab-active" : ""}`}
                 onClick={() => setActiveDoc(d.id)}
               >
                 {d.title}
@@ -1447,28 +1401,22 @@ export function AdminDocsSection() {
           </div>
           <div className="flex flex-col gap-4">
             {currentDoc.content.map((section) => (
-              <div
-                key={section.heading}
-                className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 group"
-              >
-                <div className="h-1 bg-gradient-to-r from-amber-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="px-5 py-4">
-                  <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-3">
-                    {section.heading}
-                  </h3>
-                  <ul className="space-y-2">
-                    {section.items.map((item, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-[#6e6e73] dark:text-[#86868b]"
-                      >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <AdminPanel key={section.heading}>
+                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">
+                  {section.heading}
+                </h3>
+                <ul className="space-y-2">
+                  {section.items.map((item, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
+                    >
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </AdminPanel>
             ))}
           </div>
         </div>

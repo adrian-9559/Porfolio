@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 import { useT } from "@/hooks/useT";
 import { campusService } from "@/services/campusService";
+import { IconCelebration, IconSadFace } from "@/components/ui/Icons";
 
 interface QuizModalProps {
   tutorialSlug: string;
@@ -174,11 +175,11 @@ export function QuizModal({
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg-overlay)] backdrop-blur-sm p-4">
         <div className="w-full max-w-sm bg-[var(--bg-card)] rounded-2xl border border-[var(--border-default)] shadow-2xl p-8 text-center space-y-4">
           <div
-            className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl ${
-              result.passed ? "bg-[var(--accent-light)]" : "bg-[var(--state-danger-bg)]"
+            className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center ${
+              result.passed ? "bg-[var(--accent-light)] text-[var(--accent)]" : "bg-[var(--state-danger-bg)] text-red-500"
             }`}
           >
-            {result.passed ? "🎉" : "😔"}
+            {result.passed ? <IconCelebration className="w-8 h-8" /> : <IconSadFace className="w-8 h-8" />}
           </div>
           <h3 className="text-lg font-bold text-[var(--text-primary)]">
             {result.passed ? t("campus.quiz.passed") : t("campus.quiz.failed")}

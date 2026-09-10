@@ -185,6 +185,8 @@
 		"groupProjects": "Proyectos",
 		"groupSystem": "Sistema",
 		"groupTools": "Herramientas",
+		"groupAnalytics": "Analítica",
+		"groupSocial": "Social",
 		"healthDbChecked": "Última comprobación DB",
 		"healthDegraded": "Degradado",
 		"healthEnv": "Entorno",
@@ -1910,7 +1912,8 @@
 			"typeHere": "Escribe aquí...",
 			"completeAll": "Completa todos los campos",
 			"true": "Verdadero",
-			"false": "Falso"
+			"false": "Falso",
+			"runError": "Error al ejecutar el código"
 		},
 		"certificates": {
 			"title": "Mis Certificados",
@@ -1981,6 +1984,118 @@
 			"level": "Nivel",
 			"nextLevel": "XP para siguiente nivel",
 			"total": "XP total"
+		},
+		"hero": {
+			"badge": "Campus abierto — Empieza gratis",
+			"titleBefore": "Aprende",
+			"titleHighlight": "Programación",
+			"titleAfter": "sin saltar entre mil recursos",
+			"desc": "Guías estructuradas, retos prácticos y progreso. Todo en español, directo y sin relleno."
+		},
+		"courses": {
+			"title": "Cursos para subir de nivel",
+			"viewAll": "Ver todos",
+			"steps": "pasos",
+			"meta": "{tutorials} tutoriales · ~{min} min"
+		},
+		"challenges": {
+			"badge": "Desafíos",
+			"title": "Retos",
+			"desc": "Resuelve retos, gana XP y sube de nivel",
+			"completed": "Completados",
+			"xpTotal": "XP Total",
+			"count": "{n} retos",
+			"loadMore": "Ver más retos ({n} restantes)",
+			"empty": "No hay retos en esta categoría"
+		},
+		"tutorial": {
+			"label": "Tutorial",
+			"content": "Contenido",
+			"lesson": "Lección",
+			"backToPath": "Volver a la ruta",
+			"nextLesson": "Siguiente lección",
+			"notFound": "Tutorial no encontrado",
+			"ariaOpenIndex": "Abrir índice del tutorial",
+			"ariaCloseIndex": "Cerrar índice",
+			"ariaNext": "Siguiente"
+		},
+		"guides": {
+			"ruta-opencode": {
+				"title": "Ruta OpenCode",
+				"description": "Domina OpenCode de principio a fin: instalación, modelos, MCP, Skills, agentes en paralelo, RAG, frameworks de IA y plugins de editor."
+			},
+			"ruta-java": {
+				"title": "Ruta Java",
+				"description": "Aprende Java desde cero hasta nivel avanzado: sintaxis, POO, colecciones, Streams, Spring Boot y APIs REST. Ruta completa para desarrolladores backend empresariales."
+			},
+			"ruta-frontend": {
+				"title": "Ruta Frontend Web",
+				"description": "De cero a frontend moderno: HTML y CSS, JavaScript, TypeScript, React, Next.js y testing. Ruta completa para dominar el desarrollo web desde los fundamentos hasta producción."
+			},
+			"ruta-c": {
+				"title": "Ruta C",
+				"description": "Aprende C desde cero: variables, punteros, gestión manual de memoria, structs y programación de sistemas. Ideal para entender cómo funciona realmente un ordenador."
+			},
+			"ruta-cpp": {
+				"title": "Ruta C++",
+				"description": "Domina C++ moderno: POO, STL, smart pointers, move semantics y programación de alto rendimiento. Construye sobre los fundamentos de C."
+			},
+			"ruta-backend-js": {
+				"title": "Ruta Backend JavaScript",
+				"description": "Crea APIs REST profesionales con Node.js y Express, conecta bases de datos PostgreSQL y desplega un backend completo con Supabase. El contrapunto moderno a la ruta Java."
+			},
+			"ruta-databases": {
+				"title": "Ruta Bases de Datos",
+				"description": "Domina los datos: qué son las bases de datos, SQL relacional y NoSQL, y trabaja con MySQL, PostgreSQL, MongoDB y Supabase hasta elegir la tecnología adecuada para cada proyecto."
+			},
+			"ruta-python-ia": {
+				"title": "Ruta Python & IA",
+				"description": "Aprende Python y conviértete en ingeniero de IA: crea proyectos asistidos, elige framework de agentes, lanza agentes en paralelo y construye asistentes con RAG."
+			},
+			"ruta-fullstack": {
+				"title": "Ruta Full-Stack",
+				"description": "Unifica frontend y backend en una sola app: React, Next.js, API con Node y Express, base de datos con Supabase y testing end-to-end. La ruta que une las ramas Web y Backend."
+			},
+			"ruta-angular": {
+				"title": "Ruta Angular",
+				"description": "Del TypeScript a aplicaciones Angular enterprise: componentes standalone, directivas, services, HttpClient y routing. El camino de Angular sobre los fundamentos de la ruta frontend."
+			},
+			"ruta-vue": {
+				"title": "Ruta Vue",
+				"description": "JavaScript a Vue 3: Composition API, reactividad, directivas, props y emits, Vue Router y Pinia. El framework progresivo sobre la base de la ruta frontend."
+			},
+			"ruta-css-diseno": {
+				"title": "Ruta CSS & Diseño",
+				"description": "Convierte el CSS en una herramienta de diseño profesional: fundamentos, animaciones, layouts modernos con container queries y Tailwind CSS sobre la base de la ruta frontend."
+			},
+			"ruta-javascript-moderno": {
+				"title": "Ruta JavaScript Moderno",
+				"description": "Profundiza en JavaScript: fundamentos sólidos y después asincronía, fetch, módulos ES y las APIs del navegador modernas. El puente entre principiante y senior."
+			},
+			"ruta-typescript-avanzado": {
+				"title": "Ruta TypeScript Avanzado",
+				"description": "Ve más allá de los tipos básicos: generics, utility types, narrowing, uniones discriminadas y tipado profesional de React con tsconfig estricto."
+			},
+			"ruta-apps-interactivas": {
+				"title": "Ruta Apps Interactivas",
+				"description": "Convierte tus apps en productos: estado global con Zustand, data fetching con React Query, Next.js en producción, rendimiento con Core Web Vitals y accesibilidad WCAG."
+			},
+			"ruta-go": {
+				"title": "Ruta Go",
+				"description": "Aprende Go desde cero: sintaxis, funciones, structs, interfaces, goroutines y un servidor HTTP. Un lenguaje moderno y rápido para backend de alto rendimiento."
+			},
+			"ruta-rust": {
+				"title": "Ruta Rust",
+				"description": "Construye sobre los fundamentos de C para dominar Rust: ownership, structs, enums, traits y errores. Memoria segura y máximo rendimiento en sistemas."
+			},
+			"ruta-nestjs": {
+				"title": "Ruta NestJS",
+				"description": "Estructura tu backend con NestJS: módulos, controllers, services, DTOs con validación, TypeORM, guards con JWT y Swagger. Sobre la base de TypeScript y Express."
+			},
+			"ruta-devops": {
+				"title": "Ruta DevOps",
+				"description": "Automatiza el ciclo de vida completo de tus aplicaciones: Git, Docker, CI/CD con GitHub Actions, Kubernetes, monitoreo y observabilidad con Prometheus/Grafana, e infraestructura como código con Terraform."
+			}
 		}
 	},
 	"common": {
@@ -2005,6 +2120,7 @@
 		"next": "Siguiente",
 		"no": "No",
 		"none": "Ninguno",
+		"of": "de",
 		"noResults": "Sin resultados",
 		"optional": "Opcional",
 		"required": "Requerido",
@@ -2018,6 +2134,7 @@
 		"spanish": "Español",
 		"success": "Operación exitosa",
 		"upload": "Subir",
+		"user": "Usuario",
 		"warning": "Atención",
 		"yes": "Sí"
 	},
@@ -2471,7 +2588,13 @@
 		"mobileLogin": "Iniciar sesión",
 		"projects": "Proyectos",
 		"skipToContent": "Saltar al contenido principal",
-		"tools": "Herramientas"
+		"tools": "Herramientas",
+		"userMenu": "Menú de usuario",
+		"campusCertificates": "Certificados",
+		"campusChallenges": "Retos",
+		"menuClose": "Cerrar menú",
+		"github": "GitHub (abre en nueva pestaña)",
+		"linkedin": "LinkedIn (abre en nueva pestaña)"
 	},
 	"notifications": {
 		"action": {

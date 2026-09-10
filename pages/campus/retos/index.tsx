@@ -4,8 +4,10 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 
 import CampusLayout from "@/layouts/campus";
+import { useT } from "@/hooks/useT";
 import { challenges } from "@/data/challenges";
 import { DifficultyBadge } from "@/components/campus/DifficultyBadge";
+import { IconLock, IconPlay, IconHourglass, IconArrowRight, IconTarget } from "@/components/ui/Icons";
 
 // ── Challenge card ───────────────────────────────────────────────────────────
 
@@ -16,24 +18,20 @@ function ChallengeCard({
 }) {
   const statusConfig = {
     locked: {
-      icon: "🔒",
+      icon: <IconLock className="w-4 h-4" />,
       classes: "opacity-50 cursor-not-allowed",
-      border: "border-[var(--border-default)]",
     },
     available: {
-      icon: "▶",
+      icon: <IconPlay className="w-4 h-4" />,
       classes: "hover:border-[var(--accent)] hover:shadow-md cursor-pointer",
-      border: "border-[var(--border-default)]",
     },
     in_progress: {
-      icon: "⏳",
-      classes: "border-amber-500/50 hover:border-amber-400",
-      border: "border-amber-500/50",
+      icon: <IconHourglass className="w-4 h-4" />,
+      classes: "border-[var(--color-warning)]/30 hover:border-[var(--color-warning)]",
     },
     completed: {
       icon: "✓",
-      classes: "border-[var(--accent)]/50 bg-[var(--accent-light)]",
-      border: "border-[var(--accent)]/50",
+      classes: "border-[var(--accent)]/30 bg-[var(--accent-light)]",
     },
   };
   const s = statusConfig[challenge.status];
@@ -41,21 +39,21 @@ function ChallengeCard({
 
   const cardContent = (
     <div
-      className={`p-4 rounded-xl border transition-all duration-200 ${s.border} ${s.classes} bg-[var(--bg-card)]`}
+      className={`ds-card ds-card-compact ds-card-interactive ${s.classes}`}
     >
       <div className="flex items-start gap-3">
         <div
-          className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-sm ${
+          className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-sm font-bold ${
             challenge.status === "completed"
-              ? "bg-[var(--accent-light)] text-[var(--accent)]"
+              ? "bg-[var(--accent)] text-[var(--text-interactive)]"
               : challenge.status === "available"
                 ? "bg-[var(--accent-light)] text-[var(--accent)]"
-                : "bg-[var(--bg-surface)] text-[var(--text-muted)]"
+                : "bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border-default)]"
           }`}
         >
           {challenge.status === "completed" ? (
             <svg
-              className="w-4 h-4"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -64,7 +62,7 @@ function ChallengeCard({
                 d="M5 13l4 4L19 7"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
+                strokeWidth={2.5}
               />
             </svg>
           ) : (
@@ -72,25 +70,25 @@ function ChallengeCard({
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1.5">
             <DifficultyBadge level={challenge.difficulty} />
             <span className="text-[10px] text-[var(--text-muted)]">
               {challenge.estimatedMinutes} min
             </span>
-            <span className="text-[10px] text-[var(--accent)] font-semibold">
+            <span className="text-[10px] text-[var(--accent)] font-bold">
               +{challenge.xpReward} XP
             </span>
           </div>
-          <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1 truncate">
+          <h3 className="text-sm font-bold text-[var(--text-primary)] mb-1 truncate">
             {challenge.title}
           </h3>
-          <p className="text-xs text-[var(--text-secondary)] line-clamp-2">
+          <p className="text-xs text-[var(--text-secondary)] line-clamp-2 leading-relaxed">
             {challenge.description}
           </p>
         </div>
         {!isLocked && (
-          <span className="text-[var(--accent)] text-sm flex-shrink-0 mt-1">
-            →
+          <span className="text-[var(--accent)] text-sm flex-shrink-0 mt-2">
+            <IconArrowRight className="w-4 h-4" />
           </span>
         )}
       </div>
@@ -112,6 +110,7 @@ function ChallengeCard({
 // ── Main page ────────────────────────────────────────────────────────────────
 
 export default function RetosPage() {
+  const { t } = useT();
   const [activeFilter, setActiveFilter] = useState<
     "all" | "beginner" | "intermediate" | "advanced"
   >("all");
@@ -129,60 +128,60 @@ export default function RetosPage() {
   return (
     <CampusLayout
       seo={{
-        title: "Retos - Campus",
-        description:
-          "Resuelve retos de programación y gana XP. Desde fundamentos hasta proyectos avanzados.",
+        title: `${t("campus.challenges.title")} - Campus`,
+        description: t("campus.challenges.desc"),
       }}
     >
       <div className="max-w-6xl mx-auto px-5 sm:px-6 py-8 md:py-12 space-y-8">
         <header className="space-y-2">
+          <span className="ds-section-label">{t("campus.challenges.badge")}</span>
           <h1
             className="text-2xl md:text-3xl font-black text-[var(--text-primary)]"
             style={{ letterSpacing: "-0.03em" }}
           >
-            Retos
+            {t("campus.challenges.title")}
           </h1>
           <p className="text-sm text-[var(--text-secondary)] max-w-xl leading-relaxed">
-            Resuelve retos, gana XP y sube de nivel
+            {t("campus.challenges.desc")}
           </p>
         </header>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
-            <p className="text-lg font-black text-[var(--accent)]">
+          <div className="ds-card p-4 text-center">
+            <p className="text-xl font-black text-[var(--accent)]">
               {challenges.length}
             </p>
-            <p className="text-[10px] text-[var(--text-muted)] font-semibold">
-              Retos
+            <p className="text-[10px] text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+              {t("campus.challenges.title")}
             </p>
           </div>
-          <div className="p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
-            <p className="text-lg font-black text-[var(--accent)]">
+          <div className="ds-card p-4 text-center">
+            <p className="text-xl font-black text-[var(--color-success)]">
               {challenges.filter((c) => c.status === "completed").length}
             </p>
-            <p className="text-[10px] text-[var(--text-muted)] font-semibold">
-              Completados
+            <p className="text-[10px] text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+              {t("campus.challenges.completed")}
             </p>
           </div>
-          <div className="p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
-            <p className="text-lg font-black text-[var(--accent)]">
+          <div className="ds-card p-4 text-center">
+            <p className="text-xl font-black text-[var(--color-warning)]">
               {challenges.reduce((acc, c) => acc + c.xpReward, 0)}
             </p>
-            <p className="text-[10px] text-[var(--text-muted)] font-semibold">
-              XP Total
+            <p className="text-[10px] text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+              {t("campus.challenges.xpTotal")}
             </p>
           </div>
         </div>
 
         {/* Difficulty filter */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {(
             [
-              { id: "all", label: "Todos" },
-              { id: "beginner", label: "Fácil" },
-              { id: "intermediate", label: "Medio" },
-              { id: "advanced", label: "Difícil" },
+              { id: "all", label: t("common.all") },
+              { id: "beginner", label: t("blog.level.beginner") },
+              { id: "intermediate", label: t("blog.level.intermediate") },
+              { id: "advanced", label: t("blog.level.advanced") },
             ] as const
           ).map((filter) => (
             <button
@@ -190,8 +189,8 @@ export default function RetosPage() {
               key={filter.id}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 activeFilter === filter.id
-                  ? "bg-[var(--accent-light)] text-[var(--accent)]"
-                  : "bg-[var(--bg-card)] text-[var(--text-secondary)] border border-[var(--border-default)] hover:border-[var(--border-hover)]"
+                  ? "bg-[var(--accent)] text-[var(--text-interactive)]"
+                  : "ds-btn-secondary"
               }`}
               type="button"
               onClick={() => setActiveFilter(filter.id)}
@@ -200,12 +199,12 @@ export default function RetosPage() {
             </button>
           ))}
           <span className="self-center text-sm text-[var(--text-muted)] ml-auto">
-            {filteredChallenges.length} retos
+            {t("campus.challenges.count", { n: filteredChallenges.length })}
           </span>
         </div>
 
         {/* Challenges list */}
-        <div className="space-y-2">
+        <div className="space-y-3">
           {displayed.map((challenge) => (
             <ChallengeCard key={challenge.id} challenge={challenge} />
           ))}
@@ -217,20 +216,15 @@ export default function RetosPage() {
             onClick={() => setShowAll(true)}
             type="button"
           >
-            Ver más retos ({filteredChallenges.length - 12} restantes)
+            {t("campus.challenges.loadMore", { n: filteredChallenges.length - 12 })}
           </button>
         )}
 
         {filteredChallenges.length === 0 && (
-          <div className="text-center py-16">
-            <span
-              aria-hidden="true"
-              className="text-4xl mb-3 block"
-            >
-              🎯
-            </span>
+          <div className="ds-empty">
+            <IconTarget className="w-10 h-10 mb-3 text-[var(--text-muted)]" />
             <p className="text-sm text-[var(--text-secondary)]">
-              No hay retos en esta categoría
+              {t("campus.challenges.empty")}
             </p>
           </div>
         )}

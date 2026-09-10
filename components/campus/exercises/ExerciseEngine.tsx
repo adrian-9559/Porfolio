@@ -8,6 +8,7 @@ import { useT } from "@/hooks/useT";
 import { CodeExercise } from "./CodeExercise";
 import { QuizExercise } from "./QuizExercise";
 import { TrueFalseExercise } from "./TrueFalseExercise";
+import { IconLock, IconEdit, IconArrowLeft, IconArrowRight, IconGraduation } from "@/components/ui/Icons";
 import { FillBlankExercise } from "./FillBlankExercise";
 import { DragDropExercise } from "./DragDropExercise";
 import { CertificateModal } from "../CertificateModal";
@@ -88,8 +89,8 @@ export function ExerciseEngine({
   if (!isAuthenticated) {
     return (
       <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-8 text-center">
-        <span className="text-3xl mb-3 block" aria-hidden="true">
-          🔒
+        <span className="text-3xl mb-3 block text-[var(--text-muted)]" aria-hidden="true">
+          <IconLock className="w-8 h-8 mx-auto" />
         </span>
         <p className="text-sm font-semibold text-[var(--text-primary)] mb-1">
           {t("campus.certificates.loginRequired")}
@@ -104,8 +105,8 @@ export function ExerciseEngine({
   if (exercises.length === 0) {
     return (
       <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-8 text-center">
-        <span className="text-3xl mb-3 block" aria-hidden="true">
-          📝
+        <span className="text-3xl mb-3 block text-[var(--text-muted)]" aria-hidden="true">
+          <IconEdit className="w-8 h-8 mx-auto" />
         </span>
         <p className="text-sm font-semibold text-[var(--text-primary)]">
           {t("campus.exercises.title")} — próximamente
@@ -251,7 +252,7 @@ export function ExerciseEngine({
           type="button"
           onClick={handlePrev}
         >
-          ← {t("campus.exercises.prevExercise")}
+          <IconArrowLeft className="w-3 h-3 inline mr-1" /> {t("campus.exercises.prevExercise")}
         </button>
         <span className="text-xs text-[var(--text-muted)]">
           {t("campus.exercises.exerciseOf", { current: state.currentIdx + 1, total: exercises.length })}
@@ -262,7 +263,7 @@ export function ExerciseEngine({
             type="button"
             onClick={handleNext}
           >
-            {t("campus.exercises.nextExercise")} →
+            {t("campus.exercises.nextExercise")} <IconArrowRight className="w-3 h-3 inline ml-1" />
           </button>
         ) : allPassed ? (
           <button
@@ -270,7 +271,7 @@ export function ExerciseEngine({
             type="button"
             onClick={() => setShowCertificate(true)}
           >
-            🎓 {t("campus.certificates.title")}
+            <IconGraduation className="w-3 h-3 inline mr-1" /> {t("campus.certificates.title")}
           </button>
         ) : (
           <div className="text-xs text-[var(--text-muted)]">

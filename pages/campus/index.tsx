@@ -7,6 +7,7 @@ import CampusLayout from "@/layouts/campus";
 import { useT } from "@/hooks/useT";
 import { useAuth } from "@/hooks/useAuth";
 import { campusService } from "@/services/campusService";
+import { IconLock, IconPlay, IconHourglass, IconCheck, IconArrowRight } from "@/components/ui/Icons";
 import {
   getContentByType,
   getGuides,
@@ -27,6 +28,7 @@ function ContinueLearning({
   guideTitle: string;
   progressPct: number;
 }) {
+  const { t } = useT();
   return (
     <Link
       className="group block no-underline"
@@ -42,7 +44,7 @@ function ContinueLearning({
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest mb-2">
-              Continuar aprendiendo
+              {t("campus.continueLearning")}
             </p>
             <h2 className="text-lg md:text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-tight mb-1">
               {lastTutorial.title}
@@ -160,11 +162,11 @@ function ChallengeCard({
 }: {
   challenge: (typeof challenges)[number];
 }) {
-  const statusIcon = {
-    locked: "🔒",
-    available: "▶",
-    in_progress: "⏳",
-    completed: "✓",
+  const statusIcon: Record<string, React.ReactNode> = {
+    locked: <IconLock className="w-4 h-4" />,
+    available: <IconPlay className="w-4 h-4" />,
+    in_progress: <IconHourglass className="w-4 h-4" />,
+    completed: <IconCheck className="w-4 h-4" />,
   };
 
   const statusBorder = {
@@ -190,7 +192,7 @@ function ChallengeCard({
         </p>
       </div>
       {challenge.status !== "locked" && (
-        <span className="text-[var(--accent)] text-xs flex-shrink-0">→</span>
+        <span className="text-[var(--accent)] text-xs flex-shrink-0"><IconArrowRight className="w-3 h-3" /></span>
       )}
     </div>
   );
@@ -270,13 +272,13 @@ export default function CampusPage() {
   // Featured courses (first 6 guides)
   const featuredCourses = useMemo(() => {
     return allGuides.slice(0, 6).map((guide, idx) => ({
-      title: guide.title,
-      description: guide.description,
-      meta: `${guide.curriculum.length} tutoriales · ~${guideTotalMinutes(guide)} min`,
+      title: t(`campus.guides.${guide.slug}.title`) || guide.title,
+      description: t(`campus.guides.${guide.slug}.description`) || guide.description,
+      meta: t("campus.courses.meta", { tutorials: guide.curriculum.length, min: guideTotalMinutes(guide) }),
       href: `/campus/cursos/${guide.slug}`,
       seed: idx,
     }));
-  }, [allGuides]);
+  }, [allGuides, t]);
 
   // Available challenges (not locked, first 6)
   const availableChallenges = useMemo(() => {
@@ -297,21 +299,20 @@ export default function CampusPage() {
         <header className="text-center space-y-4 max-w-2xl mx-auto">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent-light)] text-[var(--accent)] text-[10px] font-bold uppercase tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-            Campus abierto — Empieza gratis
+            {t("campus.hero.badge")}
           </span>
           <h1
             className="text-3xl md:text-4xl lg:text-5xl font-black text-[var(--text-primary)] leading-tight"
             style={{ letterSpacing: "-0.04em" }}
           >
-            Aprende{" "}
+            {t("campus.hero.titleBefore")}{" "}
             <span className="bg-gradient-to-r from-[var(--color-brand-from)] via-[var(--color-brand-via)] to-[var(--color-brand-to)] bg-clip-text text-transparent">
-              Programación
+              {t("campus.hero.titleHighlight")}
             </span>{" "}
-            sin saltar entre mil recursos
+            {t("campus.hero.titleAfter")}
           </h1>
           <p className="text-sm md:text-base text-[var(--text-secondary)] max-w-lg mx-auto leading-relaxed">
-            Guías estructuradas, retos prácticos y progreso. Todo en español,
-            directo y sin relleno.
+            {t("campus.hero.desc")}
           </p>
         </header>
 
@@ -334,7 +335,7 @@ export default function CampusPage() {
                 {allGuides.length}
               </p>
               <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
-                Rutas de aprendizaje
+                {t("campus.stats.guides")}
               </p>
             </div>
             <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
@@ -342,7 +343,7 @@ export default function CampusPage() {
                 {allTutorials.length}
               </p>
               <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
-                Tutoriales
+                {t("campus.stats.tutorials")}
               </p>
             </div>
             <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
@@ -350,7 +351,7 @@ export default function CampusPage() {
                 {challenges.length}
               </p>
               <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
-                Retos prácticos
+                {t("campus.challenges.title")}
               </p>
             </div>
           </div>
@@ -363,13 +364,13 @@ export default function CampusPage() {
               className="text-xl md:text-2xl font-black text-[var(--text-primary)]"
               style={{ letterSpacing: "-0.03em" }}
             >
-              Cursos para subir de nivel
+              {t("campus.courses.title")}
             </h2>
             <Link
               className="text-xs font-semibold text-[var(--accent)] hover:underline no-underline"
               href="/campus/cursos"
             >
-              Ver todos →
+              {t("campus.courses.viewAll")} <IconArrowRight className="w-3 h-3 inline" />
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -387,13 +388,13 @@ export default function CampusPage() {
                 className="text-xl md:text-2xl font-black text-[var(--text-primary)]"
                 style={{ letterSpacing: "-0.03em" }}
               >
-                Retos prácticos
+                {t("campus.challenges.title")}
               </h2>
               <Link
                 className="text-xs font-semibold text-[var(--accent)] hover:underline no-underline"
                 href="/campus/retos"
               >
-                Ver todos →
+              {t("campus.courses.viewAll")} <IconArrowRight className="w-3 h-3 inline" />
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">

@@ -180,6 +180,16 @@ export interface AdminIdeaStats {
   byStatus: Record<string, number>;
 }
 
+export interface AdminAuditLog {
+  id: number;
+  actor_id: string | null;
+  action: string;
+  target_type: string | null;
+  target_id: string | null;
+  metadata: Record<string, unknown> | null;
+  created_at: string;
+}
+
 // ── Service ────────────────────────────────────────────────────────────────────
 
 export const adminService = {
@@ -300,4 +310,16 @@ export const adminService = {
     }),
   deleteIdea: (id: string) =>
     apiFetch<void>(`/api/admin/ideas/${id}`, { method: "DELETE" }),
+
+  // Audit Logs
+  listAuditLogs: (params?: { limit?: number; offset?: number; action?: string }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.limit) searchParams.set("limit", String(params.limit));
+    if (params?.offset) searchParams.set("offset", String(params.offset));
+    if (params?.action) searchParams.set("action", params.action);
+    const qs = searchParams.toString();
+    return apiFetch<{ logs: AdminAuditLog[]; total: number }>(
+      `/api/admin/audit-logs${qs ? `?${qs}` : ""}`,
+    );
+  },
 };

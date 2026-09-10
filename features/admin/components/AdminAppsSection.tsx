@@ -7,6 +7,13 @@ import {
   type MobileAppVersion,
 } from "@/services/mobileAppService";
 import { toRawGithubUrl } from "@/lib/githubUrl";
+import {
+  AdminPageHeader,
+  AdminPanel,
+  AdminEmptyState,
+  AdminLoadingSkeleton,
+} from "./AdminShell";
+import { relativeTime } from "./AdminShared";
 
 const BUILD_TYPES: Record<"android" | "ios", string[]> = {
   android: ["apk", "aab"],
@@ -94,16 +101,19 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md bg-white dark:bg-[#111116] rounded-2xl shadow-2xl overflow-hidden"
+        className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+        style={{ background: "var(--bg-card)", border: "1px solid var(--border-default)" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-black/8 dark:border-white/8">
-          <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white">
+        <div
+          className="flex items-center justify-between px-6 pt-5 pb-4"
+          style={{ borderBottom: "1px solid var(--border-default)" }}
+        >
+          <h3 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
             {initial ? t("admin.editApp") : t("admin.newApp")}
           </h3>
           <button
-            className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/8 dark:hover:bg-white/8 text-[#6e6e73]"
+            className="ds-btn-icon"
             onClick={onClose}
           >
             <svg
@@ -120,11 +130,11 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
         <form className="px-6 py-5 flex flex-col gap-4" onSubmit={handleSubmit}>
           {!initial && (
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-                {t("admin.appSlug")} <span className="text-red-500">*</span>
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
+                {t("admin.appSlug")} <span style={{ color: "var(--color-danger)" }}>*</span>
               </label>
               <input
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 placeholder={t("admin.appSlugPlaceholder")}
                 value={slug}
                 onChange={(e) =>
@@ -137,40 +147,41 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
           )}
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-                {t("admin.appName")} <span className="text-red-500">*</span>
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
+                {t("admin.appName")} <span style={{ color: "var(--color-danger)" }}>*</span>
               </label>
               <input
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 placeholder={t("admin.appNamePlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("admin.appEmoji")}
               </label>
               <input
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 placeholder={t("admin.appEmojiPlaceholder")}
                 value={iconEmoji}
                 onChange={(e) => setIconEmoji(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("admin.appAccentColor")}
               </label>
               <div className="flex gap-2 items-center">
                 <input
-                  className="w-8 h-8 rounded-lg border border-black/12 dark:border-white/12 cursor-pointer"
+                  className="w-8 h-8 rounded-lg cursor-pointer"
+                  style={{ border: "1px solid var(--border-default)" }}
                   type="color"
                   value={accentColor}
                   onChange={(e) => setAccentColor(e.target.value)}
                 />
                 <input
-                  className="flex-1 rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="ds-input flex-1"
                   value={accentColor}
                   onChange={(e) => setAccentColor(e.target.value)}
                 />
@@ -178,11 +189,11 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
               {t("admin.appDescription")}
             </label>
             <textarea
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="ds-input w-full resize-none"
               placeholder={t("admin.appDescriptionPlaceholder")}
               rows={2}
               value={description}
@@ -196,21 +207,21 @@ function AppModal({ initial, onClose, onSaved }: AppModalProps) {
               type="checkbox"
               onChange={(e) => setIsPublished(e.target.checked)}
             />
-            <span className="text-sm text-[#1d1d1f] dark:text-white">
+            <span className="text-sm" style={{ color: "var(--text-primary)" }}>
               {t("admin.appPublished")}
             </span>
           </label>
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p className="text-sm" style={{ color: "var(--color-danger)" }}>{error}</p>}
           <div className="flex gap-2 pt-1">
             <button
-              className="flex-1 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+              className="ds-btn-secondary flex-1"
               type="button"
               onClick={onClose}
             >
               {t("admin.cancel")}
             </button>
             <button
-              className="flex-1 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium disabled:opacity-50 transition-opacity"
+              className="ds-btn-primary flex-1"
               disabled={loading}
               type="submit"
             >
@@ -308,16 +319,19 @@ function UploadModal({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md bg-white dark:bg-[#111116] rounded-2xl shadow-2xl overflow-hidden"
+        className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+        style={{ background: "var(--bg-card)", border: "1px solid var(--border-default)" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-black/8 dark:border-white/8">
-          <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white">
+        <div
+          className="flex items-center justify-between px-6 pt-5 pb-4"
+          style={{ borderBottom: "1px solid var(--border-default)" }}
+        >
+          <h3 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
             {t("admin.newVersion")}
           </h3>
           <button
-            className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/8 dark:hover:bg-white/8 text-[#6e6e73]"
+            className="ds-btn-icon"
             onClick={onClose}
           >
             <svg
@@ -333,11 +347,11 @@ function UploadModal({
         </div>
         <form className="px-6 py-5 flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-              {t("admin.appName")} <span className="text-red-500">*</span>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
+              {t("admin.appName")} <span style={{ color: "var(--color-danger)" }}>*</span>
             </label>
             <select
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="ds-input w-full"
               value={appId}
               onChange={(e) => setAppId(e.target.value)}
             >
@@ -351,11 +365,11 @@ function UploadModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("admin.platform")}
               </label>
               <select
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 value={platform}
                 onChange={(e) =>
                   handlePlatformChange(e.target.value as "android" | "ios")
@@ -366,11 +380,11 @@ function UploadModal({
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("admin.type")}
               </label>
               <select
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 value={buildType}
                 onChange={(e) => setBuildType(e.target.value)}
               >
@@ -383,25 +397,27 @@ function UploadModal({
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-              {t("admin.version")} <span className="text-red-500">*</span>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
+              {t("admin.version")} <span style={{ color: "var(--color-danger)" }}>*</span>
             </label>
             <input
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="ds-input w-full"
               placeholder="1.0.0"
               value={version}
               onChange={(e) => setVersion(e.target.value)}
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
               {t("admin.uploadVersion")}
             </label>
             <div className="flex gap-2">
               {(["url", "file"] as const).map((st) => (
                 <button
                   key={st}
-                  className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors ${sourceType === st ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400" : "border-black/12 dark:border-white/12 text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"}`}
+                  className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    sourceType === st ? "admin-filter-chip-active" : "admin-filter-chip"
+                  }`}
                   type="button"
                   onClick={() => setSourceType(st)}
                 >
@@ -412,17 +428,17 @@ function UploadModal({
           </div>
           {sourceType === "url" ? (
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-                URL <span className="text-red-500">*</span>
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
+                URL <span style={{ color: "var(--color-danger)" }}>*</span>
               </label>
               <input
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 placeholder="https://github.com/user/repo/blob/main/android/app.apk"
                 value={externalUrl}
                 onChange={(e) => setExternalUrl(e.target.value)}
               />
               {externalUrl.trim() && (
-                <p className="mt-1.5 text-xs text-[#6e6e73] truncate">
+                <p className="mt-1.5 text-xs truncate" style={{ color: "var(--text-muted)" }}>
                   →{" "}
                   <span className="font-mono">
                     {toRawGithubUrl(externalUrl)}
@@ -432,23 +448,24 @@ function UploadModal({
             </div>
           ) : (
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("admin.uploadVersion")}{" "}
-                <span className="text-red-500">*</span>
+                <span style={{ color: "var(--color-danger)" }}>*</span>
               </label>
               <div
-                className="w-full rounded-xl border-2 border-dashed border-black/12 dark:border-white/12 px-4 py-4 text-center cursor-pointer hover:border-blue-400 transition-colors"
+                className="w-full rounded-xl border-2 border-dashed px-4 py-4 text-center cursor-pointer transition-colors"
+                style={{ borderColor: "var(--border-default)" }}
                 onClick={() => fileRef.current?.click()}
               >
                 {file ? (
-                  <p className="text-sm text-[#1d1d1f] dark:text-white">
+                  <p className="text-sm" style={{ color: "var(--text-primary)" }}>
                     {file.name}{" "}
-                    <span className="text-[#6e6e73]">
+                    <span style={{ color: "var(--text-muted)" }}>
                       ({formatSize(file.size)})
                     </span>
                   </p>
                 ) : (
-                  <p className="text-sm text-[#aeaeb2]">
+                  <p className="text-sm" style={{ color: "var(--text-muted)" }}>
                     {t("admin.uploadVersion")}
                   </p>
                 )}
@@ -463,31 +480,31 @@ function UploadModal({
             </div>
           )}
           <div>
-            <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
               {t("admin.uploadVersion")}{" "}
-              <span className="text-[#aeaeb2] font-normal">
+              <span className="font-normal" style={{ color: "var(--text-muted)" }}>
                 {t("common.optional")}
               </span>
             </label>
             <textarea
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="ds-input w-full resize-none"
               placeholder={t("admin.uploadVersion")}
               rows={2}
               value={releaseNotes}
               onChange={(e) => setReleaseNotes(e.target.value)}
             />
           </div>
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p className="text-sm" style={{ color: "var(--color-danger)" }}>{error}</p>}
           <div className="flex gap-2 pt-1">
             <button
-              className="flex-1 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+              className="ds-btn-secondary flex-1"
               type="button"
               onClick={onClose}
             >
               {t("admin.cancel")}
             </button>
             <button
-              className="flex-1 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium disabled:opacity-50 transition-opacity"
+              className="ds-btn-primary flex-1"
               disabled={loading}
               type="submit"
             >
@@ -556,20 +573,20 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-2xl bg-white dark:bg-[#111116] rounded-2xl shadow-2xl overflow-hidden max-h-[80vh] flex flex-col"
+        className="w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[80vh] flex flex-col"
+        style={{ background: "var(--bg-card)", border: "1px solid var(--border-default)" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-black/8 dark:border-white/8">
-          <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white">
+        <div
+          className="flex items-center justify-between px-6 pt-5 pb-4"
+          style={{ borderBottom: "1px solid var(--border-default)" }}
+        >
+          <h3 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
             {app.icon_emoji && <span className="mr-2">{app.icon_emoji}</span>}
             {app.name} — versiones
           </h3>
           <div className="flex items-center gap-2">
-            <button
-              className="flex items-center gap-1.5 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-xs font-medium px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
-              onClick={onUpload}
-            >
+            <button className="ds-btn-primary text-xs px-3 py-1.5" onClick={onUpload}>
               <svg
                 className="w-3 h-3"
                 fill="none"
@@ -582,10 +599,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
               </svg>
               Nueva versión
             </button>
-            <button
-              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/8 dark:hover:bg-white/8 text-[#6e6e73]"
-              onClick={onClose}
-            >
+            <button className="ds-btn-icon" onClick={onClose}>
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -599,39 +613,18 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
           </div>
         </div>
         <div className="overflow-y-auto flex-1">
-          {error && <p className="mx-6 my-3 text-sm text-red-500">{error}</p>}
+          {error && <p className="mx-6 my-3 text-sm" style={{ color: "var(--color-danger)" }}>{error}</p>}
           {loading ? (
-            <div className="py-8 flex justify-center">
-              <div className="w-6 h-6 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
-            </div>
+            <AdminLoadingSkeleton rows={4} />
           ) : versions.length === 0 ? (
-            <div className="p-10 text-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-md mx-auto mb-3">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <rect height="18" rx="2" ry="2" width="18" x="3" y="3" />
-                  <line x1="12" x2="12" y1="8" y2="16" />
-                  <line x1="8" x2="16" y1="12" y2="12" />
-                </svg>
-              </div>
-              <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
-                Sin versiones
-              </p>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">
-                Sube la primera versión.
-              </p>
-            </div>
+            <AdminEmptyState
+              title="Sin versiones"
+              description="Sube la primera versión."
+            />
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-black/8 dark:border-white/8">
+                <tr style={{ borderBottom: "1px solid var(--border-default)" }}>
                   {[
                     "Versión",
                     "Plataforma",
@@ -643,7 +636,8 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
                   ].map((h) => (
                     <th
                       key={h}
-                      className="px-4 py-3 text-left text-xs font-semibold text-[#aeaeb2] dark:text-[#636366] whitespace-nowrap"
+                      className="px-4 py-3 text-left text-xs font-semibold whitespace-nowrap"
+                      style={{ color: "var(--text-muted)" }}
                     >
                       {h}
                     </th>
@@ -654,44 +648,40 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
                 {versions.map((v) => (
                   <tr
                     key={v.id}
-                    className="border-b border-black/5 dark:border-white/5 last:border-0 hover:bg-black/[0.02] dark:hover:bg-white/[0.02]"
+                    className="last:border-0"
+                    style={{ borderBottom: "1px solid var(--border-default)" }}
                   >
-                    <td className="px-4 py-3 font-mono text-xs text-[#1d1d1f] dark:text-white">
+                    <td className="px-4 py-3 font-mono text-xs" style={{ color: "var(--text-primary)" }}>
                       v{v.version}
                     </td>
-                    <td className="px-4 py-3 text-[#1d1d1f] dark:text-white">
+                    <td className="px-4 py-3" style={{ color: "var(--text-primary)" }}>
                       {PLATFORM_LABELS[v.platform]}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-xs font-medium text-[#6e6e73] uppercase">
+                      <span className="admin-badge">
                         {BUILD_LABELS[v.build_type]}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-[#6e6e73] text-xs">
+                    <td className="px-4 py-3 text-xs" style={{ color: "var(--text-muted)" }}>
                       {formatSize(v.file_size)}
                     </td>
                     <td className="px-4 py-3">
                       {v.is_active ? (
-                        <span className="flex items-center gap-1.5 text-xs font-medium text-[#34c759]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#34c759]" />
+                        <span className="admin-badge admin-badge-success">
                           Activa
                         </span>
                       ) : (
-                        <span className="text-xs text-[#aeaeb2]">Inactiva</span>
+                        <span className="text-xs" style={{ color: "var(--text-muted)" }}>Inactiva</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-[#6e6e73] text-xs">
-                      {new Date(v.created_at).toLocaleDateString("es-ES", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                    <td className="px-4 py-3 text-xs" style={{ color: "var(--text-muted)" }}>
+                      {relativeTime(v.created_at)}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1.5">
                         {!v.is_active && (
                           <button
-                            className="px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 disabled:opacity-50 transition-colors"
+                            className="ds-btn-primary text-xs px-2.5 py-1"
                             disabled={activating === v.id}
                             onClick={() => handleActivate(v.id)}
                           >
@@ -699,7 +689,7 @@ function VersionsPanel({ app, onClose, onUpload }: VersionsPanelProps) {
                           </button>
                         )}
                         <button
-                          className="px-2.5 py-1 rounded-lg text-xs font-medium bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-100 disabled:opacity-50 transition-colors"
+                          className="ds-btn-danger text-xs px-2.5 py-1"
                           disabled={deleting === v.id}
                           onClick={() => handleDelete(v.id)}
                         >
@@ -761,95 +751,63 @@ export function AdminAppsSection() {
   }
 
   return (
-    <div className="relative flex flex-col gap-6">
-      {/* Decorative blobs */}
-      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-blue-500/8 to-cyan-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-cyan-500/6 to-blue-500/4 blur-3xl pointer-events-none" />
-
-      {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-1">
-            Distribución
-          </p>
-          <h1
-            className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
-            style={{ letterSpacing: "-0.03em" }}
+    <div className="flex flex-col gap-6">
+      <AdminPageHeader
+        title="Aplicaciones"
+        description="Gestiona las apps publicadas y sus versiones."
+        actions={
+          <button
+            className="ds-btn-primary"
+            onClick={() => setShowNewApp(true)}
           >
-            Aplicaciones
-          </h1>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
-            Gestiona las apps publicadas y sus versiones.
-          </p>
-        </div>
-        <button
-          className="flex items-center gap-2 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium px-4 py-2 rounded-xl hover:opacity-80 transition-opacity shrink-0"
-          onClick={() => setShowNewApp(true)}
-        >
-          <svg
-            className="w-3.5 h-3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeWidth="2"
-            viewBox="0 0 16 16"
-          >
-            <path d="M8 2v12M2 8h12" />
-          </svg>
-          Nueva app
-        </button>
-      </div>
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="2"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 2v12M2 8h12" />
+            </svg>
+            Nueva app
+          </button>
+        }
+      />
 
       {error && (
-        <div className="px-4 py-2.5 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 text-sm text-red-600 dark:text-red-400">
+        <div
+          className="px-4 py-2.5 rounded-xl text-sm"
+          style={{ background: "var(--bg-hover)", color: "var(--color-danger)", border: "1px solid var(--color-danger)" }}
+        >
           {error}
         </div>
       )}
 
-      {/* Apps list */}
-      <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
-        <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
+      <AdminPanel>
         {loading ? (
-          <div className="py-8 flex justify-center">
-            <div className="w-6 h-6 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
-          </div>
+          <AdminLoadingSkeleton rows={5} />
         ) : apps.length === 0 ? (
-          <div className="p-10 text-center">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-md mx-auto mb-3">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <rect height="20" rx="2" ry="2" width="14" x="5" y="2" />
-                <line x1="12" x2="12.01" y1="18" y2="18" />
-              </svg>
-            </div>
-            <p className="text-sm font-medium text-[#1d1d1f] dark:text-white">
-              Sin apps
-            </p>
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">
-              Crea la primera con el botón de arriba.
-            </p>
-          </div>
+          <AdminEmptyState
+            title="Sin apps"
+            description="Crea la primera con el botón de arriba."
+          />
         ) : (
-          <div className="divide-y divide-black/5 dark:divide-white/5">
+          <div className="divide-y" style={{ borderColor: "var(--border-default)" }}>
             {apps.map((app) => (
               <div
                 key={app.id}
-                className="flex items-center gap-4 px-5 py-4 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
+                className="flex items-center gap-4 px-5 py-4 transition-colors"
+                style={{ borderColor: "var(--border-default)" }}
               >
                 <div
-                  className="w-10 h-10 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
+                  className="w-10 h-10 rounded-2xl flex items-center justify-center text-2xl shrink-0"
                   style={{ background: `${app.accent_color}20` }}
                 >
                   {app.icon_emoji ?? (
                     <svg
-                      className="w-5 h-5 text-blue-500"
+                      className="w-5 h-5"
+                      style={{ color: "var(--accent)" }}
                       fill="none"
                       stroke="currentColor"
                       strokeLinecap="round"
@@ -864,27 +822,27 @@ export function AdminAppsSection() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                    <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
                       {app.name}
                     </p>
-                    <span className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366]">
+                    <span className="text-[10px] font-mono" style={{ color: "var(--text-muted)" }}>
                       {app.slug}
                     </span>
                     {!app.is_published && (
-                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400">
+                      <span className="admin-badge admin-badge-warning">
                         Oculta
                       </span>
                     )}
                   </div>
                   {app.description && (
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-0.5 truncate">
+                    <p className="text-xs mt-0.5 truncate" style={{ color: "var(--text-muted)" }}>
                       {app.description}
                     </p>
                   )}
                 </div>
-                <div className="flex items-center gap-1.5 flex-shrink-0">
+                <div className="flex items-center gap-1.5 shrink-0">
                   <button
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-colors"
+                    className="ds-btn-primary text-xs px-3 py-1.5"
                     onClick={() => {
                       setUploadForApp(app);
                       setVersionsApp(null);
@@ -893,19 +851,19 @@ export function AdminAppsSection() {
                     Nueva versión
                   </button>
                   <button
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+                    className="ds-btn-secondary text-xs px-3 py-1.5"
                     onClick={() => setVersionsApp(app)}
                   >
                     Versiones
                   </button>
                   <button
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+                    className="ds-btn-secondary text-xs px-3 py-1.5"
                     onClick={() => setEditingApp(app)}
                   >
                     Editar
                   </button>
                   <button
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-100 dark:hover:bg-red-950/40 disabled:opacity-50 transition-colors"
+                    className="ds-btn-danger text-xs px-3 py-1.5"
                     disabled={deleting === app.id}
                     onClick={() => handleDeleteApp(app.id)}
                   >
@@ -916,7 +874,7 @@ export function AdminAppsSection() {
             ))}
           </div>
         )}
-      </div>
+      </AdminPanel>
 
       {showNewApp && (
         <AppModal

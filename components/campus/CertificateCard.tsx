@@ -1,6 +1,7 @@
 "use client";
 
 import type { CampusCertificate } from "@/services/campusService";
+import { IconGraduation } from "@/components/ui/Icons";
 
 interface CertificateCardProps {
   certificate: CampusCertificate;
@@ -31,7 +32,7 @@ export function CertificateCard({
       <div className="relative flex flex-col items-center justify-center h-full p-8 md:p-12 text-center">
         {/* Header */}
         <div className="mb-2">
-          <span className="text-3xl" aria-hidden="true">🎓</span>
+          <span className="text-3xl text-[var(--accent)]" aria-hidden="true"><IconGraduation className="w-8 h-8 mx-auto" /></span>
         </div>
         <h2
           className="text-xs md:text-sm font-bold tracking-[0.3em] uppercase text-[var(--accent)] mb-1"

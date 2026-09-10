@@ -11,31 +11,31 @@ const TIMELINE_KEYS = [
     year: "2021",
     titleKey: "about.tl2021Title",
     descKey: "about.tl2021Desc",
-    gradient: "from-orange-500 to-amber-600",
+    color: "var(--color-warning)",
   },
   {
     year: "2022",
     titleKey: "about.tl2022Title",
     descKey: "about.tl2022Desc",
-    gradient: "from-cyan-500 to-blue-600",
+    color: "var(--color-info)",
   },
   {
     year: "2023",
     titleKey: "about.tl2023Title",
     descKey: "about.tl2023Desc",
-    gradient: "from-pink-500 to-rose-600",
+    color: "var(--color-danger)",
   },
   {
     year: "2024",
     titleKey: "about.tl2024Title",
     descKey: "about.tl2024Desc",
-    gradient: "from-emerald-500 to-teal-600",
+    color: "var(--color-success)",
   },
   {
     year: "2025",
     titleKey: "about.tl2025Title",
     descKey: "about.tl2025Desc",
-    gradient: "from-violet-500 to-purple-600",
+    color: "var(--accent)",
   },
 ];
 
@@ -44,7 +44,7 @@ const STATS = [
     value: "3",
     suffix: "+",
     labelKey: "about.yearsExp",
-    color: "from-violet-500 to-purple-600",
+    color: "var(--accent)",
     icon: (
       <svg
         className="w-5 h-5 text-white"
@@ -65,7 +65,7 @@ const STATS = [
     value: "15",
     suffix: "+",
     labelKey: "about.projects",
-    color: "from-pink-500 to-rose-600",
+    color: "var(--color-danger)",
     icon: (
       <svg
         className="w-5 h-5 text-white"
@@ -86,7 +86,7 @@ const STATS = [
     value: "20",
     suffix: "+",
     labelKey: "about.techs",
-    color: "from-cyan-500 to-blue-600",
+    color: "var(--color-info)",
     icon: (
       <svg
         className="w-5 h-5 text-white"
@@ -107,7 +107,7 @@ const STATS = [
     value: "800",
     suffix: "h",
     labelKey: "about.hours",
-    color: "from-orange-500 to-amber-600",
+    color: "var(--color-warning)",
     icon: (
       <svg
         className="w-5 h-5 text-white"
@@ -130,22 +130,22 @@ const SPECS = [
   {
     labelKey: "about.specFrontend",
     itemsKey: "about.specFrontendItems",
-    gradient: "from-blue-500 to-cyan-500",
+    color: "var(--color-info)",
   },
   {
     labelKey: "about.specBackend",
     itemsKey: "about.specBackendItems",
-    gradient: "from-emerald-500 to-teal-500",
+    color: "var(--color-success)",
   },
   {
     labelKey: "about.specDB",
     itemsKey: "about.specDBItems",
-    gradient: "from-orange-500 to-red-500",
+    color: "var(--color-warning)",
   },
   {
     labelKey: "about.specDevOps",
     itemsKey: "about.specDevOpsItems",
-    gradient: "from-violet-500 to-purple-500",
+    color: "var(--accent)",
   },
 ];
 
@@ -273,12 +273,14 @@ export default function AboutPage() {
           <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {STATS.map((stat, i) => (
               <ScrollReveal key={i} delay={i * 80}>
-                <div className="ds-card p-6 text-center space-y-3 overflow-hidden">
+                <div className="ds-card p-6 text-center space-y-3 overflow-hidden relative">
                   <div
-                    className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.color} opacity-60`}
+                    className="absolute top-0 left-0 right-0 h-1 opacity-60"
+                    style={{ background: stat.color }}
                   />
                   <div
-                    className={`w-11 h-11 mx-auto rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}
+                    className="w-11 h-11 mx-auto rounded-xl flex items-center justify-center shadow-lg text-white"
+                    style={{ background: stat.color }}
                   >
                     {stat.icon}
                   </div>
@@ -338,8 +340,11 @@ export default function AboutPage() {
 
               {/* Approach */}
               <ScrollReveal delay={100} direction="left">
-                <div className="ds-card p-6 overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 opacity-80" />
+                <div className="ds-card p-6 overflow-hidden relative">
+                  <div
+                    className="absolute top-0 left-0 right-0 h-1 opacity-80"
+                    style={{ background: "var(--color-success)" }}
+                  />
                   <div className="relative">
                     <h2
                       className="text-lg font-bold mb-4"
@@ -354,7 +359,10 @@ export default function AboutPage() {
                           className="flex items-start gap-3 text-sm"
                           style={{ color: "var(--text-primary)" }}
                         >
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex-shrink-0" />
+                          <span
+                            className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                            style={{ background: "var(--color-success)" }}
+                          />
                           {t(`about.approachItem${i}`)}
                         </li>
                       ))}
@@ -377,15 +385,17 @@ export default function AboutPage() {
               <div className="space-y-3">
                 {SPECS.map((spec, i) => (
                   <ScrollReveal key={i} delay={i * 80} direction="right">
-                    <div className="ds-card p-4 overflow-hidden">
+                    <div className="ds-card p-4 overflow-hidden relative">
                       <div
-                        className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${spec.gradient} opacity-60`}
+                        className="absolute top-0 left-0 right-0 h-1 opacity-60"
+                        style={{ background: spec.color }}
                       />
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-9 h-9 rounded-lg bg-gradient-to-br ${spec.gradient} flex items-center justify-center shadow-md`}
+                          className="w-9 h-9 rounded-lg flex items-center justify-center shadow-md text-white"
+                          style={{ background: spec.color }}
                         >
-                          <IconCheck className="w-4 h-4 text-white" />
+                          <IconCheck className="w-4 h-4" />
                         </div>
                         <div>
                           <p
@@ -435,13 +445,15 @@ export default function AboutPage() {
                         style={{ width: 38 }}
                       >
                         <div
-                          className={`w-3 h-3 rounded-full bg-gradient-to-br ${item.gradient} ring-4 ring-[var(--accent-light)] z-10 mt-1`}
+                          className="w-3 h-3 rounded-full ring-4 ring-[var(--accent-light)] z-10 mt-1"
+                          style={{ background: item.color }}
                         />
                       </div>
 
                       <div className="flex-1 pb-1">
                         <span
-                          className={`inline-block px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${item.gradient} mb-2`}
+                          className="inline-block px-3 py-1 rounded-full text-xs font-bold text-white mb-2"
+                          style={{ background: item.color }}
                         >
                           {item.year}
                         </span>

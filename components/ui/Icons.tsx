@@ -1227,3 +1227,190 @@ export function IconCloud({ className = "w-4 h-4", size }: IconProps) {
     </svg>
   );
 }
+
+export function IconPlay({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <polygon
+        points="6 3 20 12 6 21 6 3"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconHourglass({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M5 3h14M5 3v4a7 7 0 005 6.93V21M19 3v4a7 7 0 01-5 6.93V21M9 21h6"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconTarget({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="12" cy="12" r="6" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="12" cy="12" r="2" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+export function IconCelebration({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M5.8 11.3L2 22l10.7-3.8M15.5 5.5l-7 7M18 2l3 3-3 3M22 8l-3 3"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="16" cy="4" r="1" fill="currentColor" />
+      <circle cx="20" cy="12" r="1" fill="currentColor" />
+      <circle cx="8" cy="2" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconCross({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M15 9l-6 6M9 9l6 6"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function IconLink({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconBooks({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M4 19V5a2 2 0 012-2h8a2 2 0 012 2v14"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16 17l4-2V5l-4 2v12z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M8 7h4M8 11h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function IconArrowLeft({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M19 12H5M12 19l-7-7 7-7"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconArrowRight({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M5 12h14M12 5l7 7-7 7"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconSadFace({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 15s1.5-2 4-2 4 2 4 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="9" cy="9.5" r="1" fill="currentColor" />
+      <circle cx="15" cy="9.5" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconTrophy({ className = "w-4 h-4", size }: IconProps) {
+  const s = size ? `w-${size} h-${size}` : className;
+
+  return (
+    <svg className={s} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M6 9V2h12v7a6 6 0 11-12 0zM6 3H2v3a3 3 0 003 3h1M18 3h4v3a3 3 0 01-3 3h-1"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M9 21h6M12 17v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}

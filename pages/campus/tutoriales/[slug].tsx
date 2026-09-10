@@ -24,6 +24,7 @@ import {
   IconChevronRight,
   IconChevronLeft,
 } from "@/components/blog/shared";
+import { IconArrowLeft, IconArrowRight } from "@/components/ui/Icons";
 import { siteConfig } from "@/config/site";
 import { useT } from "@/hooks/useT";
 import { useAuth } from "@/hooks/useAuth";
@@ -59,6 +60,7 @@ function groupCurriculumByGuide(
   meta: ContentMeta,
   allTutorials: ContentMeta[],
   completedSlugs: Set<string>,
+  t: (k: string, p?: Record<string, string | number>) => string,
 ): ChapterGroup[] {
   // Find all guides that include this tutorial
   const guides = getGuides();
@@ -70,7 +72,7 @@ function groupCurriculumByGuide(
     return [
       {
         id: "standalone",
-        title: "Tutorial",
+        title: t("campus.tutorial.label"),
         lessons: [
           {
             ...meta,
@@ -122,6 +124,7 @@ function TutorialTOCItem({
   isCompleted: boolean;
   isNext: boolean;
 }) {
+  const { t } = useT();
   const className = isCurrent
     ? "bg-[var(--accent-light)] border-l-2 border-[var(--accent)] text-[var(--text-primary)]"
     : isCompleted
@@ -157,7 +160,7 @@ function TutorialTOCItem({
       </div>
       {isNext && (
         <span
-          aria-label="Siguiente"
+          aria-label={t("campus.tutorial.ariaNext")}
           className="text-[10px] font-bold text-[var(--accent)] flex-shrink-0"
         >
           NEXT
@@ -178,18 +181,19 @@ function TutorialTOCSidebar({
   currentSlug: string;
   onClose?: () => void;
 }) {
+  const { t } = useT();
   return (
     <aside
-      aria-label="Contenido del tutorial"
+      aria-label={t("campus.tutorial.content")}
       className="flex flex-col gap-3 w-full"
     >
       <div className="flex items-center justify-between">
         <h2 className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
-          Contenido
+          {t("campus.tutorial.content")}
         </h2>
         {onClose && (
           <button
-            aria-label="Cerrar índice"
+            aria-label={t("campus.tutorial.ariaCloseIndex")}
             className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[var(--bg-hover)] transition-colors text-[var(--text-muted)]"
             type="button"
             onClick={onClose}
@@ -258,7 +262,7 @@ export default function TutorialPage({
   const { t } = useT();
   const { isAuthenticated } = useAuth();
   const locale = useLocaleStore((s) => s.locale);
-  const Component = getContentComponent(meta.id, locale);
+  const Component = meta ? getContentComponent(meta.id, locale) : null;
   const [completed, setCompleted] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [xpEarned, setXpEarned] = useState<number | null>(null);
@@ -272,20 +276,20 @@ export default function TutorialPage({
   // ── Build TOC chapters ──
   const chapters = useMemo(
     () =>
-      groupCurriculumByGuide(meta, allTutorials, completedSlugs),
-    [meta, allTutorials, completedSlugs],
+      meta ? groupCurriculumByGuide(meta, allTutorials, completedSlugs, t) : [],
+    [meta, allTutorials, completedSlugs, t],
   );
 
   // Determine current position in guide
   const currentPosition = useMemo(() => {
-    if (!ownerGuide) return null;
+    if (!ownerGuide || !meta) return null;
     const idx = ownerGuide.curriculum.findIndex((s) => s.slug === meta.slug);
 
     return { current: idx + 1, total: ownerGuide.curriculum.length };
-  }, [ownerGuide, meta.slug]);
+  }, [ownerGuide, meta?.slug]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !meta) return;
     campusService
       .getProgress()
       .then((progress) => {
@@ -295,17 +299,19 @@ export default function TutorialPage({
         setCompleted(slugs.has(meta.slug));
       })
       .catch(() => {});
-  }, [isAuthenticated, meta.slug]);
+  }, [isAuthenticated, meta?.slug]);
 
   // Fetch exercises for this tutorial (public — no auth required for viewing)
   useEffect(() => {
+    if (!meta) return;
     campusService
       .getExercises(meta.slug)
       .then(setExercises)
       .catch(() => {});
-  }, [meta.slug]);
+  }, [meta?.slug]);
 
   const handleMarkComplete = async () => {
+    if (!meta) return;
     try {
       const result = await campusService.markComplete(meta.slug, undefined, 0);
 
@@ -319,6 +325,16 @@ export default function TutorialPage({
     setShowQuiz(false);
     if (result.passed) setXpEarned((prev) => (prev ?? 0) + result.xpEarned);
   };
+
+  if (!meta) {
+    return (
+      <CampusLayout seo={{ title: t("campus.tutorial.label"), description: "", ogType: "article" }}>
+        <div className="max-w-7xl mx-auto py-4 text-center text-[var(--text-secondary)]">
+          {t("campus.tutorial.notFound")}
+        </div>
+      </CampusLayout>
+    );
+  }
 
   return (
     <CampusLayout
@@ -403,14 +419,14 @@ export default function TutorialPage({
                 {currentPosition && (
                   <div className="flex items-center justify-between mb-4">
                     <span className="px-3 py-1 rounded-full bg-black/30 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-widest">
-                      Lección {currentPosition.current} / {currentPosition.total}
+                      {t("campus.tutorial.lesson")} {currentPosition.current} / {currentPosition.total}
                     </span>
                     {ownerGuide && (
                       <Link
                         className="text-white/80 text-xs font-medium hover:text-white transition-colors no-underline"
                         href={`/campus/cursos/${ownerGuide.slug}`}
                       >
-                        ← Volver a la ruta
+                        <IconArrowLeft className="w-3 h-3 inline mr-1" /> {t("campus.tutorial.backToPath")}
                       </Link>
                     )}
                   </div>
@@ -644,7 +660,7 @@ export default function TutorialPage({
                   <div className="flex items-center gap-4">
                     <div className="flex-1 min-w-0">
                       <p className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest mb-1.5">
-                        → Siguiente lección
+                        <IconArrowRight className="w-3 h-3 inline mr-1" /> {t("campus.tutorial.nextLesson")}
                       </p>
                       <h3 className="text-base font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors truncate">
                         {nextMeta.title}
@@ -675,7 +691,7 @@ export default function TutorialPage({
               >
                 <IconChevronLeft className="w-4 h-4" />
                 {ownerGuide
-                  ? `Volver a "${ownerGuide.title}"`
+                  ? `${t("common.back")} "${ownerGuide.title}"`
                   : t("blog.allTutorials")}
               </Link>
               {prevMeta && (
@@ -711,7 +727,7 @@ export default function TutorialPage({
         <button
           aria-controls="tutorial-toc-mobile"
           aria-expanded={tocOpenMobile}
-          aria-label="Abrir índice del tutorial"
+          aria-label={t("campus.tutorial.ariaOpenIndex")}
           className="lg:hidden fixed bottom-20 right-4 z-40 w-12 h-12 rounded-full bg-[var(--bg-interactive)] text-[var(--text-interactive)] shadow-lg flex items-center justify-center hover:bg-[var(--bg-interactive-hover)] transition-colors"
           type="button"
           onClick={() => setTocOpenMobile(true)}
@@ -768,20 +784,41 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params?.slug as string;
   const tutorials = getContentByType("tutorial");
-  const idx = tutorials.findIndex((t) => t.slug === slug);
+  const meta = tutorials.find((t) => t.slug === slug);
 
-  if (idx === -1) return { notFound: true };
+  if (!meta) return { notFound: true };
 
   // Find owning guide for breadcrumb + position
   const guides = getGuides();
   const ownerGuide =
     guides.find((g) => g.curriculum.some((s) => s.slug === slug)) ?? null;
 
+  // Compute prev/next within the guide's curriculum, not the global list
+  let prevMeta: ContentMeta | null = null;
+  let nextMeta: ContentMeta | null = null;
+
+  if (ownerGuide) {
+    const guideIdx = ownerGuide.curriculum.findIndex((s) => s.slug === slug);
+    const prevSlug = guideIdx > 0 ? ownerGuide.curriculum[guideIdx - 1]?.slug : null;
+    const nextSlug =
+      guideIdx < ownerGuide.curriculum.length - 1
+        ? ownerGuide.curriculum[guideIdx + 1]?.slug
+        : null;
+
+    if (prevSlug) prevMeta = tutorials.find((t) => t.slug === prevSlug) ?? null;
+    if (nextSlug) nextMeta = tutorials.find((t) => t.slug === nextSlug) ?? null;
+  } else {
+    // Standalone tutorial — fall back to global list
+    const idx = tutorials.findIndex((t) => t.slug === slug);
+    prevMeta = tutorials[idx - 1] ?? null;
+    nextMeta = tutorials[idx + 1] ?? null;
+  }
+
   return {
     props: {
-      meta: tutorials[idx],
-      prevMeta: tutorials[idx - 1] ?? null,
-      nextMeta: tutorials[idx + 1] ?? null,
+      meta,
+      prevMeta,
+      nextMeta,
       ownerGuide,
     },
   };

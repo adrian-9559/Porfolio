@@ -187,6 +187,8 @@
 		"groupProjects": "Projects",
 		"groupSystem": "System",
 		"groupTools": "Tools",
+		"groupAnalytics": "Analytics",
+		"groupSocial": "Social",
 		"healthDbChecked": "Last DB check",
 		"healthDegraded": "Degraded",
 		"healthEnv": "Environment",
@@ -1914,7 +1916,8 @@
 			"typeHere": "Type here...",
 			"completeAll": "Complete all fields",
 			"true": "True",
-			"false": "False"
+			"false": "False",
+			"runError": "Error running code"
 		},
 		"certificates": {
 			"title": "My Certificates",
@@ -1985,6 +1988,118 @@
 			"level": "Level",
 			"nextLevel": "XP to next level",
 			"total": "Total XP"
+		},
+		"hero": {
+			"badge": "Open Campus — Start for free",
+			"titleBefore": "Learn",
+			"titleHighlight": "Programming",
+			"titleAfter": "without jumping between a thousand resources",
+			"desc": "Structured guides, practical challenges and progress. All in Spanish, direct and no fluff."
+		},
+		"courses": {
+			"title": "Courses to level up",
+			"viewAll": "View all",
+			"steps": "steps",
+			"meta": "{tutorials} tutorials · ~{min} min"
+		},
+		"challenges": {
+			"badge": "Challenges",
+			"title": "Challenges",
+			"desc": "Solve challenges, earn XP and level up",
+			"completed": "Completed",
+			"xpTotal": "Total XP",
+			"count": "{n} challenges",
+			"loadMore": "Show more challenges ({n} remaining)",
+			"empty": "No challenges in this category"
+		},
+		"tutorial": {
+			"label": "Tutorial",
+			"content": "Contents",
+			"lesson": "Lesson",
+			"backToPath": "Back to path",
+			"nextLesson": "Next lesson",
+			"notFound": "Tutorial not found",
+			"ariaOpenIndex": "Open tutorial index",
+			"ariaCloseIndex": "Close index",
+			"ariaNext": "Next"
+		},
+		"guides": {
+			"ruta-opencode": {
+				"title": "OpenCode Path",
+				"description": "Master OpenCode from start to finish: installation, models, MCP, Skills, parallel agents, RAG, AI frameworks and editor plugins."
+			},
+			"ruta-java": {
+				"title": "Java Path",
+				"description": "Learn Java from scratch to advanced: syntax, OOP, collections, Streams, Spring Boot and REST APIs. Complete path for enterprise backend developers."
+			},
+			"ruta-frontend": {
+				"title": "Frontend Web Path",
+				"description": "From zero to modern frontend: HTML and CSS, JavaScript, TypeScript, React, Next.js and testing. Complete path to master web development from fundamentals to production."
+			},
+			"ruta-c": {
+				"title": "C Path",
+				"description": "Learn C from scratch: variables, pointers, manual memory management, structs and systems programming. Ideal for understanding how a computer really works."
+			},
+			"ruta-cpp": {
+				"title": "C++ Path",
+				"description": "Master modern C++: OOP, STL, smart pointers, move semantics and high-performance programming. Builds on the C foundations."
+			},
+			"ruta-backend-js": {
+				"title": "JavaScript Backend Path",
+				"description": "Build professional REST APIs with Node.js and Express, connect PostgreSQL databases and deploy a complete backend with Supabase. The modern counterpart to the Java path."
+			},
+			"ruta-databases": {
+				"title": "Databases Path",
+				"description": "Master data: what databases are, relational SQL and NoSQL, and work with MySQL, PostgreSQL, MongoDB and Supabase to choose the right technology for each project."
+			},
+			"ruta-python-ia": {
+				"title": "Python & AI Path",
+				"description": "Learn Python and become an AI engineer: create assisted projects, choose agent frameworks, launch parallel agents and build assistants with RAG."
+			},
+			"ruta-fullstack": {
+				"title": "Full-Stack Path",
+				"description": "Unify frontend and backend in a single app: React, Next.js, API with Node and Express, database with Supabase and end-to-end testing. The path that joins Web and Backend branches."
+			},
+			"ruta-angular": {
+				"title": "Angular Path",
+				"description": "From TypeScript to enterprise Angular applications: standalone components, directives, services, HttpClient and routing. The Angular path building on frontend fundamentals."
+			},
+			"ruta-vue": {
+				"title": "Vue Path",
+				"description": "JavaScript to Vue 3: Composition API, reactivity, directives, props and emits, Vue Router and Pinia. The progressive framework building on frontend fundamentals."
+			},
+			"ruta-css-diseno": {
+				"title": "CSS & Design Path",
+				"description": "Turn CSS into a professional design tool: fundamentals, animations, modern layouts with container queries and Tailwind CSS building on frontend fundamentals."
+			},
+			"ruta-javascript-moderno": {
+				"title": "Modern JavaScript Path",
+				"description": "Deep dive into JavaScript: solid fundamentals then async, fetch, ES modules and modern browser APIs. The bridge between beginner and senior."
+			},
+			"ruta-typescript-avanzado": {
+				"title": "Advanced TypeScript Path",
+				"description": "Go beyond basic types: generics, utility types, narrowing, discriminated unions and professional React typing with strict tsconfig."
+			},
+			"ruta-apps-interactivas": {
+				"title": "Interactive Apps Path",
+				"description": "Turn your apps into products: global state with Zustand, data fetching with React Query, Next.js in production, performance with Core Web Vitals and WCAG accessibility."
+			},
+			"ruta-go": {
+				"title": "Go Path",
+				"description": "Learn Go from scratch: syntax, functions, structs, interfaces, goroutines and an HTTP server. A modern and fast language for high-performance backend."
+			},
+			"ruta-rust": {
+				"title": "Rust Path",
+				"description": "Build on C foundations to master Rust: ownership, structs, enums, traits and errors. Safe memory and maximum performance in systems."
+			},
+			"ruta-nestjs": {
+				"title": "NestJS Path",
+				"description": "Structure your backend with NestJS: modules, controllers, services, DTOs with validation, TypeORM, JWT guards and Swagger. Building on TypeScript and Express foundations."
+			},
+			"ruta-devops": {
+				"title": "DevOps Path",
+				"description": "Automate the complete application lifecycle: Git, Docker, CI/CD with GitHub Actions, Kubernetes, monitoring and observability with Prometheus/Grafana, and infrastructure as code with Terraform."
+			}
 		}
 	},
 	"common": {
@@ -2009,6 +2124,7 @@
 		"next": "Next",
 		"no": "No",
 		"none": "None",
+		"of": "of",
 		"noResults": "No results",
 		"optional": "Optional",
 		"required": "Required",
@@ -2022,6 +2138,7 @@
 		"spanish": "Spanish",
 		"success": "Success",
 		"upload": "Upload",
+		"user": "User",
 		"warning": "Warning",
 		"yes": "Yes"
 	},
@@ -2467,7 +2584,13 @@
 		"menuToggle": "Toggle menu",
 		"mobileLogin": "Sign in",
 		"skipToContent": "Skip to main content",
-		"tools": "Tools"
+		"tools": "Tools",
+		"userMenu": "User menu",
+		"campusCertificates": "Certificates",
+		"campusChallenges": "Challenges",
+		"menuClose": "Close menu",
+		"github": "GitHub (opens in new tab)",
+		"linkedin": "LinkedIn (opens in new tab)"
 	},
 	"notifications": {
 		"action": {

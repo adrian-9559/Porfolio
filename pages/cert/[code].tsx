@@ -5,6 +5,7 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { campusService } from "@/services/campusService";
 import type { CampusCertificate } from "@/services/campusService";
+import { IconCross, IconGraduation } from "@/components/ui/Icons";
 
 interface CertPageProps {
   certificate: (CampusCertificate & { userName: string }) | null;
@@ -35,7 +36,7 @@ export default function CertPage({ certificate, error }: CertPageProps) {
         <div className="w-full max-w-2xl">
           {error ? (
             <div className="text-center py-16">
-              <span className="text-5xl mb-4 block" aria-hidden="true">❌</span>
+              <span className="text-5xl mb-4 block text-red-500" aria-hidden="true"><IconCross className="w-12 h-12 mx-auto" /></span>
               <h1 className="text-xl font-bold text-[var(--text-primary)] mb-2">
                 Certificado no encontrado
               </h1>
@@ -73,7 +74,7 @@ export default function CertPage({ certificate, error }: CertPageProps) {
 
                 <div className="relative flex flex-col items-center justify-center h-full p-8 md:p-12 text-center" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
                   <div className="mb-2">
-                    <span className="text-3xl" aria-hidden="true">🎓</span>
+                    <span className="text-3xl text-[var(--accent)]" aria-hidden="true"><IconGraduation className="w-8 h-8 mx-auto" /></span>
                   </div>
                   <h2
                     className="text-xs md:text-sm font-bold tracking-[0.3em] uppercase text-[var(--accent)] mb-1"

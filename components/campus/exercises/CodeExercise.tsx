@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import type { CampusExercise } from "@/services/campusService";
 import { campusService } from "@/services/campusService";
 import { useT } from "@/hooks/useT";
+import { IconPlay } from "@/components/ui/Icons";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -69,7 +70,7 @@ export function CodeExercise({ exercise, onResult }: CodeExerciseProps) {
       }
       setTestResults(results);
     } catch {
-      setOutput(t("campus.certificates.error"));
+      setOutput(t("campus.exercises.runError"));
     } finally {
       setIsRunning(false);
     }
@@ -154,7 +155,7 @@ export function CodeExercise({ exercise, onResult }: CodeExerciseProps) {
           {isRunning ? (
             <div className="w-4 h-4 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
           ) : (
-            <span aria-hidden="true">▶</span>
+            <span aria-hidden="true"><IconPlay className="w-4 h-4" /></span>
           )}
           {t("campus.exercises.run")}
         </button>

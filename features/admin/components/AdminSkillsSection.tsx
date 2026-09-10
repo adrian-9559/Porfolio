@@ -1,8 +1,12 @@
 import { useState } from "react";
 
 import { useT } from "@/hooks/useT";
-
-// ── Types ─────────────────────────────────────────────────────────────────────
+import {
+  AdminPageHeader,
+  AdminPanel,
+  AdminEmptyState,
+  AdminFilterChip,
+} from "./AdminShell";
 
 type Category =
   | "design"
@@ -31,8 +35,6 @@ interface Plugin {
   type: "mcp" | "npm" | "hook";
   details: string;
 }
-
-// ── Data ──────────────────────────────────────────────────────────────────────
 
 const SKILLS: Skill[] = [
   {
@@ -538,8 +540,6 @@ const PLUGINS: Plugin[] = [
   },
 ];
 
-// ── Config ─────────────────────────────────────────────────────────────────────
-
 const CATEGORIES: {
   key: Category | "all";
   label: string;
@@ -549,14 +549,7 @@ const CATEGORIES: {
     key: "all",
     label: "Todas",
     icon: (
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-      >
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
         <rect height="7" width="7" x="3" y="3" />
         <rect height="7" width="7" x="14" y="3" />
         <rect height="7" width="7" x="14" y="14" />
@@ -568,14 +561,7 @@ const CATEGORIES: {
     key: "design",
     label: "Diseño",
     icon: (
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-      >
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
         <circle cx="13.5" cy="6.5" r="2.5" />
         <circle cx="17.5" cy="15.5" r="2.5" />
         <circle cx="8.5" cy="15.5" r="2.5" />
@@ -587,14 +573,7 @@ const CATEGORIES: {
     key: "frontend",
     label: "Frontend",
     icon: (
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-      >
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10" />
         <line x1="2" x2="22" y1="12" y2="12" />
         <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
@@ -605,14 +584,7 @@ const CATEGORIES: {
     key: "mobile",
     label: "Mobile",
     icon: (
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-      >
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
         <rect height="20" rx="2" ry="2" width="14" x="5" y="2" />
         <line x1="12" x2="12.01" y1="18" y2="18" />
       </svg>
@@ -622,14 +594,7 @@ const CATEGORIES: {
     key: "backend",
     label: "Backend",
     icon: (
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-      >
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
       </svg>
     ),
@@ -638,14 +603,7 @@ const CATEGORIES: {
     key: "database",
     label: "Base de Datos",
     icon: (
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-      >
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
         <ellipse cx="12" cy="5" rx="9" ry="3" />
         <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
         <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
@@ -656,35 +614,21 @@ const CATEGORIES: {
     key: "tools",
     label: "Herramientas",
     icon: (
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-      >
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24">
         <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
       </svg>
     ),
   },
 ];
 
-const CATEGORY_COLORS: Record<Category, string> = {
-  design:
-    "bg-fuchsia-50 dark:bg-fuchsia-950/30 text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-200 dark:border-fuchsia-800/40",
-  frontend:
-    "bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/40",
-  mobile:
-    "bg-orange-50 dark:bg-orange-950/30 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/40",
-  backend:
-    "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/40",
-  database:
-    "bg-violet-50 dark:bg-violet-950/30 text-violet-700 dark:text-violet-400 border-violet-200 dark:border-violet-800/40",
-  tools:
-    "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/40",
-  plugins:
-    "bg-gray-50 dark:bg-gray-800/30 text-gray-700 dark:text-gray-400 border-gray-200 dark:border-gray-700/40",
+const CATEGORY_BADGE: Record<Category, string> = {
+  design: "admin-badge admin-badge-info",
+  frontend: "admin-badge admin-badge-success",
+  mobile: "admin-badge admin-badge-warning",
+  backend: "admin-badge admin-badge-success",
+  database: "admin-badge admin-badge-info",
+  tools: "admin-badge",
+  plugins: "admin-badge",
 };
 
 const SCOPE_LABELS: Record<string, string> = {
@@ -695,8 +639,6 @@ const SCOPE_LABELS: Record<string, string> = {
   mobile: "App Móvil",
   backend: "Backend",
 };
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export function AdminSkillsSection() {
   const { t } = useT();
@@ -719,53 +661,33 @@ export function AdminSkillsSection() {
   }));
 
   return (
-    <div className="relative flex flex-col gap-6">
-      {/* Decorative blobs */}
-      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-fuchsia-500/8 to-pink-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-pink-500/6 to-fuchsia-500/4 blur-3xl pointer-events-none" />
+    <div className="flex flex-col gap-6">
+      <AdminPageHeader
+        title="Skills & Plugins"
+        description={`${SKILLS.length} skills · ${PLUGINS.length} plugins/MCPs · inventario completo del agente`}
+      />
 
-      {/* Header */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-fuchsia-600 dark:text-fuchsia-400 mb-1">
-          Herramientas
-        </p>
-        <h1
-          className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white"
-          style={{ letterSpacing: "-0.03em" }}
-        >
-          Skills & Plugins
-        </h1>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
-          {SKILLS.length} skills · {PLUGINS.length} plugins/MCPs · inventario
-          completo del agente
-        </p>
-      </div>
-
-      {/* Category filter pills */}
+      {/* Category filters */}
       <div className="flex gap-1.5 flex-wrap">
         {catCounts.map((c) => (
-          <button
+          <AdminFilterChip
             key={c.key}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-              cat === c.key
-                ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
-                : "text-[#6e6e73] dark:text-[#86868b] bg-black/5 dark:bg-white/5 hover:text-[#1d1d1f] dark:hover:text-white"
-            }`}
+            active={cat === c.key}
             onClick={() => setCat(c.key)}
           >
             {c.icon}
             {c.label}
-            <span className="ml-1 px-1.5 py-0.5 rounded-full bg-black/10 dark:bg-white/10 text-[10px] font-mono">
+            <span className="ml-1 text-[10px] font-mono opacity-60">
               {c.count}
             </span>
-          </button>
+          </AdminFilterChip>
         ))}
       </div>
 
       {/* Search */}
       <div className="relative">
         <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]"
           fill="none"
           stroke="currentColor"
           strokeLinecap="round"
@@ -776,7 +698,7 @@ export function AdminSkillsSection() {
           <path d="M21 21l-4.35-4.35" />
         </svg>
         <input
-          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30 focus:border-fuchsia-500 transition-all"
+          className="ds-input pl-10"
           placeholder="Buscar skill por nombre o descripción…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -785,117 +707,77 @@ export function AdminSkillsSection() {
 
       {/* Skills grid */}
       {filtered.length === 0 ? (
-        <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 p-8 text-center transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
-            No skills match{" "}
-            {search && (
-              <span className="font-mono text-[#1d1d1f] dark:text-white">
-                "{search}"
-              </span>
-            )}
-          </p>
-        </div>
+        <AdminEmptyState
+          title={`No skills match${search ? ` "${search}"` : ""}`}
+        />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {filtered.map((skill) => (
-            <div
-              key={skill.name}
-              className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 group"
-            >
-              <div className="h-1 bg-gradient-to-r from-fuchsia-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="p-4 flex flex-col gap-2.5">
-                {/* Header */}
+            <AdminPanel key={skill.name} compact>
+              <div className="flex flex-col gap-2.5">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white truncate">
+                    <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
                       {skill.name}
                     </p>
-                    <span
-                      className={`inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[skill.category]}`}
-                    >
+                    <span className={`inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full ${CATEGORY_BADGE[skill.category]}`}>
                       {CATEGORIES.find((c) => c.key === skill.category)?.label}
                     </span>
                   </div>
                 </div>
 
-                {/* Description */}
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed line-clamp-2">
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-2">
                   {skill.description}
                 </p>
 
-                {/* File locations */}
                 <div className="flex flex-col gap-1 mt-1">
-                  <p className="text-[10px] font-semibold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider">
+                  <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
                     Ubicaciones
                   </p>
                   {skill.files.map((f, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-1.5 text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b]"
+                      className="flex items-center gap-1.5 text-[10px] font-mono text-[var(--text-secondary)]"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" />
                       <span className="truncate">{f.path}</span>
-                      <span className="shrink-0 text-[9px] px-1 py-0.5 rounded bg-black/5 dark:bg-white/5 text-[#aeaeb2] font-medium">
+                      <span className="shrink-0 text-[9px] px-1 py-0.5 rounded bg-[var(--bg-hover)] text-[var(--text-muted)] font-medium">
                         {SCOPE_LABELS[f.scope] ?? f.scope}
                       </span>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
+            </AdminPanel>
           ))}
         </div>
       )}
 
       {/* Plugins & MCP section */}
-      <div className="mt-2">
-        <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white mb-3 flex items-center gap-2">
-          <svg
-            className="w-4 h-4 text-fuchsia-500"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <rect height="14" rx="2" ry="2" width="20" x="2" y="7" />
-            <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
-          </svg>
+      <div>
+        <h3 className="text-base font-semibold text-[var(--text-primary)] mb-3">
           Plugins & MCP Servers
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {PLUGINS.map((p) => (
-            <div
-              key={p.name}
-              className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 group"
-            >
-              <div className="h-1 bg-gradient-to-r from-fuchsia-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="p-4 flex flex-col gap-2">
+            <AdminPanel key={p.name} compact>
+              <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <span
-                    className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                      p.type === "mcp"
-                        ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400"
-                        : p.type === "npm"
-                          ? "bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400"
-                          : "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400"
-                    }`}
-                  >
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded admin-badge ${p.type === "mcp" ? "admin-badge-info" : p.type === "npm" ? "admin-badge-success" : "admin-badge-warning"}`}>
                     {p.type.toUpperCase()}
                   </span>
-                  <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
+                  <p className="text-sm font-semibold text-[var(--text-primary)]">
                     {p.name}
                   </p>
                 </div>
-                <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                   {p.description}
                 </p>
-                <p className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366]">
+                <p className="text-[10px] font-mono text-[var(--text-muted)]">
                   {p.details}
                 </p>
               </div>
-            </div>
+            </AdminPanel>
           ))}
         </div>
       </div>

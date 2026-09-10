@@ -6,6 +6,7 @@ import CampusLayout from "@/layouts/campus";
 import { getGuides, getContentByType, contentHref } from "@/lib/blog/registry";
 import { LEVELS } from "@/lib/blog/taxonomy";
 import { IconSearch, IconClock, IconBook } from "@/components/blog/shared";
+import { IconBooks } from "@/components/ui/Icons";
 import { useT } from "@/hooks/useT";
 import { DifficultyBadge } from "@/components/campus/DifficultyBadge";
 import Link from "next/link";
@@ -81,7 +82,7 @@ export default function CampusCursosPage() {
             />
           </div>
           <select
-            aria-label="Filtrar por nivel"
+            aria-label={t("campus.filters.level")}
             className="px-3 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-hover)] transition-colors"
             value={activeLevel}
             onChange={(e) => setActiveLevel(e.target.value)}
@@ -94,14 +95,14 @@ export default function CampusCursosPage() {
             ))}
           </select>
           <p className="text-sm text-[var(--text-muted)] sm:ml-auto">
-            {results.length} de {allCursos.length}
+            {results.length} {t("common.of")} {allCursos.length}
           </p>
         </div>
 
         {/* Results */}
         {results.length === 0 ? (
           <div className="text-center py-20">
-            <span className="text-4xl mb-3 block" aria-hidden="true">📚</span>
+            <span className="text-4xl mb-3 block text-[var(--text-muted)]" aria-hidden="true"><IconBooks className="w-10 h-10 mx-auto" /></span>
             <p className="text-sm text-[var(--text-secondary)]">
               {t("blog.noGuides")}
             </p>
@@ -142,6 +143,7 @@ interface CursoItem {
 }
 
 function CourseCard({ curso, seed }: { curso: CursoItem; seed: number }) {
+  const { t } = useT();
   const [from, to] = GRADIENTS[Math.abs(seed) % GRADIENTS.length];
   const isGuide = curso._type === "guide";
 
@@ -190,7 +192,7 @@ function CourseCard({ curso, seed }: { curso: CursoItem; seed: number }) {
             {isGuide ? (
               <>
                 <IconBook className="w-3 h-3" />
-                {curso.curriculum?.length ?? 0} pasos
+                {curso.curriculum?.length ?? 0} {t("campus.courses.steps")}
               </>
             ) : (
               <>

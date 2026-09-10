@@ -111,7 +111,7 @@ export const Navbar = () => {
 
             {/* Mobile hamburger */}
             <button
-              aria-label={menuOpen ? "Cerrar menú" : t("nav.menuToggle")}
+              aria-label={menuOpen ? t("nav.menuClose") : t("nav.menuToggle")}
               className="ds-btn-icon !w-8 !h-8 md:hidden"
               onClick={() => setMenuOpen(!menuOpen)}
             >
@@ -128,7 +128,7 @@ export const Navbar = () => {
       {/* Mobile overlay */}
       {menuOpen && (
         <button
-          aria-label="Cerrar menú"
+          aria-label={t("nav.menuClose")}
           className="fixed inset-0 z-40 bg-black/15 dark:bg-black/40 backdrop-blur-sm md:hidden"
           type="button"
           onClick={() => setMenuOpen(false)}

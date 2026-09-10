@@ -1,7 +1,7 @@
 "use client";
 
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -10,6 +10,7 @@ import { useT } from "@/hooks/useT";
 import { challenges, getChallenge, getChallengesByPlan } from "@/data/challenges";
 import { studyPlans, getStudyPlan } from "@/data/studyPlans";
 import { DifficultyBadge } from "@/components/campus/DifficultyBadge";
+import { IconTarget, IconArrowLeft, IconArrowRight, IconPlay, IconCelebration } from "@/components/ui/Icons";
 
 // ── Code editor ──────────────────────────────────────────────────────────────
 
@@ -133,6 +134,13 @@ export default function ChallengePage() {
   const [isRunning, setIsRunning] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
 
+  // Sync code when challenge loads (router params resolve after first render)
+  useEffect(() => {
+    if (challenge?.starterCode) {
+      setCode(challenge.starterCode);
+    }
+  }, [challenge?.starterCode]);
+
   // Find prev/next challenges
   const currentIndex = siblingChallenges.findIndex(
     (c) => c.slug === challengeSlug,
@@ -176,7 +184,7 @@ export default function ChallengePage() {
       if (allPassed) {
         // Show success feedback
         alert(
-          `🎉 ¡Felicidades! Has completado el reto y ganado ${challenge.xpReward} XP`,
+          `¡Felicidades! Has completado el reto y ganado ${challenge.xpReward} XP`,
         );
       }
     }, 2000);
@@ -186,7 +194,7 @@ export default function ChallengePage() {
     return (
       <CampusLayout seo={{ title: "Reto no encontrado" }}>
         <div className="text-center py-20">
-          <span className="text-4xl mb-3 block">🎯</span>
+          <span className="text-4xl mb-3 block text-[var(--text-muted)]"><IconTarget className="w-10 h-10 mx-auto" /></span>
           <p className="text-sm text-[var(--text-secondary)]">
             Reto no encontrado
           </p>
@@ -194,7 +202,7 @@ export default function ChallengePage() {
             className="text-xs text-[var(--accent)] hover:underline mt-2 inline-block"
             href="/campus/retos"
           >
-            ← Volver a retos
+            <IconArrowLeft className="w-3 h-3 inline mr-1" /> Volver a retos
           </Link>
         </div>
       </CampusLayout>
@@ -208,13 +216,13 @@ export default function ChallengePage() {
         description: challenge.description,
       }}
     >
-      <div className="space-y-4 py-4">
+      <div className="max-w-4xl mx-auto px-5 sm:px-6 py-6 md:py-10 space-y-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-          <Link className="hover:text-[var(--accent)] transition-colors" href="/campus/retos">
+          <Link className="hover:text-[var(--accent)] transition-colors no-underline" href="/campus/retos">
             Retos
           </Link>
-          <span>/</span>
+          <span aria-hidden="true">/</span>
           <span className="text-[var(--text-primary)]">{challenge.title}</span>
         </nav>
 
@@ -323,7 +331,7 @@ export default function ChallengePage() {
                   Ejecutando...
                 </span>
               ) : (
-                "▶ Ejecutar tests"
+                <><IconPlay className="w-4 h-4 inline mr-1" /> Ejecutar tests</>
               )}
             </button>
             <button
@@ -361,7 +369,7 @@ export default function ChallengePage() {
               className="flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors no-underline"
               href={`/campus/retos/${plan.slug}/${prevChallenge.slug}`}
             >
-              <span>←</span>
+              <IconArrowLeft className="w-3 h-3" />
               <span>{prevChallenge.title}</span>
             </Link>
           ) : (
@@ -373,7 +381,7 @@ export default function ChallengePage() {
               href={`/campus/retos/${plan.slug}/${nextChallenge.slug}`}
             >
               <span>{nextChallenge.title}</span>
-              <span>→</span>
+              <IconArrowRight className="w-3 h-3" />
             </Link>
           ) : (
             <Link
@@ -381,7 +389,7 @@ export default function ChallengePage() {
               href="/campus/retos"
             >
               <span>Ver todos los retos</span>
-              <span>→</span>
+              <IconArrowRight className="w-3 h-3" />
             </Link>
           )}
         </div>

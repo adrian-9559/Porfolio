@@ -47,7 +47,7 @@ export function BookmarkButton({
       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-200 ${
         bookmarked
           ? "bg-[var(--accent-light)] text-[var(--accent)] border border-[var(--border-hover)]"
-          : "bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:hover:bg-[var(--bg-hover)]"
+          : "bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
       }`}
       disabled={loading}
       type="button"

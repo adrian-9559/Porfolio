@@ -29,7 +29,7 @@ export default function CTA() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <a
               className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[var(--text-primary)] text-[var(--bg-card)] font-bold text-sm transition-all duration-200 hover:opacity-90 no-underline"
-              href={`mailto:${siteConfig.contact.email}`}
+              href={`mailto:${siteConfig.contact.email}?subject=${encodeURIComponent("Contacto desde tu portfolio")}&body=${encodeURIComponent("Hola Adrián,\n\nMe gustaría contactar contigo para...")}`}
             >
               <Envelope className="w-4 h-4" />
               {t("sections.cta.emailBtn")}

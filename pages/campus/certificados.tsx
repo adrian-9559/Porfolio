@@ -8,13 +8,16 @@ import CampusLayout from "@/layouts/campus";
 import { siteConfig } from "@/config/site";
 import { useAuth } from "@/hooks/useAuth";
 import { useT } from "@/hooks/useT";
+import { useLocaleStore } from "@/store/localeStore";
 import { campusService } from "@/services/campusService";
 import type { CampusCertificate } from "@/services/campusService";
 import { CertificateCard } from "@/components/campus/CertificateCard";
+import { IconLock, IconGraduation, IconArrowRight, IconCross } from "@/components/ui/Icons";
 
 export default function CertificadosPage() {
   const { t } = useT();
   const { isAuthenticated } = useAuth();
+  const locale = useLocaleStore((s) => s.locale);
   const [certificates, setCertificates] = useState<CampusCertificate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +43,7 @@ export default function CertificadosPage() {
         </Head>
         <main className="max-w-4xl mx-auto px-4 py-10">
           <div className="py-20 text-center">
-            <span className="text-4xl mb-4 block" aria-hidden="true">🔒</span>
+            <span className="text-4xl mb-4 block text-[var(--text-muted)]" aria-hidden="true"><IconLock className="w-10 h-10 mx-auto" /></span>
             <h1 className="text-xl font-bold text-[var(--text-primary)] mb-2">
               {t("campus.certificates.loginRequired")}
             </h1>
@@ -84,12 +87,12 @@ export default function CertificadosPage() {
           </div>
         ) : error ? (
           <div className="py-20 text-center">
-            <span className="text-3xl mb-3 block" aria-hidden="true">⚠️</span>
+            <span className="text-3xl mb-3 block text-red-500" aria-hidden="true"><IconCross className="w-8 h-8 mx-auto" /></span>
             <p className="text-sm text-red-500">{error}</p>
           </div>
         ) : certificates.length === 0 ? (
           <div className="py-20 text-center">
-            <span className="text-4xl mb-4 block" aria-hidden="true">🎓</span>
+            <span className="text-4xl mb-4 block text-[var(--text-muted)]" aria-hidden="true"><IconGraduation className="w-10 h-10 mx-auto" /></span>
             <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">
               {t("campus.certificates.empty")}
             </h2>
@@ -114,7 +117,7 @@ export default function CertificadosPage() {
                     </h2>
                     <p className="text-xs text-[var(--text-muted)]">
                       {t("campus.certificates.issued", {
-                        date: new Date(cert.issued_at).toLocaleDateString("es-ES", {
+                        date: new Date(cert.issued_at).toLocaleDateString(locale === "es" ? "es-ES" : "en-US", {
                           day: "numeric",
                           month: "long",
                           year: "numeric",
@@ -127,7 +130,7 @@ export default function CertificadosPage() {
                     href={`/cert/${cert.certificate_code}`}
                     target="_blank"
                   >
-                    {t("campus.certificates.verify")} →
+                    {t("campus.certificates.verify")} <IconArrowRight className="w-3 h-3 inline" />
                   </Link>
                 </div>
                 <CertificateCard certificate={cert} guideTitle={cert.guide_slug} />

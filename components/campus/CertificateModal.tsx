@@ -5,6 +5,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { campusService } from "@/services/campusService";
 import type { CampusCertificate } from "@/services/campusService";
 import { CertificateCard } from "./CertificateCard";
+import { IconLink, IconCross } from "@/components/ui/Icons";
 
 interface CertificateModalProps {
   guideSlug: string;
@@ -115,7 +116,7 @@ export function CertificateModal({
             </div>
           ) : error ? (
             <div className="py-16 text-center">
-              <span className="text-3xl mb-3 block" aria-hidden="true">⚠️</span>
+              <span className="text-3xl mb-3 block text-red-500" aria-hidden="true"><IconCross className="w-8 h-8 mx-auto" /></span>
               <p className="text-sm text-red-500">{error}</p>
               <button
                 className="mt-4 px-4 py-2 rounded-lg text-xs font-semibold text-[var(--text-secondary)] border border-[var(--border-default)] hover:border-[var(--border-hover)] transition-colors"
@@ -150,7 +151,7 @@ export function CertificateModal({
                   type="button"
                   onClick={handleShare}
                 >
-                  🔗 Compartir
+                  <IconLink className="w-3 h-3 inline mr-1" /> Compartir
                 </button>
               </div>
             </div>

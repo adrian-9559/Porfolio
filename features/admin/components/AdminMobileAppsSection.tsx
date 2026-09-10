@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 
-import { SectionHeader, Card, EmptyState, Spinner } from "./AdminShared";
 import { GoogleDriveConnectCard } from "./GoogleDriveConnectCard";
+import {
+  AdminPageHeader,
+  AdminPanel,
+  AdminEmptyState,
+  AdminLoadingSkeleton,
+} from "./AdminShell";
 
 import { useT } from "@/hooks/useT";
 import { apiFetch } from "@/services/apiClient";
@@ -101,7 +106,7 @@ function SourceBadge({
 }) {
   if (source === "gdrive") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium">
+      <span className="admin-badge admin-badge-success inline-flex items-center gap-1">
         <svg className="w-3 h-3" viewBox="0 0 24 24">
           <path d="M9.5 2L4 12l2.5 4.5h2.5l1.5-2.5L9.5 2z" fill="#FBBC04" />
           <path d="M14.5 2L9.5 11h5l2.5-4.5L14.5 2z" fill="#34A853" />
@@ -116,14 +121,14 @@ function SourceBadge({
   }
   if (source === "external_url") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] text-xs font-medium">
+      <span className="admin-badge">
         URL
       </span>
     );
   }
 
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] text-xs font-medium">
+    <span className="admin-badge">
       Supabase
     </span>
   );
@@ -218,15 +223,19 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md bg-white dark:bg-[#111116] rounded-2xl shadow-2xl overflow-hidden"
+        className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+        style={{ background: "var(--bg-card)", border: "1px solid var(--border-default)" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-black/8 dark:border-white/8">
-          <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white">
+        <div
+          className="flex items-center justify-between px-6 pt-5 pb-4"
+          style={{ borderBottom: "1px solid var(--border-default)" }}
+        >
+          <h3 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
             {t("admin.mobileNewVersion")}
           </h3>
           <button
-            className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/8 dark:hover:bg-white/8 text-[#6e6e73]"
+            className="ds-btn-icon"
             onClick={onClose}
           >
             <svg
@@ -244,11 +253,11 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
         <form className="px-6 py-5 flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("admin.mobilePlatform")}
               </label>
               <select
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 value={platform}
                 onChange={(e) =>
                   handlePlatformChange(e.target.value as "android" | "ios")
@@ -259,11 +268,11 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("admin.mobileType")}
               </label>
               <select
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 value={buildType}
                 onChange={(e) => setBuildType(e.target.value)}
               >
@@ -277,11 +286,11 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-              {t("admin.version")} <span className="text-red-500">*</span>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
+              {t("admin.version")} <span style={{ color: "var(--color-danger)" }}>*</span>
             </label>
             <input
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="ds-input w-full"
               placeholder="1.0.0"
               value={version}
               onChange={(e) => setVersion(e.target.value)}
@@ -289,17 +298,15 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
               {t("admin.uploadVersion")}
             </label>
             <div className="flex gap-2">
               {(["url", "file"] as const).map((st) => (
                 <button
                   key={st}
-                  className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors ${
-                    sourceType === st
-                      ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
-                      : "border-black/12 dark:border-white/12 text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"
+                  className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    sourceType === st ? "admin-filter-chip-active" : "admin-filter-chip"
                   }`}
                   type="button"
                   onClick={() => setSourceType(st)}
@@ -312,46 +319,47 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
 
           {sourceType === "url" ? (
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
-                URL <span className="text-red-500">*</span>
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
+                URL <span style={{ color: "var(--color-danger)" }}>*</span>
               </label>
               <input
-                className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="ds-input w-full"
                 placeholder="https://github.com/user/repo/blob/main/android/app.apk"
                 value={externalUrl}
                 onChange={(e) => setExternalUrl(e.target.value)}
               />
               {externalUrl.trim() && (
-                <p className="mt-1.5 text-xs text-[#6e6e73] truncate">
+                <p className="mt-1.5 text-xs truncate" style={{ color: "var(--text-muted)" }}>
                   →{" "}
                   <span className="font-mono">
                     {toRawGithubUrl(externalUrl)}
                   </span>
                 </p>
               )}
-              <p className="mt-1.5 text-xs text-[#aeaeb2]">
+              <p className="mt-1.5 text-xs" style={{ color: "var(--text-muted)" }}>
                 {t("admin.uploadVersion")}
               </p>
             </div>
           ) : (
             <div>
-              <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                 {t("admin.uploadVersion")}{" "}
-                <span className="text-red-500">*</span>
+                <span style={{ color: "var(--color-danger)" }}>*</span>
               </label>
               <div
-                className="w-full rounded-xl border-2 border-dashed border-black/12 dark:border-white/12 px-4 py-4 text-center cursor-pointer hover:border-blue-400 transition-colors"
+                className="w-full rounded-xl border-2 border-dashed px-4 py-4 text-center cursor-pointer transition-colors"
+                style={{ borderColor: "var(--border-default)" }}
                 onClick={() => fileRef.current?.click()}
               >
                 {file ? (
-                  <p className="text-sm text-[#1d1d1f] dark:text-white">
+                  <p className="text-sm" style={{ color: "var(--text-primary)" }}>
                     {file.name}{" "}
-                    <span className="text-[#6e6e73]">
+                    <span style={{ color: "var(--text-muted)" }}>
                       ({formatSize(file.size)})
                     </span>
                   </p>
                 ) : (
-                  <p className="text-sm text-[#aeaeb2]">
+                  <p className="text-sm" style={{ color: "var(--text-muted)" }}>
                     {t("admin.uploadVersion")}
                   </p>
                 )}
@@ -365,15 +373,13 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
               />
 
               <div className="mt-3">
-                <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+                <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
                   {t("admin.uploadVersion")}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
-                    className={`flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium border transition-colors ${
-                      destination === "drive"
-                        ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
-                        : "border-black/12 dark:border-white/12 text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"
+                    className={`flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium transition-colors ${
+                      destination === "drive" ? "admin-filter-chip-active" : "admin-filter-chip"
                     } ${!driveConnected ? "opacity-50 cursor-not-allowed" : ""}`}
                     disabled={!driveConnected}
                     title={!driveConnected ? t("admin.uploadVersion") : ""}
@@ -383,10 +389,8 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
                     Google Drive
                   </button>
                   <button
-                    className={`flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium border transition-colors ${
-                      destination === "supabase"
-                        ? "bg-blue-50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
-                        : "border-black/12 dark:border-white/12 text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"
+                    className={`flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium transition-colors ${
+                      destination === "supabase" ? "admin-filter-chip-active" : "admin-filter-chip"
                     }`}
                     type="button"
                     onClick={() => setDestination("supabase")}
@@ -395,7 +399,7 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
                   </button>
                 </div>
                 {destination === "drive" && driveConnected && (
-                  <p className="mt-1.5 text-xs text-[#aeaeb2]">
+                  <p className="mt-1.5 text-xs" style={{ color: "var(--text-muted)" }}>
                     {t("admin.uploadVersion")}
                   </p>
                 )}
@@ -404,14 +408,14 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
           )}
 
           <div>
-            <label className="block text-xs font-medium text-[#6e6e73] mb-1.5">
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
               {t("admin.uploadVersion")}{" "}
-              <span className="text-[#aeaeb2] font-normal">
+              <span className="font-normal" style={{ color: "var(--text-muted)" }}>
                 {t("common.optional")}
               </span>
             </label>
             <textarea
-              className="w-full rounded-xl border border-black/12 dark:border-white/12 bg-transparent text-sm px-3 py-2 text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="ds-input w-full resize-none"
               placeholder={t("admin.uploadVersion")}
               rows={3}
               value={releaseNotes}
@@ -419,18 +423,18 @@ function UploadModal({ onClose, onUploaded, driveStatus }: UploadModalProps) {
             />
           </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p className="text-sm" style={{ color: "var(--color-danger)" }}>{error}</p>}
 
           <div className="flex gap-2 pt-1">
             <button
-              className="flex-1 py-2 rounded-xl border border-black/12 dark:border-white/12 text-sm text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+              className="ds-btn-secondary flex-1"
               type="button"
               onClick={onClose}
             >
               {t("common.cancel")}
             </button>
             <button
-              className="flex-1 py-2 rounded-xl bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium disabled:opacity-50 transition-opacity"
+              className="ds-btn-primary flex-1"
               disabled={loading}
               type="submit"
             >
@@ -517,10 +521,12 @@ export function AdminMobileAppsSection() {
 
   return (
     <div className="flex flex-col gap-6">
-      <SectionHeader
-        action={
+      <AdminPageHeader
+        title={t("admin.mobileAppsTitle")}
+        description={t("admin.mobileAppsDesc")}
+        actions={
           <button
-            className="flex items-center gap-2 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] text-sm font-medium px-4 py-2 rounded-xl hover:opacity-80 transition-opacity"
+            className="ds-btn-primary"
             onClick={() => setShowModal(true)}
           >
             <svg
@@ -536,31 +542,32 @@ export function AdminMobileAppsSection() {
             Nueva versión
           </button>
         }
-        desc={t("admin.mobileAppsDesc")}
-        title={t("admin.mobileAppsTitle")}
       />
 
       {error && (
-        <div className="px-4 py-2.5 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 text-sm text-red-600 dark:text-red-400">
+        <div
+          className="px-4 py-2.5 rounded-xl text-sm"
+          style={{ background: "var(--bg-hover)", color: "var(--color-danger)", border: "1px solid var(--color-danger)" }}
+        >
           {error}
         </div>
       )}
 
       <GoogleDriveConnectCard onChange={refreshAll} />
 
-      <Card>
+      <AdminPanel>
         {loading ? (
-          <Spinner />
+          <AdminLoadingSkeleton rows={5} />
         ) : versions.length === 0 ? (
-          <EmptyState
-            sub={t("admin.mobileNoVersionsHint")}
-            text={t("admin.mobileNoVersions")}
+          <AdminEmptyState
+            title={t("admin.mobileNoVersions")}
+            description={t("admin.mobileNoVersionsHint")}
           />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-black/8 dark:border-white/8">
+                <tr style={{ borderBottom: "1px solid var(--border-default)" }}>
                   {[
                     { key: "version" },
                     { key: "mobilePlatform" },
@@ -573,7 +580,8 @@ export function AdminMobileAppsSection() {
                   ].map((col, i) => (
                     <th
                       key={i}
-                      className="px-4 py-3 text-left text-xs font-semibold text-[#aeaeb2] dark:text-[#636366] whitespace-nowrap"
+                      className="px-4 py-3 text-left text-xs font-semibold whitespace-nowrap"
+                      style={{ color: "var(--text-muted)" }}
                     >
                       {t(`admin.${col.key}`)}
                     </th>
@@ -584,38 +592,38 @@ export function AdminMobileAppsSection() {
                 {versions.map((v) => (
                   <tr
                     key={v.id}
-                    className="border-b border-black/5 dark:border-white/5 last:border-0 hover:bg-black/[0.02] dark:hover:bg-white/[0.02]"
+                    className="last:border-0"
+                    style={{ borderBottom: "1px solid var(--border-default)" }}
                   >
-                    <td className="px-4 py-3 font-mono text-xs text-[#1d1d1f] dark:text-white whitespace-nowrap">
+                    <td className="px-4 py-3 font-mono text-xs whitespace-nowrap" style={{ color: "var(--text-primary)" }}>
                       v{v.version}
                     </td>
-                    <td className="px-4 py-3 text-[#1d1d1f] dark:text-white whitespace-nowrap">
+                    <td className="px-4 py-3 whitespace-nowrap" style={{ color: "var(--text-primary)" }}>
                       {PLATFORM_LABELS[v.platform]}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-xs font-medium text-[#6e6e73] dark:text-[#86868b] uppercase">
+                      <span className="admin-badge">
                         {BUILD_LABELS[v.build_type]}
                       </span>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <SourceBadge source={v.storage_source} />
                     </td>
-                    <td className="px-4 py-3 text-[#6e6e73] dark:text-[#86868b] whitespace-nowrap text-xs">
+                    <td className="px-4 py-3 whitespace-nowrap text-xs" style={{ color: "var(--text-muted)" }}>
                       {formatSize(v.file_size)}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       {v.is_active ? (
-                        <span className="flex items-center gap-1.5 text-xs font-medium text-[#34c759]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#34c759]" />
+                        <span className="admin-badge admin-badge-success">
                           {t("admin.mobileActive")}
                         </span>
                       ) : (
-                        <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+                        <span className="text-xs" style={{ color: "var(--text-muted)" }}>
                           {t("admin.mobileInactive")}
                         </span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-[#6e6e73] dark:text-[#86868b] whitespace-nowrap text-xs">
+                    <td className="px-4 py-3 whitespace-nowrap text-xs" style={{ color: "var(--text-muted)" }}>
                       {new Date(v.created_at).toLocaleDateString("es-ES", {
                         day: "2-digit",
                         month: "short",
@@ -626,7 +634,7 @@ export function AdminMobileAppsSection() {
                       <div className="flex items-center gap-1.5">
                         {!v.is_active && (
                           <button
-                            className="px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/50 disabled:opacity-50 transition-colors"
+                            className="ds-btn-primary text-xs px-2.5 py-1"
                             disabled={activating === v.id}
                             onClick={() => handleActivate(v.id)}
                           >
@@ -637,7 +645,7 @@ export function AdminMobileAppsSection() {
                         )}
                         {v.external_url && (
                           <a
-                            className="px-2.5 py-1 rounded-lg text-xs font-medium bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
+                            className="ds-btn-secondary text-xs px-2.5 py-1"
                             href={v.external_url}
                             rel="noreferrer"
                             target="_blank"
@@ -648,7 +656,7 @@ export function AdminMobileAppsSection() {
                           </a>
                         )}
                         <button
-                          className="px-2.5 py-1 rounded-lg text-xs font-medium bg-red-50 dark:bg-red-950/20 text-red-500 hover:bg-red-100 dark:hover:bg-red-950/40 disabled:opacity-50 transition-colors"
+                          className="ds-btn-danger text-xs px-2.5 py-1"
                           disabled={deleting === v.id}
                           onClick={() => handleDelete(v.id)}
                         >
@@ -662,7 +670,7 @@ export function AdminMobileAppsSection() {
             </table>
           </div>
         )}
-      </Card>
+      </AdminPanel>
 
       {showModal && (
         <UploadModal
