@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -15,6 +16,7 @@ function jsonToYaml(value: unknown, indent = 0): string {
   if (typeof value === "string") {
     if (value.includes("\n")) {
       const lines = value.split("\n");
+
       return "|\n" + lines.map((l) => pad + "  " + l).join("\n");
     }
     if (
@@ -26,18 +28,26 @@ function jsonToYaml(value: unknown, indent = 0): string {
     ) {
       return `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
     }
+
     return value;
   }
   if (Array.isArray(value)) {
     if (value.length === 0) return "[]";
+
     return (
       "\n" +
       value
         .map((item) => {
           const rendered = jsonToYaml(item, indent + 1);
-          if (typeof item === "object" && item !== null && !Array.isArray(item)) {
+
+          if (
+            typeof item === "object" &&
+            item !== null &&
+            !Array.isArray(item)
+          ) {
             return pad + "-\n" + rendered;
           }
+
           return pad + "- " + rendered.trimStart();
         })
         .join("\n")
@@ -45,28 +55,42 @@ function jsonToYaml(value: unknown, indent = 0): string {
   }
   if (typeof value === "object") {
     const entries = Object.entries(value as Record<string, unknown>);
+
     if (entries.length === 0) return "{}";
+
     return (
       "\n" +
       entries
         .map(([k, v]) => {
           const child = jsonToYaml(v, indent + 1);
-          if (typeof v === "object" && v !== null && !Array.isArray(v) && Object.keys(v as Record<string, unknown>).length > 0) {
+
+          if (
+            typeof v === "object" &&
+            v !== null &&
+            !Array.isArray(v) &&
+            Object.keys(v as Record<string, unknown>).length > 0
+          ) {
             return pad + k + ":" + child;
           }
           if (Array.isArray(v) && v.length > 0) {
             return pad + k + ":" + child;
           }
+
           return pad + k + ": " + child.trim();
         })
         .join("\n")
     );
   }
+
   return String(value);
 }
 
 /* ── Minimal YAML parser (YAML → JSON) ── */
-function parseYamlLine(line: string): { indent: number; key: string | null; value: string } {
+function parseYamlLine(line: string): {
+  indent: number;
+  key: string | null;
+  value: string;
+} {
   const trimmed = line.replace(/\t/g, "  ");
   const indent = trimmed.length - trimmed.replace(/^ +/, "").length;
   const content = trimmed.trimStart();
@@ -76,11 +100,13 @@ function parseYamlLine(line: string): { indent: number; key: string | null; valu
   }
 
   const dashMatch = content.match(/^- (.*)/);
+
   if (dashMatch) {
     return { indent, key: "__list__", value: dashMatch[1].trim() };
   }
 
   const colonIdx = content.indexOf(":");
+
   if (colonIdx === -1) {
     return { indent, key: null, value: content };
   }
@@ -97,28 +123,36 @@ function parseYamlLine(line: string): { indent: number; key: string | null; valu
 
 function parseScalar(val: string): unknown {
   const trimmed = val.trim();
+
   if (trimmed === "" || trimmed === "null") return null;
   if (trimmed === "true") return true;
   if (trimmed === "false") return false;
   if (/^-?\d+(\.\d+)?$/.test(trimmed)) return Number(trimmed);
-  if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
     return trimmed.slice(1, -1);
   }
   if (trimmed.startsWith("|")) {
     return trimmed.slice(1).trim();
   }
+
   return trimmed;
 }
 
 function yamlToJson(yaml: string): unknown {
   const lines = yaml.split("\n");
   const root: Record<string, unknown> = {};
-  const stack: { indent: number; obj: Record<string, unknown>; list?: unknown[] }[] = [
-    { indent: -1, obj: root },
-  ];
+  const stack: {
+    indent: number;
+    obj: Record<string, unknown>;
+    list?: unknown[];
+  }[] = [{ indent: -1, obj: root }];
 
   for (const rawLine of lines) {
     const { indent, key, value } = parseYamlLine(rawLine);
+
     if (key === null && value === "") continue;
 
     while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
@@ -128,19 +162,34 @@ function yamlToJson(yaml: string): unknown {
     const parent = stack[stack.length - 1];
 
     if (key === "__list__") {
-      const currentList = parent.list || (parent.list = (parent.obj[parent.list ? "__list_pending__" : Object.keys(parent.obj).pop() || ""] as unknown[]));
+      const currentList =
+        parent.list ||
+        (parent.list = parent.obj[
+          parent.list ? "__list_pending__" : Object.keys(parent.obj).pop() || ""
+        ] as unknown[]);
       const parsed = parseScalar(value);
-      if (typeof parsed === "string" && (parsed.startsWith("{") || parsed.startsWith("["))) {
-        try { currentList.push(JSON.parse(parsed)); continue; } catch { void 0; }
+
+      if (
+        typeof parsed === "string" &&
+        (parsed.startsWith("{") || parsed.startsWith("["))
+      ) {
+        try {
+          currentList.push(JSON.parse(parsed));
+          continue;
+        } catch {
+          void 0;
+        }
       }
       currentList.push(parsed);
     } else if (key !== null) {
       if (value === "" || value.startsWith("|")) {
         const childObj: Record<string, unknown> = {};
+
         parent.obj[key] = childObj;
         stack.push({ indent, obj: childObj });
       } else if (value === "" && indent > stack[stack.length - 1].indent) {
         const list: unknown[] = [];
+
         parent.obj[key] = list;
         stack.push({ indent, obj: parent.obj, list });
       } else {
@@ -160,6 +209,7 @@ function yamlToJsonSimple(yaml: string): unknown {
 
   for (const rawLine of lines) {
     const { indent, key, value } = parseYamlLine(rawLine);
+
     if (key === null && value === "") continue;
 
     if (key === "__list__") {
@@ -204,14 +254,18 @@ export default function JsonYamlContent() {
     try {
       if (mode === "jsonToYaml") {
         const parsed = JSON.parse(input);
+
         setOutput(jsonToYaml(parsed).trim());
       } else {
         const parsed = yamlToJsonSimple(input);
+
         setOutput(JSON.stringify(parsed, null, 2));
       }
       setError("");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : t("blog.jsonYaml.errorInvalid"));
+      setError(
+        e instanceof Error ? e.message : t("blog.jsonYaml.errorInvalid"),
+      );
       setOutput("");
     }
   };
@@ -262,7 +316,11 @@ export default function JsonYamlContent() {
                   ? "bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-400"
                   : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/8 dark:hover:bg-white/8"
               }`}
-              onClick={() => { setMode("jsonToYaml"); setOutput(""); setError(""); }}
+              onClick={() => {
+                setMode("jsonToYaml");
+                setOutput("");
+                setError("");
+              }}
             >
               JSON → YAML
             </button>
@@ -272,7 +330,11 @@ export default function JsonYamlContent() {
                   ? "bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-400"
                   : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/8 dark:hover:bg-white/8"
               }`}
-              onClick={() => { setMode("yamlToJson"); setOutput(""); setError(""); }}
+              onClick={() => {
+                setMode("yamlToJson");
+                setOutput("");
+                setError("");
+              }}
             >
               YAML → JSON
             </button>
@@ -301,7 +363,9 @@ export default function JsonYamlContent() {
             </p>
             <textarea
               className="w-full h-64 p-3 text-xs font-mono rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white resize-none focus:outline-none focus:border-cyan-400 dark:focus:border-cyan-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
-              placeholder={mode === "jsonToYaml" ? '{\n  "key": "value"\n}' : "key: value"}
+              placeholder={
+                mode === "jsonToYaml" ? '{\n  "key": "value"\n}' : "key: value"
+              }
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />

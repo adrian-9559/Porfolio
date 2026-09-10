@@ -81,30 +81,30 @@ export default function MonitoringContentEn() {
         Metrics are numerical values aggregated over time:{" "}
         <BlogInlineCode>requests_per_second</BlogInlineCode>,{" "}
         <BlogInlineCode>latency_p99</BlogInlineCode>,{" "}
-        <BlogInlineCode>errors_5xx</BlogInlineCode>. They are lightweight,
-        cheap to store, and ideal for alerts and dashboards. They won't tell
-        you what happened to a specific request, but they will tell you how
-        many are failing and whether latency is increasing.
+        <BlogInlineCode>errors_5xx</BlogInlineCode>. They are lightweight, cheap
+        to store, and ideal for alerts and dashboards. They won't tell you what
+        happened to a specific request, but they will tell you how many are
+        failing and whether latency is increasing.
       </BlogP>
 
       <BlogH3 id="logs">Logs</BlogH3>
 
       <BlogP>
-        Logs are discrete events with context: each line describes what
-        happened at a given moment. They are the richest source of detail — a
-        log can include the user ID, the endpoint, and the execution time —
-        but also the heaviest. Without centralization, searching logs across
-        ten servers is unmanageable.
+        Logs are discrete events with context: each line describes what happened
+        at a given moment. They are the richest source of detail — a log can
+        include the user ID, the endpoint, and the execution time — but also the
+        heaviest. Without centralization, searching logs across ten servers is
+        unmanageable.
       </BlogP>
 
       <BlogH3 id="traces">Distributed Traces</BlogH3>
 
       <BlogP>
-        A trace follows a request from the moment it enters the system until
-        it leaves, crossing services, message queues, and databases. Each step
-        is called a <BlogInlineCode>span</BlogInlineCode> and contains
-        duration, metadata, and the parent span ID. Traces are the only
-        reliable way to diagnose bottlenecks in microservice architectures.
+        A trace follows a request from the moment it enters the system until it
+        leaves, crossing services, message queues, and databases. Each step is
+        called a <BlogInlineCode>span</BlogInlineCode> and contains duration,
+        metadata, and the parent span ID. Traces are the only reliable way to
+        diagnose bottlenecks in microservice architectures.
       </BlogP>
 
       <BlogCallout type="info">
@@ -126,8 +126,8 @@ export default function MonitoringContentEn() {
       <BlogH3 id="install-prometheus">Installation with Docker</BlogH3>
 
       <BlogP>
-        Run Prometheus with Docker and a configuration file that tells it
-        which services to scrape:
+        Run Prometheus with Docker and a configuration file that tells it which
+        services to scrape:
       </BlogP>
 
       <BlogCode>{`# prometheus.yml
@@ -176,9 +176,9 @@ sum(rate(http_requests_total[5m]))`}</BlogCode>
       <BlogH3 id="app-metrics">Exposing Metrics in Node.js</BlogH3>
 
       <BlogP>
-        The <BlogInlineCode>prom-client</BlogInlineCode> library exposes
-        metrics automatically and creates the{" "}
-        <BlogInlineCode>/metrics</BlogInlineCode> endpoint:
+        The <BlogInlineCode>prom-client</BlogInlineCode> library exposes metrics
+        automatically and creates the <BlogInlineCode>/metrics</BlogInlineCode>{" "}
+        endpoint:
       </BlogP>
 
       <BlogCode>{`import express from "express";
@@ -223,8 +223,8 @@ app.listen(3000);`}</BlogCode>
         Use <BlogInlineCode>rate()</BlogInlineCode> for counters and{" "}
         <BlogInlineCode>histogram_quantile()</BlogInlineCode> for histograms.
         Avoid <BlogInlineCode>increase()</BlogInlineCode> in real-time
-        dashboards: <BlogInlineCode>rate()</BlogInlineCode> smooths spikes
-        more effectively.
+        dashboards: <BlogInlineCode>rate()</BlogInlineCode> smooths spikes more
+        effectively.
       </BlogCallout>
 
       <BlogH2 id="grafana">Dashboards with Grafana</BlogH2>
@@ -265,8 +265,8 @@ volumes:
       <BlogP>Grafana offers three main panel types:</BlogP>
 
       <BlogP>
-        <strong>Graph:</strong> time series — ideal for latency, error rate,
-        and throughput. Uses PromQL as the query.
+        <strong>Graph:</strong> time series — ideal for latency, error rate, and
+        throughput. Uses PromQL as the query.
       </BlogP>
 
       <BlogP>
@@ -302,23 +302,23 @@ histogram_quantile(0.99,
         <BlogInlineCode>
           label_values(http_requests_total, service)
         </BlogInlineCode>
-        . Then use <BlogInlineCode>$service</BlogInlineCode> in your queries
-        to filter.
+        . Then use <BlogInlineCode>$service</BlogInlineCode> in your queries to
+        filter.
       </BlogP>
 
       <BlogCallout type="info">
         Grafana has thousands of community dashboards at{" "}
-        <strong>grafana.com/grafana/dashboards</strong>. Import the dashboard
-        ID and adjust the variables for your environment. It's the fastest
-        way to get started without building everything from scratch.
+        <strong>grafana.com/grafana/dashboards</strong>. Import the dashboard ID
+        and adjust the variables for your environment. It's the fastest way to
+        get started without building everything from scratch.
       </BlogCallout>
 
       <BlogH2 id="loki">Centralized Logging with Loki</BlogH2>
 
       <BlogP>
-        Loki is the complement to Prometheus for logs. It doesn't index the
-        full content of every line — only labels — making it much lighter
-        than Elasticsearch. It integrates directly with Grafana.
+        Loki is the complement to Prometheus for logs. It doesn't index the full
+        content of every line — only labels — making it much lighter than
+        Elasticsearch. It integrates directly with Grafana.
       </BlogP>
 
       <BlogH3 id="centralized-vs-files">
@@ -327,10 +327,10 @@ histogram_quantile(0.99,
 
       <BlogP>
         In a single container you can read logs with{" "}
-        <BlogInlineCode>docker logs</BlogInlineCode>. But when you have
-        multiple services or replicas, you need to centralize: collect logs
-        from all containers in one place, search them, and alert on them.
-        That's what Loki does with Promtail.
+        <BlogInlineCode>docker logs</BlogInlineCode>. But when you have multiple
+        services or replicas, you need to centralize: collect logs from all
+        containers in one place, search them, and alert on them. That's what
+        Loki does with Promtail.
       </BlogP>
 
       <BlogH3 id="docker-compose-loki">
@@ -404,21 +404,18 @@ rate({container="api"} |= "error" [1m])`}</BlogCode>
       <BlogCallout type="warn">
         Loki indexes <em>labels</em> (like{" "}
         <BlogInlineCode>container</BlogInlineCode> or{" "}
-        <BlogInlineCode>service</BlogInlineCode>), not log content. Using
-        too many high-cardinality labels (like user IDs) can degrade
-        performance. Keep labels minimal and use text filters for content.
+        <BlogInlineCode>service</BlogInlineCode>), not log content. Using too
+        many high-cardinality labels (like user IDs) can degrade performance.
+        Keep labels minimal and use text filters for content.
       </BlogCallout>
 
-      <BlogH2 id="traces-otel">
-        Distributed Tracing with OpenTelemetry
-      </BlogH2>
+      <BlogH2 id="traces-otel">Distributed Tracing with OpenTelemetry</BlogH2>
 
       <BlogP>
         OpenTelemetry (OTel) is the CNCF standard for telemetry. It provides
-        unified APIs for metrics, logs, and traces, with SDKs for most
-        languages and a{" "}
-        <BlogInlineCode>Collector</BlogInlineCode> that receives, processes,
-        and exports data to multiple backends.
+        unified APIs for metrics, logs, and traces, with SDKs for most languages
+        and a <BlogInlineCode>Collector</BlogInlineCode> that receives,
+        processes, and exports data to multiple backends.
       </BlogP>
 
       <BlogH3 id="what-are-traces">
@@ -427,18 +424,17 @@ rate({container="api"} |= "error" [1m])`}</BlogCode>
 
       <BlogP>
         A <strong>trace</strong> represents the complete journey of a request
-        through the system. It is composed of{" "}
-        <strong>spans</strong>, each representing a unit of work — an HTTP
-        call, a database query, a queue operation. Each span has a{" "}
-        <BlogInlineCode>traceId</BlogInlineCode>, a{" "}
-        <BlogInlineCode>spanId</BlogInlineCode>, an optional parent,
-        timestamps, and attributes.
+        through the system. It is composed of <strong>spans</strong>, each
+        representing a unit of work — an HTTP call, a database query, a queue
+        operation. Each span has a <BlogInlineCode>traceId</BlogInlineCode>, a{" "}
+        <BlogInlineCode>spanId</BlogInlineCode>, an optional parent, timestamps,
+        and attributes.
       </BlogP>
 
       <BlogP>
         <strong>Context propagation</strong> is the mechanism that carries the
-        trace ID across services. When your API calls another microservice,
-        the OTel SDK injects HTTP headers (
+        trace ID across services. When your API calls another microservice, the
+        OTel SDK injects HTTP headers (
         <BlogInlineCode>traceparent</BlogInlineCode>) so the next service
         creates a child span in the same trace.
       </BlogP>
@@ -488,9 +484,7 @@ service:
       processors: [batch]
       exporters: [jaeger]`}</BlogCode>
 
-      <BlogH3 id="instrument-node">
-        Instrumenting a Node.js App
-      </BlogH3>
+      <BlogH3 id="instrument-node">Instrumenting a Node.js App</BlogH3>
 
       <BlogCode>{`import { NodeSDK } from "@opentelemetry/sdk-node";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
@@ -510,8 +504,8 @@ sdk.start();
 
       <BlogP>
         With auto-instrumentations, every incoming and outgoing HTTP request,
-        every database query, and every queue call becomes a span
-        automatically — without modifying your business code.
+        every database query, and every queue call becomes a span automatically
+        — without modifying your business code.
       </BlogP>
 
       <BlogH3 id="jaeger-ui">Viewing Traces in Jaeger UI</BlogH3>
@@ -543,8 +537,8 @@ services:
 
       <BlogP>
         In Jaeger UI, select your service, search for traces by duration or
-        label, and explore the span graph: you'll see exactly how long each
-        step takes and where latency accumulates.
+        label, and explore the span graph: you'll see exactly how long each step
+        takes and where latency accumulates.
       </BlogP>
 
       <BlogCallout type="info">
@@ -558,11 +552,11 @@ services:
       <hr className="border-black/8 dark:border-white/8 my-8" />
 
       <BlogP>
-        Observability isn't a luxury — it's an investment that reduces
-        incident resolution time from hours to minutes. With Prometheus,
-        Grafana, Loki, and OpenTelemetry you get a complete, free stack that
-        scales from a laptop to a production cluster. The key is to start
-        small and build a culture of observability in your team.
+        Observability isn't a luxury — it's an investment that reduces incident
+        resolution time from hours to minutes. With Prometheus, Grafana, Loki,
+        and OpenTelemetry you get a complete, free stack that scales from a
+        laptop to a production cluster. The key is to start small and build a
+        culture of observability in your team.
       </BlogP>
     </article>
   );

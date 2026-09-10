@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -41,9 +42,11 @@ export default function UuidGeneratorContent() {
   };
 
   const copyAll = async () => {
-    if (await copyToClipboard(
-      uuids.map((u) => (dashes ? u : u.replace(/-/g, ""))).join("\n"),
-    )) {
+    if (
+      await copyToClipboard(
+        uuids.map((u) => (dashes ? u : u.replace(/-/g, ""))).join("\n"),
+      )
+    ) {
       setCopiedIdx(-1);
       setTimeout(() => setCopiedIdx(null), 1200);
     }
@@ -80,7 +83,9 @@ export default function UuidGeneratorContent() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${version === v ? "bg-white dark:bg-[#1c1c22] text-sky-600 dark:text-sky-400 shadow-sm" : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"}`}
                 onClick={() => setVersion(v)}
               >
-                {v === 4 ? t("blog.uuidGenerator.v4") : t("blog.uuidGenerator.v7")}
+                {v === 4
+                  ? t("blog.uuidGenerator.v4")
+                  : t("blog.uuidGenerator.v7")}
               </button>
             ))}
           </div>
@@ -115,7 +120,9 @@ export default function UuidGeneratorContent() {
             className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors ${dashes ? "border-sky-200 dark:border-sky-800 text-sky-600 dark:text-sky-400" : "border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b]"}`}
             onClick={() => setDashes((d) => !d)}
           >
-            {dashes ? t("blog.uuidGenerator.withDashes") : t("blog.uuidGenerator.withoutDashes")}
+            {dashes
+              ? t("blog.uuidGenerator.withDashes")
+              : t("blog.uuidGenerator.withoutDashes")}
           </button>
         </div>
 
@@ -123,13 +130,16 @@ export default function UuidGeneratorContent() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
-                UUID{uuids.length > 1 ? "s" : ""} {t("blog.uuidGenerator.generated")}
+                UUID{uuids.length > 1 ? "s" : ""}{" "}
+                {t("blog.uuidGenerator.generated")}
               </p>
               <button
                 className="text-xs text-sky-600 dark:text-sky-400 hover:underline"
                 onClick={copyAll}
               >
-                {copiedIdx === -1 ? t("blog.uuidGenerator.copiedAll") : t("blog.uuidGenerator.copyAll")}
+                {copiedIdx === -1
+                  ? t("blog.uuidGenerator.copiedAll")
+                  : t("blog.uuidGenerator.copyAll")}
               </button>
             </div>
             <div className="space-y-1">

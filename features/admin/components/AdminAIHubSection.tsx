@@ -1,8 +1,19 @@
 "use client";
+import type { AIHubMCP, AIHubSkill, AIHubModel } from "@/types/aiHub";
+
 import { useState, useEffect, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 import { aiHubService } from "@/services/aiHubService";
-import type { AIHubMCP, AIHubSkill, AIHubModel } from "@/types/aiHub";
+import {
+  AdminPageHeader,
+  AdminStatGrid,
+  AdminStat,
+  AdminPanel,
+  AdminEmptyState,
+  AdminLoadingSkeleton,
+  AdminFilterChip,
+} from "./AdminShell";
 
 type Tab = "mcps" | "skills" | "models";
 
@@ -150,28 +161,26 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   plugins: <IconPlugins className="w-3 h-3" />,
 };
 
-// ── Config ───────────────────────────────────────────────────────────────────
-
 const MCP_TYPES = [
-  { value: "mcp", label: "MCP", color: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
-  { value: "npm", label: "NPM", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-  { value: "hook", label: "HOOK", color: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-  { value: "custom", label: "CUSTOM", color: "bg-purple-500/10 text-purple-600 dark:text-purple-400" },
+  { value: "mcp", label: "MCP" },
+  { value: "npm", label: "NPM" },
+  { value: "hook", label: "HOOK" },
+  { value: "custom", label: "CUSTOM" },
 ];
 
-const STATUS_COLORS: Record<string, string> = {
-  active: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  inactive: "bg-gray-500/10 text-gray-600 dark:text-gray-400",
-  error: "bg-red-500/10 text-red-600 dark:text-red-400",
-  deprecated: "bg-red-500/10 text-red-600 dark:text-red-400",
+const STATUS_BADGE: Record<string, string> = {
+  active: "admin-badge admin-badge-success",
+  inactive: "admin-badge",
+  error: "admin-badge admin-badge-warning",
+  deprecated: "admin-badge admin-badge-warning",
 };
 
-const PROVIDER_COLORS: Record<string, string> = {
-  openai: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  anthropic: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  google: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-  deepseek: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
-  local: "bg-gray-500/10 text-gray-600 dark:text-gray-400",
+const PROVIDER_BADGE: Record<string, string> = {
+  openai: "admin-badge admin-badge-success",
+  anthropic: "admin-badge admin-badge-warning",
+  google: "admin-badge admin-badge-info",
+  deepseek: "admin-badge admin-badge-info",
+  local: "admin-badge",
 };
 
 const SKILL_CATEGORIES = [
@@ -194,11 +203,32 @@ const SCOPE_LABELS: Record<string, string> = {
   backend: "Backend",
 };
 
-// ── Empty form states ────────────────────────────────────────────────────────
-
-const emptyMCP = { name: "", description: "", type: "mcp", status: "active", details: "", icon: "" };
-const emptySkill = { name: "", description: "", category: "tools", files: [] as { path: string; scope: string }[] };
-const emptyModel = { name: "", provider: "openai", model_id: "", type: "cloud", status: "active", capabilities: [] as string[], context_window: 0, pricing_input: 0, pricing_output: 0, is_default: false };
+const emptyMCP = {
+  name: "",
+  description: "",
+  type: "mcp",
+  status: "active",
+  details: "",
+  icon: "",
+};
+const emptySkill = {
+  name: "",
+  description: "",
+  category: "tools",
+  files: [] as { path: string; scope: string }[],
+};
+const emptyModel = {
+  name: "",
+  provider: "openai",
+  model_id: "",
+  type: "cloud",
+  status: "active",
+  capabilities: [] as string[],
+  context_window: 0,
+  pricing_input: 0,
+  pricing_output: 0,
+  is_default: false,
+};
 
 // ── Component ────────────────────────────────────────────────────────────────
 
@@ -232,7 +262,9 @@ export function AdminAIHubSection() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const openCreate = () => {
     setEditItem(null);
@@ -277,338 +309,322 @@ export function AdminAIHubSection() {
     } catch {}
   };
 
-  const filteredMCPs = mcps.filter((m) =>
-    m.name.toLowerCase().includes(search.toLowerCase()) ||
-    m.description?.toLowerCase().includes(search.toLowerCase())
+  const filteredMCPs = mcps.filter(
+    (m) =>
+      m.name.toLowerCase().includes(search.toLowerCase()) ||
+      m.description?.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const filteredSkills = skills.filter((s) =>
-    (catFilter === "all" || s.category === catFilter) &&
-    (s.name.toLowerCase().includes(search.toLowerCase()) ||
-     s.description?.toLowerCase().includes(search.toLowerCase()))
+  const filteredSkills = skills.filter(
+    (s) =>
+      (catFilter === "all" || s.category === catFilter) &&
+      (s.name.toLowerCase().includes(search.toLowerCase()) ||
+        s.description?.toLowerCase().includes(search.toLowerCase())),
   );
 
-  const filteredModels = models.filter((m) =>
-    m.name.toLowerCase().includes(search.toLowerCase()) ||
-    m.provider.toLowerCase().includes(search.toLowerCase())
+  const filteredModels = models.filter(
+    (m) =>
+      m.name.toLowerCase().includes(search.toLowerCase()) ||
+      m.provider.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
-    <div className="relative">
-      {/* Decorative blobs */}
-      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-violet-500/8 to-pink-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-cyan-500/6 to-blue-500/4 blur-3xl pointer-events-none" />
-
-      <div className="relative space-y-6">
-        {/* Header */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-wide bg-gradient-to-r from-violet-500/10 to-pink-500/10 border border-violet-300/40 dark:border-violet-700/40 text-violet-700 dark:text-violet-300">
-              <span className="relative flex h-1 w-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1 w-1 bg-violet-500" />
-              </span>
-              AI Hub
-            </span>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-black text-[#1d1d1f] dark:text-white tracking-tight">
-            AI Hub
-          </h1>
-          <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">
-            {mcps.length} MCPs · {skills.length} Skills · {models.length} Modelos
-          </p>
-        </div>
-
-        {/* Stat cards */}
-        <div className="grid grid-cols-3 gap-3">
-          {[
-            { label: "MCPs", count: mcps.length, gradient: "from-violet-500 to-purple-500", icon: <IconMCP className="w-5 h-5 text-white" /> },
-            { label: "Skills", count: skills.length, gradient: "from-pink-500 to-rose-500", icon: <IconSkills className="w-5 h-5 text-white" /> },
-            { label: "Modelos", count: models.length, gradient: "from-cyan-500 to-blue-500", icon: <IconModel className="w-5 h-5 text-white" /> },
-          ].map((s) => (
-            <div key={s.label} className="relative p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden hover:shadow-xl hover:shadow-black/5 transition-shadow">
-              <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${s.gradient}`} />
-              <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-gradient-to-br from-violet-400/10 to-pink-400/5 blur-2xl" />
-              <div className="relative flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center shadow-md`}>
-                  {s.icon}
-                </div>
-                <div>
-                  <p className="text-2xl font-black text-[#1d1d1f] dark:text-white">{s.count}</p>
-                  <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-semibold uppercase tracking-wide">{s.label}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Tabs */}
-        <div className="flex gap-0.5 p-0.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8">
-          {([
-            { id: "mcps" as const, label: "MCPs", icon: <IconMCP className="w-3.5 h-3.5" /> },
-            { id: "skills" as const, label: "Skills", icon: <IconSkills className="w-3.5 h-3.5" /> },
-            { id: "models" as const, label: "Modelos", icon: <IconModel className="w-3.5 h-3.5" /> },
-          ]).map((t) => (
-            <button
-              key={t.id}
-              className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
-                tab === t.id
-                  ? "bg-gradient-to-r from-violet-500 to-pink-500 text-white shadow-md"
-                  : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
-              }`}
-              onClick={() => { setTab(t.id); setSearch(""); setCatFilter("all"); }}
-              type="button"
-            >
-              {t.icon}
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Actions bar */}
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1">
-            <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2]" />
-            <input
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20 transition-all"
-              placeholder="Buscar..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <button
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-pink-500 text-white text-xs font-semibold hover:shadow-lg hover:shadow-violet-500/20 transition-all"
-            onClick={openCreate}
-            type="button"
-          >
+    <div className="flex flex-col gap-6">
+      <AdminPageHeader
+        title="AI Hub"
+        description={`${mcps.length} MCPs · ${skills.length} Skills · ${models.length} Modelos`}
+        actions={
+          <button className="ds-btn-primary" type="button" onClick={openCreate}>
             <IconPlus className="w-3.5 h-3.5" />
             Añadir
           </button>
+        }
+      />
+
+      {/* Stats */}
+      <AdminStatGrid cols={3}>
+        <AdminStat label="MCPs" value={mcps.length} accent />
+        <AdminStat label="Skills" value={skills.length} />
+        <AdminStat label="Modelos" value={models.length} />
+      </AdminStatGrid>
+
+      {/* Tabs */}
+      <div className="admin-tabs">
+        {([
+          { id: "mcps" as const, label: "MCPs", icon: <IconMCP className="w-3.5 h-3.5" /> },
+          { id: "skills" as const, label: "Skills", icon: <IconSkills className="w-3.5 h-3.5" /> },
+          { id: "models" as const, label: "Modelos", icon: <IconModel className="w-3.5 h-3.5" /> },
+        ]).map((t) => (
+          <button
+            key={t.id}
+            className={`admin-tab ${tab === t.id ? "admin-tab-active" : ""}`}
+            type="button"
+            onClick={() => {
+              setTab(t.id);
+              setSearch("");
+              setCatFilter("all");
+            }}
+          >
+            {t.icon}
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Search */}
+      <div className="relative">
+        <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+        <input
+          className="ds-input pl-10"
+          placeholder="Buscar..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      {/* Category filter (skills tab only) */}
+      {tab === "skills" && (
+        <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+          {SKILL_CATEGORIES.map((c) => (
+            <AdminFilterChip
+              key={c.key}
+              active={catFilter === c.key}
+              onClick={() => setCatFilter(c.key)}
+            >
+              {CATEGORY_ICONS[c.key]}
+              {c.label}
+            </AdminFilterChip>
+          ))}
         </div>
+      )}
 
-        {/* Category filter (skills tab only) */}
-        {tab === "skills" && (
-          <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
-            {SKILL_CATEGORIES.map((c) => (
-              <button
-                key={c.key}
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold whitespace-nowrap transition-all ${
-                  catFilter === c.key
-                    ? "bg-violet-500 text-white"
-                    : "bg-black/5 dark:bg-white/8 text-[#6e6e73] dark:text-[#86868b]"
-                }`}
-                onClick={() => setCatFilter(c.key)}
-                type="button"
-              >
-                {CATEGORY_ICONS[c.key]}
-                {c.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Content */}
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-32 rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <>
-            {/* MCPs Tab */}
-            {tab === "mcps" && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {filteredMCPs.map((mcp) => (
-                  <div key={mcp.id} className="relative p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:shadow-xl hover:shadow-black/5 transition-all group">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-t-2xl opacity-60" />
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${MCP_TYPES.find((t) => t.value === mcp.type)?.color ?? ""}`}>
-                          {mcp.type.toUpperCase()}
-                        </span>
-                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${STATUS_COLORS[mcp.status] ?? ""}`}>
-                          {mcp.status}
-                        </span>
-                      </div>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(mcp)} type="button">
-                          <IconEdit />
-                        </button>
-                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => setDeletingId(deletingId === mcp.id ? null : mcp.id)} type="button">
-                          <IconTrash />
-                        </button>
-                        {deletingId === mcp.id && (
-                          <div className="flex items-center gap-1">
-                            <button className="px-2 py-1 rounded-lg bg-red-500 text-white text-[10px] font-semibold" onClick={() => handleDelete(mcp.id)} type="button">Sí</button>
-                            <button className="px-2 py-1 rounded-lg bg-black/5 dark:bg-white/8 text-[10px] text-[#6e6e73] dark:text-[#86868b]" onClick={() => setDeletingId(null)} type="button">No</button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">{mcp.name}</h3>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] line-clamp-2 mb-2">{mcp.description}</p>
-                    {mcp.details && <p className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366]">{mcp.details}</p>}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Skills Tab */}
-            {tab === "skills" && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {filteredSkills.map((skill) => (
-                  <div key={skill.id} className="relative p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:shadow-xl hover:shadow-black/5 transition-all group">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 to-rose-500 rounded-t-2xl opacity-60" />
-                    <div className="flex items-start justify-between mb-2">
-                      <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400">
-                        {CATEGORY_ICONS[skill.category]}
-                        {skill.category}
+      {/* Content */}
+      {loading ? (
+        <AdminLoadingSkeleton rows={4} />
+      ) : (
+        <>
+          {/* MCPs Tab */}
+          {tab === "mcps" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {filteredMCPs.map((mcp) => (
+                <AdminPanel key={mcp.id} compact>
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded admin-badge ${MCP_TYPES.find((t) => t.value === mcp.type) ? "admin-badge-info" : ""}`}>
+                        {mcp.type.toUpperCase()}
                       </span>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(skill)} type="button">
-                          <IconEdit />
-                        </button>
-                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => setDeletingId(deletingId === skill.id ? null : skill.id)} type="button">
-                          <IconTrash />
-                        </button>
-                        {deletingId === skill.id && (
-                          <div className="flex items-center gap-1">
-                            <button className="px-2 py-1 rounded-lg bg-red-500 text-white text-[10px] font-semibold" onClick={() => handleDelete(skill.id)} type="button">Sí</button>
-                            <button className="px-2 py-1 rounded-lg bg-black/5 dark:bg-white/8 text-[10px] text-[#6e6e73] dark:text-[#86868b]" onClick={() => setDeletingId(null)} type="button">No</button>
-                          </div>
-                        )}
-                      </div>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${STATUS_BADGE[mcp.status] ?? "admin-badge"}`}>
+                        {mcp.status}
+                      </span>
                     </div>
-                    <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">{skill.name}</h3>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] line-clamp-2 mb-2">{skill.description}</p>
-                    {skill.files.length > 0 && (
-                      <div className="flex flex-col gap-0.5">
-                        {skill.files.map((f, i) => (
-                          <div key={i} className="flex items-center gap-1.5 text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366]">
-                            <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shrink-0" />
-                            <span className="truncate">{f.path}</span>
-                            <span className="shrink-0 text-[9px] px-1 py-0.5 rounded bg-black/5 dark:bg-white/5">{SCOPE_LABELS[f.scope] ?? f.scope}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button className="ds-btn-icon" type="button" onClick={() => openEdit(mcp)}>
+                        <IconEdit />
+                      </button>
+                      <button className="ds-btn-icon ds-btn-danger" type="button" onClick={() => setDeletingId(deletingId === mcp.id ? null : mcp.id)}>
+                        <IconTrash />
+                      </button>
+                      {deletingId === mcp.id && (
+                        <div className="flex items-center gap-1">
+                          <button className="ds-btn-danger text-[10px] px-2 py-1" type="button" onClick={() => handleDelete(mcp.id)}>
+                            Sí
+                          </button>
+                          <button className="ds-btn-ghost text-[10px] px-2 py-1" type="button" onClick={() => setDeletingId(null)}>
+                            No
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                ))}
-              </div>
-            )}
+                  <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1">
+                    {mcp.name}
+                  </h3>
+                  <p className="text-xs text-[var(--text-secondary)] line-clamp-2 mb-2">
+                    {mcp.description}
+                  </p>
+                  {mcp.details && (
+                    <p className="text-[10px] font-mono text-[var(--text-muted)]">
+                      {mcp.details}
+                    </p>
+                  )}
+                </AdminPanel>
+              ))}
+            </div>
+          )}
 
-            {/* Models Tab */}
-            {tab === "models" && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {filteredModels.map((model) => (
-                  <div key={model.id} className="relative p-4 rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:shadow-xl hover:shadow-black/5 transition-all group">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-t-2xl opacity-60" />
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${PROVIDER_COLORS[model.provider] ?? "bg-gray-500/10 text-gray-600"}`}>
-                          {model.provider}
-                        </span>
-                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${STATUS_COLORS[model.status] ?? ""}`}>
-                          {model.status}
-                        </span>
-                        {model.is_default && (
-                          <span className="flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">
-                            <IconStar className="w-2.5 h-2.5" />
-                            Default
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="w-6 h-6 rounded-lg bg-black/5 dark:bg-white/8 flex items-center justify-center text-[#aeaeb2] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => openEdit(model)} type="button">
-                          <IconEdit />
-                        </button>
-                        <button className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-colors" onClick={() => setDeletingId(deletingId === model.id ? null : model.id)} type="button">
-                          <IconTrash />
-                        </button>
-                        {deletingId === model.id && (
-                          <div className="flex items-center gap-1">
-                            <button className="px-2 py-1 rounded-lg bg-red-500 text-white text-[10px] font-semibold" onClick={() => handleDelete(model.id)} type="button">Sí</button>
-                            <button className="px-2 py-1 rounded-lg bg-black/5 dark:bg-white/8 text-[10px] text-[#6e6e73] dark:text-[#86868b]" onClick={() => setDeletingId(null)} type="button">No</button>
-                          </div>
-                        )}
-                      </div>
+          {/* Skills Tab */}
+          {tab === "skills" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {filteredSkills.map((skill) => (
+                <AdminPanel key={skill.id} compact>
+                  <div className="flex items-start justify-between mb-2">
+                    <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full admin-badge admin-badge-info">
+                      {CATEGORY_ICONS[skill.category]}
+                      {skill.category}
+                    </span>
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button className="ds-btn-icon" type="button" onClick={() => openEdit(skill)}>
+                        <IconEdit />
+                      </button>
+                      <button className="ds-btn-icon ds-btn-danger" type="button" onClick={() => setDeletingId(deletingId === skill.id ? null : skill.id)}>
+                        <IconTrash />
+                      </button>
+                      {deletingId === skill.id && (
+                        <div className="flex items-center gap-1">
+                          <button className="ds-btn-danger text-[10px] px-2 py-1" type="button" onClick={() => handleDelete(skill.id)}>
+                            Sí
+                          </button>
+                          <button className="ds-btn-ghost text-[10px] px-2 py-1" type="button" onClick={() => setDeletingId(null)}>
+                            No
+                          </button>
+                        </div>
+                      )}
                     </div>
-                    <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-1">{model.name}</h3>
-                    {model.model_id && <p className="text-[10px] font-mono text-[#aeaeb2] dark:text-[#636366] mb-2">{model.model_id}</p>}
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {model.capabilities.map((cap) => (
-                        <span key={cap} className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/8 text-[#6e6e73] dark:text-[#86868b]">
-                          {cap}
-                        </span>
+                  </div>
+                  <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1">
+                    {skill.name}
+                  </h3>
+                  <p className="text-xs text-[var(--text-secondary)] line-clamp-2 mb-2">
+                    {skill.description}
+                  </p>
+                  {skill.files.length > 0 && (
+                    <div className="flex flex-col gap-0.5">
+                      {skill.files.map((f, i) => (
+                        <div key={i} className="flex items-center gap-1.5 text-[10px] font-mono text-[var(--text-muted)]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" />
+                          <span className="truncate">{f.path}</span>
+                          <span className="shrink-0 text-[9px] px-1 py-0.5 rounded bg-[var(--bg-hover)]">
+                            {SCOPE_LABELS[f.scope] ?? f.scope}
+                          </span>
+                        </div>
                       ))}
                     </div>
-                    <div className="flex items-center gap-3 text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-                      {model.context_window && <span>{(model.context_window / 1000).toFixed(0)}K ctx</span>}
-                      {model.pricing_input != null && <span>${model.pricing_input}/1M in</span>}
-                      {model.pricing_output != null && <span>${model.pricing_output}/1M out</span>}
+                  )}
+                </AdminPanel>
+              ))}
+            </div>
+          )}
+
+          {/* Models Tab */}
+          {tab === "models" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {filteredModels.map((model) => (
+                <AdminPanel key={model.id} compact>
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${PROVIDER_BADGE[model.provider] ?? "admin-badge"}`}>
+                        {model.provider}
+                      </span>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${STATUS_BADGE[model.status] ?? "admin-badge"}`}>
+                        {model.status}
+                      </span>
+                      {model.is_default && (
+                        <span className="flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded admin-badge admin-badge-warning">
+                          <IconStar className="w-2.5 h-2.5" />
+                          Default
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button className="ds-btn-icon" type="button" onClick={() => openEdit(model)}>
+                        <IconEdit />
+                      </button>
+                      <button className="ds-btn-icon ds-btn-danger" type="button" onClick={() => setDeletingId(deletingId === model.id ? null : model.id)}>
+                        <IconTrash />
+                      </button>
+                      {deletingId === model.id && (
+                        <div className="flex items-center gap-1">
+                          <button className="ds-btn-danger text-[10px] px-2 py-1" type="button" onClick={() => handleDelete(model.id)}>
+                            Sí
+                          </button>
+                          <button className="ds-btn-ghost text-[10px] px-2 py-1" type="button" onClick={() => setDeletingId(null)}>
+                            No
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+                  <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1">
+                    {model.name}
+                  </h3>
+                  {model.model_id && (
+                    <p className="text-[10px] font-mono text-[var(--text-muted)] mb-2">
+                      {model.model_id}
+                    </p>
+                  )}
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {model.capabilities.map((cap) => (
+                      <span key={cap} className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[var(--bg-hover)] text-[var(--text-secondary)]">
+                        {cap}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)]">
+                    {model.context_window && (
+                      <span>{(model.context_window / 1000).toFixed(0)}K ctx</span>
+                    )}
+                    {model.pricing_input != null && (
+                      <span>${model.pricing_input}/1M in</span>
+                    )}
+                    {model.pricing_output != null && (
+                      <span>${model.pricing_output}/1M out</span>
+                    )}
+                  </div>
+                </AdminPanel>
+              ))}
+            </div>
+          )}
+        </>
+      )}
 
-        {/* Empty state */}
-        {!loading && (
-          (tab === "mcps" && filteredMCPs.length === 0) ||
+      {/* Empty state */}
+      {!loading &&
+        ((tab === "mcps" && filteredMCPs.length === 0) ||
           (tab === "skills" && filteredSkills.length === 0) ||
-          (tab === "models" && filteredModels.length === 0)
-        ) && (
-          <div className="text-center py-12">
-            <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">No hay elementos</p>
-          </div>
+          (tab === "models" && filteredModels.length === 0)) && (
+          <AdminEmptyState title="No hay elementos" />
         )}
-      </div>
 
       {/* Form Modal */}
       {formOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg bg-white dark:bg-[#111116] rounded-2xl border border-black/8 dark:border-white/8 shadow-2xl max-h-[80vh] overflow-y-auto">
+          <div className="w-full max-w-lg bg-[var(--bg-card)] rounded-2xl border border-[var(--border-default)] shadow-2xl max-h-[80vh] overflow-y-auto">
             <div className="p-6 space-y-4">
-              <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white">
-                {editItem ? "Editar" : "Crear"} {tab === "mcps" ? "MCP" : tab === "skills" ? "Skill" : "Modelo"}
+              <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                {editItem ? "Editar" : "Crear"}{" "}
+                {tab === "mcps" ? "MCP" : tab === "skills" ? "Skill" : "Modelo"}
               </h3>
 
-              {/* MCP fields */}
               {tab === "mcps" && (
                 <>
                   <Field label="Nombre" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
                   <Field label="Descripción" value={form.description ?? ""} onChange={(v) => setForm({ ...form, description: v })} />
-                  <SelectField label="Tipo" value={form.type} options={MCP_TYPES.map((t) => ({ value: t.value, label: t.label }))} onChange={(v) => setForm({ ...form, type: v })} />
-                  <SelectField label="Estado" value={form.status} options={[{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }, { value: "error", label: "Error" }]} onChange={(v) => setForm({ ...form, status: v })} />
+                  <SelectField label="Tipo" options={MCP_TYPES.map((t) => ({ value: t.value, label: t.label }))} value={form.type} onChange={(v) => setForm({ ...form, type: v })} />
+                  <SelectField label="Estado" options={[{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }, { value: "error", label: "Error" }]} value={form.status} onChange={(v) => setForm({ ...form, status: v })} />
                   <Field label="Detalles" value={form.details ?? ""} onChange={(v) => setForm({ ...form, details: v })} />
                 </>
               )}
 
-              {/* Skill fields */}
               {tab === "skills" && (
                 <>
                   <Field label="Nombre" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
                   <Field label="Descripción" value={form.description ?? ""} onChange={(v) => setForm({ ...form, description: v })} />
-                  <SelectField label="Categoría" value={form.category} options={SKILL_CATEGORIES.filter((c) => c.key !== "all").map((c) => ({ value: c.key, label: c.label }))} onChange={(v) => setForm({ ...form, category: v })} />
+                  <SelectField label="Categoría" options={SKILL_CATEGORIES.filter((c) => c.key !== "all").map((c) => ({ value: c.key, label: c.label }))} value={form.category} onChange={(v) => setForm({ ...form, category: v })} />
                 </>
               )}
 
-              {/* Model fields */}
               {tab === "models" && (
                 <>
                   <Field label="Nombre" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
                   <Field label="Provider" value={form.provider} onChange={(v) => setForm({ ...form, provider: v })} />
                   <Field label="Model ID" value={form.model_id ?? ""} onChange={(v) => setForm({ ...form, model_id: v })} />
-                  <SelectField label="Tipo" value={form.type} options={[{ value: "cloud", label: "Cloud" }, { value: "local", label: "Local" }, { value: "hybrid", label: "Hybrid" }]} onChange={(v) => setForm({ ...form, type: v })} />
-                  <SelectField label="Estado" value={form.status} options={[{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }, { value: "deprecated", label: "Deprecated" }]} onChange={(v) => setForm({ ...form, status: v })} />
+                  <SelectField label="Tipo" options={[{ value: "cloud", label: "Cloud" }, { value: "local", label: "Local" }, { value: "hybrid", label: "Hybrid" }]} value={form.type} onChange={(v) => setForm({ ...form, type: v })} />
+                  <SelectField label="Estado" options={[{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }, { value: "deprecated", label: "Deprecated" }]} value={form.status} onChange={(v) => setForm({ ...form, status: v })} />
                   <Field label="Context Window" value={String(form.context_window ?? 0)} onChange={(v) => setForm({ ...form, context_window: parseInt(v) || 0 })} />
                   <Field label="Precio Input ($/1M)" value={String(form.pricing_input ?? 0)} onChange={(v) => setForm({ ...form, pricing_input: parseFloat(v) || 0 })} />
                   <Field label="Precio Output ($/1M)" value={String(form.pricing_output ?? 0)} onChange={(v) => setForm({ ...form, pricing_output: parseFloat(v) || 0 })} />
-                  <label className="flex items-center gap-2 text-sm text-[#1d1d1f] dark:text-white">
-                    <input type="checkbox" checked={form.is_default ?? false} onChange={(e) => setForm({ ...form, is_default: e.target.checked })} className="rounded" />
+                  <label className="flex items-center gap-2 text-sm text-[var(--text-primary)]">
+                    <input checked={form.is_default ?? false} className="rounded" type="checkbox" onChange={(e) => setForm({ ...form, is_default: e.target.checked })} />
                     Modelo por defecto
                   </label>
                 </>
@@ -616,16 +632,14 @@ export function AdminAIHubSection() {
             </div>
 
             <div className="px-6 pb-5 flex items-center justify-between">
-              <button className="px-4 py-2 rounded-xl text-sm font-medium text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors" onClick={() => setFormOpen(false)} type="button">
+              <button className="ds-btn-ghost" type="button" onClick={() => setFormOpen(false)}>
                 Cancelar
               </button>
               <button
-                className={`px-5 py-2 rounded-xl text-sm font-medium text-white transition-all ${
-                  saving ? "bg-gray-400 cursor-not-allowed" : "bg-gradient-to-r from-violet-500 to-pink-500 hover:shadow-lg hover:shadow-violet-500/20"
-                }`}
-                onClick={handleSave}
+                className={saving || !form.name ? "ds-btn-secondary opacity-50 cursor-not-allowed" : "ds-btn-primary"}
                 disabled={saving || !form.name}
                 type="button"
+                onClick={handleSave}
               >
                 {saving ? "..." : editItem ? "Guardar" : "Crear"}
               </button>
@@ -639,30 +653,46 @@ export function AdminAIHubSection() {
 
 // ── Form helpers ─────────────────────────────────────────────────────────────
 
-function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function Field({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] mb-1">{label}</label>
-      <input
-        className="w-full px-3 py-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-sm text-[#1d1d1f] dark:text-white focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400/20 transition-all"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+      <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
+        {label}
+      </label>
+      <input className="ds-input" value={value} onChange={(e) => onChange(e.target.value)} />
     </div>
   );
 }
 
-function SelectField({ label, value, options, onChange }: { label: string; value: string; options: { value: string; label: string }[]; onChange: (v: string) => void }) {
+function SelectField({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (v: string) => void;
+}) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-[#6e6e73] dark:text-[#86868b] mb-1">{label}</label>
-      <select
-        className="w-full px-3 py-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-sm text-[#1d1d1f] dark:text-white focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400/20 transition-all"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
+      <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
+        {label}
+      </label>
+      <select className="ds-input" value={value} onChange={(e) => onChange(e.target.value)}>
         {options.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
         ))}
       </select>
     </div>

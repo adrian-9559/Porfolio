@@ -58,10 +58,10 @@ export default function TerraformIacContent() {
       </h1>
 
       <p className="text-base text-[#6e6e73] dark:text-[#86868b] mb-8">
-        Terraform permite definir, versionar y ejecutar infraestructura
-        completa mediante archivos declarativos. Aprende a convertir servidores,
-        redes y servicios en código que se puede revisar, probar y ejecutar de
-        forma repetible.
+        Terraform permite definir, versionar y ejecutar infraestructura completa
+        mediante archivos declarativos. Aprende a convertir servidores, redes y
+        servicios en código que se puede revisar, probar y ejecutar de forma
+        repetible.
       </p>
 
       <hr className="border-black/8 dark:border-white/8 mb-8" />
@@ -96,9 +96,8 @@ export default function TerraformIacContent() {
         mismo entorno en desarrollo, staging y producción.{" "}
         <strong>Versionado</strong> — cada cambio queda registrado en Git con un
         diff legible. <strong>Auditabilidad</strong> — puedes revisar quién
-        cambió qué y cuándo.{" "}
-        <strong>Colaboración</strong> — el equipo trabaja sobre los mismos
-        archivos en vez de sobre conocimiento tácito.
+        cambió qué y cuándo. <strong>Colaboración</strong> — el equipo trabaja
+        sobre los mismos archivos en vez de sobre conocimiento tácito.
       </BlogP>
 
       <BlogCallout type="info">
@@ -203,7 +202,8 @@ terraform destroy`}</BlogCode>
       <BlogP>
         Terraform guarda el estado actual de la infraestructura en un archivo{" "}
         <BlogInlineCode>terraform.tfstate</BlogInlineCode>. Este archivo mapea
-        los recursos definidos en código con los recursos reales en el proveedor.
+        los recursos definidos en código con los recursos reales en el
+        proveedor.
         <strong>Nunca lo edites a mano</strong> — usa{" "}
         <BlogInlineCode>terraform state</BlogInlineCode> para manipularlo.
       </BlogP>
@@ -267,8 +267,8 @@ resource "docker_container" "web" {
 
       <BlogP>
         Los <strong>data sources</strong> permiten consultar información de
-        recursos que ya existen sin gestionarlos. Útiles para obtener AMIs
-       最新, IPs de VPCs existentes o IDs de subnets.
+        recursos que ya existen sin gestionarlos. Útiles para obtener AMIs 最新,
+        IPs de VPCs existentes o IDs de subnets.
       </BlogP>
 
       <BlogCode>{`data "aws_ami" "ubuntu" {
@@ -338,8 +338,8 @@ environment_vars = {
 
       <BlogP>
         Los <strong>outputs</strong> exponen información útil tras el{" "}
-        <BlogInlineCode>apply</BlogInlineCode>: IPs públicas, IDs de
-        recursos, URLs de endpoints. Marca valores sensibles con{" "}
+        <BlogInlineCode>apply</BlogInlineCode>: IPs públicas, IDs de recursos,
+        URLs de endpoints. Marca valores sensibles con{" "}
         <BlogInlineCode>sensitive = true</BlogInlineCode> para que no se
         muestren en la CLI.
       </BlogP>
@@ -403,8 +403,8 @@ resource "aws_security_group" "web" {
 
       <BlogP>
         Un <strong>módulo</strong> es un paquete de configuración Terraform que
-        agrupa recursos relacionados y expone inputs (variables) y outputs.
-        Los módulos promueven la reutilización, el testing y la separación de
+        agrupa recursos relacionados y expone inputs (variables) y outputs. Los
+        módulos promueven la reutilización, el testing y la separación de
         responsabilidades.
       </BlogP>
 
@@ -422,8 +422,8 @@ resource "aws_security_group" "web" {
       <BlogP>
         Terraform tiene un registry público en{" "}
         <BlogInlineCode>registry.terraform.io</BlogInlineCode> con módulos
-        oficiales para AWS, GCP, Azure y terceros. Usa módulos verificados
-        para infraestructura de producción.
+        oficiales para AWS, GCP, Azure y terceros. Usa módulos verificados para
+        infraestructura de producción.
       </BlogP>
 
       <BlogCode>{`# Usar un módulo del registry
@@ -505,9 +505,11 @@ output "urls" {
       <BlogCallout type="info">
         Los módulos locales se referencian con{" "}
         <BlogInlineCode>source = "./ruta"</BlogInlineCode>. Los del registry
-        usan <BlogInlineCode>source = "organizacion/modulo-provider"</BlogInlineCode>.
-        Siempre fija la versión con <BlogInlineCode>version = "~&gt; X.Y"</BlogInlineCode>{" "}
-        para evitar breaking changes.
+        usan{" "}
+        <BlogInlineCode>source = "organizacion/modulo-provider"</BlogInlineCode>
+        . Siempre fija la versión con{" "}
+        <BlogInlineCode>version = "~&gt; X.Y"</BlogInlineCode> para evitar
+        breaking changes.
       </BlogCallout>
 
       <BlogH2 id="buenas-practicas">Buenas prácticas y CI/CD para IaC</BlogH2>
@@ -516,8 +518,8 @@ output "urls" {
 
       <BlogP>
         En producción nunca uses el state file local. Configura un{" "}
-        <strong>backend remoto</strong> como S3 con bloqueo DynamoDB para
-        evitar que dos personas ejecuten <BlogInlineCode>apply</BlogInlineCode>{" "}
+        <strong>backend remoto</strong> como S3 con bloqueo DynamoDB para evitar
+        que dos personas ejecuten <BlogInlineCode>apply</BlogInlineCode>{" "}
         simultáneamente.
       </BlogP>
 
@@ -594,8 +596,7 @@ tfsec . --format json --out tfsec-report.json`}</BlogCode>
         El flujo estándar: PR ejecuta{" "}
         <BlogInlineCode>terraform plan</BlogInlineCode> y comenta el resultado.
         Tras el merge a main, ejecuta{" "}
-        <BlogInlineCode>terraform apply</BlogInlineCode> con aprobación
-        manual.
+        <BlogInlineCode>terraform apply</BlogInlineCode> con aprobación manual.
       </BlogP>
 
       <BlogCode>{`# .github/workflows/terraform.yml
@@ -670,15 +671,16 @@ jobs:
 
       <BlogCallout type="danger">
         Nunca hagas <BlogInlineCode>terraform apply</BlogInlineCode> sin{" "}
-        <BlogInlineCode>terraform plan</BlogInlineCode> primero en
-        producción. El plan es tu seguro: muestra exactamente qué se va a crear,
-        modificar o destruir antes de tocar infraestructura real.
+        <BlogInlineCode>terraform plan</BlogInlineCode> primero en producción.
+        El plan es tu seguro: muestra exactamente qué se va a crear, modificar o
+        destruir antes de tocar infraestructura real.
       </BlogCallout>
 
       <BlogCallout type="info">
         Usa <strong>aprobación manual</strong> en GitHub Actions para el apply
-        en producción. Configura <BlogInlineCode>environment: production</BlogInlineCode>{" "}
-        en el job para que requiera aprobación de un maintainer antes de ejecutar.
+        en producción. Configura{" "}
+        <BlogInlineCode>environment: production</BlogInlineCode> en el job para
+        que requiera aprobación de un maintainer antes de ejecutar.
       </BlogCallout>
 
       <hr className="border-black/8 dark:border-white/8 my-8" />
@@ -688,8 +690,8 @@ jobs:
         definir declarativamente, planificar cambios, ejecutar de forma
         repetible y gestionar estado remoto. El siguiente paso natural es
         integrar módulos con CI/CD, agregar testing con{" "}
-        <BlogInlineCode>terratest</BlogInlineCode> y explorar herramientas
-        como OpenTofu como alternativa open-source.
+        <BlogInlineCode>terratest</BlogInlineCode> y explorar herramientas como
+        OpenTofu como alternativa open-source.
       </BlogP>
     </article>
   );

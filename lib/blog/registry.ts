@@ -420,7 +420,8 @@ export const allContent: ContentMeta[] = [
     slug: "markdown-preview",
     type: "tool",
     title: "Markdown Preview",
-    description: "Editor markdown split-pane con preview en vivo. Escribe en el lado izquierdo y ve el resultado renderizado en el derecho.",
+    description:
+      "Editor markdown split-pane con preview en vivo. Escribe en el lado izquierdo y ve el resultado renderizado en el derecho.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-indigo-500",
@@ -438,7 +439,8 @@ export const allContent: ContentMeta[] = [
     slug: "jwt-decoder",
     type: "tool",
     title: "JWT Decoder",
-    description: "Decodifica tokens JWT instantáneamente. Visualiza header, payload y firma con expiration warnings.",
+    description:
+      "Decodifica tokens JWT instantáneamente. Visualiza header, payload y firma con expiration warnings.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-cyan-500",
@@ -456,7 +458,8 @@ export const allContent: ContentMeta[] = [
     slug: "url-encoder-decoder",
     type: "tool",
     title: "URL Encoder/Decoder",
-    description: "Codifica y decodifica URLs, query params y componentes. Auto-detección de input codificado.",
+    description:
+      "Codifica y decodifica URLs, query params y componentes. Auto-detección de input codificado.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-cyan-500",
@@ -474,7 +477,8 @@ export const allContent: ContentMeta[] = [
     slug: "cron-builder",
     type: "tool",
     title: "Cron Builder",
-    description: "Construye expresiones cron visualmente con presets comunes y preview de próximas ejecuciones.",
+    description:
+      "Construye expresiones cron visualmente con presets comunes y preview de próximas ejecuciones.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-amber-500",
@@ -492,7 +496,8 @@ export const allContent: ContentMeta[] = [
     slug: "hash-generator",
     type: "tool",
     title: "Hash Generator",
-    description: "Genera hashes MD5, SHA-1, SHA-256 y SHA-512 de texto en tiempo real usando Web Crypto API.",
+    description:
+      "Genera hashes MD5, SHA-1, SHA-256 y SHA-512 de texto en tiempo real usando Web Crypto API.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-amber-500",
@@ -510,7 +515,8 @@ export const allContent: ContentMeta[] = [
     slug: "json-to-ts",
     type: "tool",
     title: "JSON → TypeScript",
-    description: "Convierte JSON a interfaces o types de TypeScript en tiempo real. Soporta objetos anidados, arrays y nulls.",
+    description:
+      "Convierte JSON a interfaces o types de TypeScript en tiempo real. Soporta objetos anidados, arrays y nulls.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-cyan-500",
@@ -528,7 +534,8 @@ export const allContent: ContentMeta[] = [
     slug: "html-entity",
     type: "tool",
     title: "HTML Entity Encoder",
-    description: "Codifica y decodifica entidades HTML. Convierte caracteres especiales a sus entidades y viceversa.",
+    description:
+      "Codifica y decodifica entidades HTML. Convierte caracteres especiales a sus entidades y viceversa.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-indigo-500",
@@ -546,7 +553,8 @@ export const allContent: ContentMeta[] = [
     slug: "lorem-ipsum",
     type: "tool",
     title: "Lorem Ipsum Generator",
-    description: "Genera texto placeholder personalizable con opción de tags HTML. Perfecto para maquetación y diseño.",
+    description:
+      "Genera texto placeholder personalizable con opción de tags HTML. Perfecto para maquetación y diseño.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-amber-500",
@@ -564,7 +572,8 @@ export const allContent: ContentMeta[] = [
     slug: "regex-visualizer",
     type: "tool",
     title: "Regex Visualizer",
-    description: "Visualiza la estructura de expresiones regulares como diagrama de tokens. Test con highlights en tiempo real.",
+    description:
+      "Visualiza la estructura de expresiones regulares como diagrama de tokens. Test con highlights en tiempo real.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-indigo-500",
@@ -582,7 +591,8 @@ export const allContent: ContentMeta[] = [
     slug: "barcode-generator",
     type: "tool",
     title: "Barcode Generator",
-    description: "Genera códigos de barras (Code128, Code39, EAN-13) como SVG/PNG descargables.",
+    description:
+      "Genera códigos de barras (Code128, Code39, EAN-13) como SVG/PNG descargables.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-amber-500",
@@ -600,7 +610,8 @@ export const allContent: ContentMeta[] = [
     slug: "css-gradient",
     type: "tool",
     title: "CSS Gradient Builder",
-    description: "Constructor visual de gradientes CSS lineales y radiales con preview en vivo y código copiable.",
+    description:
+      "Constructor visual de gradientes CSS lineales y radiales con preview en vivo y código copiable.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-fuchsia-500",
@@ -618,7 +629,8 @@ export const allContent: ContentMeta[] = [
     slug: "image-to-base64",
     type: "tool",
     title: "Image → Base64",
-    description: "Convierte imágenes a Base64 y viceversa. Soporta JPG, PNG, GIF, SVG y WebP con preview.",
+    description:
+      "Convierte imágenes a Base64 y viceversa. Soporta JPG, PNG, GIF, SVG y WebP con preview.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-red-500",
@@ -636,7 +648,8 @@ export const allContent: ContentMeta[] = [
     slug: "mock-data",
     type: "tool",
     title: "Mock Data Generator",
-    description: "Genera datos falsos realistas: personas, comercio, números, texto y fechas. Exporta como JSON.",
+    description:
+      "Genera datos falsos realistas: personas, comercio, números, texto y fechas. Exporta como JSON.",
     categoryId: "dev-tools",
     category: "Dev Tools",
     categoryColor: "bg-amber-500",
@@ -655,7 +668,8 @@ export const allContent: ContentMeta[] = [
     slug: "unit-converter",
     type: "tool",
     title: "Conversor de unidades",
-    description: "Convierte entre unidades de medida: longitud, peso, temperatura, volumen y más.",
+    description:
+      "Convierte entre unidades de medida: longitud, peso, temperatura, volumen y más.",
     categoryId: "utilidades",
     category: "Utilidades",
     categoryColor: "bg-teal-500",
@@ -673,7 +687,8 @@ export const allContent: ContentMeta[] = [
     slug: "tip-calculator",
     type: "tool",
     title: "Calculadora de propinas",
-    description: "Calcula propinas y divide la cuenta entre comensales rápidamente.",
+    description:
+      "Calcula propinas y divide la cuenta entre comensales rápidamente.",
     categoryId: "utilidades",
     category: "Utilidades",
     categoryColor: "bg-teal-500",
@@ -691,7 +706,8 @@ export const allContent: ContentMeta[] = [
     slug: "countdown-timer",
     type: "tool",
     title: "Temporizador",
-    description: "Cuenta atrás con alarma sonora. Útil para cocinar, estudiar o deporte.",
+    description:
+      "Cuenta atrás con alarma sonora. Útil para cocinar, estudiar o deporte.",
     categoryId: "utilidades",
     category: "Utilidades",
     categoryColor: "bg-teal-500",
@@ -709,7 +725,8 @@ export const allContent: ContentMeta[] = [
     slug: "pomodoro-timer",
     type: "tool",
     title: "Pomodoro Timer",
-    description: "Timer Pomodoro con sesiones de 25 min y descansos. Mejora tu productividad.",
+    description:
+      "Timer Pomodoro con sesiones de 25 min y descansos. Mejora tu productividad.",
     categoryId: "utilidades",
     category: "Utilidades",
     categoryColor: "bg-teal-500",
@@ -727,7 +744,8 @@ export const allContent: ContentMeta[] = [
     slug: "bmi-calculator",
     type: "tool",
     title: "Calculadora de IMC",
-    description: "Calcula tu Índice de Masa Corporal y obtén interpretación del resultado.",
+    description:
+      "Calcula tu Índice de Masa Corporal y obtén interpretación del resultado.",
     categoryId: "utilidades",
     category: "Utilidades",
     categoryColor: "bg-teal-500",
@@ -745,7 +763,8 @@ export const allContent: ContentMeta[] = [
     slug: "world-clock",
     type: "tool",
     title: "Relojes mundiales",
-    description: "Visualiza la hora actual en múltiples zonas horarias del mundo.",
+    description:
+      "Visualiza la hora actual en múltiples zonas horarias del mundo.",
     categoryId: "utilidades",
     category: "Utilidades",
     categoryColor: "bg-teal-500",
@@ -763,7 +782,8 @@ export const allContent: ContentMeta[] = [
     slug: "issue-tracker",
     type: "tool",
     title: "Gestor de Incidencias",
-    description: "Tablero Kanban para gestionar incidencias y tareas con estados personalizados.",
+    description:
+      "Tablero Kanban para gestionar incidencias y tareas con estados personalizados.",
     categoryId: "utilidades",
     category: "Utilidades",
     categoryColor: "bg-teal-500",
@@ -781,7 +801,8 @@ export const allContent: ContentMeta[] = [
     slug: "json-yaml",
     type: "tool",
     title: "JSON ↔ YAML",
-    description: "Convierte entre JSON y YAML en tiempo real. Formateo y validación automática.",
+    description:
+      "Convierte entre JSON y YAML en tiempo real. Formateo y validación automática.",
     categoryId: "datos",
     category: "Datos",
     categoryColor: "bg-cyan-500",
@@ -799,7 +820,8 @@ export const allContent: ContentMeta[] = [
     slug: "json-csv",
     type: "tool",
     title: "JSON ↔ CSV",
-    description: "Convierte datos JSON a CSV y viceversa. Ideal para spreadsheets y APIs.",
+    description:
+      "Convierte datos JSON a CSV y viceversa. Ideal para spreadsheets y APIs.",
     categoryId: "datos",
     category: "Datos",
     categoryColor: "bg-cyan-500",
@@ -817,7 +839,8 @@ export const allContent: ContentMeta[] = [
     slug: "code-minifier",
     type: "tool",
     title: "Minificador de código",
-    description: "Minifica HTML, CSS y JavaScript eliminando espacios y comentarios innecesarios.",
+    description:
+      "Minifica HTML, CSS y JavaScript eliminando espacios y comentarios innecesarios.",
     categoryId: "texto",
     category: "Texto",
     categoryColor: "bg-indigo-500",
@@ -835,7 +858,8 @@ export const allContent: ContentMeta[] = [
     slug: "regex-cheatsheet",
     type: "tool",
     title: "Referencia de Regex",
-    description: "Cheatsheet interactivo de expresiones regulares con ejemplos en tiempo real.",
+    description:
+      "Cheatsheet interactivo de expresiones regulares con ejemplos en tiempo real.",
     categoryId: "texto",
     category: "Texto",
     categoryColor: "bg-indigo-500",
@@ -853,7 +877,8 @@ export const allContent: ContentMeta[] = [
     slug: "markdown-html",
     type: "tool",
     title: "Markdown → HTML",
-    description: "Convierte Markdown a HTML renderizado. Preview en vivo y código copiable.",
+    description:
+      "Convierte Markdown a HTML renderizado. Preview en vivo y código copiable.",
     categoryId: "texto",
     category: "Texto",
     categoryColor: "bg-indigo-500",
@@ -871,7 +896,8 @@ export const allContent: ContentMeta[] = [
     slug: "text-counter",
     type: "tool",
     title: "Contador de texto",
-    description: "Cuenta caracteres, palabras, líneas y párrafos de cualquier texto.",
+    description:
+      "Cuenta caracteres, palabras, líneas y párrafos de cualquier texto.",
     categoryId: "texto",
     category: "Texto",
     categoryColor: "bg-indigo-500",
@@ -889,7 +915,8 @@ export const allContent: ContentMeta[] = [
     slug: "box-shadow",
     type: "tool",
     title: "Generador de Box Shadow",
-    description: "Genera sombras CSS con preview en vivo. Configura offset, blur, spread y color.",
+    description:
+      "Genera sombras CSS con preview en vivo. Configura offset, blur, spread y color.",
     categoryId: "colores",
     category: "Colores",
     categoryColor: "bg-fuchsia-500",
@@ -907,7 +934,8 @@ export const allContent: ContentMeta[] = [
     slug: "contrast-checker",
     type: "tool",
     title: "Verificador de contraste",
-    description: "Verifica el contraste de colores según WCAG 2.1 para accesibilidad.",
+    description:
+      "Verifica el contraste de colores según WCAG 2.1 para accesibilidad.",
     categoryId: "colores",
     category: "Colores",
     categoryColor: "bg-fuchsia-500",
@@ -925,7 +953,8 @@ export const allContent: ContentMeta[] = [
     slug: "image-compressor",
     type: "tool",
     title: "Compresor de imágenes",
-    description: "Comprime imágenes JPG, PNG y WebP directamente en el navegador.",
+    description:
+      "Comprime imágenes JPG, PNG y WebP directamente en el navegador.",
     categoryId: "documentos",
     category: "Documentos",
     categoryColor: "bg-red-500",
@@ -943,7 +972,8 @@ export const allContent: ContentMeta[] = [
     slug: "favicon-generator",
     type: "tool",
     title: "Generador de Favicon",
-    description: "Genera favicons en múltiples tamaños a partir de una imagen o texto.",
+    description:
+      "Genera favicons en múltiples tamaños a partir de una imagen o texto.",
     categoryId: "documentos",
     category: "Documentos",
     categoryColor: "bg-red-500",
@@ -961,7 +991,8 @@ export const allContent: ContentMeta[] = [
     slug: "og-image-generator",
     type: "tool",
     title: "Generador de OG Image",
-    description: "Crea imágenes Open Graph personalizadas para compartir en redes sociales.",
+    description:
+      "Crea imágenes Open Graph personalizadas para compartir en redes sociales.",
     categoryId: "documentos",
     category: "Documentos",
     categoryColor: "bg-red-500",
@@ -979,7 +1010,8 @@ export const allContent: ContentMeta[] = [
     slug: "password-analyzer",
     type: "tool",
     title: "Analizador de contraseñas",
-    description: "Analiza la fortaleza de contraseñas y estima el tiempo para descifrarlas.",
+    description:
+      "Analiza la fortaleza de contraseñas y estima el tiempo para descifrarlas.",
     categoryId: "generadores",
     category: "Generadores",
     categoryColor: "bg-amber-500",
@@ -997,7 +1029,8 @@ export const allContent: ContentMeta[] = [
     slug: "wifi-qr",
     type: "tool",
     title: "WiFi QR Generator",
-    description: "Genera un código QR con los datos de tu WiFi para conectarse automáticamente.",
+    description:
+      "Genera un código QR con los datos de tu WiFi para conectarse automáticamente.",
     categoryId: "generadores",
     category: "Generadores",
     categoryColor: "bg-amber-500",
@@ -3276,7 +3309,15 @@ export const allGuides: GuideMeta[] = [
     estimatedMinutes: 0,
     publishedAt: "2026-08-01",
     featured: true,
-    tags: ["DevOps", "Docker", "CI/CD", "Kubernetes", "Monitoring", "Terraform", "Guía"],
+    tags: [
+      "DevOps",
+      "Docker",
+      "CI/CD",
+      "Kubernetes",
+      "Monitoring",
+      "Terraform",
+      "Guía",
+    ],
     curriculum: [
       { slug: "git" },
       { slug: "docker" },

@@ -38,8 +38,18 @@ export default function CookieConsent() {
             <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-violet-400/10 to-pink-400/5 blur-3xl" />
             <div className="relative flex items-center gap-3 mb-2">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center shadow-lg shadow-violet-500/20">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <svg
+                  className="w-4 h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
                 </svg>
               </div>
               <div>
@@ -73,17 +83,17 @@ export default function CookieConsent() {
             {/* Analytics */}
             <ToggleRow
               checked={analytics}
-              onChange={setAnalytics}
-              label={t("cookie.analytics")}
               description={t("cookie.analyticsDesc")}
+              label={t("cookie.analytics")}
+              onChange={setAnalytics}
             />
 
             {/* Preferences */}
             <ToggleRow
               checked={preferences}
-              onChange={setPreferences}
-              label={t("cookie.preferences")}
               description={t("cookie.preferencesDesc")}
+              label={t("cookie.preferences")}
+              onChange={setPreferences}
             />
           </div>
 
@@ -91,22 +101,22 @@ export default function CookieConsent() {
           <div className="px-5 pb-4 flex gap-2">
             <button
               className="flex-1 px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 text-xs font-medium text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              onClick={handleRejectAll}
               type="button"
+              onClick={handleRejectAll}
             >
               {t("cookie.rejectAll")}
             </button>
             <button
               className="flex-1 px-3 py-2 rounded-xl border border-black/12 dark:border-white/12 text-xs font-medium text-[#6e6e73] dark:text-[#86868b] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              onClick={handleSave}
               type="button"
+              onClick={handleSave}
             >
               {t("cookie.save")}
             </button>
             <button
               className="flex-1 px-3 py-2 rounded-xl bg-gradient-to-r from-violet-500 to-pink-500 text-white text-xs font-semibold shadow-md shadow-violet-500/20 hover:shadow-lg hover:shadow-violet-500/30 transition-all duration-300"
-              onClick={handleAcceptAll}
               type="button"
+              onClick={handleAcceptAll}
             >
               {t("cookie.acceptAll")}
             </button>
@@ -141,15 +151,15 @@ function ToggleRow({
         </p>
       </div>
       <button
+        aria-checked={checked}
         className={`relative w-9 h-[20px] rounded-full transition-colors duration-200 flex-shrink-0 ${
           checked
             ? "bg-gradient-to-r from-violet-500 to-pink-500"
             : "bg-black/15 dark:bg-white/15"
         }`}
-        onClick={() => onChange(!checked)}
-        type="button"
         role="switch"
-        aria-checked={checked}
+        type="button"
+        onClick={() => onChange(!checked)}
       >
         <span
           className={`absolute top-[2px] left-[2px] w-[16px] h-[16px] rounded-full bg-white shadow-sm transition-transform duration-200 ${

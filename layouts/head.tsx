@@ -65,7 +65,7 @@ function resolvePageMetaKeys(pathname: string): MetaKeys {
       titleKey: "meta.blogTools.title",
       descKey: "meta.blogTools.desc",
     },
-    "/campus/guias": {
+    "/campus/cursos": {
       titleKey: "meta.campusGuides.title",
       descKey: "meta.campusGuides.desc",
     },
@@ -79,7 +79,7 @@ function resolvePageMetaKeys(pathname: string): MetaKeys {
       descKey: "meta.blogArticleSlug.desc",
       params: { description: siteConfig.description },
     };
-  if (p.startsWith("/campus/guias/"))
+  if (p.startsWith("/campus/cursos/"))
     return {
       titleKey: "meta.campusGuideSlug.title",
       descKey: "meta.campusGuideSlug.desc",

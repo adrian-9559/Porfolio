@@ -17,6 +17,7 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
 import { useT } from "@/hooks/useT";
 
 const WORKER = "/pdf.worker.min.mjs";
@@ -87,8 +88,8 @@ function SortableMergeItem({
   return (
     <div
       ref={setNodeRef}
-      style={style}
       className="flex items-center gap-2 text-xs text-[#6e6e73] dark:text-[#86868b]"
+      style={style}
     >
       <button
         className="cursor-grab active:cursor-grabbing text-[#aeaeb2] dark:text-[#636366] hover:text-[#6e6e73] dark:hover:text-[#86868b] select-none touch-none"
@@ -180,68 +181,70 @@ export default function PdfEditorContent() {
     return () => window.removeEventListener("keydown", handler);
   }, [selAnn, editPageIdx]);
 
-  const load = useCallback(async (bytes: ArrayBuffer) => {
-    setLoading(true);
-    setError("");
-    try {
-      const doc = await PDFDocument.load(bytes, {
-        ignoreEncryption: true,
-        updateMetadata: false,
-      });
-      const n = doc.getPageCount();
+  const load = useCallback(
+    async (bytes: ArrayBuffer) => {
+      setLoading(true);
+      setError("");
+      try {
+        const doc = await PDFDocument.load(bytes, {
+          ignoreEncryption: true,
+          updateMetadata: false,
+        });
+        const n = doc.getPageCount();
 
-      setOriginalBytes(bytes);
-      setPages(
-        Array.from({ length: n }, (_, i) => ({ index: i, rotation: 0 })),
-      );
-      setAnnotations(Array.from({ length: n }, () => []));
-      setEditPageIdx(null);
+        setOriginalBytes(bytes);
+        setPages(
+          Array.from({ length: n }, (_, i) => ({ index: i, rotation: 0 })),
+        );
+        setAnnotations(Array.from({ length: n }, () => []));
+        setEditPageIdx(null);
 
-      const loadingTask = pdfjs.getDocument({ data: bytes.slice(0) });
-      const pdf = await loadingTask.promise;
-      const urls: string[] = [];
-      const editUrls: string[] = [];
-      const sizes: { w: number; h: number }[] = [];
+        const loadingTask = pdfjs.getDocument({ data: bytes.slice(0) });
+        const pdf = await loadingTask.promise;
+        const urls: string[] = [];
+        const editUrls: string[] = [];
+        const sizes: { w: number; h: number }[] = [];
 
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const vp = page.getViewport({ scale: PREVIEW_SCALE });
-        const canvas = document.createElement("canvas");
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const vp = page.getViewport({ scale: PREVIEW_SCALE });
+          const canvas = document.createElement("canvas");
 
-        canvas.width = vp.width;
-        canvas.height = vp.height;
-        await page.render({ canvas, viewport: vp }).promise;
-        urls.push(canvas.toDataURL());
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          await page.render({ canvas, viewport: vp }).promise;
+          urls.push(canvas.toDataURL());
 
-        const evp = page.getViewport({ scale: EDIT_SCALE });
-        const ec = document.createElement("canvas");
+          const evp = page.getViewport({ scale: EDIT_SCALE });
+          const ec = document.createElement("canvas");
 
-        ec.width = evp.width;
-        ec.height = evp.height;
-        await page.render({ canvas: ec, viewport: evp }).promise;
-        editUrls.push(ec.toDataURL());
+          ec.width = evp.width;
+          ec.height = evp.height;
+          await page.render({ canvas: ec, viewport: evp }).promise;
+          editUrls.push(ec.toDataURL());
 
-        const orig = page.getViewport({ scale: 1 });
+          const orig = page.getViewport({ scale: 1 });
 
-        sizes.push({ w: orig.width, h: orig.height });
+          sizes.push({ w: orig.width, h: orig.height });
+        }
+        setPreviews(urls);
+        setEditPreviews(editUrls);
+        setPdfPageSizes(sizes);
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : String(e);
+
+        console.error("PDF load error:", e);
+        setError(`${t("blog.pdfEditor.loadError")}\n${msg}`);
+      } finally {
+        setLoading(false);
       }
-      setPreviews(urls);
-      setEditPreviews(editUrls);
-      setPdfPageSizes(sizes);
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : String(e);
-
-      console.error("PDF load error:", e);
-      setError(`${t("blog.pdfEditor.loadError")}\n${msg}`);
-    } finally {
-      setLoading(false);
-    }
-  }, [t]);
+    },
+    [t],
+  );
 
   const handleFile = (f: File) => {
     const isPdf =
-      f.type === "application/pdf" ||
-      f.name.toLowerCase().endsWith(".pdf");
+      f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf");
 
     if (!isPdf) {
       setError(t("blog.pdfEditor.onlyPdf"));
@@ -327,8 +330,12 @@ export default function PdfEditorContent() {
     const { active, over } = e;
 
     if (!over || active.id === over.id) return;
-    const oldIdx = mergeFiles.findIndex((_, i) => String(i) === String(active.id));
-    const newIdx = mergeFiles.findIndex((_, i) => String(i) === String(over.id));
+    const oldIdx = mergeFiles.findIndex(
+      (_, i) => String(i) === String(active.id),
+    );
+    const newIdx = mergeFiles.findIndex(
+      (_, i) => String(i) === String(over.id),
+    );
 
     if (oldIdx !== -1 && newIdx !== -1) {
       setMergeFiles((prev) => arrayMove(prev, oldIdx, newIdx));
@@ -373,14 +380,14 @@ export default function PdfEditorContent() {
     setLoading(true);
     setError("");
     try {
-      const source = await PDFDocument.load(originalBytes.slice(0), { ignoreEncryption: true });
+      const source = await PDFDocument.load(originalBytes.slice(0), {
+        ignoreEncryption: true,
+      });
       const out = await PDFDocument.create();
       const hasTextAnns = annotations.some((pageAnns) =>
         pageAnns.some((a) => a.type === "text"),
       );
-      const helv = hasTextAnns
-        ? await out.embedFont("Helvetica")
-        : undefined;
+      const helv = hasTextAnns ? await out.embedFont("Helvetica") : undefined;
 
       for (let pi = 0; pi < pages.length; pi++) {
         const p = pages[pi];
@@ -899,26 +906,28 @@ export default function PdfEditorContent() {
 
         {/* Toolbar */}
         <div className="flex flex-wrap items-center gap-1.5 p-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 mb-4">
-          {(["select", "text", "rect", "circle", "line"] as const).map((toolType) => (
-            <button
-              key={toolType}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${tool === toolType ? "bg-white dark:bg-[#1c1c22] text-amber-600 dark:text-amber-400 shadow-sm" : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"}`}
-              onClick={() => {
-                setTool(toolType);
-                setSelAnn(null);
-              }}
-            >
-              {toolType === "select"
-                ? t("blog.pdfEditor.move")
-                : toolType === "text"
-                  ? t("blog.pdfEditor.text")
-                  : toolType === "rect"
-                    ? t("blog.pdfEditor.rect")
-                    : toolType === "circle"
-                      ? t("blog.pdfEditor.circle")
-                      : t("blog.pdfEditor.line")}
-            </button>
-          ))}
+          {(["select", "text", "rect", "circle", "line"] as const).map(
+            (toolType) => (
+              <button
+                key={toolType}
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${tool === toolType ? "bg-white dark:bg-[#1c1c22] text-amber-600 dark:text-amber-400 shadow-sm" : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"}`}
+                onClick={() => {
+                  setTool(toolType);
+                  setSelAnn(null);
+                }}
+              >
+                {toolType === "select"
+                  ? t("blog.pdfEditor.move")
+                  : toolType === "text"
+                    ? t("blog.pdfEditor.text")
+                    : toolType === "rect"
+                      ? t("blog.pdfEditor.rect")
+                      : toolType === "circle"
+                        ? t("blog.pdfEditor.circle")
+                        : t("blog.pdfEditor.line")}
+              </button>
+            ),
+          )}
           <span className="w-px h-5 bg-black/8 dark:bg-white/8 mx-1" />
           {COLORS.map((c) => (
             <button
@@ -1202,8 +1211,8 @@ export default function PdfEditorContent() {
               </div>
               {mergeFiles.length > 0 && (
                 <DndContext
-                  sensors={mergeSensors}
                   collisionDetection={closestCenter}
+                  sensors={mergeSensors}
                   onDragEnd={handleMergeDragEnd}
                 >
                   <SortableContext

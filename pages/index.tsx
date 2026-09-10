@@ -1,13 +1,12 @@
 import Head from "next/head";
 
-import About from "@/components/about";
-import BlogHighlights from "@/components/blog-highlights";
+import AboutPreview from "@/components/about-preview";
 import CampusHighlights from "@/components/campus-highlights";
 import CTA from "@/components/cta";
-import Experience from "@/components/experience";
 import Hero from "@/components/Hero";
 import Projects from "@/components/projects";
-import Skills from "@/components/skills";
+import ToolsPreview from "@/components/tools-preview";
+import TrayectoriaPreview from "@/components/trayectoria-preview";
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 import { siteConfig } from "@/config/site";
@@ -53,12 +52,11 @@ export default function IndexPage() {
       </Head>
       <div className="space-y-24 md:space-y-32">
         <Hero />
-        <About />
-        <Skills />
-        <Experience />
+        <AboutPreview />
+        <TrayectoriaPreview />
         <Projects />
-        <BlogHighlights />
         <CampusHighlights />
+        <ToolsPreview />
         <CTA />
       </div>
     </DefaultLayout>

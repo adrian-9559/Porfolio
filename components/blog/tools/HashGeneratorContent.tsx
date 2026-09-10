@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -107,25 +108,64 @@ function md5(str: string): string {
     x[3] = add32(d, x[3]);
   }
 
-  function cmn(q: number, a: number, b: number, x: number, s: number, t: number) {
+  function cmn(
+    q: number,
+    a: number,
+    b: number,
+    x: number,
+    s: number,
+    t: number,
+  ) {
     a = add32(add32(a, q), add32(x, t));
 
     return add32((a << s) | (a >>> (32 - s)), b);
   }
 
-  function ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
+  function ff(
+    a: number,
+    b: number,
+    c: number,
+    d: number,
+    x: number,
+    s: number,
+    t: number,
+  ) {
     return cmn((b & c) | (~b & d), a, b, x, s, t);
   }
 
-  function gg(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
+  function gg(
+    a: number,
+    b: number,
+    c: number,
+    d: number,
+    x: number,
+    s: number,
+    t: number,
+  ) {
     return cmn((b & d) | (c & ~d), a, b, x, s, t);
   }
 
-  function hh(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
+  function hh(
+    a: number,
+    b: number,
+    c: number,
+    d: number,
+    x: number,
+    s: number,
+    t: number,
+  ) {
     return cmn(b ^ c ^ d, a, b, x, s, t);
   }
 
-  function ii(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
+  function ii(
+    a: number,
+    b: number,
+    c: number,
+    d: number,
+    x: number,
+    s: number,
+    t: number,
+  ) {
     return cmn(c ^ (b | ~d), a, b, x, s, t);
   }
 
@@ -142,10 +182,10 @@ function md5(str: string): string {
     const tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     for (i = 0; i < s1.length; i++) {
-      tail[i >> 2] |= s1.charCodeAt(i) << ((i % 4) << 3);
+      tail[i >> 2] |= s1.charCodeAt(i) << (i % 4 << 3);
     }
 
-    tail[i >> 2] |= 0x80 << ((i % 4) << 3);
+    tail[i >> 2] |= 0x80 << (i % 4 << 3);
 
     if (i > 55) {
       md5cycle(state, tail);
@@ -223,7 +263,9 @@ export default function HashGeneratorContent() {
         const hashBuffer = await crypto.subtle.digest(algo, data);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
 
-        results[algo] = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+        results[algo] = hashArray
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
       }
 
       setHashes(results);
@@ -233,7 +275,10 @@ export default function HashGeneratorContent() {
   }, [input]);
 
   const charCount = input.length;
-  const byteSize = useMemo(() => new TextEncoder().encode(input).byteLength, [input]);
+  const byteSize = useMemo(
+    () => new TextEncoder().encode(input).byteLength,
+    [input],
+  );
 
   const copy = async (text: string, algo: string) => {
     if (await copyToClipboard(text)) {
@@ -305,7 +350,9 @@ export default function HashGeneratorContent() {
                   disabled={!hashes[algo.id]}
                   onClick={() => copy(hashes[algo.id] || "", algo.id)}
                 >
-                  {copied === algo.id ? t("blog.hashGenerator.copied") : t("blog.hashGenerator.copy")}
+                  {copied === algo.id
+                    ? t("blog.hashGenerator.copied")
+                    : t("blog.hashGenerator.copy")}
                 </button>
               </div>
             ))}

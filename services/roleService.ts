@@ -34,7 +34,8 @@ export const roleService = {
       body: JSON.stringify(data),
     }),
 
-  delete: (id: number) => apiFetch<void>(`/api/roles/${id}`, { method: "DELETE" }),
+  delete: (id: number) =>
+    apiFetch<void>(`/api/roles/${id}`, { method: "DELETE" }),
 
   assign: (user_id: string, role_id: number) =>
     apiFetch<void>("/api/roles/assign", {

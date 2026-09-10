@@ -51,7 +51,11 @@ export const issueTrackerService = {
     });
   },
 
-  async updateBoard(boardId: string, name: string, description: string): Promise<IssueBoard> {
+  async updateBoard(
+    boardId: string,
+    name: string,
+    description: string,
+  ): Promise<IssueBoard> {
     return apiFetch<IssueBoard>(`/api/issue-tracker/${boardId}`, {
       method: "PATCH",
       body: JSON.stringify({ name, description }),
@@ -67,7 +71,11 @@ export const issueTrackerService = {
     return apiFetch<BoardMember[]>(`/api/issue-tracker/${boardId}/members`);
   },
 
-  async addMember(boardId: string, email: string, role = "member"): Promise<BoardMember> {
+  async addMember(
+    boardId: string,
+    email: string,
+    role = "member",
+  ): Promise<BoardMember> {
     return apiFetch<BoardMember>(`/api/issue-tracker/${boardId}/members`, {
       method: "POST",
       body: JSON.stringify({ email, role }),
@@ -75,9 +83,12 @@ export const issueTrackerService = {
   },
 
   async removeMember(boardId: string, email: string): Promise<void> {
-    await apiFetch(`/api/issue-tracker/${boardId}/members/${encodeURIComponent(email)}`, {
-      method: "DELETE",
-    });
+    await apiFetch(
+      `/api/issue-tracker/${boardId}/members/${encodeURIComponent(email)}`,
+      {
+        method: "DELETE",
+      },
+    );
   },
 
   // Tickets
@@ -94,11 +105,19 @@ export const issueTrackerService = {
   ): Promise<IssueTicket> {
     return apiFetch<IssueTicket>(`/api/issue-tracker/${boardId}/tickets`, {
       method: "POST",
-      body: JSON.stringify({ title, description, priority, assigned_to: assignedTo }),
+      body: JSON.stringify({
+        title,
+        description,
+        priority,
+        assigned_to: assignedTo,
+      }),
     });
   },
 
-  async updateTicket(ticketId: string, updates: Partial<IssueTicket>): Promise<IssueTicket> {
+  async updateTicket(
+    ticketId: string,
+    updates: Partial<IssueTicket>,
+  ): Promise<IssueTicket> {
     return apiFetch<IssueTicket>(`/api/issue-tracker/tickets/${ticketId}`, {
       method: "PATCH",
       body: JSON.stringify(updates),
@@ -106,18 +125,25 @@ export const issueTrackerService = {
   },
 
   async deleteTicket(ticketId: string): Promise<void> {
-    await apiFetch(`/api/issue-tracker/tickets/${ticketId}`, { method: "DELETE" });
+    await apiFetch(`/api/issue-tracker/tickets/${ticketId}`, {
+      method: "DELETE",
+    });
   },
 
   // Comments
   async getComments(ticketId: string): Promise<TicketComment[]> {
-    return apiFetch<TicketComment[]>(`/api/issue-tracker/tickets/${ticketId}/comments`);
+    return apiFetch<TicketComment[]>(
+      `/api/issue-tracker/tickets/${ticketId}/comments`,
+    );
   },
 
   async addComment(ticketId: string, content: string): Promise<TicketComment> {
-    return apiFetch<TicketComment>(`/api/issue-tracker/tickets/${ticketId}/comments`, {
-      method: "POST",
-      body: JSON.stringify({ content }),
-    });
+    return apiFetch<TicketComment>(
+      `/api/issue-tracker/tickets/${ticketId}/comments`,
+      {
+        method: "POST",
+        body: JSON.stringify({ content }),
+      },
+    );
   },
 };

@@ -1,60 +1,130 @@
 "use client";
 
+import type { AppNotification } from "@/services/notificationService";
+
 import { useState, useMemo } from "react";
 
 import { useNotifications } from "@/hooks/useNotifications";
 import { useT } from "@/hooks/useT";
-import type { AppNotification } from "@/services/notificationService";
 
-type FilterType = "all" | "unread" | "sistema" | "agente" | "repositorio" | "admin" | "tricount";
+type FilterType =
+  | "all"
+  | "unread"
+  | "sistema"
+  | "agente"
+  | "repositorio"
+  | "admin"
+  | "tricount";
 
 const TYPE_META: Record<
   string,
-  { color: string; dot: string; icon: (props: { className?: string }) => React.ReactNode }
+  {
+    color: string;
+    dot: string;
+    icon: (props: { className?: string }) => React.ReactNode;
+  }
 > = {
   sistema: {
     color: "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400",
     dot: "bg-blue-500",
     icon: ({ className }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      <svg
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
   },
   agente: {
-    color: "bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400",
+    color:
+      "bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400",
     dot: "bg-violet-500",
     icon: ({ className }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-1.341 4.023a2.25 2.25 0 01-2.134 1.477H8.475a2.25 2.25 0 01-2.134-1.477L5 14.5m14 0H5" />
+      <svg
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-1.341 4.023a2.25 2.25 0 01-2.134 1.477H8.475a2.25 2.25 0 01-2.134-1.477L5 14.5m14 0H5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
   },
   repositorio: {
-    color: "bg-slate-50 dark:bg-slate-950/30 text-slate-600 dark:text-slate-400",
+    color:
+      "bg-slate-50 dark:bg-slate-950/30 text-slate-600 dark:text-slate-400",
     dot: "bg-slate-500",
     icon: ({ className }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 3v12M18 9a3 3 0 01-3 3m3-3a3 3 0 00-3 3M3 9a3 3 0 003 3m3-3a3 3 0 01-3 3m3 3c0 3 3 6 3 6s3-3 3-6M3 15s3-3 3-6" />
+      <svg
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M6 3v12M18 9a3 3 0 01-3 3m3-3a3 3 0 00-3 3M3 9a3 3 0 003 3m3-3a3 3 0 01-3 3m3 3c0 3 3 6 3 6s3-3 3-6M3 15s3-3 3-6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
   },
   admin: {
-    color: "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400",
+    color:
+      "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400",
     dot: "bg-amber-500",
     icon: ({ className }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+      <svg
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
   },
   tricount: {
-    color: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400",
+    color:
+      "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400",
     dot: "bg-emerald-500",
     icon: ({ className }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <svg
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     ),
   },
@@ -63,6 +133,7 @@ const TYPE_META: Record<
 function mapApiType(apiType: string): string {
   if (apiType === "admin") return "admin";
   if (apiType === "system") return "sistema";
+
   return "sistema";
 }
 
@@ -111,6 +182,7 @@ export function UserNotificationsSection() {
         notifications: g.notifications.filter((n) => {
           if (filter === "unread") return !n.read;
           if (filter === "all") return true;
+
           return mapApiType(n.type) === filter;
         }),
       }))
@@ -124,7 +196,11 @@ export function UserNotificationsSection() {
 
   const FILTERS: { id: FilterType; label: string; count?: number }[] = [
     { id: "all", label: t("notifications.filter.all") },
-    { id: "unread", label: t("notifications.filter.unread", { count: unread }), count: unread },
+    {
+      id: "unread",
+      label: t("notifications.filter.unread", { count: unread }),
+      count: unread,
+    },
     { id: "sistema", label: t("notifications.type.sistema") },
     { id: "agente", label: t("notifications.type.agente") },
     { id: "repositorio", label: t("notifications.type.repositorio") },
@@ -157,20 +233,34 @@ export function UserNotificationsSection() {
         <div className="flex items-center gap-2">
           <button
             className="p-2 rounded-xl border border-border/30 hover:bg-default text-muted hover:text-foreground transition-colors"
-            onClick={() => setPrefsOpen(!prefsOpen)}
             title={t("notifications.preferences")}
             type="button"
+            onClick={() => setPrefsOpen(!prefsOpen)}
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
           {unread > 0 && (
             <button
               className="px-4 py-2 rounded-xl border border-border/30 hover:bg-default text-foreground text-sm font-medium transition-colors"
-              onClick={markAllRead}
               type="button"
+              onClick={markAllRead}
             >
               {t("notifications.markAllRead")}
             </button>
@@ -185,7 +275,9 @@ export function UserNotificationsSection() {
             {t("notifications.preferences")}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {(["sistema", "agente", "repositorio", "admin", "tricount"] as const).map((key) => (
+            {(
+              ["sistema", "agente", "repositorio", "admin", "tricount"] as const
+            ).map((key) => (
               <label
                 key={key}
                 className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border/30 hover:bg-default cursor-pointer transition-colors"
@@ -193,20 +285,28 @@ export function UserNotificationsSection() {
                 <input
                   checked={preferences[key]}
                   className="w-4 h-4 rounded border-border/40 text-accent focus:ring-accent"
-                  onChange={(e) => updatePreferences({ [key]: e.target.checked })}
                   type="checkbox"
+                  onChange={(e) =>
+                    updatePreferences({ [key]: e.target.checked })
+                  }
                 />
-                <span className="text-sm text-foreground">{t(`notifications.type.${key}`)}</span>
+                <span className="text-sm text-foreground">
+                  {t(`notifications.type.${key}`)}
+                </span>
               </label>
             ))}
             <label className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border/30 hover:bg-default cursor-pointer transition-colors">
               <input
                 checked={preferences.email_digest}
                 className="w-4 h-4 rounded border-border/40 text-accent focus:ring-accent"
-                onChange={(e) => updatePreferences({ email_digest: e.target.checked })}
                 type="checkbox"
+                onChange={(e) =>
+                  updatePreferences({ email_digest: e.target.checked })
+                }
               />
-              <span className="text-sm text-foreground">{t("notifications.preferencesSection.emailDigest")}</span>
+              <span className="text-sm text-foreground">
+                {t("notifications.preferencesSection.emailDigest")}
+              </span>
             </label>
           </div>
         </div>
@@ -222,8 +322,8 @@ export function UserNotificationsSection() {
                 ? "bg-accent text-accent-foreground"
                 : "border border-border/30 text-muted hover:bg-default"
             }`}
-            onClick={() => setFilter(f.id)}
             type="button"
+            onClick={() => setFilter(f.id)}
           >
             {f.label}
           </button>
@@ -242,8 +342,18 @@ export function UserNotificationsSection() {
       {/* Empty state */}
       {!loading && filteredCount === 0 && (
         <div className="rounded-2xl border border-border bg-surface py-16 text-center">
-          <svg className="w-10 h-10 mx-auto mb-3 text-muted/40" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+          <svg
+            className="w-10 h-10 mx-auto mb-3 text-muted/40"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1}
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <p className="text-sm text-muted">{t("notifications.empty")}</p>
         </div>
@@ -275,8 +385,8 @@ export function UserNotificationsSection() {
                     key={n.id}
                     notification={n}
                     typeKeys={TYPE_KEYS}
-                    onMarkRead={markRead}
                     onDelete={deleteOne}
+                    onMarkRead={markRead}
                   />
                 ))}
               </div>
@@ -338,7 +448,9 @@ function NotificationRow({
           <span className={`text-[10px] font-semibold ${meta.color}`}>
             {t(typeKeys[notifType] ?? typeKeys.sistema)}
           </span>
-          <span className="text-[10px] text-muted/50">{relTime(n.created_at)}</span>
+          <span className="text-[10px] text-muted/50">
+            {relTime(n.created_at)}
+          </span>
           {!n.read && (
             <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
           )}
@@ -354,23 +466,43 @@ function NotificationRow({
         {!n.read && (
           <button
             className="p-1.5 rounded-lg text-muted/50 hover:text-accent hover:bg-accent/10 transition-colors"
-            onClick={() => onMarkRead(n.id)}
             title={t("notifications.action.markRead")}
             type="button"
+            onClick={() => onMarkRead(n.id)}
           >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M4.5 12.75l6 6 9-13.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
         )}
         <button
           className="p-1.5 rounded-lg text-muted/50 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
-          onClick={() => onDelete(n.id)}
           title={t("notifications.action.delete")}
           type="button"
+          onClick={() => onDelete(n.id)}
         >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M6 18L18 6M6 6l12 12"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
       </div>

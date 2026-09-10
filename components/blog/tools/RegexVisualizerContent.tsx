@@ -1,9 +1,18 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 
 interface RegexToken {
-  type: "anchor" | "quantifier" | "group" | "class" | "literal" | "alternation" | "escape" | "flag";
+  type:
+    | "anchor"
+    | "quantifier"
+    | "group"
+    | "class"
+    | "literal"
+    | "alternation"
+    | "escape"
+    | "flag";
   value: string;
   description: string;
   children?: RegexToken[];
@@ -17,7 +26,11 @@ function parseRegex(pattern: string): RegexToken[] {
     const ch = pattern[i];
 
     if (ch === "^") {
-      tokens.push({ type: "anchor", value: "^", description: "Start of string" });
+      tokens.push({
+        type: "anchor",
+        value: "^",
+        description: "Start of string",
+      });
       i++;
     } else if (ch === "$") {
       tokens.push({ type: "anchor", value: "$", description: "End of string" });
@@ -36,6 +49,7 @@ function parseRegex(pattern: string): RegexToken[] {
         n: "Newline",
         t: "Tab",
       };
+
       tokens.push({
         type: "escape",
         value: `\\${next}`,
@@ -44,10 +58,12 @@ function parseRegex(pattern: string): RegexToken[] {
       i += 2;
     } else if (ch === "[") {
       const end = pattern.indexOf("]", i + 1);
+
       if (end !== -1) {
         const content = pattern.slice(i, end + 1);
         const inner = content.slice(1, -1);
         const negated = inner.startsWith("^");
+
         tokens.push({
           type: "class",
           value: content,
@@ -57,7 +73,11 @@ function parseRegex(pattern: string): RegexToken[] {
         });
         i = end + 1;
       } else {
-        tokens.push({ type: "literal", value: ch, description: `Literal "${ch}"` });
+        tokens.push({
+          type: "literal",
+          value: ch,
+          description: `Literal "${ch}"`,
+        });
         i++;
       }
     } else if (ch === "(") {
@@ -75,15 +95,22 @@ function parseRegex(pattern: string): RegexToken[] {
         "+": "One or more",
         "?": "Optional (zero or one)",
       };
-      tokens.push({ type: "quantifier", value: ch, description: qMap[ch] || ch });
+
+      tokens.push({
+        type: "quantifier",
+        value: ch,
+        description: qMap[ch] || ch,
+      });
       i++;
     } else if (ch === "{") {
       const end = pattern.indexOf("}", i + 1);
+
       if (end !== -1) {
         const quant = pattern.slice(i, end + 1);
         const inner = quant.slice(1, -1);
         const parts = inner.split(",");
         let desc: string;
+
         if (parts.length === 1) {
           desc = `Exactly ${parts[0]} times`;
         } else if (parts[1]) {
@@ -94,14 +121,26 @@ function parseRegex(pattern: string): RegexToken[] {
         tokens.push({ type: "quantifier", value: quant, description: desc });
         i = end + 1;
       } else {
-        tokens.push({ type: "literal", value: ch, description: `Literal "${ch}"` });
+        tokens.push({
+          type: "literal",
+          value: ch,
+          description: `Literal "${ch}"`,
+        });
         i++;
       }
     } else if (ch === ".") {
-      tokens.push({ type: "class", value: ".", description: "Any character (except newline)" });
+      tokens.push({
+        type: "class",
+        value: ".",
+        description: "Any character (except newline)",
+      });
       i++;
     } else {
-      tokens.push({ type: "literal", value: ch, description: `Literal "${ch}"` });
+      tokens.push({
+        type: "literal",
+        value: ch,
+        description: `Literal "${ch}"`,
+      });
       i++;
     }
   }
@@ -110,13 +149,20 @@ function parseRegex(pattern: string): RegexToken[] {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  anchor: "bg-sky-100 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/50",
-  quantifier: "bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/50",
-  group: "bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50",
-  class: "bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50",
-  literal: "bg-black/5 dark:bg-white/5 text-[#1d1d1f] dark:text-white border-black/8 dark:border-white/8",
-  alternation: "bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800/50",
-  escape: "bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50",
+  anchor:
+    "bg-sky-100 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/50",
+  quantifier:
+    "bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/50",
+  group:
+    "bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50",
+  class:
+    "bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50",
+  literal:
+    "bg-black/5 dark:bg-white/5 text-[#1d1d1f] dark:text-white border-black/8 dark:border-white/8",
+  alternation:
+    "bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800/50",
+  escape:
+    "bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50",
 };
 
 export default function RegexVisualizerContent() {
@@ -146,6 +192,7 @@ export default function RegexVisualizerContent() {
       const re = new RegExp(pattern, flags);
       const result: string[] = [];
       let m: RegExpExecArray | null;
+
       while ((m = re.exec(testString)) !== null) {
         result.push(m[0]);
         if (!flags.includes("g")) break;
@@ -283,10 +330,19 @@ export default function RegexVisualizerContent() {
                 </thead>
                 <tbody>
                   {tokens.map((token, i) => (
-                    <tr key={i} className="border-t border-black/5 dark:border-white/5">
-                      <td className="px-3 py-1.5 font-mono font-semibold text-[#1d1d1f] dark:text-white">{token.value}</td>
-                      <td className="px-3 py-1.5 text-[#6e6e73] dark:text-[#86868b] capitalize">{token.type}</td>
-                      <td className="px-3 py-1.5 text-[#6e6e73] dark:text-[#86868b]">{token.description}</td>
+                    <tr
+                      key={i}
+                      className="border-t border-black/5 dark:border-white/5"
+                    >
+                      <td className="px-3 py-1.5 font-mono font-semibold text-[#1d1d1f] dark:text-white">
+                        {token.value}
+                      </td>
+                      <td className="px-3 py-1.5 text-[#6e6e73] dark:text-[#86868b] capitalize">
+                        {token.type}
+                      </td>
+                      <td className="px-3 py-1.5 text-[#6e6e73] dark:text-[#86868b]">
+                        {token.description}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

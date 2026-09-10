@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 
 export default function TimestampConverterContent() {
@@ -18,26 +19,30 @@ export default function TimestampConverterContent() {
       if (mode === "ts2date") {
         const num = Number(input.trim());
 
-        if (isNaN(num)) throw new Error(t("blog.timestampConverter.errorInvalidNumber"));
+        if (isNaN(num))
+          throw new Error(t("blog.timestampConverter.errorInvalidNumber"));
         const ms = num > 1e12 ? num : num * 1000;
         const d = new Date(ms);
 
-        if (isNaN(d.getTime())) throw new Error(t("blog.timestampConverter.errorInvalidDate"));
+        if (isNaN(d.getTime()))
+          throw new Error(t("blog.timestampConverter.errorInvalidDate"));
         setOutput(d.toISOString().replace("T", " ") + " (ISO)");
       } else {
         const d = new Date(input.trim());
 
         if (isNaN(d.getTime()))
-          throw new Error(
-            t("blog.timestampConverter.errorInvalidDateFormat"),
-          );
+          throw new Error(t("blog.timestampConverter.errorInvalidDateFormat"));
         const secs = Math.floor(d.getTime() / 1000);
         const ms = d.getTime();
 
         setOutput(`${secs} (segundos)\n${ms} (milisegundos)`);
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : t("blog.timestampConverter.errorConversion"));
+      setError(
+        e instanceof Error
+          ? e.message
+          : t("blog.timestampConverter.errorConversion"),
+      );
     }
   };
 
@@ -75,7 +80,9 @@ export default function TimestampConverterContent() {
                 setError("");
               }}
             >
-              {m === "ts2date" ? t("blog.timestampConverter.ts2date") : t("blog.timestampConverter.date2ts")}
+              {m === "ts2date"
+                ? t("blog.timestampConverter.ts2date")
+                : t("blog.timestampConverter.date2ts")}
             </button>
           ))}
         </div>

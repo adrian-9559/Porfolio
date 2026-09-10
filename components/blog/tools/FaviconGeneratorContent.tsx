@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+
 import { useT } from "@/hooks/useT";
 
 interface FaviconSize {
@@ -18,6 +19,7 @@ const FAVICON_SIZES: { size: number; label: string }[] = [
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
+
   return `${(bytes / 1024).toFixed(1)} KB`;
 }
 
@@ -34,7 +36,8 @@ export default function FaviconGeneratorContent() {
 
   useEffect(() => {
     return () => {
-      if (sourcePreviewUrlRef.current) URL.revokeObjectURL(sourcePreviewUrlRef.current);
+      if (sourcePreviewUrlRef.current)
+        URL.revokeObjectURL(sourcePreviewUrlRef.current);
     };
   }, []);
 
@@ -53,6 +56,7 @@ export default function FaviconGeneratorContent() {
         canvas.width = size;
         canvas.height = size;
         const ctx = canvas.getContext("2d")!;
+
         ctx.drawImage(bitmap, 0, 0, size, size);
 
         const dataUrl = canvas.toDataURL("image/png");
@@ -73,11 +77,14 @@ export default function FaviconGeneratorContent() {
     setFavicons([]);
     if (!file.type.startsWith("image/")) {
       setError(t("blog.faviconGenerator.invalidType"));
+
       return;
     }
     setSourceName(file.name);
-    if (sourcePreviewUrlRef.current) URL.revokeObjectURL(sourcePreviewUrlRef.current);
+    if (sourcePreviewUrlRef.current)
+      URL.revokeObjectURL(sourcePreviewUrlRef.current);
     const url = URL.createObjectURL(file);
+
     sourcePreviewUrlRef.current = url;
     setSourcePreview(url);
     generateFavicons(file);
@@ -87,11 +94,13 @@ export default function FaviconGeneratorContent() {
     e.preventDefault();
     setDragOver(false);
     const file = e.dataTransfer.files[0];
+
     if (file) processFile(file);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) processFile(file);
   };
 
@@ -141,25 +150,25 @@ export default function FaviconGeneratorContent() {
         {/* Drop zone */}
         <div
           className={`relative w-full h-48 rounded-xl border-2 border-dashed transition-colors cursor-pointer flex flex-col items-center justify-center gap-2 ${dragOver ? "border-red-400 bg-red-50/30 dark:bg-red-950/20" : "border-black/15 dark:border-white/15 hover:border-red-300 dark:hover:border-red-700"}`}
+          onClick={() => fileInputRef.current?.click()}
+          onDragLeave={() => setDragOver(false)}
           onDragOver={(e) => {
             e.preventDefault();
             setDragOver(true);
           }}
-          onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
         >
           <svg
             className="w-8 h-8 text-[#aeaeb2] dark:text-[#636366]"
             fill="none"
-            viewBox="0 0 24 24"
             stroke="currentColor"
+            viewBox="0 0 24 24"
           >
             <path
+              d="M12 16V4m0 0L8 8m4-4l4 4"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={1.5}
-              d="M12 16V4m0 0L8 8m4-4l4 4"
             />
           </svg>
           <span className="text-sm text-[#6e6e73] dark:text-[#86868b]">
@@ -213,7 +222,9 @@ export default function FaviconGeneratorContent() {
                       alt={fav.label}
                       className="max-w-full max-h-full"
                       src={fav.dataUrl}
-                      style={{ imageRendering: fav.size <= 32 ? "pixelated" : "auto" }}
+                      style={{
+                        imageRendering: fav.size <= 32 ? "pixelated" : "auto",
+                      }}
                     />
                   </div>
                   <p className="text-xs font-semibold text-[#1d1d1f] dark:text-white">

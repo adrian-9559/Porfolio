@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -9,6 +10,7 @@ function escapeCsvField(val: string, sep: string): string {
   if (val.includes(sep) || val.includes('"') || val.includes("\n")) {
     return `"${val.replace(/"/g, '""')}"`;
   }
+
   return val;
 }
 
@@ -19,6 +21,7 @@ function parseCsvLine(line: string, sep: string): string[] {
 
   for (let i = 0; i < line.length; i++) {
     const ch = line[i];
+
     if (inQuotes) {
       if (ch === '"') {
         if (i + 1 < line.length && line[i + 1] === '"') {
@@ -42,6 +45,7 @@ function parseCsvLine(line: string, sep: string): string[] {
     }
   }
   fields.push(current);
+
   return fields;
 }
 
@@ -59,17 +63,20 @@ export default function JsonCsvContent() {
       if (mode === "jsonToCsv") {
         const data = JSON.parse(input);
         const arr = Array.isArray(data) ? data : [data];
+
         if (arr.length === 0) {
           setOutput("");
           setError(t("blog.jsonCsv.emptyArray"));
+
           return;
         }
 
         const headers: string[] = Array.from(
           arr.reduce((set: Set<string>, obj: Record<string, unknown>) => {
             Object.keys(obj).forEach((k) => set.add(k));
+
             return set;
-          }, new Set<string>())
+          }, new Set<string>()),
         );
 
         const rows = [
@@ -78,11 +85,14 @@ export default function JsonCsvContent() {
             headers
               .map((h) => {
                 const val = obj[h];
+
                 if (val === null || val === undefined) return "";
-                if (typeof val === "object") return escapeCsvField(JSON.stringify(val), separator);
+                if (typeof val === "object")
+                  return escapeCsvField(JSON.stringify(val), separator);
+
                 return escapeCsvField(String(val), separator);
               })
-              .join(separator)
+              .join(separator),
           ),
         ];
 
@@ -90,9 +100,11 @@ export default function JsonCsvContent() {
         setError("");
       } else {
         const lines = input.trim().split("\n");
+
         if (lines.length < 2) {
           setError(t("blog.jsonCsv.needHeadersAndRows"));
           setOutput("");
+
           return;
         }
 
@@ -100,9 +112,11 @@ export default function JsonCsvContent() {
         const result = lines.slice(1).map((line) => {
           const values = parseCsvLine(line, separator);
           const obj: Record<string, string> = {};
+
           headers.forEach((h, i) => {
             obj[h] = values[i] ?? "";
           });
+
           return obj;
         });
 
@@ -154,7 +168,11 @@ export default function JsonCsvContent() {
                   ? "bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-400"
                   : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/8 dark:hover:bg-white/8"
               }`}
-              onClick={() => { setMode("jsonToCsv"); setOutput(""); setError(""); }}
+              onClick={() => {
+                setMode("jsonToCsv");
+                setOutput("");
+                setError("");
+              }}
             >
               JSON → CSV
             </button>
@@ -164,7 +182,11 @@ export default function JsonCsvContent() {
                   ? "bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-400"
                   : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/8 dark:hover:bg-white/8"
               }`}
-              onClick={() => { setMode("csvToJson"); setOutput(""); setError(""); }}
+              onClick={() => {
+                setMode("csvToJson");
+                setOutput("");
+                setError("");
+              }}
             >
               CSV → JSON
             </button>

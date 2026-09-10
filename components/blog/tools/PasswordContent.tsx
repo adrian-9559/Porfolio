@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -91,9 +92,16 @@ function getStrength(
   if (opts.numbers) score++;
   if (opts.symbols) score++;
 
-  if (score <= 2) return { label: t("blog.password.weak"), score: 1, color: "bg-red-500" };
-  if (score <= 3) return { label: t("blog.password.fair"), score: 2, color: "bg-amber-500" };
-  if (score <= 4) return { label: t("blog.password.good"), score: 3, color: "bg-emerald-500" };
+  if (score <= 2)
+    return { label: t("blog.password.weak"), score: 1, color: "bg-red-500" };
+  if (score <= 3)
+    return { label: t("blog.password.fair"), score: 2, color: "bg-amber-500" };
+  if (score <= 4)
+    return {
+      label: t("blog.password.good"),
+      score: 3,
+      color: "bg-emerald-500",
+    };
 
   return { label: t("blog.password.strong"), score: 4, color: "bg-blue-500" };
 }
@@ -325,7 +333,7 @@ export default function PasswordContent() {
         {/* Character options */}
         <div className="space-y-3">
           <p className="text-sm font-semibold text-[#1d1d1f] dark:text-white">
-              {t("blog.password.include")}
+            {t("blog.password.include")}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <CheckOption

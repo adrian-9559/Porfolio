@@ -1,243 +1,291 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
+
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import CampusLayout from "@/layouts/campus";
-import {
-  getContentByType,
-  getGuides,
-  getCategoriesByType,
-  guideTotalMinutes,
-  ContentMeta,
-} from "@/lib/blog/registry";
-import { LEVELS, getCategory } from "@/lib/blog/taxonomy";
-import {
-  IconGraduation,
-  IconSearch,
-  IconClose,
-  IconBook,
-  IconClock,
-} from "@/components/blog/shared";
 import { useT } from "@/hooks/useT";
 import { useAuth } from "@/hooks/useAuth";
 import { campusService } from "@/services/campusService";
-import { Leaderboard } from "@/components/campus/Leaderboard";
-import { BadgeGrid } from "@/components/campus/BadgeGrid";
-import { StreakCalendar } from "@/components/campus/StreakCalendar";
-import { XpBadge } from "@/components/campus/XpBadge";
-import { ProgressBar } from "@/components/campus/ProgressBar";
-import type { CampusProgress, CampusUserXP } from "@/types/campus";
+import { IconLock, IconPlay, IconHourglass, IconCheck, IconArrowRight } from "@/components/ui/Icons";
+import {
+  getContentByType,
+  getGuides,
+  guideTotalMinutes,
+  contentHref,
+  type ContentMeta,
+} from "@/lib/blog/registry";
+import { challenges } from "@/data/challenges";
 
-const allTutorials = getContentByType("tutorial");
-const allGuides = getGuides();
-const featuredGuides = allGuides.filter((g) => g.featured).slice(0, 6);
+// ── Continue learning card ────────────────────────────────────────────────────
 
-// ── Tutorial card ─────────────────────────────────────────────────────────────
-
-function TutorialCard({ item, completed }: { item: ContentMeta; completed: boolean }) {
+function ContinueLearning({
+  lastTutorial,
+  guideTitle,
+  progressPct,
+}: {
+  lastTutorial: ContentMeta;
+  guideTitle: string;
+  progressPct: number;
+}) {
+  const { t } = useT();
   return (
-    <Link className="group block no-underline" href={`/campus/tutoriales/${item.slug}`}>
-      <div className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 ${
-        completed
-          ? "bg-emerald-500/5 border-emerald-300/30 dark:border-emerald-700/30"
-          : "bg-white dark:bg-[#111116] border-black/8 dark:border-white/8 hover:border-emerald-300/60 dark:hover:border-emerald-700/60 hover:shadow-md"
-      }`}>
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-          completed
-            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-            : "bg-black/5 dark:bg-white/8 text-[#aeaeb2] dark:text-[#636366]"
-        }`}>
-          {completed ? (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          ) : (
-            <IconBook className="w-4 h-4" />
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5">
-            <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.categoryColor}`} />
-            <span className="text-[10px] font-semibold text-[#aeaeb2] dark:text-[#636366]">{item.category}</span>
-            <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">·</span>
-            <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">{item.readTime}</span>
+    <Link
+      className="group block no-underline"
+      href={contentHref(lastTutorial.type, lastTutorial.slug)}
+    >
+      <div className="relative overflow-hidden rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] hover:border-[var(--border-hover)] hover:shadow-lg transition-all duration-200 p-6 md:p-8">
+        {/* Gradient accent bar */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--color-brand-from)] via-[var(--color-brand-via)] to-[var(--color-brand-to)]"
+        />
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest mb-2">
+              {t("campus.continueLearning")}
+            </p>
+            <h2 className="text-lg md:text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-tight mb-1">
+              {lastTutorial.title}
+            </h2>
+            <p className="text-sm text-[var(--text-secondary)]">
+              {guideTitle}
+            </p>
+
+            {/* Progress bar */}
+            <div className="mt-4 flex items-center gap-3">
+              <div
+                aria-label={`Progreso: ${progressPct}%`}
+                aria-valuemax={100}
+                aria-valuemin={0}
+                aria-valuenow={progressPct}
+                className="flex-1 h-1.5 rounded-full bg-[var(--bg-surface)] overflow-hidden"
+                role="progressbar"
+              >
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[var(--color-brand-from)] to-[var(--color-brand-via)] transition-all duration-500"
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
+              <span className="text-xs font-bold text-[var(--accent)] tabular-nums">
+                {progressPct}%
+              </span>
+            </div>
           </div>
-          <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
-            {item.title}
-          </h3>
-        </div>
-        <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform flex-shrink-0">
-          →
-        </span>
-      </div>
-    </Link>
-  );
-}
 
-// ── Guide card ────────────────────────────────────────────────────────────────
-
-function GuideCard({ guide, progress }: { guide: (typeof allGuides)[number]; progress: number }) {
-  const { t } = useT();
-  const totalMin = guideTotalMinutes(guide);
-  const count = guide.curriculum.length;
-  const level = LEVELS.find((l) => l.id === guide.level);
-
-  return (
-    <Link className="group block no-underline" href={`/campus/guias/${guide.slug}`}>
-      <div className="p-5 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-emerald-300/60 dark:hover:border-emerald-700/60 hover:shadow-md transition-all duration-200">
-        <div className="flex items-center gap-2 mb-2">
-          <span className={`w-2 h-2 rounded-full ${guide.categoryColor}`} />
-          <span className="text-[10px] font-semibold text-[#aeaeb2] dark:text-[#636366]">{guide.category}</span>
-          {level && (
-            <>
-              <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">·</span>
-              <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">{t(level.labelKey)}</span>
-            </>
-          )}
-        </div>
-        <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-2">
-          {guide.title}
-        </h3>
-        <p className="text-xs text-[#6e6e73] dark:text-[#86868b] line-clamp-2 mb-3">{guide.description}</p>
-        <ProgressBar completed={progress} total={count} />
-        <div className="flex items-center gap-3 mt-2">
-          <span className="flex items-center gap-1 text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-            <IconBook className="w-2.5 h-2.5" /> {count}
-          </span>
-          <span className="flex items-center gap-1 text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-            <IconClock className="w-2.5 h-2.5" /> ~{totalMin}m
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// ── Continue Learning ─────────────────────────────────────────────────────────
-
-function ContinueLearning({ progress, guides }: { progress: CampusProgress[]; guides: typeof allGuides }) {
-  const { t } = useT();
-
-  const inProgress = useMemo(() => {
-    const completedSlugs = new Set(progress.map((p) => p.tutorial_slug));
-    return guides
-      .map((guide) => {
-        const total = guide.curriculum.length;
-        const completed = guide.curriculum.filter((s) => completedSlugs.has(s.slug)).length;
-        return { guide, total, completed, pct: total > 0 ? Math.round((completed / total) * 100) : 0 };
-      })
-      .filter((g) => g.completed > 0 && g.pct < 100)
-      .sort((a, b) => b.pct - a.pct)
-      .slice(0, 3);
-  }, [progress, guides]);
-
-  if (inProgress.length === 0) return null;
-
-  return (
-    <section className="space-y-3">
-      <div className="flex items-center gap-2">
-        <h2 className="text-[10px] font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest">
-          {t("campus.continueLearning")}
-        </h2>
-        <span className="flex-1 h-px bg-black/8 dark:bg-white/8" />
-      </div>
-      <div className="space-y-2">
-        {inProgress.map(({ guide, total, completed, pct }) => (
-          <Link
-            key={guide.id}
-            className="group flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-emerald-300/60 dark:hover:border-emerald-700/60 hover:shadow-md transition-all no-underline"
-            href={`/campus/guias/${guide.slug}`}
+          <div
+            aria-hidden="true"
+            className="w-10 h-10 rounded-xl bg-[var(--accent-light)] text-[var(--accent)] flex items-center justify-center flex-shrink-0 group-hover:translate-x-1 transition-transform"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-              <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{pct}%</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
-                {guide.title}
-              </h3>
-              <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-                {completed}/{total} {t("blog.tutorialPlural").toLowerCase()}
-              </p>
-            </div>
-            <ProgressBar completed={completed} total={total} />
-            <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform flex-shrink-0">
-              →
-            </span>
-          </Link>
-        ))}
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+              />
+            </svg>
+          </div>
+        </div>
       </div>
-    </section>
+    </Link>
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
+// ── Course card ───────────────────────────────────────────────────────────────
+
+function CourseCard({
+  title,
+  description,
+  meta,
+  href,
+  seed,
+}: {
+  title: string;
+  description: string;
+  meta: string;
+  href: string;
+  seed: number;
+}) {
+  const GRADIENTS: [string, string][] = [
+    ["#7c3aed", "#06b6d4"],
+    ["#06b6d4", "#8b5cf6"],
+    ["#ec4899", "#7c3aed"],
+    ["#8b5cf6", "#06b6d4"],
+    ["#00f5ff", "#7c3aed"],
+    ["#ec4899", "#06b6d4"],
+  ];
+  const [from, to] = GRADIENTS[Math.abs(seed) % GRADIENTS.length];
+
+  return (
+    <Link className="group block no-underline" href={href}>
+      <div className="flex flex-col h-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] hover:shadow-md transition-all duration-200 overflow-hidden">
+        {/* Thumbnail */}
+        <div
+          className="aspect-video flex items-center justify-center px-4"
+          style={{
+            background: `linear-gradient(135deg, ${from}20 0%, var(--bg-card) 55%, ${to}20 100%)`,
+          }}
+        >
+          <span className="text-center text-base md:text-lg font-black text-[var(--text-primary)] leading-tight line-clamp-2" style={{ letterSpacing: "-0.02em" }}>
+            {title}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div className="flex flex-col flex-1 p-4">
+          <h3 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-snug mb-1">
+            {title}
+          </h3>
+          <p className="text-xs text-[var(--text-secondary)] line-clamp-2 mb-3 flex-1">
+            {description}
+          </p>
+          <p className="text-[10px] text-[var(--text-muted)] font-medium">
+            {meta}
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// ── Challenge card (compact) ──────────────────────────────────────────────────
+
+function ChallengeCard({
+  challenge,
+}: {
+  challenge: (typeof challenges)[number];
+}) {
+  const statusIcon: Record<string, React.ReactNode> = {
+    locked: <IconLock className="w-4 h-4" />,
+    available: <IconPlay className="w-4 h-4" />,
+    in_progress: <IconHourglass className="w-4 h-4" />,
+    completed: <IconCheck className="w-4 h-4" />,
+  };
+
+  const statusBorder = {
+    locked: "border-[var(--border-default)] opacity-50",
+    available: "border-[var(--border-default)] hover:border-[var(--accent)]",
+    in_progress: "border-amber-500/30",
+    completed: "border-[var(--accent)]/30 bg-[var(--accent-light)]",
+  };
+
+  const card = (
+    <div
+      className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 ${statusBorder[challenge.status]}`}
+    >
+      <span className="text-sm flex-shrink-0" aria-hidden="true">
+        {statusIcon[challenge.status]}
+      </span>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
+          {challenge.title}
+        </p>
+        <p className="text-[10px] text-[var(--text-muted)]">
+          {challenge.estimatedMinutes} min · +{challenge.xpReward} XP
+        </p>
+      </div>
+      {challenge.status !== "locked" && (
+        <span className="text-[var(--accent)] text-xs flex-shrink-0"><IconArrowRight className="w-3 h-3" /></span>
+      )}
+    </div>
+  );
+
+  if (challenge.status === "locked") return card;
+
+  return (
+    <Link
+      className="group block no-underline"
+      href={`/campus/retos/${challenge.planSlug}/${challenge.slug}`}
+    >
+      {card}
+    </Link>
+  );
+}
+
+// ── Main page ────────────────────────────────────────────────────────────────
 
 export default function CampusPage() {
   const { t } = useT();
   const { isAuthenticated } = useAuth();
-  const router = useRouter();
-  const [query, setQuery] = useState("");
-  const [activeLevel, setActiveLevel] = useState("all");
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [activeTab, setActiveTab] = useState<"guides" | "tutorials" | "ranking" | "achievements">(
-    (router.query.tab as "guides" | "tutorials" | "ranking" | "achievements") || "guides"
-  );
-  const [progress, setProgress] = useState<CampusProgress[]>([]);
-  const [xp, setXp] = useState<CampusUserXP | null>(null);
-  const [guideProgress, setGuideProgress] = useState<Record<string, number>>({});
+  const [completedSlugs, setCompletedSlugs] = useState<Set<string>>(new Set());
+  const [hasLoaded, setHasLoaded] = useState(false);
 
-  const tutorialCats = useMemo(() => getCategoriesByType("tutorial"), []);
-  const catMeta = useMemo(
-    () => tutorialCats.map((c) => getCategory(c)).filter((c): c is NonNullable<typeof c> => c != null),
-    [tutorialCats],
-  );
-
-  const completedSlugs = useMemo(() => new Set(progress.map((p) => p.tutorial_slug)), [progress]);
-
-  const totalCompleted = completedSlugs.size;
-  const totalTutorials = allTutorials.length;
+  const allGuides = useMemo(() => getGuides(), []);
+  const allTutorials = useMemo(() => getContentByType("tutorial"), []);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-    campusService.getProgress().then(setProgress).catch(() => {});
-    campusService.getXP().then(setXp).catch(() => {});
-    campusService.getAllGuideProgress().then(setGuideProgress).catch(() => {});
+    if (!isAuthenticated) {
+      setHasLoaded(true);
+      return;
+    }
+    campusService
+      .getAllGuideProgress()
+      .then((progress) => {
+        const slugs = new Set(Object.keys(progress));
+        setCompletedSlugs(slugs);
+        setHasLoaded(true);
+      })
+      .catch(() => setHasLoaded(true));
   }, [isAuthenticated]);
 
-  const handleTabChange = (tab: "guides" | "tutorials" | "ranking" | "achievements") => {
-    setActiveTab(tab);
-    router.replace({ query: { ...router.query, tab } }, undefined, { shallow: true });
-  };
+  // Find the last in-progress tutorial
+  const continueData = useMemo(() => {
+    if (!isAuthenticated || completedSlugs.size === 0) return null;
 
-  const levelOptions = useMemo(
-    () => [{ id: "all", labelKey: "blog.filterAll" }, ...LEVELS.map((l) => ({ id: l.id, labelKey: l.labelKey }))],
-    [],
-  );
-
-  const results = useMemo(() => {
-    let items = allTutorials;
-    if (activeLevel !== "all") items = items.filter((c) => c.level === activeLevel);
-    if (activeCategory !== "all") items = items.filter((c) => c.categoryId === activeCategory);
-    if (query.trim()) {
-      const q = query.toLowerCase();
-      items = items.filter(
-        (c) =>
-          c.title.toLowerCase().includes(q) ||
-          c.description.toLowerCase().includes(q) ||
-          c.category.toLowerCase().includes(q) ||
-          c.tags?.some((t) => t.toLowerCase().includes(q)),
+    // Find the first guide with progress
+    for (const guide of allGuides) {
+      const guideProgress = guide.curriculum.filter((s) =>
+        completedSlugs.has(s.slug),
       );
-    }
-    return items.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
-  }, [query, activeLevel, activeCategory]);
+      if (guideProgress.length === 0) continue;
 
-  const tabs = [
-    { id: "guides" as const, label: t("campus.tabs.guides") },
-    { id: "tutorials" as const, label: t("campus.tabs.tutorials") },
-    { id: "ranking" as const, label: t("campus.tabs.ranking") },
-    { id: "achievements" as const, label: t("campus.tabs.achievements") },
-  ];
+      // Find first uncompleted tutorial in this guide
+      const nextTutorial = guide.curriculum.find(
+        (s) => !completedSlugs.has(s.slug),
+      );
+      const lastCompleted = guideProgress[guideProgress.length - 1];
+      const target = nextTutorial ?? lastCompleted;
+      const meta = allTutorials.find((t) => t.slug === target.slug);
+      if (!meta) continue;
+
+      const progressPct = Math.round(
+        (guideProgress.length / guide.curriculum.length) * 100,
+      );
+
+      return {
+        lastTutorial: meta,
+        guideTitle: guide.title,
+        progressPct,
+      };
+    }
+
+    return null;
+  }, [isAuthenticated, completedSlugs, allGuides, allTutorials]);
+
+  // Featured courses (first 6 guides)
+  const featuredCourses = useMemo(() => {
+    return allGuides.slice(0, 6).map((guide, idx) => ({
+      title: t(`campus.guides.${guide.slug}.title`) || guide.title,
+      description: t(`campus.guides.${guide.slug}.description`) || guide.description,
+      meta: t("campus.courses.meta", { tutorials: guide.curriculum.length, min: guideTotalMinutes(guide) }),
+      href: `/campus/cursos/${guide.slug}`,
+      seed: idx,
+    }));
+  }, [allGuides, t]);
+
+  // Available challenges (not locked, first 6)
+  const availableChallenges = useMemo(() => {
+    return challenges
+      .filter((c) => c.status !== "locked")
+      .slice(0, 6);
+  }, []);
 
   return (
     <CampusLayout
@@ -246,185 +294,116 @@ export default function CampusPage() {
         description: t("meta.campus.desc"),
       }}
     >
-      <div className="space-y-6 py-4">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 py-8 md:py-12 space-y-12 md:space-y-16">
         {/* Hero */}
-        <header className="space-y-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-              <IconGraduation className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-black text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
-                Campus
-              </h1>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">{t("campus.heroDesc")}</p>
-            </div>
-          </div>
-
-          {/* XP + Streak + Progress (if authenticated) */}
-          {isAuthenticated && (
-            <div className="space-y-3">
-              <div className="flex items-center gap-4">
-                <XpBadge xp={xp?.total_xp ?? 0} level={xp?.level ?? 1} />
-                <StreakCalendar />
-              </div>
-              {totalCompleted > 0 && (
-                <div className="flex items-center gap-3">
-                  <ProgressBar completed={totalCompleted} total={totalTutorials} />
-                  <span className="text-[10px] text-[#aeaeb2] dark:text-[#636366] whitespace-nowrap">
-                    {totalCompleted}/{totalTutorials}
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
+        <header className="text-center space-y-4 max-w-2xl mx-auto">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent-light)] text-[var(--accent)] text-[10px] font-bold uppercase tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+            {t("campus.hero.badge")}
+          </span>
+          <h1
+            className="text-3xl md:text-4xl lg:text-5xl font-black text-[var(--text-primary)] leading-tight"
+            style={{ letterSpacing: "-0.04em" }}
+          >
+            {t("campus.hero.titleBefore")}{" "}
+            <span className="bg-gradient-to-r from-[var(--color-brand-from)] via-[var(--color-brand-via)] to-[var(--color-brand-to)] bg-clip-text text-transparent">
+              {t("campus.hero.titleHighlight")}
+            </span>{" "}
+            {t("campus.hero.titleAfter")}
+          </h1>
+          <p className="text-sm md:text-base text-[var(--text-secondary)] max-w-lg mx-auto leading-relaxed">
+            {t("campus.hero.desc")}
+          </p>
         </header>
 
-        {/* Tabs */}
-        <div className="flex gap-0.5 p-0.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8 overflow-x-auto scrollbar-hide">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap ${
-                activeTab === tab.id
-                  ? "bg-emerald-500 text-white shadow-md"
-                  : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
-              }`}
-              onClick={() => handleTabChange(tab.id)}
-              type="button"
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Tab content */}
-        {activeTab === "guides" && (
-          <div className="space-y-6">
-            {/* Continue Learning */}
-            {isAuthenticated && <ContinueLearning progress={progress} guides={allGuides} />}
-
-            {/* Featured Guides */}
-            <section className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-[10px] font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-widest">
-                    {t("campus.section.guides")}
-                  </h2>
-                  <span className="flex-1 h-px bg-black/8 dark:bg-white/8" />
-                </div>
-                <Link
-                  className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline"
-                  href="/campus/guias"
-                >
-                  {t("campus.section.allGuides")} →
-                </Link>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {featuredGuides.map((guide) => (
-                  <GuideCard key={guide.id} guide={guide} progress={guideProgress[guide.slug] ?? 0} />
-                ))}
-              </div>
-            </section>
-
-            {/* Quick Stats */}
-            <div className="flex gap-4 text-center">
-              <div className="flex-1 p-3 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
-                <p className="text-lg font-black text-[#1d1d1f] dark:text-white">{allGuides.length}</p>
-                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-semibold">{t("campus.stats.guides")}</p>
-              </div>
-              <div className="flex-1 p-3 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
-                <p className="text-lg font-black text-[#1d1d1f] dark:text-white">{allTutorials.length}</p>
-                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-semibold">{t("campus.stats.tutorials")}</p>
-              </div>
-              <div className="flex-1 p-3 rounded-xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8">
-                <p className="text-lg font-black text-[#1d1d1f] dark:text-white">{tutorialCats.length}</p>
-                <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366] font-semibold">{t("campus.stats.categories")}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "tutorials" && (
-          <section className="space-y-4">
-            {/* Search */}
-            <div className="relative max-w-xl" role="search">
-              <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2]" />
-              <input
-                className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-white dark:bg-[#111116] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#aeaeb2] dark:placeholder-[#636366] focus:outline-none focus:border-emerald-400 dark:focus:border-emerald-500 focus:ring-2 focus:ring-emerald-400/20 transition-all"
-                placeholder={t("blog.searchPlaceholderTutorials")}
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              {query && (
-                <button
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#aeaeb2] hover:text-[#6e6e73] transition-colors"
-                  onClick={() => setQuery("")}
-                >
-                  <IconClose className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-
-            {/* Filters */}
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="flex gap-0.5 p-0.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8">
-                {levelOptions.map((opt) => (
-                  <button
-                    key={opt.id}
-                    className={`px-2.5 py-1 rounded-md text-[10px] font-semibold transition-all duration-200 whitespace-nowrap ${
-                      activeLevel === opt.id
-                        ? "bg-emerald-500 text-white shadow-md"
-                        : "text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
-                    }`}
-                    onClick={() => setActiveLevel(opt.id)}
-                    type="button"
-                  >
-                    {t(opt.labelKey)}
-                  </button>
-                ))}
-              </div>
-              <div className="flex gap-1 overflow-x-auto scrollbar-hide">
-                {catMeta.map((cat) => (
-                  <button
-                    key={cat.id}
-                    className={`px-2 py-1 rounded-full text-[10px] font-semibold whitespace-nowrap transition-all ${
-                      activeCategory === cat.id
-                        ? "bg-emerald-500 text-white"
-                        : "bg-black/5 dark:bg-white/8 text-[#6e6e73] dark:text-[#86868b]"
-                    }`}
-                    onClick={() => setActiveCategory(activeCategory === cat.id ? "all" : cat.id)}
-                    type="button"
-                  >
-                    {t(cat.labelKey)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <p className="text-[10px] text-[#aeaeb2] dark:text-[#636366]">
-              {results.length} {results.length === 1 ? t("blog.tutorialSingular") : t("blog.tutorialPlural")}
-            </p>
-
-            {/* Tutorial list */}
-            <div className="space-y-1.5">
-              {results.map((item) => (
-                <TutorialCard key={item.id} item={item} completed={completedSlugs.has(item.slug)} />
-              ))}
-            </div>
-
-            {results.length === 0 && (
-              <div className="text-center py-12">
-                <IconGraduation className="w-8 h-8 text-[#aeaeb2] mx-auto mb-2" />
-                <p className="text-sm text-[#6e6e73] dark:text-[#86868b]">{t("campus.empty")}</p>
-              </div>
-            )}
+        {/* Continue learning (authenticated only) */}
+        {isAuthenticated && hasLoaded && continueData && (
+          <section aria-label="Continuar aprendiendo">
+            <ContinueLearning
+              guideTitle={continueData.guideTitle}
+              lastTutorial={continueData.lastTutorial}
+              progressPct={continueData.progressPct}
+            />
           </section>
         )}
 
-        {activeTab === "ranking" && <Leaderboard />}
-        {activeTab === "achievements" && <BadgeGrid />}
+        {/* Stats */}
+        <section aria-label="Estadísticas del campus">
+          <div className="grid grid-cols-3 gap-3 md:gap-4">
+            <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
+              <p className="text-xl md:text-2xl font-black text-[var(--accent)]">
+                {allGuides.length}
+              </p>
+              <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
+                {t("campus.stats.guides")}
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
+              <p className="text-xl md:text-2xl font-black text-[var(--accent)]">
+                {allTutorials.length}
+              </p>
+              <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
+                {t("campus.stats.tutorials")}
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
+              <p className="text-xl md:text-2xl font-black text-[var(--accent)]">
+                {challenges.length}
+              </p>
+              <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
+                {t("campus.challenges.title")}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Courses grid */}
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2
+              className="text-xl md:text-2xl font-black text-[var(--text-primary)]"
+              style={{ letterSpacing: "-0.03em" }}
+            >
+              {t("campus.courses.title")}
+            </h2>
+            <Link
+              className="text-xs font-semibold text-[var(--accent)] hover:underline no-underline"
+              href="/campus/cursos"
+            >
+              {t("campus.courses.viewAll")} <IconArrowRight className="w-3 h-3 inline" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {featuredCourses.map((course) => (
+              <CourseCard key={course.href} {...course} />
+            ))}
+          </div>
+        </section>
+
+        {/* Challenges */}
+        {availableChallenges.length > 0 && (
+          <section className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2
+                className="text-xl md:text-2xl font-black text-[var(--text-primary)]"
+                style={{ letterSpacing: "-0.03em" }}
+              >
+                {t("campus.challenges.title")}
+              </h2>
+              <Link
+                className="text-xs font-semibold text-[var(--accent)] hover:underline no-underline"
+                href="/campus/retos"
+              >
+              {t("campus.courses.viewAll")} <IconArrowRight className="w-3 h-3 inline" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+              {availableChallenges.map((challenge) => (
+                <ChallengeCard key={challenge.id} challenge={challenge} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </CampusLayout>
   );

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -97,7 +98,9 @@ export default function QrGeneratorContent() {
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors"
                 onClick={copyImg}
               >
-                {copied ? t("blog.qrGenerator.copied") : t("blog.qrGenerator.copyImageUrl")}
+                {copied
+                  ? t("blog.qrGenerator.copied")
+                  : t("blog.qrGenerator.copyImageUrl")}
               </button>
             </div>
           </div>

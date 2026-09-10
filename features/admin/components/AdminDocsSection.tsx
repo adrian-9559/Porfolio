@@ -3,6 +3,13 @@ import { useState } from "react";
 import { DatabaseDiagram } from "@/components/docs/DatabaseDiagram";
 import { AppFlowDiagram } from "@/components/docs/AppFlowDiagram";
 
+import {
+  AdminPageHeader,
+  AdminPanel,
+  AdminEmptyState,
+  AdminFilterChip,
+} from "./AdminShell";
+
 // ── Endpoint Explorer data ────────────────────────────────────────────────────
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
@@ -19,156 +26,929 @@ interface Endpoint {
 
 const ENDPOINTS: Endpoint[] = [
   // Health
-  { method: "GET", path: "/health", summary: "Health check (status, env, timestamp)", auth: false, module: "health" },
+  {
+    method: "GET",
+    path: "/health",
+    summary: "Health check (status, env, timestamp)",
+    auth: false,
+    module: "health",
+  },
   // Auth
-  { method: "POST", path: "/auth/register", summary: "Register new user", auth: false, rateLimit: "20/15m", module: "auth" },
-  { method: "POST", path: "/auth/login", summary: "Login with email + password", auth: false, rateLimit: "20/15m", module: "auth" },
-  { method: "POST", path: "/auth/logout", summary: "Invalidate current session", auth: true, module: "auth" },
-  { method: "GET", path: "/auth/me", summary: "Get own profile + roles", auth: true, module: "auth" },
-  { method: "POST", path: "/auth/refresh", summary: "Refresh JWT access token", auth: false, module: "auth" },
-  { method: "POST", path: "/auth/change-password", summary: "Change own password", auth: true, module: "auth" },
-  { method: "POST", path: "/auth/admin-change-password", summary: "Admin changes any user password", auth: true, roles: ["admin"], module: "auth" },
-  { method: "POST", path: "/auth/forgot-password", summary: "Request password reset email", auth: false, rateLimit: "20/15m", module: "auth" },
-  { method: "POST", path: "/auth/reset-password", summary: "Reset password with token", auth: false, rateLimit: "20/15m", module: "auth" },
-  { method: "POST", path: "/auth/resend-confirmation", summary: "Resend email confirmation", auth: true, roles: ["admin"], module: "auth" },
-  { method: "POST", path: "/auth/confirm-email", summary: "Manually confirm user email", auth: true, roles: ["admin"], module: "auth" },
+  {
+    method: "POST",
+    path: "/auth/register",
+    summary: "Register new user",
+    auth: false,
+    rateLimit: "20/15m",
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/login",
+    summary: "Login with email + password",
+    auth: false,
+    rateLimit: "20/15m",
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/logout",
+    summary: "Invalidate current session",
+    auth: true,
+    module: "auth",
+  },
+  {
+    method: "GET",
+    path: "/auth/me",
+    summary: "Get own profile + roles",
+    auth: true,
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/refresh",
+    summary: "Refresh JWT access token",
+    auth: false,
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/change-password",
+    summary: "Change own password",
+    auth: true,
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/admin-change-password",
+    summary: "Admin changes any user password",
+    auth: true,
+    roles: ["admin"],
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/forgot-password",
+    summary: "Request password reset email",
+    auth: false,
+    rateLimit: "20/15m",
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/reset-password",
+    summary: "Reset password with token",
+    auth: false,
+    rateLimit: "20/15m",
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/resend-confirmation",
+    summary: "Resend email confirmation",
+    auth: true,
+    roles: ["admin"],
+    module: "auth",
+  },
+  {
+    method: "POST",
+    path: "/auth/confirm-email",
+    summary: "Manually confirm user email",
+    auth: true,
+    roles: ["admin"],
+    module: "auth",
+  },
   // Users
-  { method: "GET", path: "/users", summary: "List all users", auth: true, roles: ["admin"], module: "users" },
-  { method: "GET", path: "/users/:id", summary: "Get user by ID", auth: true, roles: ["admin", "editor"], module: "users" },
-  { method: "PATCH", path: "/users/:id", summary: "Update user profile", auth: true, module: "users" },
-  { method: "DELETE", path: "/users/:id", summary: "Delete user permanently", auth: true, roles: ["admin"], module: "users" },
+  {
+    method: "GET",
+    path: "/users",
+    summary: "List all users",
+    auth: true,
+    roles: ["admin"],
+    module: "users",
+  },
+  {
+    method: "GET",
+    path: "/users/:id",
+    summary: "Get user by ID",
+    auth: true,
+    roles: ["admin", "editor"],
+    module: "users",
+  },
+  {
+    method: "PATCH",
+    path: "/users/:id",
+    summary: "Update user profile",
+    auth: true,
+    module: "users",
+  },
+  {
+    method: "DELETE",
+    path: "/users/:id",
+    summary: "Delete user permanently",
+    auth: true,
+    roles: ["admin"],
+    module: "users",
+  },
   // Roles
-  { method: "GET", path: "/roles", summary: "List all roles", auth: true, module: "roles" },
-  { method: "POST", path: "/roles", summary: "Create role", auth: true, roles: ["admin"], module: "roles" },
-  { method: "PATCH", path: "/roles/:id", summary: "Update role", auth: true, roles: ["admin"], module: "roles" },
-  { method: "DELETE", path: "/roles/:id", summary: "Delete role", auth: true, roles: ["admin"], module: "roles" },
-  { method: "POST", path: "/roles/assign", summary: "Assign role to user", auth: true, roles: ["admin"], module: "roles" },
-  { method: "POST", path: "/roles/remove", summary: "Remove role from user", auth: true, roles: ["admin"], module: "roles" },
+  {
+    method: "GET",
+    path: "/roles",
+    summary: "List all roles",
+    auth: true,
+    module: "roles",
+  },
+  {
+    method: "POST",
+    path: "/roles",
+    summary: "Create role",
+    auth: true,
+    roles: ["admin"],
+    module: "roles",
+  },
+  {
+    method: "PATCH",
+    path: "/roles/:id",
+    summary: "Update role",
+    auth: true,
+    roles: ["admin"],
+    module: "roles",
+  },
+  {
+    method: "DELETE",
+    path: "/roles/:id",
+    summary: "Delete role",
+    auth: true,
+    roles: ["admin"],
+    module: "roles",
+  },
+  {
+    method: "POST",
+    path: "/roles/assign",
+    summary: "Assign role to user",
+    auth: true,
+    roles: ["admin"],
+    module: "roles",
+  },
+  {
+    method: "POST",
+    path: "/roles/remove",
+    summary: "Remove role from user",
+    auth: true,
+    roles: ["admin"],
+    module: "roles",
+  },
   // API Keys
-  { method: "GET", path: "/api-keys", summary: "List own API keys", auth: true, module: "api-keys" },
-  { method: "POST", path: "/api-keys", summary: "Create API key (shown once)", auth: true, module: "api-keys" },
-  { method: "PATCH", path: "/api-keys/:id/revoke", summary: "Revoke API key", auth: true, module: "api-keys" },
-  { method: "DELETE", path: "/api-keys/:id", summary: "Delete API key", auth: true, module: "api-keys" },
+  {
+    method: "GET",
+    path: "/api-keys",
+    summary: "List own API keys",
+    auth: true,
+    module: "api-keys",
+  },
+  {
+    method: "POST",
+    path: "/api-keys",
+    summary: "Create API key (shown once)",
+    auth: true,
+    module: "api-keys",
+  },
+  {
+    method: "PATCH",
+    path: "/api-keys/:id/revoke",
+    summary: "Revoke API key",
+    auth: true,
+    module: "api-keys",
+  },
+  {
+    method: "DELETE",
+    path: "/api-keys/:id",
+    summary: "Delete API key",
+    auth: true,
+    module: "api-keys",
+  },
   // Notifications
-  { method: "GET", path: "/notifications", summary: "List own notifications", auth: true, module: "notifications" },
-  { method: "PATCH", path: "/notifications/read-all", summary: "Mark all as read", auth: true, module: "notifications" },
-  { method: "PATCH", path: "/notifications/:id/read", summary: "Mark one as read", auth: true, module: "notifications" },
-  { method: "DELETE", path: "/notifications", summary: "Delete all notifications", auth: true, module: "notifications" },
-  { method: "DELETE", path: "/notifications/:id", summary: "Delete notification", auth: true, module: "notifications" },
+  {
+    method: "GET",
+    path: "/notifications",
+    summary: "List own notifications",
+    auth: true,
+    module: "notifications",
+  },
+  {
+    method: "PATCH",
+    path: "/notifications/read-all",
+    summary: "Mark all as read",
+    auth: true,
+    module: "notifications",
+  },
+  {
+    method: "PATCH",
+    path: "/notifications/:id/read",
+    summary: "Mark one as read",
+    auth: true,
+    module: "notifications",
+  },
+  {
+    method: "DELETE",
+    path: "/notifications",
+    summary: "Delete all notifications",
+    auth: true,
+    module: "notifications",
+  },
+  {
+    method: "DELETE",
+    path: "/notifications/:id",
+    summary: "Delete notification",
+    auth: true,
+    module: "notifications",
+  },
   // Contact
-  { method: "POST", path: "/contact", summary: "Submit contact form", auth: false, rateLimit: "5/15m", module: "contact" },
+  {
+    method: "POST",
+    path: "/contact",
+    summary: "Submit contact form",
+    auth: false,
+    rateLimit: "5/15m",
+    module: "contact",
+  },
   // Tools
-  { method: "POST", path: "/tools/compress-prompt", summary: "Compress prompt text", auth: false, module: "tools" },
-  { method: "POST", path: "/tools/optimize-tokens", summary: "Optimize token count", auth: false, module: "tools" },
-  { method: "POST", path: "/tools/summarize-context", summary: "Summarize context to ratio", auth: false, module: "tools" },
-  { method: "POST", path: "/tools/clean-instructions", summary: "Clean instruction text", auth: false, module: "tools" },
-  { method: "POST", path: "/tools/format-json-prompt", summary: "Format as JSON prompt", auth: false, module: "tools" },
+  {
+    method: "POST",
+    path: "/tools/compress-prompt",
+    summary: "Compress prompt text",
+    auth: false,
+    module: "tools",
+  },
+  {
+    method: "POST",
+    path: "/tools/optimize-tokens",
+    summary: "Optimize token count",
+    auth: false,
+    module: "tools",
+  },
+  {
+    method: "POST",
+    path: "/tools/summarize-context",
+    summary: "Summarize context to ratio",
+    auth: false,
+    module: "tools",
+  },
+  {
+    method: "POST",
+    path: "/tools/clean-instructions",
+    summary: "Clean instruction text",
+    auth: false,
+    module: "tools",
+  },
+  {
+    method: "POST",
+    path: "/tools/format-json-prompt",
+    summary: "Format as JSON prompt",
+    auth: false,
+    module: "tools",
+  },
   // Repositories
-  { method: "GET", path: "/api/repositories", summary: "List own repositories", auth: true, module: "repositories" },
-  { method: "POST", path: "/api/repositories", summary: "Connect repository", auth: true, module: "repositories" },
-  { method: "GET", path: "/api/repositories/:id", summary: "Get repository", auth: true, module: "repositories" },
-  { method: "DELETE", path: "/api/repositories/:id", summary: "Remove repository", auth: true, module: "repositories" },
-  { method: "GET", path: "/api/repositories/:id/branches", summary: "List branches", auth: true, module: "repositories" },
-  { method: "GET", path: "/api/repositories/:id/commits", summary: "List commits", auth: true, module: "repositories" },
-  { method: "GET", path: "/api/repositories/:id/graph", summary: "Get branch graph data", auth: true, module: "repositories" },
-  { method: "GET", path: "/api/repositories/:id/analytics", summary: "Get commit analytics", auth: true, module: "repositories" },
+  {
+    method: "GET",
+    path: "/api/repositories",
+    summary: "List own repositories",
+    auth: true,
+    module: "repositories",
+  },
+  {
+    method: "POST",
+    path: "/api/repositories",
+    summary: "Connect repository",
+    auth: true,
+    module: "repositories",
+  },
+  {
+    method: "GET",
+    path: "/api/repositories/:id",
+    summary: "Get repository",
+    auth: true,
+    module: "repositories",
+  },
+  {
+    method: "DELETE",
+    path: "/api/repositories/:id",
+    summary: "Remove repository",
+    auth: true,
+    module: "repositories",
+  },
+  {
+    method: "GET",
+    path: "/api/repositories/:id/branches",
+    summary: "List branches",
+    auth: true,
+    module: "repositories",
+  },
+  {
+    method: "GET",
+    path: "/api/repositories/:id/commits",
+    summary: "List commits",
+    auth: true,
+    module: "repositories",
+  },
+  {
+    method: "GET",
+    path: "/api/repositories/:id/graph",
+    summary: "Get branch graph data",
+    auth: true,
+    module: "repositories",
+  },
+  {
+    method: "GET",
+    path: "/api/repositories/:id/analytics",
+    summary: "Get commit analytics",
+    auth: true,
+    module: "repositories",
+  },
   // Friends
-  { method: "GET", path: "/api/friends/search", summary: "Search users to add as friends", auth: true, module: "friends" },
-  { method: "POST", path: "/api/friends/request", summary: "Send friend request", auth: true, module: "friends" },
-  { method: "POST", path: "/api/friends/accept", summary: "Accept friend request", auth: true, module: "friends" },
-  { method: "POST", path: "/api/friends/reject", summary: "Reject friend request", auth: true, module: "friends" },
-  { method: "GET", path: "/api/friends/requests/received", summary: "Get received friend requests", auth: true, module: "friends" },
-  { method: "GET", path: "/api/friends/requests/sent", summary: "Get sent friend requests", auth: true, module: "friends" },
-  { method: "GET", path: "/api/friends", summary: "List friends", auth: true, module: "friends" },
-  { method: "DELETE", path: "/api/friends/:friendUserId", summary: "Remove a friend", auth: true, module: "friends" },
+  {
+    method: "GET",
+    path: "/api/friends/search",
+    summary: "Search users to add as friends",
+    auth: true,
+    module: "friends",
+  },
+  {
+    method: "POST",
+    path: "/api/friends/request",
+    summary: "Send friend request",
+    auth: true,
+    module: "friends",
+  },
+  {
+    method: "POST",
+    path: "/api/friends/accept",
+    summary: "Accept friend request",
+    auth: true,
+    module: "friends",
+  },
+  {
+    method: "POST",
+    path: "/api/friends/reject",
+    summary: "Reject friend request",
+    auth: true,
+    module: "friends",
+  },
+  {
+    method: "GET",
+    path: "/api/friends/requests/received",
+    summary: "Get received friend requests",
+    auth: true,
+    module: "friends",
+  },
+  {
+    method: "GET",
+    path: "/api/friends/requests/sent",
+    summary: "Get sent friend requests",
+    auth: true,
+    module: "friends",
+  },
+  {
+    method: "GET",
+    path: "/api/friends",
+    summary: "List friends",
+    auth: true,
+    module: "friends",
+  },
+  {
+    method: "DELETE",
+    path: "/api/friends/:friendUserId",
+    summary: "Remove a friend",
+    auth: true,
+    module: "friends",
+  },
   // Tricount
-  { method: "GET", path: "/api/tricount/balance-summary", summary: "Overall balance across all groups", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/groups", summary: "List groups", auth: true, module: "tricount" },
-  { method: "POST", path: "/api/tricount/groups", summary: "Create group", auth: true, module: "tricount" },
-  { method: "PATCH", path: "/api/tricount/groups/:id", summary: "Update group", auth: true, module: "tricount" },
-  { method: "DELETE", path: "/api/tricount/groups/:id", summary: "Delete group", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/groups/:id/members", summary: "List group members", auth: true, module: "tricount" },
-  { method: "POST", path: "/api/tricount/groups/:id/members", summary: "Add member to group", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/groups/:id/expenses", summary: "List group expenses", auth: true, module: "tricount" },
-  { method: "POST", path: "/api/tricount/groups/:id/expenses", summary: "Create expense", auth: true, module: "tricount" },
-  { method: "PATCH", path: "/api/tricount/groups/:id/expenses/:expenseId", summary: "Update expense", auth: true, module: "tricount" },
-  { method: "DELETE", path: "/api/tricount/groups/:id/expenses/:expenseId", summary: "Delete expense", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/groups/:id/categories", summary: "List expense categories", auth: true, module: "tricount" },
-  { method: "POST", path: "/api/tricount/groups/:id/categories", summary: "Create expense category", auth: true, module: "tricount" },
-  { method: "PATCH", path: "/api/tricount/expenses/:expenseId/category", summary: "Update expense category", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/groups/:id/settlements", summary: "List settlements", auth: true, module: "tricount" },
-  { method: "POST", path: "/api/tricount/groups/:id/settlements", summary: "Create settlement", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/groups/:id/recurring", summary: "List recurring expenses", auth: true, module: "tricount" },
-  { method: "POST", path: "/api/tricount/groups/:id/recurring", summary: "Create recurring expense", auth: true, module: "tricount" },
-  { method: "POST", path: "/api/tricount/recurring/:id/trigger", summary: "Trigger recurring expense", auth: true, module: "tricount" },
-  { method: "PATCH", path: "/api/tricount/recurring/:id/toggle", summary: "Toggle recurring expense", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/groups/:id/export", summary: "Export group data as CSV", auth: true, module: "tricount" },
-  { method: "POST", path: "/api/tricount/expenses/:expenseId/receipt", summary: "Upload expense receipt image", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/expenses/:expenseId/receipt", summary: "Get expense receipt image", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/insights", summary: "Global spending insights", auth: true, module: "tricount" },
-  { method: "GET", path: "/api/tricount/groups/:id/insights", summary: "Per-group spending insights", auth: true, module: "tricount" },
+  {
+    method: "GET",
+    path: "/api/tricount/balance-summary",
+    summary: "Overall balance across all groups",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/groups",
+    summary: "List groups",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "POST",
+    path: "/api/tricount/groups",
+    summary: "Create group",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "PATCH",
+    path: "/api/tricount/groups/:id",
+    summary: "Update group",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "DELETE",
+    path: "/api/tricount/groups/:id",
+    summary: "Delete group",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/groups/:id/members",
+    summary: "List group members",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "POST",
+    path: "/api/tricount/groups/:id/members",
+    summary: "Add member to group",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/groups/:id/expenses",
+    summary: "List group expenses",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "POST",
+    path: "/api/tricount/groups/:id/expenses",
+    summary: "Create expense",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "PATCH",
+    path: "/api/tricount/groups/:id/expenses/:expenseId",
+    summary: "Update expense",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "DELETE",
+    path: "/api/tricount/groups/:id/expenses/:expenseId",
+    summary: "Delete expense",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/groups/:id/categories",
+    summary: "List expense categories",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "POST",
+    path: "/api/tricount/groups/:id/categories",
+    summary: "Create expense category",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "PATCH",
+    path: "/api/tricount/expenses/:expenseId/category",
+    summary: "Update expense category",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/groups/:id/settlements",
+    summary: "List settlements",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "POST",
+    path: "/api/tricount/groups/:id/settlements",
+    summary: "Create settlement",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/groups/:id/recurring",
+    summary: "List recurring expenses",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "POST",
+    path: "/api/tricount/groups/:id/recurring",
+    summary: "Create recurring expense",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "POST",
+    path: "/api/tricount/recurring/:id/trigger",
+    summary: "Trigger recurring expense",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "PATCH",
+    path: "/api/tricount/recurring/:id/toggle",
+    summary: "Toggle recurring expense",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/groups/:id/export",
+    summary: "Export group data as CSV",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "POST",
+    path: "/api/tricount/expenses/:expenseId/receipt",
+    summary: "Upload expense receipt image",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/expenses/:expenseId/receipt",
+    summary: "Get expense receipt image",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/insights",
+    summary: "Global spending insights",
+    auth: true,
+    module: "tricount",
+  },
+  {
+    method: "GET",
+    path: "/api/tricount/groups/:id/insights",
+    summary: "Per-group spending insights",
+    auth: true,
+    module: "tricount",
+  },
   // QR
-  { method: "GET", path: "/api/qr/friend-token", summary: "Get QR friend token", auth: true, module: "qr" },
-  { method: "POST", path: "/api/qr/friend-token/revoke", summary: "Revoke & regenerate QR friend token", auth: true, module: "qr" },
-  { method: "POST", path: "/api/qr/friend-exchange", summary: "Exchange QR token to add friend", auth: true, module: "qr" },
+  {
+    method: "GET",
+    path: "/api/qr/friend-token",
+    summary: "Get QR friend token",
+    auth: true,
+    module: "qr",
+  },
+  {
+    method: "POST",
+    path: "/api/qr/friend-token/revoke",
+    summary: "Revoke & regenerate QR friend token",
+    auth: true,
+    module: "qr",
+  },
+  {
+    method: "POST",
+    path: "/api/qr/friend-exchange",
+    summary: "Exchange QR token to add friend",
+    auth: true,
+    module: "qr",
+  },
   // Mobile App
-  { method: "GET", path: "/api/mobile-app/public/download/:buildType", summary: "Public APK/AAB download (no login)", auth: false, module: "mobile" },
-  { method: "GET", path: "/api/mobile-app/apps", summary: "List all mobile apps", auth: true, module: "mobile" },
-  { method: "GET", path: "/api/mobile-app/apps/:slug", summary: "Get mobile app by slug", auth: true, module: "mobile" },
-  { method: "POST", path: "/api/mobile-app/apps", summary: "Create mobile app entry", auth: true, roles: ["admin"], module: "mobile" },
-  { method: "PATCH", path: "/api/mobile-app/apps/:id", summary: "Update mobile app", auth: true, roles: ["admin"], module: "mobile" },
-  { method: "DELETE", path: "/api/mobile-app/apps/:id", summary: "Delete mobile app", auth: true, roles: ["admin"], module: "mobile" },
-  { method: "GET", path: "/api/mobile-app/latest", summary: "Latest version across apps", auth: true, module: "mobile" },
-  { method: "GET", path: "/api/mobile-app/versions", summary: "List all versions", auth: true, module: "mobile" },
-  { method: "GET", path: "/api/mobile-app/download/version/:id", summary: "Download by version ID", auth: true, module: "mobile" },
-  { method: "GET", path: "/api/mobile-app/download/:buildType", summary: "Download latest by build type", auth: true, module: "mobile" },
-  { method: "POST", path: "/api/mobile-app/upload", summary: "Upload APK/AAB/IPA (multer)", auth: true, roles: ["admin"], module: "mobile" },
-  { method: "DELETE", path: "/api/mobile-app/versions/:id", summary: "Delete version", auth: true, roles: ["admin"], module: "mobile" },
-  { method: "PATCH", path: "/api/mobile-app/versions/:id/activate", summary: "Set version as active", auth: true, roles: ["admin"], module: "mobile" },
-  { method: "GET", path: "/api/mobile-app/logs", summary: "Download logs (admin)", auth: true, roles: ["admin"], module: "mobile" },
+  {
+    method: "GET",
+    path: "/api/mobile-app/public/download/:buildType",
+    summary: "Public APK/AAB download (no login)",
+    auth: false,
+    module: "mobile",
+  },
+  {
+    method: "GET",
+    path: "/api/mobile-app/apps",
+    summary: "List all mobile apps",
+    auth: true,
+    module: "mobile",
+  },
+  {
+    method: "GET",
+    path: "/api/mobile-app/apps/:slug",
+    summary: "Get mobile app by slug",
+    auth: true,
+    module: "mobile",
+  },
+  {
+    method: "POST",
+    path: "/api/mobile-app/apps",
+    summary: "Create mobile app entry",
+    auth: true,
+    roles: ["admin"],
+    module: "mobile",
+  },
+  {
+    method: "PATCH",
+    path: "/api/mobile-app/apps/:id",
+    summary: "Update mobile app",
+    auth: true,
+    roles: ["admin"],
+    module: "mobile",
+  },
+  {
+    method: "DELETE",
+    path: "/api/mobile-app/apps/:id",
+    summary: "Delete mobile app",
+    auth: true,
+    roles: ["admin"],
+    module: "mobile",
+  },
+  {
+    method: "GET",
+    path: "/api/mobile-app/latest",
+    summary: "Latest version across apps",
+    auth: true,
+    module: "mobile",
+  },
+  {
+    method: "GET",
+    path: "/api/mobile-app/versions",
+    summary: "List all versions",
+    auth: true,
+    module: "mobile",
+  },
+  {
+    method: "GET",
+    path: "/api/mobile-app/download/version/:id",
+    summary: "Download by version ID",
+    auth: true,
+    module: "mobile",
+  },
+  {
+    method: "GET",
+    path: "/api/mobile-app/download/:buildType",
+    summary: "Download latest by build type",
+    auth: true,
+    module: "mobile",
+  },
+  {
+    method: "POST",
+    path: "/api/mobile-app/upload",
+    summary: "Upload APK/AAB/IPA (multer)",
+    auth: true,
+    roles: ["admin"],
+    module: "mobile",
+  },
+  {
+    method: "DELETE",
+    path: "/api/mobile-app/versions/:id",
+    summary: "Delete version",
+    auth: true,
+    roles: ["admin"],
+    module: "mobile",
+  },
+  {
+    method: "PATCH",
+    path: "/api/mobile-app/versions/:id/activate",
+    summary: "Set version as active",
+    auth: true,
+    roles: ["admin"],
+    module: "mobile",
+  },
+  {
+    method: "GET",
+    path: "/api/mobile-app/logs",
+    summary: "Download logs (admin)",
+    auth: true,
+    roles: ["admin"],
+    module: "mobile",
+  },
   // Google Drive
-  { method: "GET", path: "/api/admin/google-drive/auth-url", summary: "Get Google Drive OAuth URL", auth: true, roles: ["admin"], module: "google-drive" },
-  { method: "GET", path: "/api/admin/google-drive/status", summary: "Google Drive connection status", auth: true, roles: ["admin"], module: "google-drive" },
-  { method: "POST", path: "/api/admin/google-drive/folder", summary: "Set upload folder", auth: true, roles: ["admin"], module: "google-drive" },
-  { method: "DELETE", path: "/api/admin/google-drive/disconnect", summary: "Disconnect Google Drive", auth: true, roles: ["admin"], module: "google-drive" },
-  { method: "GET", path: "/api/google-drive/callback", summary: "Google OAuth callback handler", auth: false, module: "google-drive" },
+  {
+    method: "GET",
+    path: "/api/admin/google-drive/auth-url",
+    summary: "Get Google Drive OAuth URL",
+    auth: true,
+    roles: ["admin"],
+    module: "google-drive",
+  },
+  {
+    method: "GET",
+    path: "/api/admin/google-drive/status",
+    summary: "Google Drive connection status",
+    auth: true,
+    roles: ["admin"],
+    module: "google-drive",
+  },
+  {
+    method: "POST",
+    path: "/api/admin/google-drive/folder",
+    summary: "Set upload folder",
+    auth: true,
+    roles: ["admin"],
+    module: "google-drive",
+  },
+  {
+    method: "DELETE",
+    path: "/api/admin/google-drive/disconnect",
+    summary: "Disconnect Google Drive",
+    auth: true,
+    roles: ["admin"],
+    module: "google-drive",
+  },
+  {
+    method: "GET",
+    path: "/api/google-drive/callback",
+    summary: "Google OAuth callback handler",
+    auth: false,
+    module: "google-drive",
+  },
   // Markets
-  { method: "GET", path: "/api/markets/latest", summary: "Latest forex, BTC, ETH, gold, S&P 500, AAPL", auth: false, module: "markets" },
+  {
+    method: "GET",
+    path: "/api/markets/latest",
+    summary: "Latest forex, BTC, ETH, gold, S&P 500, AAPL",
+    auth: false,
+    module: "markets",
+  },
   // Admin
-  { method: "GET", path: "/admin/stats", summary: "Platform-wide metrics", auth: true, roles: ["admin"], module: "admin" },
-  { method: "GET", path: "/admin/notifications", summary: "All notifications", auth: true, roles: ["admin"], module: "admin" },
-  { method: "POST", path: "/admin/notifications/send", summary: "Send notification to users", auth: true, roles: ["admin"], module: "admin" },
-  { method: "DELETE", path: "/admin/notifications/:id", summary: "Delete notification", auth: true, roles: ["admin"], module: "admin" },
-  { method: "GET", path: "/admin/contact", summary: "All contact messages", auth: true, roles: ["admin"], module: "admin" },
-  { method: "PATCH", path: "/admin/contact/:id/status", summary: "Update message status", auth: true, roles: ["admin"], module: "admin" },
-  { method: "DELETE", path: "/admin/contact/:id", summary: "Delete message", auth: true, roles: ["admin"], module: "admin" },
-  { method: "GET", path: "/admin/api-keys", summary: "All API keys", auth: true, roles: ["admin"], module: "admin" },
-  { method: "PATCH", path: "/admin/api-keys/:id/revoke", summary: "Revoke any API key", auth: true, roles: ["admin"], module: "admin" },
-  { method: "DELETE", path: "/admin/api-keys/:id", summary: "Delete any API key", auth: true, roles: ["admin"], module: "admin" },
-  { method: "GET", path: "/admin/agents", summary: "All agents", auth: true, roles: ["admin"], module: "admin" },
-  { method: "DELETE", path: "/admin/agents/:id", summary: "Delete any agent", auth: true, roles: ["admin"], module: "admin" },
-  { method: "GET", path: "/admin/workflows", summary: "All workflows", auth: true, roles: ["admin"], module: "admin" },
-  { method: "DELETE", path: "/admin/workflows/:id", summary: "Delete any workflow", auth: true, roles: ["admin"], module: "admin" },
-  { method: "GET", path: "/admin/repositories", summary: "All repositories (any user)", auth: true, roles: ["admin"], module: "admin" },
-  { method: "DELETE", path: "/admin/repositories/:id", summary: "Delete any repository", auth: true, roles: ["admin"], module: "admin" },
-  { method: "GET", path: "/admin/friendships", summary: "All friendships (with emails)", auth: true, roles: ["admin"], module: "admin" },
-  { method: "GET", path: "/admin/friendships/requests", summary: "All friend requests (with emails)", auth: true, roles: ["admin"], module: "admin" },
+  {
+    method: "GET",
+    path: "/admin/stats",
+    summary: "Platform-wide metrics",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "GET",
+    path: "/admin/notifications",
+    summary: "All notifications",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "POST",
+    path: "/admin/notifications/send",
+    summary: "Send notification to users",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "DELETE",
+    path: "/admin/notifications/:id",
+    summary: "Delete notification",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "GET",
+    path: "/admin/contact",
+    summary: "All contact messages",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "PATCH",
+    path: "/admin/contact/:id/status",
+    summary: "Update message status",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "DELETE",
+    path: "/admin/contact/:id",
+    summary: "Delete message",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "GET",
+    path: "/admin/api-keys",
+    summary: "All API keys",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "PATCH",
+    path: "/admin/api-keys/:id/revoke",
+    summary: "Revoke any API key",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "DELETE",
+    path: "/admin/api-keys/:id",
+    summary: "Delete any API key",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "GET",
+    path: "/admin/agents",
+    summary: "All agents",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "DELETE",
+    path: "/admin/agents/:id",
+    summary: "Delete any agent",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "GET",
+    path: "/admin/workflows",
+    summary: "All workflows",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "DELETE",
+    path: "/admin/workflows/:id",
+    summary: "Delete any workflow",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "GET",
+    path: "/admin/repositories",
+    summary: "All repositories (any user)",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "DELETE",
+    path: "/admin/repositories/:id",
+    summary: "Delete any repository",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "GET",
+    path: "/admin/friendships",
+    summary: "All friendships (with emails)",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
+  {
+    method: "GET",
+    path: "/admin/friendships/requests",
+    summary: "All friend requests (with emails)",
+    auth: true,
+    roles: ["admin"],
+    module: "admin",
+  },
 ];
 
 const MODULES = [
-  "all", "health", "auth", "users", "roles", "api-keys", "notifications",
-  "contact", "tools", "repositories", "friends", "tricount", "qr", "mobile",
-  "google-drive", "markets", "admin",
+  "all",
+  "health",
+  "auth",
+  "users",
+  "roles",
+  "api-keys",
+  "notifications",
+  "contact",
+  "tools",
+  "repositories",
+  "friends",
+  "tricount",
+  "qr",
+  "mobile",
+  "google-drive",
+  "markets",
+  "admin",
 ] as const;
 
 type Module = (typeof MODULES)[number];
 
-const METHOD_COLOR: Record<HttpMethod, string> = {
-  GET: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400",
-  POST: "bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400",
-  PATCH: "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400",
-  PUT: "bg-orange-50 dark:bg-orange-950/30 text-orange-700 dark:text-orange-400",
-  DELETE: "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400",
+const METHOD_BADGE: Record<HttpMethod, string> = {
+  GET: "admin-badge-success",
+  POST: "admin-badge-info",
+  PATCH: "admin-badge-warning",
+  PUT: "admin-badge",
+  DELETE: "admin-badge-danger",
 };
 
 // ── Architecture docs ─────────────────────────────────────────────────────────
@@ -488,41 +1268,25 @@ export function AdminDocsSection() {
 
   const currentDoc = docs.find((d) => d.id === activeDoc)!;
 
-  const tabCls = (v: View) =>
-    `px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
-      view === v
-        ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
-        : "text-[#6e6e73] dark:text-[#86868b] bg-black/5 dark:bg-white/5 hover:text-[#1d1d1f] dark:hover:text-white"
-    }`;
-
   return (
-    <div className="relative flex flex-col gap-6">
-      {/* Decorative blobs */}
-      <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-amber-500/8 to-orange-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 -left-20 w-56 h-56 rounded-full bg-gradient-to-br from-orange-500/6 to-amber-500/4 blur-3xl pointer-events-none" />
+    <div className="flex flex-col gap-6">
+      <AdminPageHeader
+        title="Documentación"
+        description={`${ENDPOINTS.length} endpoints · 20 módulos · referencia técnica completa`}
+      />
 
-      {/* Header */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400 mb-1">Referencia</p>
-        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#1d1d1f] dark:text-white" style={{ letterSpacing: "-0.03em" }}>
-          Documentación
-        </h1>
-        <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-1">
-          {ENDPOINTS.length} endpoints · 20 módulos · referencia técnica completa
-        </p>
-      </div>
-
-      {/* View toggle */}
-      <div className="flex gap-1 bg-black/[0.04] dark:bg-white/[0.04] p-1 rounded-2xl w-fit border border-black/5 dark:border-white/5">
-        {([
-          { id: "endpoints", label: "Endpoint Explorer" },
-          { id: "architecture", label: "Arquitectura" },
-          { id: "database", label: "Base de datos" },
-          { id: "flowchart", label: "Flujo de aplicación" },
-        ] as const).map((tab) => (
+      <div className="admin-tabs">
+        {(
+          [
+            { id: "endpoints", label: "Endpoint Explorer" },
+            { id: "architecture", label: "Arquitectura" },
+            { id: "database", label: "Base de datos" },
+            { id: "flowchart", label: "Flujo de aplicación" },
+          ] as const
+        ).map((tab) => (
           <button
             key={tab.id}
-            className={tabCls(tab.id)}
+            className={`admin-tab ${view === tab.id ? "admin-tab-active" : ""}`}
             onClick={() => setView(tab.id)}
           >
             {tab.label}
@@ -533,83 +1297,68 @@ export function AdminDocsSection() {
       {/* Endpoint Explorer */}
       {view === "endpoints" && (
         <div className="flex flex-col gap-4">
-          {/* Search + filter */}
           <div className="flex gap-3 flex-wrap">
-            <div className="relative flex-1 min-w-48">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aeaeb2] dark:text-[#636366]" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-              <input
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116] text-sm text-[#1d1d1f] dark:text-white placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all"
-                placeholder="Buscar endpoint o ruta…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+            <input
+              className="ds-input flex-1 min-w-48"
+              placeholder="Buscar endpoint o ruta…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
             <div className="flex gap-1 flex-wrap">
               {MODULES.map((m) => (
-                <button
+                <AdminFilterChip
                   key={m}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${
-                    activeModule === m
-                      ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
-                      : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
-                  }`}
+                  active={activeModule === m}
                   onClick={() => setActiveModule(m)}
                 >
                   {m}
-                </button>
+                </AdminFilterChip>
               ))}
             </div>
           </div>
 
-          <p className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+          <p className="text-xs text-[var(--text-muted)]">
             {filtered.length} endpoint{filtered.length !== 1 ? "s" : ""}
           </p>
 
-          {/* Endpoint list */}
-          <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20">
-            <div className="h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
+          <AdminPanel compact>
             {filtered.length === 0 ? (
-              <p className="px-5 py-8 text-sm text-center text-[#6e6e73] dark:text-[#86868b]">
-                No endpoints match
-              </p>
+              <AdminEmptyState title="No endpoints match" />
             ) : (
-              <div className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
+              <div className="flex flex-col">
                 {filtered.map((e, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--bg-hover)] transition-colors border-b border-[var(--border-default)] last:border-b-0"
                   >
                     <span
-                      className={`px-2 py-0.5 rounded-md text-[10px] font-bold font-mono w-14 text-center flex-shrink-0 ${METHOD_COLOR[e.method]}`}
+                      className={`admin-badge font-mono w-14 text-center flex-shrink-0 ${METHOD_BADGE[e.method]}`}
                     >
                       {e.method}
                     </span>
-                    <code className="text-xs font-mono text-[#1d1d1f] dark:text-white flex-1 truncate">
+                    <code className="text-xs font-mono text-[var(--text-primary)] flex-1 truncate">
                       {e.path}
                     </code>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] flex-1 min-w-0 truncate hidden sm:block">
+                    <p className="text-xs text-[var(--text-secondary)] flex-1 min-w-0 truncate hidden sm:block">
                       {e.summary}
                     </p>
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                       {e.auth ? (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] bg-amber-50 dark:bg-amber-950/30 text-amber-600 font-medium">
+                        <span className="admin-badge admin-badge-warning">
                           auth
                         </span>
                       ) : (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] bg-green-50 dark:bg-green-950/30 text-green-600 font-medium">
+                        <span className="admin-badge admin-badge-success">
                           public
                         </span>
                       )}
                       {e.roles?.map((r) => (
-                        <span
-                          key={r}
-                          className="px-1.5 py-0.5 rounded text-[9px] bg-purple-50 dark:bg-purple-950/30 text-purple-600 font-medium"
-                        >
+                        <span key={r} className="admin-badge">
                           {r}
                         </span>
                       ))}
                       {e.rateLimit && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] bg-black/[0.04] dark:bg-white/[0.04] text-[#6e6e73] dark:text-[#86868b] font-mono">
+                        <span className="admin-badge font-mono">
                           {e.rateLimit}
                         </span>
                       )}
@@ -618,7 +1367,7 @@ export function AdminDocsSection() {
                 ))}
               </div>
             )}
-          </div>
+          </AdminPanel>
         </div>
       )}
 
@@ -639,15 +1388,11 @@ export function AdminDocsSection() {
       {/* Architecture docs */}
       {view === "architecture" && (
         <div className="flex flex-col gap-4">
-          <div className="flex gap-1 flex-wrap">
+          <div className="admin-tabs">
             {docs.map((d) => (
               <button
                 key={d.id}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                  activeDoc === d.id
-                    ? "bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] shadow-md"
-                    : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
-                }`}
+                className={`admin-tab ${activeDoc === d.id ? "admin-tab-active" : ""}`}
                 onClick={() => setActiveDoc(d.id)}
               >
                 {d.title}
@@ -656,25 +1401,22 @@ export function AdminDocsSection() {
           </div>
           <div className="flex flex-col gap-4">
             {currentDoc.content.map((section) => (
-              <div key={section.heading} className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 group">
-                <div className="h-1 bg-gradient-to-r from-amber-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="px-5 py-4">
-                  <h3 className="text-sm font-semibold text-[#1d1d1f] dark:text-white mb-3">
-                    {section.heading}
-                  </h3>
-                  <ul className="space-y-2">
-                    {section.items.map((item, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-[#6e6e73] dark:text-[#86868b]"
-                      >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <AdminPanel key={section.heading}>
+                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">
+                  {section.heading}
+                </h3>
+                <ul className="space-y-2">
+                  {section.items.map((item, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
+                    >
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </AdminPanel>
             ))}
           </div>
         </div>

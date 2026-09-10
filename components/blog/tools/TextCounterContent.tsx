@@ -1,17 +1,30 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 
 function analyzeText(text: string) {
   const chars = text.length;
   const charsNoSpaces = text.replace(/\s/g, "").length;
   const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-  const sentences = text.trim() ? text.split(/[.!?]+/).filter((s) => s.trim()).length : 0;
-  const paragraphs = text.trim() ? text.split(/\n\s*\n/).filter((p) => p.trim()).length : 0;
+  const sentences = text.trim()
+    ? text.split(/[.!?]+/).filter((s) => s.trim()).length
+    : 0;
+  const paragraphs = text.trim()
+    ? text.split(/\n\s*\n/).filter((p) => p.trim()).length
+    : 0;
   const lines = text ? text.split("\n").length : 0;
   const readingTimeMinutes = Math.max(1, Math.ceil(words / 200));
 
-  return { chars, charsNoSpaces, words, sentences, paragraphs, lines, readingTimeMinutes };
+  return {
+    chars,
+    charsNoSpaces,
+    words,
+    sentences,
+    paragraphs,
+    lines,
+    readingTimeMinutes,
+  };
 }
 
 interface StatItemProps {
@@ -87,15 +100,28 @@ export default function TextCounterContent() {
 
         {/* Stats grid */}
         <div className="grid grid-cols-3 gap-3">
-          <StatItem label={t("blog.textCounter.characters")} value={stats.chars} />
-          <StatItem label={t("blog.textCounter.words")} value={stats.words} accent />
-          <StatItem label={t("blog.textCounter.sentences")} value={stats.sentences} />
-          <StatItem label={t("blog.textCounter.paragraphs")} value={stats.paragraphs} />
+          <StatItem
+            label={t("blog.textCounter.characters")}
+            value={stats.chars}
+          />
+          <StatItem
+            accent
+            label={t("blog.textCounter.words")}
+            value={stats.words}
+          />
+          <StatItem
+            label={t("blog.textCounter.sentences")}
+            value={stats.sentences}
+          />
+          <StatItem
+            label={t("blog.textCounter.paragraphs")}
+            value={stats.paragraphs}
+          />
           <StatItem label={t("blog.textCounter.lines")} value={stats.lines} />
           <StatItem
+            accent
             label={t("blog.textCounter.readingTime")}
             value={`${stats.readingTimeMinutes} min`}
-            accent
           />
         </div>
 

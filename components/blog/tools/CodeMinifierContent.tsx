@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -51,7 +52,8 @@ export default function CodeMinifierContent() {
 
   const originalSize = new Blob([input]).size;
   const minifiedSize = new Blob([output]).size;
-  const savings = originalSize > 0 ? Math.round((1 - minifiedSize / originalSize) * 100) : 0;
+  const savings =
+    originalSize > 0 ? Math.round((1 - minifiedSize / originalSize) * 100) : 0;
 
   const minify = () => {
     setOutput(minifiers[language](input));
@@ -104,7 +106,10 @@ export default function CodeMinifierContent() {
                     ? "bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-400"
                     : "bg-black/5 dark:bg-white/5 text-[#6e6e73] dark:text-[#86868b] hover:bg-black/8 dark:hover:bg-white/8"
                 }`}
-                onClick={() => { setLanguage(lang); setOutput(""); }}
+                onClick={() => {
+                  setLanguage(lang);
+                  setOutput("");
+                }}
               >
                 {lang}
               </button>
@@ -144,7 +149,9 @@ export default function CodeMinifierContent() {
                   className="text-xs text-violet-600 dark:text-violet-400 hover:underline"
                   onClick={copy}
                 >
-                  {copied ? t("blog.codeMinifier.copied") : t("blog.codeMinifier.copy")}
+                  {copied
+                    ? t("blog.codeMinifier.copied")
+                    : t("blog.codeMinifier.copy")}
                 </button>
               )}
             </div>

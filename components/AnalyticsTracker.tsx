@@ -8,6 +8,7 @@ function generateUUID(): string {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
     const v = c === "x" ? r : (r & 0x3) | 0x8;
+
     return v.toString(16);
   });
 }
@@ -15,10 +16,12 @@ function generateUUID(): string {
 function getVisitorId(): string {
   try {
     let id = localStorage.getItem("analytics_visitor_id");
+
     if (!id) {
       id = generateUUID();
       localStorage.setItem("analytics_visitor_id", id);
     }
+
     return id;
   } catch {
     return generateUUID();
@@ -28,10 +31,12 @@ function getVisitorId(): string {
 function getSessionId(): string {
   try {
     let id = sessionStorage.getItem("analytics_session_id");
+
     if (!id) {
       id = generateUUID();
       sessionStorage.setItem("analytics_session_id", id);
     }
+
     return id;
   } catch {
     return generateUUID();
@@ -74,33 +79,39 @@ function sendPageView(path: string) {
 
     navigator.sendBeacon?.(
       "/api/analytics/track",
-      new Blob([JSON.stringify(payload)], { type: "application/json" })
-    ) ?? fetch("/api/analytics/track", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      keepalive: true,
-    });
+      new Blob([JSON.stringify(payload)], { type: "application/json" }),
+    ) ??
+      fetch("/api/analytics/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        keepalive: true,
+      });
   } catch {}
 }
 
 function sendDuration(sessionId: string, startTime: number) {
   try {
     const durationMs = Date.now() - startTime;
+
     if (durationMs < 1000) return;
 
     navigator.sendBeacon?.(
       "/api/analytics/duration",
       new Blob(
         [JSON.stringify({ session_id: sessionId, duration_ms: durationMs })],
-        { type: "application/json" }
-      )
-    ) ?? fetch("/api/analytics/duration", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ session_id: sessionId, duration_ms: durationMs }),
-      keepalive: true,
-    });
+        { type: "application/json" },
+      ),
+    ) ??
+      fetch("/api/analytics/duration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          session_id: sessionId,
+          duration_ms: durationMs,
+        }),
+        keepalive: true,
+      });
   } catch {}
 }
 
@@ -125,6 +136,7 @@ export default function AnalyticsTracker() {
     };
 
     router.events.on("routeChangeComplete", handleRouteChange);
+
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };

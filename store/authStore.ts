@@ -15,12 +15,16 @@ interface AuthCache {
 function readAuthCache(): AuthUser | null {
   try {
     const raw = localStorage.getItem(AUTH_CACHE_KEY);
+
     if (!raw) return null;
     const cached: AuthCache = JSON.parse(raw);
+
     if (Date.now() - cached.timestamp > AUTH_CACHE_MAX_AGE_MS) {
       localStorage.removeItem(AUTH_CACHE_KEY);
+
       return null;
     }
+
     return cached.user;
   } catch {
     return null;
@@ -29,7 +33,10 @@ function readAuthCache(): AuthUser | null {
 
 function writeAuthCache(user: AuthUser): void {
   try {
-    localStorage.setItem(AUTH_CACHE_KEY, JSON.stringify({ user, timestamp: Date.now() }));
+    localStorage.setItem(
+      AUTH_CACHE_KEY,
+      JSON.stringify({ user, timestamp: Date.now() }),
+    );
   } catch {}
 }
 
@@ -116,6 +123,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
 
   hydrateFromCache: () => {
     const cached = readAuthCache();
+
     if (!cached) return false;
 
     set({
@@ -124,6 +132,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
       isAdmin: cached.roles.includes("admin"),
       loadingAuth: false,
     });
+
     return true;
   },
 }));

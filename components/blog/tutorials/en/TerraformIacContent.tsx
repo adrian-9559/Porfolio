@@ -70,42 +70,39 @@ export default function TerraformIacContentEn() {
       <BlogP>
         <strong>Infrastructure as Code</strong> means managing and provisioning
         infrastructure — servers, networks, databases, DNS records — through
-        machine-readable configuration files instead of manual clicks in a
-        web console. The same way you version application code, you version your
+        machine-readable configuration files instead of manual clicks in a web
+        console. The same way you version application code, you version your
         infrastructure.
       </BlogP>
 
       <BlogP>
-        There are two main approaches.{" "}
-        <strong>Imperative</strong> scripts describe each step: "create this VPC,
-        then this subnet, then this instance."{" "}
-        <strong>Declarative</strong> tools like Terraform describe the{" "}
-        <em>desired end state</em> and let the engine figure out the steps to
-        get there.
+        There are two main approaches. <strong>Imperative</strong> scripts
+        describe each step: "create this VPC, then this subnet, then this
+        instance." <strong>Declarative</strong> tools like Terraform describe
+        the <em>desired end state</em> and let the engine figure out the steps
+        to get there.
       </BlogP>
 
       <BlogP>
-        The benefits are significant:{" "}
-        <strong>reproducibility</strong> (spin up identical environments on
-        demand), <strong>versioning</strong> (git history of every
-        infrastructure change), <strong>auditability</strong> (review PRs for
-        infra), and <strong>collaboration</strong> (teams share modules and
-        conventions).
+        The benefits are significant: <strong>reproducibility</strong> (spin up
+        identical environments on demand), <strong>versioning</strong> (git
+        history of every infrastructure change), <strong>auditability</strong>{" "}
+        (review PRs for infra), and <strong>collaboration</strong> (teams share
+        modules and conventions).
       </BlogP>
 
       <BlogP>
         Terraform by HashiCorp has become the de facto standard for multi-cloud
         IaC. It uses <BlogInlineCode>HCL</BlogInlineCode> (HashiCorp
         Configuration Language), works with hundreds of providers (AWS, GCP,
-        Azure, Docker, Supabase, Cloudflare...), and manages state
-        automatically so it knows what exists, what changed and what needs to be
-        destroyed.
+        Azure, Docker, Supabase, Cloudflare...), and manages state automatically
+        so it knows what exists, what changed and what needs to be destroyed.
       </BlogP>
 
       <BlogCallout type="info">
-        IaC doesn&apos;t replace hands-on experimentation. The recommended workflow is:
-        test manually or in a throwaway sandbox first, then codify what you
-        learned. The code becomes the single source of truth.
+        IaC doesn&apos;t replace hands-on experimentation. The recommended
+        workflow is: test manually or in a throwaway sandbox first, then codify
+        what you learned. The code becomes the single source of truth.
       </BlogCallout>
 
       <BlogH2 id="getting-started">Getting Started with Terraform</BlogH2>
@@ -210,8 +207,8 @@ terraform apply
 terraform destroy`}</BlogCode>
 
       <BlogP>
-        Terraform keeps a <strong>state file</strong>{" "}
-        (<BlogInlineCode>terraform.tfstate</BlogInlineCode>) that maps your
+        Terraform keeps a <strong>state file</strong> (
+        <BlogInlineCode>terraform.tfstate</BlogInlineCode>) that maps your
         configuration to real-world resources. Never edit this file manually —
         always use <BlogInlineCode>terraform state</BlogInlineCode> commands or
         let the engine manage it.
@@ -334,8 +331,7 @@ output "db_password" {
 
       <BlogCallout type="tip">
         Use <BlogInlineCode>sensitive = true</BlogInlineCode> on outputs that
-        contain secrets. Terraform will redact the value in CLI output and
-        logs.
+        contain secrets. Terraform will redact the value in CLI output and logs.
       </BlogCallout>
 
       <BlogP>
@@ -387,9 +383,8 @@ output "sg_id" {
 
       <BlogP>
         Modules are the building blocks of reusable Terraform. A module is just
-        a directory with <BlogInlineCode>.tf</BlogInlineCode> files that
-        accepts inputs (variables) and returns outputs. You can publish modules
-        to the{" "}
+        a directory with <BlogInlineCode>.tf</BlogInlineCode> files that accepts
+        inputs (variables) and returns outputs. You can publish modules to the{" "}
         <BlogInlineCode>registry.terraform.io</BlogInlineCode> or consume them
         locally.
       </BlogP>
@@ -490,8 +485,8 @@ output "vpc_id" {
 
       <BlogCallout type="info">
         Start with official registry modules for common infrastructure (VPC,
-        RDS, ECS). Write your own modules for company-specific patterns.
-        Modules are the key to keeping Terraform configs DRY at scale.
+        RDS, ECS). Write your own modules for company-specific patterns. Modules
+        are the key to keeping Terraform configs DRY at scale.
       </BlogCallout>
 
       <BlogH2 id="best-practices">Best Practices and CI/CD for IaC</BlogH2>
@@ -549,8 +544,8 @@ resource "aws_instance" "api" {
       <BlogP>
         Infrastructure drift happens when someone makes manual changes outside
         Terraform. Detect it by running{" "}
-        <BlogInlineCode>terraform plan</BlogInlineCode> regularly — it will
-        show any differences between state and reality:
+        <BlogInlineCode>terraform plan</BlogInlineCode> regularly — it will show
+        any differences between state and reality:
       </BlogP>
 
       <BlogCode>{`# Detect drift
@@ -567,8 +562,8 @@ terraform apply  # brings infrastructure back to config state`}</BlogCode>
 
       <BlogP>
         <BlogInlineCode>tfsec</BlogInlineCode> (now{" "}
-        <BlogInlineCode>trivy config</BlogInlineCode>) scans your Terraform
-        for security misconfigurations before you apply:
+        <BlogInlineCode>trivy config</BlogInlineCode>) scans your Terraform for
+        security misconfigurations before you apply:
       </BlogP>
 
       <BlogCode>{`# Install tfsec
@@ -663,16 +658,16 @@ jobs:
 
       <BlogCallout type="danger">
         Never run <BlogInlineCode>terraform apply</BlogInlineCode> without
-        reviewing the plan first in production. The plan is your safety net —
-        it shows exactly what will be created, changed or destroyed. Automate
-        the review in CI but always require human approval for apply.
+        reviewing the plan first in production. The plan is your safety net — it
+        shows exactly what will be created, changed or destroyed. Automate the
+        review in CI but always require human approval for apply.
       </BlogCallout>
 
       <BlogCallout type="done">
-        You now have the full Terraform workflow: declare infrastructure in
-        HCL, modularize with reusable modules, secure with tfsec, and ship
-        through CI/CD. The same code that defines your infra becomes the
-        documentation, the audit trail and the recovery mechanism.
+        You now have the full Terraform workflow: declare infrastructure in HCL,
+        modularize with reusable modules, secure with tfsec, and ship through
+        CI/CD. The same code that defines your infra becomes the documentation,
+        the audit trail and the recovery mechanism.
       </BlogCallout>
     </article>
   );

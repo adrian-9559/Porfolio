@@ -136,7 +136,7 @@ function GuideNode({
       )}
       <Link
         className="block group/node relative overflow-hidden rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 hover:border-emerald-300/60 dark:hover:border-emerald-700/60 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 transition-all duration-200 no-underline motion-safe:transition-all p-4"
-        href={`/campus/guias/${guide.slug}`}
+        href={`/campus/cursos/${guide.slug}`}
       >
         <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
           <span

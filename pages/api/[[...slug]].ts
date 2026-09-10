@@ -7,7 +7,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
  */
 
 const BACKEND = (
-  process.env.BACKEND_API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"
+  process.env.BACKEND_API_URL ??
+  process.env.NEXT_PUBLIC_API_URL ??
+  "http://localhost:3001"
 ).replace(/\/$/, "");
 const API_KEY = process.env.BACKEND_API_KEY ?? process.env.API_KEY ?? "";
 const IS_PROD = process.env.NODE_ENV === "production";
@@ -121,6 +123,7 @@ export default async function handler(
 
     resp.headers.forEach((value, key) => {
       const k = key.toLowerCase();
+
       if (
         k === "set-cookie" ||
         k === "content-length" ||

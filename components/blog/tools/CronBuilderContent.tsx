@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -15,15 +16,78 @@ const FIELDS: CronField[] = [
   },
   {
     label: "Hour",
-    values: ["*", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "*/2", "*/4", "*/6", "*/8", "*/12"],
+    values: [
+      "*",
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "*/2",
+      "*/4",
+      "*/6",
+      "*/8",
+      "*/12",
+    ],
   },
   {
     label: "Day (Month)",
-    values: ["*", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "15", "20", "25", "28", "30", "31"],
+    values: [
+      "*",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "15",
+      "20",
+      "25",
+      "28",
+      "30",
+      "31",
+    ],
   },
   {
     label: "Month",
-    values: ["*", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+    values: [
+      "*",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+    ],
   },
   {
     label: "Day (Week)",
@@ -74,7 +138,13 @@ function getNextExecutions(expr: string, count: number): Date[] {
       return pattern.split(",").some((p) => parseInt(p, 10) === val);
     };
 
-    return matchField(m, minP) && matchField(h, hourP) && matchField(dom, dayP) && matchField(mon, monthP) && matchField(dow, dowP);
+    return (
+      matchField(m, minP) &&
+      matchField(h, hourP) &&
+      matchField(dom, dayP) &&
+      matchField(mon, monthP) &&
+      matchField(dow, dowP)
+    );
   };
 
   const d = new Date(now);
@@ -94,7 +164,10 @@ function getNextExecutions(expr: string, count: number): Date[] {
 
 function formatCronField(val: string, fieldIdx: number): string {
   if (fieldIdx === 4 && val !== "*" && !val.includes("/")) {
-    return val.split(",").map((v) => DAY_NAMES[parseInt(v, 10)] || v).join(",");
+    return val
+      .split(",")
+      .map((v) => DAY_NAMES[parseInt(v, 10)] || v)
+      .join(",");
   }
 
   return val;
@@ -108,7 +181,10 @@ export default function CronBuilderContent() {
   const [copied, setCopied] = useState(false);
 
   const expression = isManual ? manualExpr : fields.join(" ");
-  const nextDates = useMemo(() => getNextExecutions(expression, 5), [expression]);
+  const nextDates = useMemo(
+    () => getNextExecutions(expression, 5),
+    [expression],
+  );
 
   const setField = (index: number, value: string) => {
     const next = [...fields];
@@ -219,7 +295,9 @@ export default function CronBuilderContent() {
               className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
               onClick={copy}
             >
-              {copied ? t("blog.cronBuilder.copied") : t("blog.cronBuilder.copy")}
+              {copied
+                ? t("blog.cronBuilder.copied")
+                : t("blog.cronBuilder.copy")}
             </button>
           </div>
           <div className="relative">
@@ -242,7 +320,10 @@ export default function CronBuilderContent() {
             </p>
             <div className="space-y-1.5">
               {nextDates.map((d, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs font-mono text-amber-900 dark:text-amber-300">
+                <div
+                  key={i}
+                  className="flex items-center gap-2 text-xs font-mono text-amber-900 dark:text-amber-300"
+                >
                   <span className="w-5 h-5 flex items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/50 text-[10px] font-bold text-amber-700 dark:text-amber-400">
                     {i + 1}
                   </span>

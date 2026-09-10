@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 
 interface BmiResult {
@@ -38,6 +39,7 @@ function classifyBmi(bmi: number): BmiResult {
       borderColor: "border-amber-200 dark:border-amber-800/50",
     };
   }
+
   return {
     value: bmi,
     classification: "Obese",
@@ -96,13 +98,13 @@ export default function BmiCalculatorContent() {
               </label>
               <div className="relative">
                 <input
+                  className="w-full px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+                  max="500"
+                  min="1"
+                  placeholder="70"
                   type="number"
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
-                  placeholder="70"
-                  min="1"
-                  max="500"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#6e6e73] dark:text-[#86868b]">
                   kg
@@ -115,13 +117,13 @@ export default function BmiCalculatorContent() {
               </label>
               <div className="relative">
                 <input
+                  className="w-full px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+                  max="300"
+                  min="1"
+                  placeholder="175"
                   type="number"
                   value={height}
                   onChange={(e) => setHeight(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-lg font-mono focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
-                  placeholder="175"
-                  min="1"
-                  max="300"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#6e6e73] dark:text-[#86868b]">
                   cm
@@ -131,8 +133,8 @@ export default function BmiCalculatorContent() {
           </div>
 
           <button
-            onClick={calculate}
             className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors"
+            onClick={calculate}
           >
             {t("blog.bmiCalculator.calculate")}
           </button>

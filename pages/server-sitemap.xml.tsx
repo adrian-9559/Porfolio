@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/blog/articulos",
     "/blog/herramientas",
     "/campus",
-    "/campus/guias",
+    "/campus/cursos",
     "/tools",
     "/tools/git-repositories",
   ];
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
 
   // Las guías no viven en allContent (no cubiertas por contentHref) → se añaden
   // sus URLs manualmente para no perder su indexación al migrar de /blog/tutoriales/guias.
-  const guidePages = getGuides().map((g) => `/campus/guias/${g.slug}`);
+  const guidePages = getGuides().map((g) => `/campus/cursos/${g.slug}`);
 
   const allUrls = [...staticPages, ...blogPages, ...guidePages];
 

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -13,15 +14,149 @@ const CATEGORIES: { id: Category; label: string }[] = [
   { id: "date", label: "Date" },
 ];
 
-const FIRST_NAMES_M = ["Carlos", "Miguel", "Andrés", "Diego", "Javier", "Pablo", "Sergio", "Alejandro", "Fernando", "Luis", "Marco", "Pedro", "Tomás", "Adrián", "Óscar", "Raúl", "Hugo", "Lucas", "Mateo", "Daniel"];
-const FIRST_NAMES_F = ["María", "Ana", "Laura", "Carmen", "Rosa", "Elena", "Sofía", "Valentina", "Camila", "Isabella", "Lucía", "Paula", "Martina", "Julia", "Clara", "Olivia", "Emma", "Catalina", "Andrea", "Gabriela"];
-const LAST_NAMES = ["García", "Rodríguez", "Martínez", "López", "Hernández", "González", "Pérez", "Sánchez", "Ramírez", "Torres", "Flores", "Rivera", "Gómez", "Díaz", "Cruz", "Morales", "Reyes", "Ortiz", "Gutiérrez", "Chávez"];
-const DOMAINS = ["gmail.com", "outlook.com", "yahoo.com", "hotmail.com", "protonmail.com"];
-const STREET_NAMES = ["Av. Reforma", "Calle Hidalgo", "Calle Juárez", "Av. Insurgentes", "Calle Morelos", "Blvd. Centro", "Av. Constitución", "Calle Allende", "Av. Universidad", "Calle Madero"];
-const CITIES = ["Ciudad de México", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Mérida", "Querétaro", "Cancún", "Oaxaca"];
-const BRANDS = ["Nike", "Adidas", "Zara", "H&M", "Uniqlo", "Levi's", "Samsung", "Apple", "Sony", "LG"];
-const PRODUCTS = ["Camiseta", "Pantalones", "Zapatillas", "Chaqueta", "Reloj", "Mochila", "Gafas", "Cinturón", "Calcetines", "Gorra"];
-const WORDS = ["sol", "luna", "estrella", "mar", "montaña", "río", "cielo", "viento", "fuego", "tierra", "bosque", "arena", "nube", "lluvia", "nieve", "flor", "árbol", "piedra", "ojo", "mano"];
+const FIRST_NAMES_M = [
+  "Carlos",
+  "Miguel",
+  "Andrés",
+  "Diego",
+  "Javier",
+  "Pablo",
+  "Sergio",
+  "Alejandro",
+  "Fernando",
+  "Luis",
+  "Marco",
+  "Pedro",
+  "Tomás",
+  "Adrián",
+  "Óscar",
+  "Raúl",
+  "Hugo",
+  "Lucas",
+  "Mateo",
+  "Daniel",
+];
+const FIRST_NAMES_F = [
+  "María",
+  "Ana",
+  "Laura",
+  "Carmen",
+  "Rosa",
+  "Elena",
+  "Sofía",
+  "Valentina",
+  "Camila",
+  "Isabella",
+  "Lucía",
+  "Paula",
+  "Martina",
+  "Julia",
+  "Clara",
+  "Olivia",
+  "Emma",
+  "Catalina",
+  "Andrea",
+  "Gabriela",
+];
+const LAST_NAMES = [
+  "García",
+  "Rodríguez",
+  "Martínez",
+  "López",
+  "Hernández",
+  "González",
+  "Pérez",
+  "Sánchez",
+  "Ramírez",
+  "Torres",
+  "Flores",
+  "Rivera",
+  "Gómez",
+  "Díaz",
+  "Cruz",
+  "Morales",
+  "Reyes",
+  "Ortiz",
+  "Gutiérrez",
+  "Chávez",
+];
+const DOMAINS = [
+  "gmail.com",
+  "outlook.com",
+  "yahoo.com",
+  "hotmail.com",
+  "protonmail.com",
+];
+const STREET_NAMES = [
+  "Av. Reforma",
+  "Calle Hidalgo",
+  "Calle Juárez",
+  "Av. Insurgentes",
+  "Calle Morelos",
+  "Blvd. Centro",
+  "Av. Constitución",
+  "Calle Allende",
+  "Av. Universidad",
+  "Calle Madero",
+];
+const CITIES = [
+  "Ciudad de México",
+  "Guadalajara",
+  "Monterrey",
+  "Puebla",
+  "Tijuana",
+  "León",
+  "Mérida",
+  "Querétaro",
+  "Cancún",
+  "Oaxaca",
+];
+const BRANDS = [
+  "Nike",
+  "Adidas",
+  "Zara",
+  "H&M",
+  "Uniqlo",
+  "Levi's",
+  "Samsung",
+  "Apple",
+  "Sony",
+  "LG",
+];
+const PRODUCTS = [
+  "Camiseta",
+  "Pantalones",
+  "Zapatillas",
+  "Chaqueta",
+  "Reloj",
+  "Mochila",
+  "Gafas",
+  "Cinturón",
+  "Calcetines",
+  "Gorra",
+];
+const WORDS = [
+  "sol",
+  "luna",
+  "estrella",
+  "mar",
+  "montaña",
+  "río",
+  "cielo",
+  "viento",
+  "fuego",
+  "tierra",
+  "bosque",
+  "arena",
+  "nube",
+  "lluvia",
+  "nieve",
+  "flor",
+  "árbol",
+  "piedra",
+  "ojo",
+  "mano",
+];
 const SENTENCES = [
   "El rápido zorro marrón salta sobre el perro perezoso.",
   "En un lugar de la mancha, cuyo nombre no quiero acordarme.",
@@ -50,6 +185,7 @@ function randFloat(min: number, max: number): number {
 function uuid(): string {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
+
     return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
   });
 }
@@ -58,6 +194,7 @@ function randomDate(past: boolean): string {
   const now = Date.now();
   const offset = past ? -randInt(1, 365 * 5) : randInt(1, 365 * 2);
   const d = new Date(now + offset * 86400000);
+
   return d.toISOString().split("T")[0];
 }
 
@@ -69,6 +206,7 @@ function generateRecord(categories: Category[]): Record<string, unknown> {
     const first = isMale ? pick(FIRST_NAMES_M) : pick(FIRST_NAMES_F);
     const last1 = pick(LAST_NAMES);
     const last2 = pick(LAST_NAMES);
+
     rec.first_name = first;
     rec.last_name = `${last1} ${last2}`;
     rec.email = `${first.toLowerCase()}.${last1.toLowerCase()}@${pick(DOMAINS)}`;
@@ -92,7 +230,9 @@ function generateRecord(categories: Category[]): Record<string, unknown> {
   if (categories.includes("text")) {
     rec.word = pick(WORDS);
     rec.sentence = pick(SENTENCES);
-    rec.paragraph = Array.from({ length: randInt(3, 6) }, () => pick(SENTENCES)).join(" ");
+    rec.paragraph = Array.from({ length: randInt(3, 6) }, () =>
+      pick(SENTENCES),
+    ).join(" ");
   }
 
   if (categories.includes("date")) {
@@ -120,6 +260,7 @@ export default function MockDataContent() {
   const generate = () => {
     if (selected.length === 0) return;
     const rows = Array.from({ length: count }, () => generateRecord(selected));
+
     setData(rows);
   };
 
@@ -177,12 +318,12 @@ export default function MockDataContent() {
             {t("blog.mockData.records")}
           </p>
           <input
-            type="range"
-            min={1}
+            className="w-40 accent-amber-500"
             max={100}
+            min={1}
+            type="range"
             value={count}
             onChange={(e) => setCount(Number(e.target.value))}
-            className="w-40 accent-amber-500"
           />
           <span className="text-sm font-mono text-[#1d1d1f] dark:text-white w-8 text-center">
             {count}
@@ -209,7 +350,9 @@ export default function MockDataContent() {
                 className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
                 onClick={copyAll}
               >
-                {copied ? t("blog.mockData.copied") : t("blog.mockData.copyAll")}
+                {copied
+                  ? t("blog.mockData.copied")
+                  : t("blog.mockData.copyAll")}
               </button>
             </div>
             <div className="p-3 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 max-h-80 overflow-auto">

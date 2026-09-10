@@ -521,9 +521,15 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
           className="sm:hidden self-end mb-4 w-8 h-8 flex flex-col items-center justify-center gap-[5px] rounded-xl border border-black/12 dark:border-white/12 text-foreground"
           onClick={() => setMobileOpen((v) => !v)}
         >
-          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 rotate-45 translate-y-[6.5px]" : "w-4"}`} />
-          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 ${mobileOpen ? "w-0 opacity-0" : "w-3"}`} />
-          <span className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 -rotate-45 -translate-y-[6.5px]" : "w-4"}`} />
+          <span
+            className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 rotate-45 translate-y-[6.5px]" : "w-4"}`}
+          />
+          <span
+            className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 ${mobileOpen ? "w-0 opacity-0" : "w-3"}`}
+          />
+          <span
+            className={`block h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "w-4 -rotate-45 -translate-y-[6.5px]" : "w-4"}`}
+          />
         </button>
 
         <div className="flex gap-6 flex-1 relative">
@@ -539,7 +545,9 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
           <aside
             aria-label={t("nav.blogNavigation")}
             className={`fixed top-0 left-0 z-50 h-full w-72 bg-background sm:relative sm:w-56 lg:w-60 shrink-0 transform transition-transform duration-300 ease-out sm:transform-none ${
-              mobileOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
+              mobileOpen
+                ? "translate-x-0"
+                : "-translate-x-full sm:translate-x-0"
             }`}
             id="blog-sidebar"
           >
@@ -553,8 +561,18 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
                 className="sm:hidden absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/5 dark:hover:bg-white/8 transition-colors text-muted"
                 onClick={() => setMobileOpen(false)}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M6 18L18 6M6 6l12 12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
                 </svg>
               </button>
               <SidebarSearch currentPath={currentPath} />
@@ -613,20 +631,20 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
       </div>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-border">
+      <footer className="mt-auto border-t border-[var(--border-default)]">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 py-10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-6 h-6 rounded-md bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-xs">
+              <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[var(--color-brand-from)] via-[var(--color-brand-via)] to-[var(--color-brand-to)] flex items-center justify-center text-white font-bold text-xs">
                 A
               </div>
-              <span className="text-sm font-medium text-foreground">
+              <span className="text-sm font-medium text-[var(--text-primary)]">
                 {t("footer.brandName")}
               </span>
             </div>
             <div className="flex items-center gap-6">
               <a
-                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
+                className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
                 href={siteConfig.links.github}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -634,7 +652,7 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
                 GitHub
               </a>
               <a
-                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
+                className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
                 href={siteConfig.links.linkedin}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -642,13 +660,13 @@ export default function BlogLayout({ children, seo }: BlogLayoutProps) {
                 LinkedIn
               </a>
               <a
-                className="text-sm text-muted hover:text-foreground transition-colors no-underline"
+                className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
                 href={`mailto:${siteConfig.contact.email}`}
               >
                 {t("contact.email")}
               </a>
             </div>
-            <p className="text-xs text-muted/60">
+            <p className="text-xs text-[var(--text-muted)]">
               {t("footer.copyright", { year: new Date().getFullYear() })}
             </p>
           </div>

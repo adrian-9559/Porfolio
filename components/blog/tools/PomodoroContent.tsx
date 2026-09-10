@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
+
 import { useT } from "@/hooks/useT";
 
 type Mode = "work" | "short" | "long";
@@ -64,12 +65,13 @@ export default function PomodoroContent() {
       setTotalSeconds(total);
       setRemaining(total);
     },
-    [workMin, shortMin, longMin]
+    [workMin, shortMin, longMin],
   );
 
   const start = useCallback(() => {
     if (remaining <= 0) {
-      const mins = mode === "work" ? workMin : mode === "short" ? shortMin : longMin;
+      const mins =
+        mode === "work" ? workMin : mode === "short" ? shortMin : longMin;
       const total = mins * 60;
 
       setTotalSeconds(total);
@@ -82,7 +84,8 @@ export default function PomodoroContent() {
 
   const reset = useCallback(() => {
     setRunning(false);
-    const mins = mode === "work" ? workMin : mode === "short" ? shortMin : longMin;
+    const mins =
+      mode === "work" ? workMin : mode === "short" ? shortMin : longMin;
     const total = mins * 60;
 
     setTotalSeconds(total);
@@ -108,16 +111,20 @@ export default function PomodoroContent() {
 
                   setTotalSeconds(total);
                   setRemaining(total);
+
                   return next;
                 });
               } else {
                 setTotalSeconds(workMin * 60);
                 setRemaining(workMin * 60);
               }
+
               return currentMode === "work" ? "short" : "work";
             });
+
             return 0;
           }
+
           return prev - 1;
         });
       }, 1000);
@@ -174,12 +181,12 @@ export default function PomodoroContent() {
           {modes.map((m) => (
             <button
               key={m.key}
-              onClick={() => applyMode(m.key)}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                 mode === m.key
                   ? `${modeColors[m.key]} text-white`
                   : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b]"
               }`}
+              onClick={() => applyMode(m.key)}
             >
               {m.label}
             </button>
@@ -191,29 +198,31 @@ export default function PomodoroContent() {
           <div className="relative w-44 h-44">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
               <circle
+                className="text-black/5 dark:text-white/5"
                 cx="60"
                 cy="60"
-                r="54"
                 fill="none"
+                r="54"
                 stroke="currentColor"
                 strokeWidth="6"
-                className="text-black/5 dark:text-white/5"
               />
               <circle
+                className={`${accentColors[mode]} transition-[stroke-dashoffset] duration-1000`}
                 cx="60"
                 cy="60"
-                r="54"
                 fill="none"
+                r="54"
                 stroke="currentColor"
-                strokeWidth="6"
-                strokeLinecap="round"
                 strokeDasharray={circumference}
                 strokeDashoffset={dashOffset}
-                className={`${accentColors[mode]} transition-[stroke-dashoffset] duration-1000`}
+                strokeLinecap="round"
+                strokeWidth="6"
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className={`text-5xl font-bold font-mono ${accentColors[mode]}`}>
+              <span
+                className={`text-5xl font-bold font-mono ${accentColors[mode]}`}
+              >
                 {formatTime(remaining)}
               </span>
               <span className="text-xs text-[#6e6e73] dark:text-[#86868b] mt-1">
@@ -236,7 +245,9 @@ export default function PomodoroContent() {
               </span>
             )}
             <span className="text-xs text-[#6e6e73] dark:text-[#86868b] ml-1">
-              {sessions > 0 ? `${sessions} ${t("blog.pomodoroTimer.sessions")}` : ""}
+              {sessions > 0
+                ? `${sessions} ${t("blog.pomodoroTimer.sessions")}`
+                : ""}
             </span>
           </div>
 
@@ -244,22 +255,22 @@ export default function PomodoroContent() {
           <div className="flex gap-3">
             {!running ? (
               <button
-                onClick={start}
                 className={`px-6 py-2.5 rounded-xl ${modeColors[mode]} text-white font-semibold transition-colors`}
+                onClick={start}
               >
                 {t("blog.pomodoroTimer.start")}
               </button>
             ) : (
               <button
-                onClick={pause}
                 className={`px-6 py-2.5 rounded-xl ${modeColors[mode]} text-white font-semibold transition-colors`}
+                onClick={pause}
               >
                 {t("blog.pomodoroTimer.pause")}
               </button>
             )}
             <button
-              onClick={reset}
               className="px-6 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#6e6e73] dark:text-[#86868b] hover:border-black/15 dark:hover:border-white/15 font-semibold transition-all"
+              onClick={reset}
             >
               {t("blog.pomodoroTimer.reset")}
             </button>
@@ -278,15 +289,19 @@ export default function PomodoroContent() {
               </label>
               <div className="flex items-center gap-1">
                 <input
+                  className="w-full px-3 py-1.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm font-mono focus:outline-none focus:border-rose-500 dark:focus:border-rose-400 transition-colors"
+                  disabled={running}
+                  max="60"
+                  min="1"
                   type="number"
                   value={workMin}
-                  onChange={(e) => setWorkMin(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full px-3 py-1.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm font-mono focus:outline-none focus:border-rose-500 dark:focus:border-rose-400 transition-colors"
-                  min="1"
-                  max="60"
-                  disabled={running}
+                  onChange={(e) =>
+                    setWorkMin(Math.max(1, parseInt(e.target.value) || 1))
+                  }
                 />
-                <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">min</span>
+                <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                  min
+                </span>
               </div>
             </div>
             <div className="space-y-1">
@@ -295,15 +310,19 @@ export default function PomodoroContent() {
               </label>
               <div className="flex items-center gap-1">
                 <input
+                  className="w-full px-3 py-1.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm font-mono focus:outline-none focus:border-rose-500 dark:focus:border-rose-400 transition-colors"
+                  disabled={running}
+                  max="30"
+                  min="1"
                   type="number"
                   value={shortMin}
-                  onChange={(e) => setShortMin(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full px-3 py-1.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm font-mono focus:outline-none focus:border-rose-500 dark:focus:border-rose-400 transition-colors"
-                  min="1"
-                  max="30"
-                  disabled={running}
+                  onChange={(e) =>
+                    setShortMin(Math.max(1, parseInt(e.target.value) || 1))
+                  }
                 />
-                <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">min</span>
+                <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                  min
+                </span>
               </div>
             </div>
             <div className="space-y-1">
@@ -312,15 +331,19 @@ export default function PomodoroContent() {
               </label>
               <div className="flex items-center gap-1">
                 <input
+                  className="w-full px-3 py-1.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm font-mono focus:outline-none focus:border-rose-500 dark:focus:border-rose-400 transition-colors"
+                  disabled={running}
+                  max="60"
+                  min="1"
                   type="number"
                   value={longMin}
-                  onChange={(e) => setLongMin(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full px-3 py-1.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm font-mono focus:outline-none focus:border-rose-500 dark:focus:border-rose-400 transition-colors"
-                  min="1"
-                  max="60"
-                  disabled={running}
+                  onChange={(e) =>
+                    setLongMin(Math.max(1, parseInt(e.target.value) || 1))
+                  }
                 />
-                <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">min</span>
+                <span className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                  min
+                </span>
               </div>
             </div>
           </div>

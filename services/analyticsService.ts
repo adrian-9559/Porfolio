@@ -54,7 +54,9 @@ export const analyticsService = {
   },
 
   async getTrafficByDay(days: number = 30): Promise<TrafficByDay[]> {
-    return apiFetch<TrafficByDay[]>(`/api/analytics/traffic-by-day?days=${days}`);
+    return apiFetch<TrafficByDay[]>(
+      `/api/analytics/traffic-by-day?days=${days}`,
+    );
   },
 
   async getRecentVisitors(limit: number = 20): Promise<RecentVisitor[]> {

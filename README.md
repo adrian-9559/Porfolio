@@ -17,14 +17,14 @@ Un portafolio profesional moderno y minimalista diseñado al estilo Apple, const
 
 ## 🛠️ Tecnologías
 
-| Tecnología | Versión | Propósito |
-|-----------|---------|----------|
-| Next.js | 16.2.6 | Framework React |
-| React | 19.2.6 | UI Library |
-| TypeScript | 5.6.3 | Type Safety |
-| Tailwind CSS | 4.1.11 | Utility-first CSS |
-| HeroUI | 3.1.0 | Componentes UI |
-| next-themes | 0.4.6 | Dark Mode |
+| Tecnología   | Versión | Propósito         |
+| ------------ | ------- | ----------------- |
+| Next.js      | 16.2.6  | Framework React   |
+| React        | 19.2.6  | UI Library        |
+| TypeScript   | 5.6.3   | Type Safety       |
+| Tailwind CSS | 4.1.11  | Utility-first CSS |
+| HeroUI       | 3.1.0   | Componentes UI    |
+| next-themes  | 0.4.6   | Dark Mode         |
 
 ## 📂 Estructura del Proyecto
 
@@ -50,18 +50,21 @@ Porfolio/
 ## 🚀 Instalación y Desarrollo
 
 ### Requisitos
+
 - Node.js 18+
 - npm, yarn, pnpm o bun
 
 ### Pasos
 
 1. **Clonar el repositorio**
+
 ```bash
 git clone https://github.com/adrian-9559/Porfolio.git
 cd Porfolio
 ```
 
 2. **Instalar dependencias**
+
 ```bash
 npm install
 # O con pnpm
@@ -69,12 +72,15 @@ pnpm install
 ```
 
 3. **Ejecutar en desarrollo**
+
 ```bash
 npm run dev
 ```
+
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
 4. **Build producción**
+
 ```bash
 npm run build
 npm run start
@@ -83,6 +89,7 @@ npm run start
 ## 📖 Páginas
 
 ### Home `/`
+
 - Hero section con CTA
 - Estadísticas y métricas
 - Habilidades por categoría
@@ -92,23 +99,27 @@ npm run start
 - Call to action
 
 ### About `/about`
+
 - Historia personal
 - Metodología de trabajo
 - Timeline de carrera
 - Estadísticas destacadas
 
 ### CV `/pricing`
+
 - Experiencia profesional
 - Educación
 - Descarga de CV
 - Logros
 
 ### Blog `/blog`
+
 - Posts destacados
 - Grid de artículos
 - Metadatos (fecha, categoría)
 
 ### Contacto `/contact`
+
 - Formulario de contacto
 - Métodos de contacto directo
 - Links a redes sociales
@@ -116,12 +127,15 @@ npm run start
 ## 🎨 Personalización
 
 ### Cambiar Colores
+
 Edita los gradientes en los componentes:
+
 ```tsx
 from-blue-600 to-cyan-600  // Cambiar a tus colores
 ```
 
 ### Actualizar Contenido
+
 1. **Hero**: `components/hero.tsx`
 2. **Skills**: `components/skills.tsx`
 3. **Projects**: `components/projects.tsx`
@@ -129,6 +143,7 @@ from-blue-600 to-cyan-600  // Cambiar a tus colores
 5. **Contact**: `components/contact.tsx`
 
 ### Agregar Nuevas Páginas
+
 1. Crea: `pages/nombre/index.tsx`
 2. Importa: `DefaultLayout`
 3. Actualiza: `config/site.ts`
@@ -169,6 +184,7 @@ Este proyecto está bajo la licencia MIT.
 ## 👤 Autor
 
 **Adrián Escribano Pérez**
+
 - 💼 [LinkedIn](https://www.linkedin.com/in/adrián-escribano-pérez)
 - 🐙 [GitHub](https://github.com/adrian-9559)
 - 📧 [Email](mailto:adrian.escribano.perez@gmail.com)

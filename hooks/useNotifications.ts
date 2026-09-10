@@ -50,6 +50,7 @@ function startOfDay(d: Date): Date {
   const r = new Date(d);
 
   r.setHours(0, 0, 0, 0);
+
   return r;
 }
 
@@ -68,6 +69,7 @@ function getRelativeLabel(iso: string): string {
   if (diff === 1) return "yesterday";
   if (diff <= 6) return "thisWeek";
   if (diff <= 30) return "thisMonth";
+
   return "older";
 }
 
@@ -175,16 +177,14 @@ export function useNotifications(): UseNotificationsReturn {
         const next = { ...prev, ...prefs };
 
         savePrefs(next);
+
         return next;
       });
     },
     [],
   );
 
-  const groups = useMemo(
-    () => groupByDate(notifications),
-    [notifications],
-  );
+  const groups = useMemo(() => groupByDate(notifications), [notifications]);
 
   return {
     notifications,

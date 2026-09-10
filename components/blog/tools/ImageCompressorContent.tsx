@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useCallback, useEffect } from "react";
+
 import { useT } from "@/hooks/useT";
 
 interface CompressedResult {
@@ -12,6 +13,7 @@ interface CompressedResult {
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
@@ -31,7 +33,8 @@ export default function ImageCompressorContent() {
 
   useEffect(() => {
     return () => {
-      if (sourcePreviewUrlRef.current) URL.revokeObjectURL(sourcePreviewUrlRef.current);
+      if (sourcePreviewUrlRef.current)
+        URL.revokeObjectURL(sourcePreviewUrlRef.current);
       if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
     };
   }, []);
@@ -51,10 +54,15 @@ export default function ImageCompressorContent() {
         canvas.width = bitmap.width;
         canvas.height = bitmap.height;
         const ctx = canvas.getContext("2d")!;
+
         ctx.drawImage(bitmap, 0, 0);
 
         const mimeType =
-          format === "webp" ? "image/webp" : format === "jpeg" ? "image/jpeg" : "image/png";
+          format === "webp"
+            ? "image/webp"
+            : format === "jpeg"
+              ? "image/jpeg"
+              : "image/png";
         const q = format === "png" ? undefined : quality / 100;
 
         const blob = await new Promise<Blob>((resolve, reject) => {
@@ -70,6 +78,7 @@ export default function ImageCompressorContent() {
 
         if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
         const url = URL.createObjectURL(blob);
+
         resultUrlRef.current = url;
         setResult({
           originalSize: file.size,
@@ -91,11 +100,14 @@ export default function ImageCompressorContent() {
     setResult(null);
     if (!ALLOWED.includes(file.type)) {
       setError(t("blog.imageCompressor.invalidType"));
+
       return;
     }
     setSourceFile(file);
-    if (sourcePreviewUrlRef.current) URL.revokeObjectURL(sourcePreviewUrlRef.current);
+    if (sourcePreviewUrlRef.current)
+      URL.revokeObjectURL(sourcePreviewUrlRef.current);
     const url = URL.createObjectURL(file);
+
     sourcePreviewUrlRef.current = url;
     setSourcePreview(url);
     compress(file);
@@ -105,11 +117,13 @@ export default function ImageCompressorContent() {
     e.preventDefault();
     setDragOver(false);
     const file = e.dataTransfer.files[0];
+
     if (file) processFile(file);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) processFile(file);
   };
 
@@ -127,6 +141,7 @@ export default function ImageCompressorContent() {
     if (!result) return;
     const ext = format === "jpeg" ? "jpg" : format;
     const a = document.createElement("a");
+
     a.href = result.compressedUrl;
     a.download = `compressed.${ext}`;
     a.click();
@@ -162,31 +177,33 @@ export default function ImageCompressorContent() {
         {/* Drop zone */}
         <div
           className={`relative w-full h-48 rounded-xl border-2 border-dashed transition-colors cursor-pointer flex flex-col items-center justify-center gap-2 ${dragOver ? "border-red-400 bg-red-50/30 dark:bg-red-950/20" : "border-black/15 dark:border-white/15 hover:border-red-300 dark:hover:border-red-700"}`}
+          onClick={() => fileInputRef.current?.click()}
+          onDragLeave={() => setDragOver(false)}
           onDragOver={(e) => {
             e.preventDefault();
             setDragOver(true);
           }}
-          onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
         >
           <svg
             className="w-8 h-8 text-[#aeaeb2] dark:text-[#636366]"
             fill="none"
-            viewBox="0 0 24 24"
             stroke="currentColor"
+            viewBox="0 0 24 24"
           >
             <path
+              d="M12 16V4m0 0L8 8m4-4l4 4"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={1.5}
-              d="M12 16V4m0 0L8 8m4-4l4 4"
             />
           </svg>
           <span className="text-sm text-[#6e6e73] dark:text-[#86868b]">
             {t("blog.imageCompressor.dropHere")}
           </span>
-          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">JPG, PNG, WebP</span>
+          <span className="text-xs text-[#aeaeb2] dark:text-[#636366]">
+            JPG, PNG, WebP
+          </span>
           <input
             ref={fileInputRef}
             accept="image/jpeg,image/png,image/webp"

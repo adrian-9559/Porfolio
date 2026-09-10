@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import { useT } from "@/hooks/useT";
 import { copyToClipboard } from "@/lib/clipboard";
 
@@ -102,7 +103,7 @@ export default function RegexCheatsheetContent() {
     entries: cat.entries.filter(
       (e) =>
         e.pattern.toLowerCase().includes(search.toLowerCase()) ||
-        e.description.toLowerCase().includes(search.toLowerCase())
+        e.description.toLowerCase().includes(search.toLowerCase()),
     ),
   })).filter((cat) => cat.entries.length > 0);
 
@@ -139,9 +140,9 @@ export default function RegexCheatsheetContent() {
         {/* Search */}
         <div className="relative">
           <input
-            type="text"
             className="w-full px-4 py-2.5 pl-10 text-sm rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-600 transition-colors placeholder:text-[#aeaeb2] dark:placeholder:text-[#636366]"
             placeholder={t("blog.regexCheatsheet.searchPlaceholder")}
+            type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -152,10 +153,10 @@ export default function RegexCheatsheetContent() {
             viewBox="0 0 24 24"
           >
             <path
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
         </div>

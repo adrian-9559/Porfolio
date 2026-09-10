@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+
 import { useT } from "@/hooks/useT";
 
 interface ClockEntry {
@@ -29,6 +30,7 @@ const TIMEZONES = [
 
 function getLocale(): string {
   if (typeof navigator !== "undefined") return navigator.language || "en-US";
+
   return "en-US";
 }
 
@@ -73,6 +75,7 @@ function getTimezoneOffset(timezone: string): string {
   } catch {
     // fallback
   }
+
   return "";
 }
 
@@ -98,7 +101,10 @@ export default function WorldClockContent() {
     if (clocks.length >= 8) return;
     if (clocks.some((c) => c.timezone === selectedTz)) return;
 
-    setClocks((prev) => [...prev, { id: String(idCounter.current++), timezone: selectedTz }]);
+    setClocks((prev) => [
+      ...prev,
+      { id: String(idCounter.current++), timezone: selectedTz },
+    ]);
     setSelectedTz("");
   };
 
@@ -110,7 +116,7 @@ export default function WorldClockContent() {
   void tick;
 
   const availableTimezones = TIMEZONES.filter(
-    (tz) => !clocks.some((c) => c.timezone === tz.value)
+    (tz) => !clocks.some((c) => c.timezone === tz.value),
   );
 
   return (
@@ -139,9 +145,9 @@ export default function WorldClockContent() {
         {/* Add clock */}
         <div className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c1e] p-4 flex gap-3">
           <select
+            className="flex-1 px-4 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
             value={selectedTz}
             onChange={(e) => setSelectedTz(e.target.value)}
-            className="flex-1 px-4 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#1d1d1f] dark:text-white text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
           >
             <option value="">{t("blog.worldClock.selectTimezone")}</option>
             {availableTimezones.map((tz) => (
@@ -151,9 +157,9 @@ export default function WorldClockContent() {
             ))}
           </select>
           <button
-            onClick={addClock}
-            disabled={!selectedTz || clocks.length >= 8}
             className="px-5 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 disabled:bg-indigo-300 dark:disabled:bg-indigo-800 text-white font-semibold transition-colors text-sm"
+            disabled={!selectedTz || clocks.length >= 8}
+            onClick={addClock}
           >
             {t("blog.worldClock.add")}
           </button>
@@ -173,16 +179,17 @@ export default function WorldClockContent() {
               className="rounded-2xl border border-black/8 dark:border-white/8 bg-white dark:bg-[#1c1c1e] p-5 relative group"
             >
               <button
-                onClick={() => removeClock(clock.id)}
-                className="absolute top-3 right-3 w-6 h-6 rounded-full bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#aeaeb2] dark:text-[#636366] hover:border-rose-500 dark:hover:border-rose-400 hover:text-rose-500 dark:hover:text-rose-400 transition-all text-xs flex items-center justify-center opacity-0 group-hover:opacity-100"
                 aria-label={t("blog.worldClock.remove")}
+                className="absolute top-3 right-3 w-6 h-6 rounded-full bg-black/[0.03] dark:bg-white/[0.03] border border-black/8 dark:border-white/8 text-[#aeaeb2] dark:text-[#636366] hover:border-rose-500 dark:hover:border-rose-400 hover:text-rose-500 dark:hover:text-rose-400 transition-all text-xs flex items-center justify-center opacity-0 group-hover:opacity-100"
+                onClick={() => removeClock(clock.id)}
               >
                 ✕
               </button>
 
               <div className="space-y-1">
                 <p className="text-xs font-bold text-[#aeaeb2] dark:text-[#636366] uppercase tracking-wider">
-                  {TIMEZONES.find((tz) => tz.value === clock.timezone)?.label ?? clock.timezone}
+                  {TIMEZONES.find((tz) => tz.value === clock.timezone)?.label ??
+                    clock.timezone}
                 </p>
                 <p className="text-3xl font-bold font-mono text-[#1d1d1f] dark:text-white tracking-tight">
                   {formatTime(clock.timezone)}
