@@ -8,15 +8,21 @@ import { getToolIcon } from "@/components/blog/tools/ToolIcons";
 import { ToolRenderer } from "@/components/blog/tools/ToolRenderer";
 
 export async function getStaticPaths() {
-  return { paths: [], fallback: false };
+  return { paths: [], fallback: "blocking" };
 }
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
-  const meta = getContentBySlug(params.slug);
+  try {
+    const meta = getContentBySlug(params.slug);
 
-  if (!meta || meta.type !== "tool") return { notFound: true };
+    if (!meta || meta.type !== "tool") return { notFound: true };
 
-  return { props: { meta } };
+    return { props: { meta } };
+  } catch (error) {
+    console.error("getStaticProps error for tool:", params.slug, error);
+
+    return { notFound: true };
+  }
 }
 
 export default function ToolPage({
