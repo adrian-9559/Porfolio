@@ -2594,7 +2594,9 @@
 		"campusChallenges": "Retos",
 		"menuClose": "Cerrar menú",
 		"github": "GitHub (abre en nueva pestaña)",
-		"linkedin": "LinkedIn (abre en nueva pestaña)"
+		"linkedin": "LinkedIn (abre en nueva pestaña)",
+		"dashboard": "Dashboard",
+		"settings": "Configuración"
 	},
 	"notifications": {
 		"action": {
