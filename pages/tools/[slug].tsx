@@ -3,12 +3,17 @@ import Link from "next/link";
 
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
-import { getContentBySlug } from "@/lib/blog/registry";
+import { getContentBySlug, getContentByType } from "@/lib/blog/registry";
 import { getToolIcon } from "@/components/blog/tools/ToolIcons";
 import { ToolRenderer } from "@/components/blog/tools/ToolRenderer";
 
 export async function getStaticPaths() {
-  return { paths: [], fallback: "blocking" };
+  const tools = getContentByType("tool");
+
+  return {
+    paths: tools.map((t) => ({ params: { slug: t.slug } })),
+    fallback: false,
+  };
 }
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
