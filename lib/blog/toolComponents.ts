@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
 
@@ -55,36 +52,19 @@ const TOOL_IMPORTS: Record<string, () => Promise<{ default: React.ComponentType 
   "issue-tracker": () => import("@/components/blog/tools/IssueTrackerContent"),
 };
 
-// Cache dynamic components to avoid re-creating on every render
 const dynamicCache = new Map<string, React.ComponentType>();
 
-const LoadingFallback = () => {
-  if (typeof window === "undefined") return null;
-
-  return React.createElement(
-    "div",
-    { className: "flex items-center justify-center py-20" },
-    React.createElement("div", { className: "ds-spinner" })
-  );
-};
-
-function getOrCreateDynamic(slug: string): React.ComponentType | null {
-  if (dynamicCache.has(slug)) return dynamicCache.get(slug)!;
-
-  const loader = TOOL_IMPORTS[slug];
-
-  if (!loader) return null;
-
-  const Component = dynamic(loader, {
-    ssr: false,
-    loading: LoadingFallback,
-  });
-
-  dynamicCache.set(slug, Component);
-
-  return Component;
-}
-
 export function useToolComponent(slug: string): React.ComponentType | null {
-  return useMemo(() => getOrCreateDynamic(slug), [slug]);
+  return useMemo(() => {
+    if (dynamicCache.has(slug)) return dynamicCache.get(slug)!;
+
+    const loader = TOOL_IMPORTS[slug];
+
+    if (!loader) return null;
+
+    const Component = dynamic(loader, { ssr: false });
+    dynamicCache.set(slug, Component);
+
+    return Component;
+  }, [slug]);
 }
