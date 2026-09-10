@@ -1,57 +1,90 @@
+"use client";
+
+import React from "react";
+import { useMemo } from "react";
 import dynamic from "next/dynamic";
 
-// Pre-create all dynamic components at module level (avoids calling dynamic() inside render)
-const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
-  "color-tool": dynamic(() => import("@/components/blog/tools/ColorToolContent"), { ssr: false }),
-  "palette-generator": dynamic(() => import("@/components/blog/tools/PaletteGeneratorContent"), { ssr: false }),
-  "css-gradient": dynamic(() => import("@/components/blog/tools/CssGradientContent"), { ssr: false }),
-  "design-showcase": dynamic(() => import("@/components/blog/tools/DesignShowcaseContent"), { ssr: false }),
-  "box-shadow": dynamic(() => import("@/components/blog/tools/BoxShadowContent"), { ssr: false }),
-  "contrast-checker": dynamic(() => import("@/components/blog/tools/ContrastCheckerContent"), { ssr: false }),
-  "diff-checker": dynamic(() => import("@/components/blog/tools/DiffCheckerContent"), { ssr: false }),
-  "case-converter": dynamic(() => import("@/components/blog/tools/CaseConverterContent"), { ssr: false }),
-  "regex-tester": dynamic(() => import("@/components/blog/tools/RegexTesterContent"), { ssr: false }),
-  "markdown-preview": dynamic(() => import("@/components/blog/tools/MarkdownPreviewContent"), { ssr: false }),
-  "html-entity": dynamic(() => import("@/components/blog/tools/HtmlEntityContent"), { ssr: false }),
-  "regex-visualizer": dynamic(() => import("@/components/blog/tools/RegexVisualizerContent"), { ssr: false }),
-  "code-minifier": dynamic(() => import("@/components/blog/tools/CodeMinifierContent"), { ssr: false }),
-  "regex-cheatsheet": dynamic(() => import("@/components/blog/tools/RegexCheatsheetContent"), { ssr: false }),
-  "markdown-html": dynamic(() => import("@/components/blog/tools/MarkdownHtmlContent"), { ssr: false }),
-  "text-counter": dynamic(() => import("@/components/blog/tools/TextCounterContent"), { ssr: false }),
-  "base64": dynamic(() => import("@/components/blog/tools/Base64Content"), { ssr: false }),
-  "json-formatter": dynamic(() => import("@/components/blog/tools/JsonFormatterContent"), { ssr: false }),
-  "timestamp-converter": dynamic(() => import("@/components/blog/tools/TimestampConverterContent"), { ssr: false }),
-  "jwt-decoder": dynamic(() => import("@/components/blog/tools/JwtDecoderContent"), { ssr: false }),
-  "url-encoder-decoder": dynamic(() => import("@/components/blog/tools/UrlEncoderDecoderContent"), { ssr: false }),
-  "json-to-ts": dynamic(() => import("@/components/blog/tools/JsonToTsContent"), { ssr: false }),
-  "json-yaml": dynamic(() => import("@/components/blog/tools/JsonYamlContent"), { ssr: false }),
-  "json-csv": dynamic(() => import("@/components/blog/tools/JsonCsvContent"), { ssr: false }),
-  "pdf-editor": dynamic(() => import("@/components/blog/tools/PdfEditorContent"), { ssr: false }),
-  "pdf-to-excel": dynamic(() => import("@/components/blog/tools/PdfToExcelContent"), { ssr: false }),
-  "image-to-base64": dynamic(() => import("@/components/blog/tools/ImageToBase64Content"), { ssr: false }),
-  "image-compressor": dynamic(() => import("@/components/blog/tools/ImageCompressorContent"), { ssr: false }),
-  "favicon-generator": dynamic(() => import("@/components/blog/tools/FaviconGeneratorContent"), { ssr: false }),
-  "og-image-generator": dynamic(() => import("@/components/blog/tools/OgImageContent"), { ssr: false }),
-  "qr-generator": dynamic(() => import("@/components/blog/tools/QrGeneratorContent"), { ssr: false }),
-  "uuid-generator": dynamic(() => import("@/components/blog/tools/UuidGeneratorContent"), { ssr: false }),
-  "password": dynamic(() => import("@/components/blog/tools/PasswordContent"), { ssr: false }),
-  "cron-builder": dynamic(() => import("@/components/blog/tools/CronBuilderContent"), { ssr: false }),
-  "hash-generator": dynamic(() => import("@/components/blog/tools/HashGeneratorContent"), { ssr: false }),
-  "lorem-ipsum": dynamic(() => import("@/components/blog/tools/LoremIpsumContent"), { ssr: false }),
-  "barcode-generator": dynamic(() => import("@/components/blog/tools/BarcodeGeneratorContent"), { ssr: false }),
-  "mock-data": dynamic(() => import("@/components/blog/tools/MockDataContent"), { ssr: false }),
-  "password-analyzer": dynamic(() => import("@/components/blog/tools/PasswordAnalyzerContent"), { ssr: false }),
-  "wifi-qr": dynamic(() => import("@/components/blog/tools/WifiQrContent"), { ssr: false }),
-  "sql-builder": dynamic(() => import("@/components/blog/tools/SQLBuilderContent"), { ssr: false }),
-  "unit-converter": dynamic(() => import("@/components/blog/tools/UnitConverterContent"), { ssr: false }),
-  "tip-calculator": dynamic(() => import("@/components/blog/tools/TipCalculatorContent"), { ssr: false }),
-  "countdown-timer": dynamic(() => import("@/components/blog/tools/CountdownTimerContent"), { ssr: false }),
-  "pomodoro-timer": dynamic(() => import("@/components/blog/tools/PomodoroContent"), { ssr: false }),
-  "bmi-calculator": dynamic(() => import("@/components/blog/tools/BmiCalculatorContent"), { ssr: false }),
-  "world-clock": dynamic(() => import("@/components/blog/tools/WorldClockContent"), { ssr: false }),
-  "issue-tracker": dynamic(() => import("@/components/blog/tools/IssueTrackerContent"), { ssr: false }),
+const TOOL_IMPORTS: Record<string, () => Promise<{ default: React.ComponentType }>> = {
+  "color-tool": () => import("@/components/blog/tools/ColorToolContent"),
+  "palette-generator": () => import("@/components/blog/tools/PaletteGeneratorContent"),
+  "css-gradient": () => import("@/components/blog/tools/CssGradientContent"),
+  "design-showcase": () => import("@/components/blog/tools/DesignShowcaseContent"),
+  "box-shadow": () => import("@/components/blog/tools/BoxShadowContent"),
+  "contrast-checker": () => import("@/components/blog/tools/ContrastCheckerContent"),
+  "diff-checker": () => import("@/components/blog/tools/DiffCheckerContent"),
+  "case-converter": () => import("@/components/blog/tools/CaseConverterContent"),
+  "regex-tester": () => import("@/components/blog/tools/RegexTesterContent"),
+  "markdown-preview": () => import("@/components/blog/tools/MarkdownPreviewContent"),
+  "html-entity": () => import("@/components/blog/tools/HtmlEntityContent"),
+  "regex-visualizer": () => import("@/components/blog/tools/RegexVisualizerContent"),
+  "code-minifier": () => import("@/components/blog/tools/CodeMinifierContent"),
+  "regex-cheatsheet": () => import("@/components/blog/tools/RegexCheatsheetContent"),
+  "markdown-html": () => import("@/components/blog/tools/MarkdownHtmlContent"),
+  "text-counter": () => import("@/components/blog/tools/TextCounterContent"),
+  "base64": () => import("@/components/blog/tools/Base64Content"),
+  "json-formatter": () => import("@/components/blog/tools/JsonFormatterContent"),
+  "timestamp-converter": () => import("@/components/blog/tools/TimestampConverterContent"),
+  "jwt-decoder": () => import("@/components/blog/tools/JwtDecoderContent"),
+  "url-encoder-decoder": () => import("@/components/blog/tools/UrlEncoderDecoderContent"),
+  "json-to-ts": () => import("@/components/blog/tools/JsonToTsContent"),
+  "json-yaml": () => import("@/components/blog/tools/JsonYamlContent"),
+  "json-csv": () => import("@/components/blog/tools/JsonCsvContent"),
+  "pdf-editor": () => import("@/components/blog/tools/PdfEditorContent"),
+  "pdf-to-excel": () => import("@/components/blog/tools/PdfToExcelContent"),
+  "image-to-base64": () => import("@/components/blog/tools/ImageToBase64Content"),
+  "image-compressor": () => import("@/components/blog/tools/ImageCompressorContent"),
+  "favicon-generator": () => import("@/components/blog/tools/FaviconGeneratorContent"),
+  "og-image-generator": () => import("@/components/blog/tools/OgImageContent"),
+  "qr-generator": () => import("@/components/blog/tools/QrGeneratorContent"),
+  "uuid-generator": () => import("@/components/blog/tools/UuidGeneratorContent"),
+  "password": () => import("@/components/blog/tools/PasswordContent"),
+  "cron-builder": () => import("@/components/blog/tools/CronBuilderContent"),
+  "hash-generator": () => import("@/components/blog/tools/HashGeneratorContent"),
+  "lorem-ipsum": () => import("@/components/blog/tools/LoremIpsumContent"),
+  "barcode-generator": () => import("@/components/blog/tools/BarcodeGeneratorContent"),
+  "mock-data": () => import("@/components/blog/tools/MockDataContent"),
+  "password-analyzer": () => import("@/components/blog/tools/PasswordAnalyzerContent"),
+  "wifi-qr": () => import("@/components/blog/tools/WifiQrContent"),
+  "sql-builder": () => import("@/components/blog/tools/SQLBuilderContent"),
+  "unit-converter": () => import("@/components/blog/tools/UnitConverterContent"),
+  "tip-calculator": () => import("@/components/blog/tools/TipCalculatorContent"),
+  "countdown-timer": () => import("@/components/blog/tools/CountdownTimerContent"),
+  "pomodoro-timer": () => import("@/components/blog/tools/PomodoroContent"),
+  "bmi-calculator": () => import("@/components/blog/tools/BmiCalculatorContent"),
+  "world-clock": () => import("@/components/blog/tools/WorldClockContent"),
+  "issue-tracker": () => import("@/components/blog/tools/IssueTrackerContent"),
 };
 
-export function getToolComponent(slug: string): React.ComponentType | null {
-  return TOOL_COMPONENTS[slug] ?? null;
+// Cache dynamic components to avoid re-creating on every render
+const dynamicCache = new Map<string, React.ComponentType>();
+
+const LoadingFallback = () => {
+  if (typeof window === "undefined") return null;
+
+  return React.createElement(
+    "div",
+    { className: "flex items-center justify-center py-20" },
+    React.createElement("div", { className: "ds-spinner" })
+  );
+};
+
+function getOrCreateDynamic(slug: string): React.ComponentType | null {
+  if (dynamicCache.has(slug)) return dynamicCache.get(slug)!;
+
+  const loader = TOOL_IMPORTS[slug];
+
+  if (!loader) return null;
+
+  const Component = dynamic(loader, {
+    ssr: false,
+    loading: LoadingFallback,
+  });
+
+  dynamicCache.set(slug, Component);
+
+  return Component;
+}
+
+export function useToolComponent(slug: string): React.ComponentType | null {
+  return useMemo(() => getOrCreateDynamic(slug), [slug]);
 }

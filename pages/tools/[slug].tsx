@@ -4,8 +4,8 @@ import Link from "next/link";
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 import { getContentBySlug } from "@/lib/blog/registry";
-import { getToolComponent } from "@/lib/blog/toolComponents";
 import { getToolIcon } from "@/components/blog/tools/ToolIcons";
+import { ToolRenderer } from "@/components/blog/tools/ToolRenderer";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: "blocking" };
@@ -32,7 +32,6 @@ export default function ToolPage({
   };
 }) {
   const { t } = useT();
-  const ToolComponent = getToolComponent(meta.slug);
   const Icon = getToolIcon(meta.slug);
 
   return (
@@ -86,23 +85,7 @@ export default function ToolPage({
         )}
 
         {/* Tool content */}
-        <div className="ds-card p-6">
-          {ToolComponent ? (
-            <ToolComponent />
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-[var(--text-muted)]">
-                Herramienta no disponible aún.
-              </p>
-              <Link
-                className="ds-btn-primary mt-4 inline-flex no-underline text-[var(--accent-text)]"
-                href="/tools"
-              >
-                {t("tools.backToTools")}
-              </Link>
-            </div>
-          )}
-        </div>
+        <ToolRenderer slug={meta.slug} />
       </div>
     </DefaultLayout>
   );
