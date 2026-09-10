@@ -9,46 +9,7 @@ import CampusLayout from "@/layouts/campus";
 import { useT } from "@/hooks/useT";
 import { challenges, getChallenge, getChallengesByPlan } from "@/data/challenges";
 import { studyPlans, getStudyPlan } from "@/data/studyPlans";
-import type { DifficultyLevel } from "@/types/challenges";
-
-// ── Difficulty badge ─────────────────────────────────────────────────────────
-
-function DifficultyBadge({ level }: { level: DifficultyLevel }) {
-  const config = {
-    beginner: {
-      label: "Fácil",
-      bg: "var(--state-success-bg)",
-      fg: "var(--state-success-fg)",
-      border: "var(--state-success-border)",
-    },
-    intermediate: {
-      label: "Medio",
-      bg: "var(--state-warning-bg)",
-      fg: "var(--state-warning-fg)",
-      border: "var(--state-warning-border)",
-    },
-    advanced: {
-      label: "Difícil",
-      bg: "var(--state-danger-bg)",
-      fg: "var(--state-danger-fg)",
-      border: "var(--state-danger-border)",
-    },
-  };
-  const c = config[level];
-
-  return (
-    <span
-      className="px-2 py-0.5 rounded-full text-[10px] font-semibold border"
-      style={{
-        background: c.bg,
-        color: c.fg,
-        borderColor: c.border,
-      }}
-    >
-      {c.label}
-    </span>
-  );
-}
+import { DifficultyBadge } from "@/components/campus/DifficultyBadge";
 
 // ── Code editor ──────────────────────────────────────────────────────────────
 
@@ -252,13 +213,6 @@ export default function ChallengePage() {
         <nav className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
           <Link className="hover:text-[var(--accent)] transition-colors" href="/campus/retos">
             Retos
-          </Link>
-          <span>/</span>
-          <Link
-            className="hover:text-[var(--accent)] transition-colors"
-            href={`/campus/plan-de-estudio/${plan.slug}`}
-          >
-            {plan.title}
           </Link>
           <span>/</span>
           <span className="text-[var(--text-primary)]">{challenge.title}</span>

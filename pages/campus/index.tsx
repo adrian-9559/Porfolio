@@ -1,99 +1,81 @@
 "use client";
-import type { CampusProgress, CampusUserXP } from "@/types/campus";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import CampusLayout from "@/layouts/campus";
-import {
-  getContentByType,
-  getGuides,
-  getCategoriesByType,
-  guideTotalMinutes,
-  ContentMeta,
-} from "@/lib/blog/registry";
-import { LEVELS, getCategory } from "@/lib/blog/taxonomy";
-import {
-  IconGraduation,
-  IconSearch,
-  IconClose,
-  IconBook,
-  IconClock,
-} from "@/components/blog/shared";
 import { useT } from "@/hooks/useT";
 import { useAuth } from "@/hooks/useAuth";
 import { campusService } from "@/services/campusService";
-import { Leaderboard } from "@/components/campus/Leaderboard";
-import { BadgeGrid } from "@/components/campus/BadgeGrid";
-import { StreakCalendar } from "@/components/campus/StreakCalendar";
-import { XpBadge } from "@/components/campus/XpBadge";
-import { ProgressBar } from "@/components/campus/ProgressBar";
-import { studyPlans } from "@/data/studyPlans";
+import {
+  getContentByType,
+  getGuides,
+  guideTotalMinutes,
+  contentHref,
+  type ContentMeta,
+} from "@/lib/blog/registry";
 import { challenges } from "@/data/challenges";
 
-const allTutorials = getContentByType("tutorial");
-const allGuides = getGuides();
-const featuredGuides = allGuides.filter((g) => g.featured).slice(0, 6);
+// ── Continue learning card ────────────────────────────────────────────────────
 
-// ── FAQ data ─────────────────────────────────────────────────────────────────
-
-const FAQ_ITEMS = [
-  {
-    q: "¿Qué incluye el campus?",
-    a: "El campus incluye guías de aprendizaje estructuradas, tutoriales interactivos, retos prácticos con editor de código, sistema de XP y logros, leaderboard y comunidad de desarrollo.",
-  },
-  {
-    q: "¿Para qué nivel es el campus?",
-    a: "El campus está diseñado para todos los niveles: desde principiantes que empiezan desde cero hasta desarrolladores con experiencia que quieren especializarse en áreas como IA, DevOps o arquitectura.",
-  },
-  {
-    q: "¿Cómo funciona el sistema de XP y niveles?",
-    a: "Al completar tutoriales, pasar quizzes y resolver retos ganas XP. Tu XP acumulado determina tu nivel. También tienes rachas diarias y logros desbloqueables.",
-  },
-  {
-    q: "¿Puedo aprender a mi ritmo?",
-    a: "Sí. Todo el contenido está disponible 24/7. Avanza a tu ritmo, retoma donde lo dejaste y repite las lecciones las veces que necesites.",
-  },
-  {
-    q: "¿Los retos tienen dificultad?",
-    a: "Sí. Los retos están clasificados en Fácil, Medio y Difícil. Cada plan de estudio tiene una dificultad progresiva para que avances gradualmente.",
-  },
-  {
-    q: "¿Cómo funciona el leaderboard?",
-    a: "El leaderboard muestra los estudiantes con más XP. Puedes competir semanalmente o mensualmente. Tu posición se actualiza en tiempo real.",
-  },
-];
-
-// ── Tutorial card ─────────────────────────────────────────────────────────────
-
-function TutorialCard({
-  item,
-  completed,
+function ContinueLearning({
+  lastTutorial,
+  guideTitle,
+  progressPct,
 }: {
-  item: ContentMeta;
-  completed: boolean;
+  lastTutorial: ContentMeta;
+  guideTitle: string;
+  progressPct: number;
 }) {
   return (
     <Link
       className="group block no-underline"
-      href={`/campus/tutoriales/${item.slug}`}
+      href={contentHref(lastTutorial.type, lastTutorial.slug)}
     >
-      <div
-        className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 ${
-          completed
-            ? "bg-[var(--accent-light)] border-[var(--border-hover)]"
-            : "ds-card hover:border-[var(--border-hover)] hover:shadow-md"
-        }`}
-      >
+      <div className="relative overflow-hidden rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] hover:border-[var(--border-hover)] hover:shadow-lg transition-all duration-200 p-6 md:p-8">
+        {/* Gradient accent bar */}
         <div
-          className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-            completed
-              ? "bg-[var(--accent-light)] text-[var(--accent)]"
-              : "bg-[var(--bg-surface)] text-[var(--text-muted)]"
-          }`}
-        >
-          {completed ? (
+          aria-hidden="true"
+          className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--color-brand-from)] via-[var(--color-brand-via)] to-[var(--color-brand-to)]"
+        />
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest mb-2">
+              Continuar aprendiendo
+            </p>
+            <h2 className="text-lg md:text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-tight mb-1">
+              {lastTutorial.title}
+            </h2>
+            <p className="text-sm text-[var(--text-secondary)]">
+              {guideTitle}
+            </p>
+
+            {/* Progress bar */}
+            <div className="mt-4 flex items-center gap-3">
+              <div
+                aria-label={`Progreso: ${progressPct}%`}
+                aria-valuemax={100}
+                aria-valuemin={0}
+                aria-valuenow={progressPct}
+                className="flex-1 h-1.5 rounded-full bg-[var(--bg-surface)] overflow-hidden"
+                role="progressbar"
+              >
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[var(--color-brand-from)] to-[var(--color-brand-via)] transition-all duration-500"
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
+              <span className="text-xs font-bold text-[var(--accent)] tabular-nums">
+                {progressPct}%
+              </span>
+            </div>
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="w-10 h-10 rounded-xl bg-[var(--accent-light)] text-[var(--accent)] flex items-center justify-center flex-shrink-0 group-hover:translate-x-1 transition-transform"
+          >
             <svg
               className="w-5 h-5"
               fill="none"
@@ -101,480 +83,207 @@ function TutorialCard({
               viewBox="0 0 24 24"
             >
               <path
-                d="M5 13l4 4L19 7"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
               />
             </svg>
-          ) : (
-            <IconBook className="w-4 h-4" />
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5">
-            <span
-              className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.categoryColor}`}
-            />
-            <span className="text-[10px] font-semibold text-[var(--text-muted)]">
-              {item.category}
-            </span>
-            <span className="text-[10px] text-[var(--text-muted)]">·</span>
-            <span className="text-[10px] text-[var(--text-muted)]">
-              {item.readTime}
-            </span>
           </div>
-          <h3 className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors truncate">
-            {item.title}
-          </h3>
         </div>
-        <span className="text-[10px] font-semibold text-[var(--accent)] group-hover:translate-x-0.5 transition-transform flex-shrink-0">
-          →
-        </span>
       </div>
     </Link>
   );
 }
 
-// ── Guide card (midu.dev style) ──────────────────────────────────────────────
+// ── Course card ───────────────────────────────────────────────────────────────
 
-function GuideCard({
-  guide,
-  progress,
+function CourseCard({
+  title,
+  description,
+  meta,
+  href,
+  seed,
 }: {
-  guide: (typeof allGuides)[number];
-  progress: number;
+  title: string;
+  description: string;
+  meta: string;
+  href: string;
+  seed: number;
 }) {
-  const { t } = useT();
-  const totalMin = guideTotalMinutes(guide);
-  const count = guide.curriculum.length;
-  const level = LEVELS.find((l) => l.id === guide.level);
+  const GRADIENTS: [string, string][] = [
+    ["#7c3aed", "#06b6d4"],
+    ["#06b6d4", "#8b5cf6"],
+    ["#ec4899", "#7c3aed"],
+    ["#8b5cf6", "#06b6d4"],
+    ["#00f5ff", "#7c3aed"],
+    ["#ec4899", "#06b6d4"],
+  ];
+  const [from, to] = GRADIENTS[Math.abs(seed) % GRADIENTS.length];
 
   return (
-    <Link
-      className="group block no-underline"
-      href={`/campus/guias/${guide.slug}`}
-    >
-      <div className="relative overflow-hidden p-5 rounded-2xl ds-card border border-[var(--border-default)] hover:border-[var(--border-hover)] hover:shadow-lg transition-all duration-300">
-        {/* Top gradient bar */}
+    <Link className="group block no-underline" href={href}>
+      <div className="flex flex-col h-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] hover:shadow-md transition-all duration-200 overflow-hidden">
+        {/* Thumbnail */}
         <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[var(--color-brand-from)] via-[var(--color-brand-via)] to-[var(--color-brand-to)]"
-        />
-
-        <div className="flex items-center gap-2 mb-3">
-          <span className={`w-2.5 h-2.5 rounded-full ${guide.categoryColor}`} />
-          <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-            {guide.category}
+          className="aspect-video flex items-center justify-center px-4"
+          style={{
+            background: `linear-gradient(135deg, ${from}20 0%, var(--bg-card) 55%, ${to}20 100%)`,
+          }}
+        >
+          <span className="text-center text-base md:text-lg font-black text-[var(--text-primary)] leading-tight line-clamp-2" style={{ letterSpacing: "-0.02em" }}>
+            {title}
           </span>
-          {level && (
-            <>
-              <span className="text-[10px] text-[var(--text-muted)]">·</span>
-              <span className="text-[10px] text-[var(--text-muted)]">
-                {t(level.labelKey)}
-              </span>
-            </>
-          )}
         </div>
 
-        <h3 className="text-base font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors mb-2 leading-snug">
-          {guide.title}
-        </h3>
-        <p className="text-xs text-[var(--text-secondary)] line-clamp-2 mb-4 leading-relaxed">
-          {guide.description}
-        </p>
-
-        <div className="flex items-center gap-4 pt-3 border-t border-[var(--border-default)]">
-          <span className="flex items-center gap-1.5 text-[10px] text-[var(--text-muted)]">
-            <IconBook className="w-3 h-3" /> {count} tutoriales
-          </span>
-          <span className="flex items-center gap-1.5 text-[10px] text-[var(--text-muted)]">
-            <IconClock className="w-3 h-3" /> ~{totalMin}m
-          </span>
-          <div className="flex-1" />
-          <span className="text-[10px] font-semibold text-[var(--accent)] group-hover:translate-x-0.5 transition-transform">
-            Ver ruta →
-          </span>
+        {/* Content */}
+        <div className="flex flex-col flex-1 p-4">
+          <h3 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-snug mb-1">
+            {title}
+          </h3>
+          <p className="text-xs text-[var(--text-secondary)] line-clamp-2 mb-3 flex-1">
+            {description}
+          </p>
+          <p className="text-[10px] text-[var(--text-muted)] font-medium">
+            {meta}
+          </p>
         </div>
       </div>
     </Link>
   );
 }
 
-// ── Challenge card ───────────────────────────────────────────────────────────
+// ── Challenge card (compact) ──────────────────────────────────────────────────
 
 function ChallengeCard({
   challenge,
 }: {
   challenge: (typeof challenges)[number];
 }) {
-  const difficultyConfig = {
-    beginner: {
-      label: "Fácil",
-      bg: "var(--state-success-bg)",
-      fg: "var(--state-success-fg)",
-      border: "var(--state-success-border)",
-    },
-    intermediate: {
-      label: "Medio",
-      bg: "var(--state-warning-bg)",
-      fg: "var(--state-warning-fg)",
-      border: "var(--state-warning-border)",
-    },
-    advanced: {
-      label: "Difícil",
-      bg: "var(--state-danger-bg)",
-      fg: "var(--state-danger-fg)",
-      border: "var(--state-danger-border)",
-    },
+  const statusIcon = {
+    locked: "🔒",
+    available: "▶",
+    in_progress: "⏳",
+    completed: "✓",
   };
-  const d = difficultyConfig[challenge.difficulty];
+
+  const statusBorder = {
+    locked: "border-[var(--border-default)] opacity-50",
+    available: "border-[var(--border-default)] hover:border-[var(--accent)]",
+    in_progress: "border-amber-500/30",
+    completed: "border-[var(--accent)]/30 bg-[var(--accent-light)]",
+  };
+
+  const card = (
+    <div
+      className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 ${statusBorder[challenge.status]}`}
+    >
+      <span className="text-sm flex-shrink-0" aria-hidden="true">
+        {statusIcon[challenge.status]}
+      </span>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
+          {challenge.title}
+        </p>
+        <p className="text-[10px] text-[var(--text-muted)]">
+          {challenge.estimatedMinutes} min · +{challenge.xpReward} XP
+        </p>
+      </div>
+      {challenge.status !== "locked" && (
+        <span className="text-[var(--accent)] text-xs flex-shrink-0">→</span>
+      )}
+    </div>
+  );
+
+  if (challenge.status === "locked") return card;
 
   return (
     <Link
       className="group block no-underline"
       href={`/campus/retos/${challenge.planSlug}/${challenge.slug}`}
     >
-      <div className="p-4 rounded-xl ds-card border border-[var(--border-default)] hover:border-[var(--border-hover)] hover:shadow-md transition-all duration-200">
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[var(--accent-light)] flex items-center justify-center flex-shrink-0 text-sm font-bold text-[var(--accent)]">
-            {challenge.order}
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <span
-                className="px-2 py-0.5 rounded-full text-[9px] font-semibold border"
-                style={{
-                  background: d.bg,
-                  color: d.fg,
-                  borderColor: d.border,
-                }}
-              >
-                {d.label}
-              </span>
-              <span className="text-[10px] text-[var(--text-muted)]">
-                {challenge.estimatedMinutes} min
-              </span>
-              <span className="text-[10px] text-[var(--accent)] font-bold">
-                +{challenge.xpReward} XP
-              </span>
-            </div>
-            <h3 className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors truncate">
-              {challenge.title}
-            </h3>
-            <p className="text-[10px] text-[var(--text-secondary)] line-clamp-1 mt-0.5">
-              {challenge.description}
-            </p>
-          </div>
-          <span className="text-[var(--accent)] text-sm flex-shrink-0 mt-1 group-hover:translate-x-0.5 transition-transform">
-            →
-          </span>
-        </div>
-      </div>
+      {card}
     </Link>
-  );
-}
-
-// ── Testimonial card ─────────────────────────────────────────────────────────
-
-function TestimonialCard({
-  name,
-  role,
-  country,
-  quote,
-}: {
-  name: string;
-  role: string;
-  country: string;
-  quote: string;
-}) {
-  return (
-    <div className="p-5 rounded-2xl ds-card border border-[var(--border-default)]">
-      <p className="text-sm text-[var(--text-secondary)] leading-relaxed italic mb-4">
-        &ldquo;{quote}&rdquo;
-      </p>
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-via)] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-          {name.charAt(0)}
-        </div>
-        <div className="min-w-0">
-          <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
-            {name} {country}
-          </p>
-          <p className="text-[10px] text-[var(--text-muted)] truncate">
-            {role}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── FAQ item ─────────────────────────────────────────────────────────────────
-
-function FaqItem({
-  question,
-  answer,
-}: {
-  question: string;
-  answer: string;
-}) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="border-b border-[var(--border-default)]">
-      <button
-        className="flex items-center justify-between w-full py-4 text-left"
-        onClick={() => setOpen(!open)}
-        type="button"
-      >
-        <span className="text-sm font-semibold text-[var(--text-primary)] pr-4">
-          {question}
-        </span>
-        <span
-          className={`text-[var(--text-muted)] text-lg flex-shrink-0 transition-transform duration-200 ${
-            open ? "rotate-45" : ""
-          }`}
-        >
-          +
-        </span>
-      </button>
-      <div
-        className="overflow-hidden transition-all duration-300"
-        style={{ maxHeight: open ? "200px" : "0px" }}
-      >
-        <p className="text-sm text-[var(--text-secondary)] pb-4 leading-relaxed">
-          {answer}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ── Continue Learning (for logged-in users) ──────────────────────────────────
-
-function ContinueLearning({
-  progress,
-  guides,
-}: {
-  progress: CampusProgress[];
-  guides: typeof allGuides;
-}) {
-  const { t } = useT();
-
-  const inProgress = useMemo(() => {
-    const completedSlugs = new Set(progress.map((p) => p.tutorial_slug));
-
-    return guides
-      .map((guide) => {
-        const total = guide.curriculum.length;
-        const completed = guide.curriculum.filter((s) =>
-          completedSlugs.has(s.slug),
-        ).length;
-
-        return {
-          guide,
-          total,
-          completed,
-          pct: total > 0 ? Math.round((completed / total) * 100) : 0,
-        };
-      })
-      .filter((g) => g.completed > 0 && g.pct < 100)
-      .sort((a, b) => b.pct - a.pct)
-      .slice(0, 3);
-  }, [progress, guides]);
-
-  if (inProgress.length === 0) return null;
-
-  return (
-    <section className="space-y-4">
-      <div className="flex items-center gap-2">
-        <h2 className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
-          {t("campus.continueLearning")}
-        </h2>
-        <span className="flex-1 h-px bg-[var(--border-default)]" />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {inProgress.map(({ guide, total, completed, pct }) => (
-          <Link
-            key={guide.id}
-            className="group block no-underline"
-            href={`/campus/guias/${guide.slug}`}
-          >
-            <div className="p-4 rounded-xl ds-card border border-[var(--border-default)] hover:border-[var(--border-hover)] hover:shadow-md transition-all">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-[var(--accent-light)] flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm font-bold text-[var(--accent)]">
-                    {pct}%
-                  </span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors truncate">
-                    {guide.title}
-                  </h3>
-                  <p className="text-[10px] text-[var(--text-muted)]">
-                    {completed}/{total} tutoriales
-                  </p>
-                </div>
-              </div>
-              <ProgressBar completed={completed} total={total} />
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
   );
 }
 
 // ── Main page ────────────────────────────────────────────────────────────────
 
-const TESTIMONIALS = [
-  {
-    name: "Carlos M.",
-    role: "Frontend Developer",
-    country: "🇪🇸",
-    quote:
-      "El campus me ha dado una estructura que no encontraba en ningún lado. Las guías son perfectas para avanzar paso a paso sin perderte.",
-  },
-  {
-    name: "Laura P.",
-    role: "Full Stack Developer",
-    country: "🇲🇽",
-    quote:
-      "Los retos son increíbles. Aprender haciendo es la mejor forma. El sistema de XP me mantiene motivada para continuar todos los días.",
-  },
-  {
-    name: "Andrés R.",
-    role: "Backend Developer",
-    country: "🇦🇷",
-    quote:
-      "Llevo 3 meses en el campus y he aprendido más que en un año de cursos sueltos. Las rutas de aprendizaje están muy bien pensadas.",
-  },
-  {
-    name: "María G.",
-    role: "DevOps Engineer",
-    country: "🇨🇴",
-    quote:
-      "El leaderboard y las rachas me han creado un hábito de estudio. Ahora dedico 30 minutos diarios y mi progreso es constante.",
-  },
-  {
-    name: "Pedro L.",
-    role: "Junior Developer",
-    country: "🇪🇨",
-    quote:
-      "Empecé desde cero y ahora estoy construyendo mis propios proyectos. El campus es como tener un mentor disponible 24/7.",
-  },
-  {
-    name: "Sofia H.",
-    role: "Software Engineer",
-    country: "🇨🇱",
-    quote:
-      "La calidad del contenido es excepcional. Cada tutorial tiene la cantidad justa de teoría y práctica. Muy bien estructurado.",
-  },
-];
-
 export default function CampusPage() {
   const { t } = useT();
   const { isAuthenticated } = useAuth();
-  const router = useRouter();
-  const [query, setQuery] = useState("");
-  const [activeLevel, setActiveLevel] = useState("all");
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [activeTab, setActiveTab] = useState<
-    "guides" | "tutorials" | "ranking" | "achievements"
-  >(
-    (router.query.tab as
-      | "guides"
-      | "tutorials"
-      | "ranking"
-      | "achievements") || "guides",
-  );
-  const [progress, setProgress] = useState<CampusProgress[]>([]);
-  const [xp, setXp] = useState<CampusUserXP | null>(null);
-  const [guideProgress, setGuideProgress] = useState<Record<string, number>>(
-    {},
-  );
+  const [completedSlugs, setCompletedSlugs] = useState<Set<string>>(new Set());
+  const [hasLoaded, setHasLoaded] = useState(false);
 
-  const tutorialCats = useMemo(() => getCategoriesByType("tutorial"), []);
-  const catMeta = useMemo(
-    () =>
-      tutorialCats
-        .map((c) => getCategory(c))
-        .filter((c): c is NonNullable<typeof c> => c != null),
-    [tutorialCats],
-  );
-
-  const completedSlugs = useMemo(
-    () => new Set(progress.map((p) => p.tutorial_slug)),
-    [progress],
-  );
-
-  const totalCompleted = completedSlugs.size;
-  const totalTutorials = allTutorials.length;
+  const allGuides = useMemo(() => getGuides(), []);
+  const allTutorials = useMemo(() => getContentByType("tutorial"), []);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-    campusService
-      .getProgress()
-      .then(setProgress)
-      .catch(() => {});
-    campusService
-      .getXP()
-      .then(setXp)
-      .catch(() => {});
+    if (!isAuthenticated) {
+      setHasLoaded(true);
+      return;
+    }
     campusService
       .getAllGuideProgress()
-      .then(setGuideProgress)
-      .catch(() => {});
+      .then((progress) => {
+        const slugs = new Set(Object.keys(progress));
+        setCompletedSlugs(slugs);
+        setHasLoaded(true);
+      })
+      .catch(() => setHasLoaded(true));
   }, [isAuthenticated]);
 
-  const handleTabChange = (
-    tab: "guides" | "tutorials" | "ranking" | "achievements",
-  ) => {
-    setActiveTab(tab);
-    router.replace({ query: { ...router.query, tab } }, undefined, {
-      shallow: true,
-    });
-  };
+  // Find the last in-progress tutorial
+  const continueData = useMemo(() => {
+    if (!isAuthenticated || completedSlugs.size === 0) return null;
 
-  const levelOptions = useMemo(
-    () => [
-      { id: "all", labelKey: "blog.filterAll" },
-      ...LEVELS.map((l) => ({ id: l.id, labelKey: l.labelKey })),
-    ],
-    [],
-  );
-
-  const results = useMemo(() => {
-    let items = allTutorials;
-
-    if (activeLevel !== "all")
-      items = items.filter((c) => c.level === activeLevel);
-    if (activeCategory !== "all")
-      items = items.filter((c) => c.categoryId === activeCategory);
-    if (query.trim()) {
-      const q = query.toLowerCase();
-
-      items = items.filter(
-        (c) =>
-          c.title.toLowerCase().includes(q) ||
-          c.description.toLowerCase().includes(q) ||
-          c.category.toLowerCase().includes(q) ||
-          c.tags?.some((t) => t.toLowerCase().includes(q)),
+    // Find the first guide with progress
+    for (const guide of allGuides) {
+      const guideProgress = guide.curriculum.filter((s) =>
+        completedSlugs.has(s.slug),
       );
+      if (guideProgress.length === 0) continue;
+
+      // Find first uncompleted tutorial in this guide
+      const nextTutorial = guide.curriculum.find(
+        (s) => !completedSlugs.has(s.slug),
+      );
+      const lastCompleted = guideProgress[guideProgress.length - 1];
+      const target = nextTutorial ?? lastCompleted;
+      const meta = allTutorials.find((t) => t.slug === target.slug);
+      if (!meta) continue;
+
+      const progressPct = Math.round(
+        (guideProgress.length / guide.curriculum.length) * 100,
+      );
+
+      return {
+        lastTutorial: meta,
+        guideTitle: guide.title,
+        progressPct,
+      };
     }
 
-    return items.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
-  }, [query, activeLevel, activeCategory]);
+    return null;
+  }, [isAuthenticated, completedSlugs, allGuides, allTutorials]);
 
-  const tabs = [
-    { id: "guides" as const, label: t("campus.tabs.guides") },
-    { id: "tutorials" as const, label: t("campus.tabs.tutorials") },
-    { id: "ranking" as const, label: t("campus.tabs.ranking") },
-    { id: "achievements" as const, label: t("campus.tabs.achievements") },
-  ];
+  // Featured courses (first 6 guides)
+  const featuredCourses = useMemo(() => {
+    return allGuides.slice(0, 6).map((guide, idx) => ({
+      title: guide.title,
+      description: guide.description,
+      meta: `${guide.curriculum.length} tutoriales · ~${guideTotalMinutes(guide)} min`,
+      href: `/campus/cursos/${guide.slug}`,
+      seed: idx,
+    }));
+  }, [allGuides]);
 
-  const featuredChallenges = challenges.slice(0, 6);
+  // Available challenges (not locked, first 6)
+  const availableChallenges = useMemo(() => {
+    return challenges
+      .filter((c) => c.status !== "locked")
+      .slice(0, 6);
+  }, []);
 
   return (
     <CampusLayout
@@ -583,392 +292,117 @@ export default function CampusPage() {
         description: t("meta.campus.desc"),
       }}
     >
-      <div className="space-y-12 py-4">
-        {/* ════════════════════════════════════════════════════════════════════════
-            HERO SECTION (midu.dev style)
-            ════════════════════════════════════════════════════════════════════════ */}
-        <header className="text-center space-y-6 max-w-3xl mx-auto">
-          {/* Badge */}
-          <div>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--accent-light)] border border-[var(--border-default)] text-[var(--accent)] text-xs font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-              Campus abierto — Empieza gratis
-            </span>
-          </div>
-
-          {/* Headline */}
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 py-8 md:py-12 space-y-12 md:space-y-16">
+        {/* Hero */}
+        <header className="text-center space-y-4 max-w-2xl mx-auto">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent-light)] text-[var(--accent)] text-[10px] font-bold uppercase tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+            Campus abierto — Empieza gratis
+          </span>
           <h1
-            className="text-3xl md:text-5xl font-black text-[var(--text-primary)] leading-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-black text-[var(--text-primary)] leading-tight"
             style={{ letterSpacing: "-0.04em" }}
           >
             Aprende{" "}
             <span className="bg-gradient-to-r from-[var(--color-brand-from)] via-[var(--color-brand-via)] to-[var(--color-brand-to)] bg-clip-text text-transparent">
               Programación
             </span>{" "}
-            <br className="hidden sm:block" />
             sin saltar entre mil recursos
           </h1>
-
-          {/* Subtitle */}
-          <p className="text-sm md:text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
-            Guías estructuradas, retos prácticos y un sistema de progreso que te
-            mantiene motivado. Todo en español, directo y sin relleno.
+          <p className="text-sm md:text-base text-[var(--text-secondary)] max-w-lg mx-auto leading-relaxed">
+            Guías estructuradas, retos prácticos y progreso. Todo en español,
+            directo y sin relleno.
           </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--bg-interactive)] text-[var(--text-interactive)] text-sm font-bold hover:bg-[var(--bg-interactive-hover)] transition-all shadow-lg shadow-[var(--accent)]/20"
-              href="/campus/guias"
-            >
-              Explorar guías
-              <span>→</span>
-            </Link>
-            <Link
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[var(--border-default)] text-[var(--text-primary)] text-sm font-semibold hover:border-[var(--border-hover)] hover:bg-[var(--bg-hover)] transition-all"
-              href="/campus/retos"
-            >
-              Probar un reto gratis
-            </Link>
-          </div>
-
-          {/* Trust text */}
-          <p className="text-[10px] text-[var(--text-muted)]">
-            Gratis para empezar · Sin tarjeta de crédito · Cancela cuando quieras
-          </p>
-
-          {/* Stats */}
-          <div className="flex items-center justify-center gap-8 pt-2">
-            <div className="text-center">
-              <p className="text-lg md:text-xl font-black text-[var(--text-primary)]">
-                {allGuides.length}
-              </p>
-              <p className="text-[10px] text-[var(--text-muted)] font-semibold">
-                rutas de aprendizaje
-              </p>
-            </div>
-            <div className="w-px h-8 bg-[var(--border-default)]" />
-            <div className="text-center">
-              <p className="text-lg md:text-xl font-black text-[var(--text-primary)]">
-                {allTutorials.length}+
-              </p>
-              <p className="text-[10px] text-[var(--text-muted)] font-semibold">
-                tutoriales
-              </p>
-            </div>
-            <div className="w-px h-8 bg-[var(--border-default)]" />
-            <div className="text-center">
-              <p className="text-lg md:text-xl font-black text-[var(--text-primary)]">
-                {challenges.length}
-              </p>
-              <p className="text-[10px] text-[var(--text-muted)] font-semibold">
-                retos prácticos
-              </p>
-            </div>
-          </div>
         </header>
 
-        {/* ════════════════════════════════════════════════════════════════════════
-            CONTINUE LEARNING (only for logged-in users)
-            ════════════════════════════════════════════════════════════════════════ */}
-        {isAuthenticated && (
-          <ContinueLearning guides={allGuides} progress={progress} />
-        )}
-
-        {/* ════════════════════════════════════════════════════════════════════════
-            COURSES / GUIDES SECTION (midu.dev style)
-            ════════════════════════════════════════════════════════════════════════ */}
-        <section className="space-y-6">
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]" style={{ letterSpacing: "-0.03em" }}>
-              Rutas para subir de nivel
-            </h2>
-            <p className="text-sm text-[var(--text-secondary)] max-w-lg mx-auto">
-              Elige una ruta y avanza paso a paso. Cada guía tiene tutoriales
-              ordenados de lo básico a lo avanzado.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {featuredGuides.map((guide) => (
-              <GuideCard
-                key={guide.id}
-                guide={guide}
-                progress={guideProgress[guide.slug] ?? 0}
-              />
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Link
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline"
-              href="/campus/guias"
-            >
-              Ver todas las guías
-              <span>→</span>
-            </Link>
-          </div>
-        </section>
-
-        {/* ════════════════════════════════════════════════════════════════════════
-            CHALLENGES SECTION
-            ════════════════════════════════════════════════════════════════════════ */}
-        <section className="space-y-6">
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]" style={{ letterSpacing: "-0.03em" }}>
-              Retos prácticos
-            </h2>
-            <p className="text-sm text-[var(--text-secondary)] max-w-lg mx-auto">
-              Aprende haciendo. Resuelve retos reales con editor de código y gana
-              XP para subir de nivel.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {featuredChallenges.map((challenge) => (
-              <ChallengeCard key={challenge.id} challenge={challenge} />
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Link
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline"
-              href="/campus/retos"
-            >
-              Ver todos los retos
-              <span>→</span>
-            </Link>
-          </div>
-        </section>
-
-        {/* ════════════════════════════════════════════════════════════════════════
-            STATS SECTION
-            ════════════════════════════════════════════════════════════════════════ */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            {
-              value: allGuides.length,
-              label: "Rutas",
-              icon: "📚",
-            },
-            {
-              value: allTutorials.length,
-              label: "Tutoriales",
-              icon: "📖",
-            },
-            {
-              value: challenges.length,
-              label: "Retos",
-              icon: "⚡",
-            },
-            {
-              value: studyPlans.length,
-              label: "Planes",
-              icon: "🎯",
-            },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="text-center p-5 rounded-2xl ds-card border border-[var(--border-default)]"
-            >
-              <span className="text-2xl mb-2 block">{stat.icon}</span>
-              <p className="text-2xl font-black text-[var(--text-primary)]">
-                {stat.value}
-              </p>
-              <p className="text-[10px] text-[var(--text-muted)] font-semibold uppercase tracking-wider">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </section>
-
-        {/* ════════════════════════════════════════════════════════════════════════
-            TESTIMONIALS SECTION (midu.dev style)
-            ════════════════════════════════════════════════════════════════════════ */}
-        <section className="space-y-6">
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]" style={{ letterSpacing: "-0.03em" }}>
-              Estudiantes que ya aprenden con estructura
-            </h2>
-            <p className="text-sm text-[var(--text-secondary)] max-w-lg mx-auto">
-              Historias reales de personas que usan el campus para aprender mejor
-              y mantenerse al día.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {TESTIMONIALS.map((testimonial) => (
-              <TestimonialCard key={testimonial.name} {...testimonial} />
-            ))}
-          </div>
-        </section>
-
-        {/* ════════════════════════════════════════════════════════════════════════
-            TABS SECTION (for logged-in users: ranking, achievements, tutorials)
-            ════════════════════════════════════════════════════════════════════════ */}
-        {isAuthenticated && (
-          <section className="space-y-4">
-            <div className="ds-tabs">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  className={`ds-tab ${activeTab === tab.id ? "ds-tab-active" : ""}`}
-                  type="button"
-                  onClick={() => handleTabChange(tab.id)}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {activeTab === "guides" && (
-              <div className="space-y-4">
-                {isAuthenticated && xp && (
-                  <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--accent-light)] border border-[var(--border-default)]">
-                    <XpBadge level={xp.level} xp={xp.total_xp} />
-                    <StreakCalendar />
-                  </div>
-                )}
-              </div>
-            )}
-
-            {activeTab === "tutorials" && (
-              <section className="space-y-4">
-                <div className="relative max-w-xl" role="search">
-                  <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-                  <input
-                    className="ds-input pl-9 pr-9"
-                    placeholder={t("blog.searchPlaceholderTutorials")}
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
-                  {query && (
-                    <button
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
-                      onClick={() => setQuery("")}
-                    >
-                      <IconClose className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="ds-tabs !p-0.5">
-                    {levelOptions.map((opt) => (
-                      <button
-                        key={opt.id}
-                        className={`ds-tab ${activeLevel === opt.id ? "ds-tab-active" : ""}`}
-                        type="button"
-                        onClick={() => setActiveLevel(opt.id)}
-                      >
-                        {t(opt.labelKey)}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex gap-1 overflow-x-auto scrollbar-hide">
-                    {catMeta.map((cat) => (
-                      <button
-                        key={cat.id}
-                        className={`px-2 py-1 rounded-full text-[10px] font-semibold whitespace-nowrap transition-all ${
-                          activeCategory === cat.id
-                            ? "bg-[var(--accent)] text-[var(--text-interactive)]"
-                            : "bg-[var(--bg-surface)] text-[var(--text-muted)]"
-                        }`}
-                        type="button"
-                        onClick={() =>
-                          setActiveCategory(
-                            activeCategory === cat.id ? "all" : cat.id,
-                          )
-                        }
-                      >
-                        {t(cat.labelKey)}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <p className="text-[10px] text-[var(--text-muted)]">
-                  {results.length}{" "}
-                  {results.length === 1
-                    ? t("blog.tutorialSingular")
-                    : t("blog.tutorialPlural")}
-                </p>
-
-                <div className="space-y-1.5">
-                  {results.map((item) => (
-                    <TutorialCard
-                      key={item.id}
-                      completed={completedSlugs.has(item.slug)}
-                      item={item}
-                    />
-                  ))}
-                </div>
-
-                {results.length === 0 && (
-                  <div className="text-center py-12">
-                    <IconGraduation className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-2" />
-                    <p className="text-sm text-[var(--text-secondary)]">
-                      {t("campus.empty")}
-                    </p>
-                  </div>
-                )}
-              </section>
-            )}
-
-            {activeTab === "ranking" && <Leaderboard />}
-            {activeTab === "achievements" && <BadgeGrid />}
+        {/* Continue learning (authenticated only) */}
+        {isAuthenticated && hasLoaded && continueData && (
+          <section aria-label="Continuar aprendiendo">
+            <ContinueLearning
+              guideTitle={continueData.guideTitle}
+              lastTutorial={continueData.lastTutorial}
+              progressPct={continueData.progressPct}
+            />
           </section>
         )}
 
-        {/* ════════════════════════════════════════════════════════════════════════
-            FAQ SECTION (midu.dev style)
-            ════════════════════════════════════════════════════════════════════════ */}
-        <section className="space-y-6">
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]" style={{ letterSpacing: "-0.03em" }}>
-              Preguntas antes de empezar
-            </h2>
-            <p className="text-sm text-[var(--text-secondary)] max-w-lg mx-auto">
-              Lo esencial para decidir con tranquilidad si el campus encaja
-              contigo.
-            </p>
+        {/* Stats */}
+        <section aria-label="Estadísticas del campus">
+          <div className="grid grid-cols-3 gap-3 md:gap-4">
+            <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
+              <p className="text-xl md:text-2xl font-black text-[var(--accent)]">
+                {allGuides.length}
+              </p>
+              <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
+                Rutas de aprendizaje
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
+              <p className="text-xl md:text-2xl font-black text-[var(--accent)]">
+                {allTutorials.length}
+              </p>
+              <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
+                Tutoriales
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center">
+              <p className="text-xl md:text-2xl font-black text-[var(--accent)]">
+                {challenges.length}
+              </p>
+              <p className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold mt-1">
+                Retos prácticos
+              </p>
+            </div>
           </div>
+        </section>
 
-          <div className="max-w-2xl mx-auto">
-            {FAQ_ITEMS.map((item) => (
-              <FaqItem key={item.q} answer={item.a} question={item.q} />
+        {/* Courses grid */}
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2
+              className="text-xl md:text-2xl font-black text-[var(--text-primary)]"
+              style={{ letterSpacing: "-0.03em" }}
+            >
+              Cursos para subir de nivel
+            </h2>
+            <Link
+              className="text-xs font-semibold text-[var(--accent)] hover:underline no-underline"
+              href="/campus/cursos"
+            >
+              Ver todos →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {featuredCourses.map((course) => (
+              <CourseCard key={course.href} {...course} />
             ))}
           </div>
         </section>
 
-        {/* ════════════════════════════════════════════════════════════════════════
-            CTA SECTION (midu.dev style)
-            ════════════════════════════════════════════════════════════════════════ */}
-        <section className="text-center space-y-6 py-12 px-6 rounded-3xl bg-gradient-to-br from-[var(--color-brand-from)]/10 via-[var(--color-brand-via)]/5 to-[var(--color-brand-to)]/10 border border-[var(--border-default)]">
-          <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]" style={{ letterSpacing: "-0.03em" }}>
-            ¿Quieres guardar el acceso al campus?
-          </h2>
-          <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
-            Revisa las rutas, empieza con un tutorial gratuito o resuelve un reto.
-            Sin compromiso.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--bg-interactive)] text-[var(--text-interactive)] text-sm font-bold hover:bg-[var(--bg-interactive-hover)] transition-all shadow-lg shadow-[var(--accent)]/20"
-              href="/campus/guias"
-            >
-              Explorar guías
-              <span>→</span>
-            </Link>
-            <Link
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[var(--border-default)] text-[var(--text-primary)] text-sm font-semibold hover:border-[var(--border-hover)] hover:bg-[var(--bg-hover)] transition-all"
-              href="/campus/retos"
-            >
-              Ver retos
-            </Link>
-          </div>
-        </section>
+        {/* Challenges */}
+        {availableChallenges.length > 0 && (
+          <section className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2
+                className="text-xl md:text-2xl font-black text-[var(--text-primary)]"
+                style={{ letterSpacing: "-0.03em" }}
+              >
+                Retos prácticos
+              </h2>
+              <Link
+                className="text-xs font-semibold text-[var(--accent)] hover:underline no-underline"
+                href="/campus/retos"
+              >
+                Ver todos →
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+              {availableChallenges.map((challenge) => (
+                <ChallengeCard key={challenge.id} challenge={challenge} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </CampusLayout>
   );

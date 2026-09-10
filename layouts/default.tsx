@@ -90,7 +90,7 @@ export default function DefaultLayout({ children, seo }: DefaultLayoutProps) {
                 <li>
                   <a
                     className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors no-underline"
-                    href="/campus/guias"
+                    href="/campus/cursos"
                   >
                     {t("nav.blogGuides")}
                   </a>

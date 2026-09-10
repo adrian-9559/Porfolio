@@ -41,6 +41,27 @@ const nextConfig = {
         destination: "/tools/:path*",
         permanent: true,
       },
+      // ── Campus redesign redirects ──
+      {
+        source: "/campus/guias",
+        destination: "/campus/cursos",
+        permanent: true,
+      },
+      {
+        source: "/campus/guias/:path*",
+        destination: "/campus/cursos/:path*",
+        permanent: true,
+      },
+      {
+        source: "/campus/plan-de-estudio",
+        destination: "/campus/retos",
+        permanent: true,
+      },
+      {
+        source: "/campus/plan-de-estudio/:path*",
+        destination: "/campus/retos",
+        permanent: true,
+      },
     ];
   },
   async headers() {

@@ -14,6 +14,52 @@ import { apiFetch } from "./apiClient";
 
 const API = "/api/campus";
 
+// ── Types ────────────────────────────────────────────────────────────────────
+
+export interface CampusExercise {
+  id: string;
+  tutorial_slug: string;
+  type: "code" | "quiz" | "true_false" | "fill_blank" | "drag_drop";
+  order_index: number;
+  title: string;
+  description: string | null;
+  config: Record<string, unknown>;
+  xp_reward: number;
+  passing_score: number;
+}
+
+export interface ExerciseResult {
+  score: number;
+  passed: boolean;
+  xpEarned: number;
+  details: Record<string, unknown>;
+}
+
+export interface CodeRunResult {
+  stdout: string;
+  stderr: string;
+  exitCode: number;
+  executionTimeMs: number;
+}
+
+export interface ExerciseProgress {
+  total: number;
+  passed: number;
+  allPassed: boolean;
+}
+
+export interface CampusCertificate {
+  id: string;
+  user_id: string;
+  guide_slug: string;
+  certificate_code: string;
+  tutorial_slugs: string[];
+  exercises_passed: number;
+  total_exercises: number;
+  avg_score: number;
+  issued_at: string;
+}
+
 export const campusService = {
   getProgress: () => apiFetch<CampusProgress[]>(`${API}/progress`),
 
@@ -88,4 +134,47 @@ export const campusService = {
     }),
 
   getBadges: () => apiFetch<CampusBadge[]>(`${API}/badges`),
+
+  // ── Exercises ────────────────────────────────────────────────────────────
+
+  getExercises: (tutorialSlug: string) =>
+    apiFetch<CampusExercise[]>(`${API}/exercises/${tutorialSlug}`),
+
+  submitExercise: (
+    exerciseId: string,
+    answer: Record<string, unknown>,
+    startedAt: string,
+  ) =>
+    apiFetch<ExerciseResult>(`${API}/exercises/${exerciseId}/submit`, {
+      method: "POST",
+      body: JSON.stringify({ answer, startedAt }),
+    }),
+
+  runCode: (code: string, language: string) =>
+    apiFetch<CodeRunResult>(`${API}/exercises/code/run`, {
+      method: "POST",
+      body: JSON.stringify({ code, language }),
+    }),
+
+  getExerciseProgress: (tutorialSlug: string) =>
+    apiFetch<ExerciseProgress>(`${API}/exercises/progress/${tutorialSlug}`),
+
+  // ── Certificates ─────────────────────────────────────────────────────────
+
+  generateCertificate: (guideSlug: string) =>
+    apiFetch<{ alreadyExists: boolean; certificate: CampusCertificate }>(
+      `${API}/certificates/generate`,
+      {
+        method: "POST",
+        body: JSON.stringify({ guideSlug }),
+      },
+    ),
+
+  getMyCertificates: () =>
+    apiFetch<CampusCertificate[]>(`${API}/certificates`),
+
+  verifyCertificate: (code: string) =>
+    apiFetch<CampusCertificate & { userName: string }>(
+      `${API}/certificates/${code}/verify`,
+    ),
 };

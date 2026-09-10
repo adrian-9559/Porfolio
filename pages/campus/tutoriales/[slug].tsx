@@ -32,6 +32,8 @@ import { campusService } from "@/services/campusService";
 import { BookmarkButton } from "@/components/campus/BookmarkButton";
 import { NotesPanel } from "@/components/campus/NotesPanel";
 import { QuizModal } from "@/components/campus/QuizModal";
+import { ExerciseEngine } from "@/components/campus/exercises/ExerciseEngine";
+import type { CampusExercise } from "@/services/campusService";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -262,6 +264,7 @@ export default function TutorialPage({
   const [xpEarned, setXpEarned] = useState<number | null>(null);
   const [completedSlugs, setCompletedSlugs] = useState<Set<string>>(new Set());
   const [tocOpenMobile, setTocOpenMobile] = useState(false);
+  const [exercises, setExercises] = useState<CampusExercise[]>([]);
 
   const allTutorials = useMemo(() => getContentByType("tutorial"), []);
   const totalTutorials = allTutorials.length;
@@ -293,6 +296,14 @@ export default function TutorialPage({
       })
       .catch(() => {});
   }, [isAuthenticated, meta.slug]);
+
+  // Fetch exercises for this tutorial (public — no auth required for viewing)
+  useEffect(() => {
+    campusService
+      .getExercises(meta.slug)
+      .then(setExercises)
+      .catch(() => {});
+  }, [meta.slug]);
 
   const handleMarkComplete = async () => {
     try {
@@ -360,7 +371,7 @@ export default function TutorialPage({
             <>
               <Link
                 className="hover:text-[var(--text-primary)] transition-colors no-underline truncate max-w-[200px]"
-                href={`/campus/guias/${ownerGuide.slug}`}
+                href={`/campus/cursos/${ownerGuide.slug}`}
               >
                 {ownerGuide.title}
               </Link>
@@ -397,7 +408,7 @@ export default function TutorialPage({
                     {ownerGuide && (
                       <Link
                         className="text-white/80 text-xs font-medium hover:text-white transition-colors no-underline"
-                        href={`/campus/guias/${ownerGuide.slug}`}
+                        href={`/campus/cursos/${ownerGuide.slug}`}
                       >
                         ← Volver a la ruta
                       </Link>
@@ -611,6 +622,18 @@ export default function TutorialPage({
               </div>
             )}
 
+            {/* Exercises section */}
+            {exercises.length > 0 && (
+              <div className="mb-8">
+                <ExerciseEngine
+                  exercises={exercises}
+                  tutorialSlug={meta.slug}
+                  guideSlug={ownerGuide?.slug ?? meta.slug}
+                  guideTitle={ownerGuide?.title ?? meta.title}
+                />
+              </div>
+            )}
+
             {/* SIGUIENTE LECCIÓN — prominent card */}
             {nextMeta && (
               <Link
@@ -648,7 +671,7 @@ export default function TutorialPage({
             >
               <Link
                 className="inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors no-underline"
-                href={ownerGuide ? `/campus/guias/${ownerGuide.slug}` : "/campus"}
+                href={ownerGuide ? `/campus/cursos/${ownerGuide.slug}` : "/campus"}
               >
                 <IconChevronLeft className="w-4 h-4" />
                 {ownerGuide

@@ -3,66 +3,21 @@ import Link from "next/link";
 
 import { useT } from "@/hooks/useT";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import ThumbCard from "@/components/campus/ThumbCard";
+import {
+  getContentByType,
+  getGuides,
+  guideTotalMinutes,
+} from "@/lib/blog/registry";
 
-interface Guide {
-  title: string;
-  description: string;
-  slug: string;
-  category: string;
-  level: string;
-  tutorials: number;
-}
+const featuredGuides = getGuides()
+  .filter((g) => g.featured)
+  .slice(0, 3);
 
-interface Tutorial {
-  title: string;
-  description: string;
-  slug: string;
-  category: string;
-  readTime: string;
-  tags: string[];
-}
-
-const FEATURED_GUIDES: Guide[] = [
-  {
-    title: "Desarrollo Web Full Stack",
-    description:
-      "Ruta completa para dominar el desarrollo web moderno con React, Next.js, Node.js y bases de datos.",
-    slug: "ruta-frontend",
-    category: "Frontend",
-    level: "Nivel 1-4",
-    tutorials: 13,
-  },
-  {
-    title: "Backend y APIs",
-    description:
-      "Aprende a crear APIs robustas con Node.js, Express, autenticación JWT y bases de datos.",
-    slug: "ruta-backend-js",
-    category: "Backend",
-    level: "Nivel 2-4",
-    tutorials: 8,
-  },
-];
-
-const FEATURED_TUTORIALS: Tutorial[] = [
-  {
-    title: "React Hooks: Guía completa",
-    description:
-      "Domina useState, useEffect, useContext y custom hooks con ejemplos prácticos y patrones avanzados.",
-    slug: "react-framework",
-    category: "Frontend",
-    readTime: "15 min",
-    tags: ["React", "Hooks", "JavaScript"],
-  },
-  {
-    title: "TypeScript desde cero",
-    description:
-      "Aprende TypeScript desde los fundamentos hasta tipos avanzados, interfaces y genéricos.",
-    slug: "typescript",
-    category: "Lenguajes",
-    readTime: "20 min",
-    tags: ["TypeScript", "JavaScript"],
-  },
-];
+const featuredTutorials = getContentByType("tutorial")
+  .slice()
+  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+  .slice(0, 3);
 
 export default function CampusHighlights() {
   const { t } = useT();
@@ -70,7 +25,6 @@ export default function CampusHighlights() {
   return (
     <section className="relative w-full">
       <div className="space-y-10">
-        {/* Header */}
         <ScrollReveal>
           <div className="text-center space-y-3">
             <span className="ds-badge">{t("sections.campus.badge")}</span>
@@ -89,126 +43,35 @@ export default function CampusHighlights() {
           </div>
         </ScrollReveal>
 
-        {/* Featured Guides */}
-        <div className="space-y-4">
-          <ScrollReveal>
-            <h3 className="ds-section-label">
-              {t("sections.campus.featuredGuides")}
-            </h3>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {FEATURED_GUIDES.map((guide, idx) => (
-              <ScrollReveal key={guide.slug} delay={idx * 100}>
-                <Link
-                  className="group block h-full no-underline"
-                  href={`/campus/guias/${guide.slug}`}
-                >
-                  <div className="h-full ds-card ds-card-compact ds-card-interactive flex flex-col">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="ds-badge">{guide.category}</span>
-                      <span
-                        className="text-xs"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        {guide.level}
-                      </span>
-                    </div>
-
-                    <h3
-                      className="text-lg font-bold mb-2 group-hover:text-[var(--accent)] transition-colors"
-                      style={{ color: "var(--text-primary)" }}
-                    >
-                      {guide.title}
-                    </h3>
-                    <p
-                      className="text-sm leading-relaxed flex-1"
-                      style={{ color: "var(--text-secondary)" }}
-                    >
-                      {guide.description}
-                    </p>
-
-                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-[var(--border-default)]">
-                      <span
-                        className="text-xs"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        {guide.tutorials} tutoriales
-                      </span>
-                      <span className="text-xs font-semibold text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors">
-                        {t("sections.campus.startPath")} →
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </ScrollReveal>
+        <ScrollReveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredGuides.map((guide, idx) => (
+              <ThumbCard
+                key={guide.id}
+                href={`/campus/cursos/${guide.slug}`}
+                meta={`${guide.curriculum.length} tutoriales · ~${guideTotalMinutes(guide)} min`}
+                seed={idx}
+                title={guide.title}
+              />
+            ))}
+            {featuredTutorials.map((tutorial, idx) => (
+              <ThumbCard
+                key={tutorial.id}
+                href={`/campus/tutoriales/${tutorial.slug}`}
+                meta={`${tutorial.category} · ${tutorial.readTime}`}
+                seed={idx + featuredGuides.length}
+                title={tutorial.title}
+              />
             ))}
           </div>
-        </div>
+        </ScrollReveal>
 
-        {/* Featured Tutorials */}
-        <div className="space-y-4">
-          <ScrollReveal>
-            <h3 className="ds-section-label">
-              {t("sections.campus.featuredTutorials")}
-            </h3>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {FEATURED_TUTORIALS.map((tutorial, idx) => (
-              <ScrollReveal key={tutorial.slug} delay={idx * 100}>
-                <Link
-                  className="group block h-full no-underline"
-                  href={`/campus/tutoriales/${tutorial.slug}`}
-                >
-                  <div className="h-full ds-card ds-card-compact ds-card-interactive flex flex-col">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="ds-badge">{tutorial.category}</span>
-                      <span
-                        className="text-xs"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        {tutorial.readTime}
-                      </span>
-                    </div>
-
-                    <h3
-                      className="text-lg font-bold mb-2 group-hover:text-[var(--accent)] transition-colors"
-                      style={{ color: "var(--text-primary)" }}
-                    >
-                      {tutorial.title}
-                    </h3>
-                    <p
-                      className="text-sm leading-relaxed flex-1"
-                      style={{ color: "var(--text-secondary)" }}
-                    >
-                      {tutorial.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-[var(--border-default)]">
-                      {tutorial.tags.map((tag) => (
-                        <span key={tag} className="ds-badge">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-end mt-3">
-                      <span className="text-xs font-semibold text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors">
-                        {t("sections.campus.startTutorial")} →
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA */}
         <ScrollReveal>
           <div className="flex justify-center">
-            <Link className="ds-btn-secondary no-underline" href="/campus">
+            <Link
+              className="text-sm font-semibold text-[var(--accent)] hover:underline no-underline"
+              href="/campus"
+            >
               {t("sections.campus.viewAll")} →
             </Link>
           </div>
