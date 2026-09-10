@@ -128,20 +128,19 @@ export function AdminUserModal({
         className="w-full max-w-lg mx-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="rounded-2xl bg-white dark:bg-[#111116] border border-black/8 dark:border-white/8 overflow-hidden shadow-2xl">
+        <div className="rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] overflow-hidden shadow-2xl">
           {/* Header */}
           <div className="relative px-6 pt-6 pb-4">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white text-lg font-bold shadow-lg">
+                <div className="w-12 h-12 rounded-xl bg-[var(--accent-light)] flex items-center justify-center text-[var(--accent)] text-lg font-bold">
                   {initials}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white">
+                  <h3 className="text-base font-bold text-[var(--text-primary)]">
                     {user.profile?.full_name ?? "—"}
                   </h3>
-                  <p className="text-xs text-[#6e6e73] dark:text-[#86868b]">
+                  <p className="text-xs text-[var(--text-muted)]">
                     {user.email}
                   </p>
                 </div>
