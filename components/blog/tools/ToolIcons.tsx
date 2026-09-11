@@ -761,7 +761,8 @@ export type ToolId =
   | "favicon-generator"
   | "og-image-generator"
   | "password-analyzer"
-  | "wifi-qr";
+  | "wifi-qr"
+  | "background-remover";
 
 // ── Missing icons ────────────────────────────────────────────────────────────
 
@@ -918,6 +919,15 @@ export function IconWifiQr({ className = "w-5 h-5" }: ToolIconProps) {
   );
 }
 
+export function IconBackgroundRemover({ className = "w-5 h-5" }: ToolIconProps) {
+  return (
+    <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+      <path d="M9 3l-6 6M15 3l6 6" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
+    </svg>
+  );
+}
+
 export function IconDesignShowcase({ className = "w-5 h-5" }: ToolIconProps) {
   return (
     <svg
@@ -985,6 +995,7 @@ const TOOL_ICON_MAP: Record<ToolId, React.ComponentType<ToolIconProps>> = {
   "og-image-generator": IconOgImageGenerator,
   "password-analyzer": IconPasswordAnalyzer,
   "wifi-qr": IconWifiQr,
+  "background-remover": IconBackgroundRemover,
 };
 
 export function getToolIcon(

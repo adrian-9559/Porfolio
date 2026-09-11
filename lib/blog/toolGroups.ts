@@ -90,6 +90,7 @@ export const TOOL_GROUPS: ToolGroup[] = [
       "pdf-to-excel",
       "image-to-base64",
       "image-compressor",
+      "background-remover",
       "favicon-generator",
       "og-image-generator",
     ],

@@ -30,6 +30,7 @@ const TOOL_IMPORTS: Record<string, () => Promise<{ default: React.ComponentType 
   "pdf-to-excel": () => import("@/components/blog/tools/PdfToExcelContent"),
   "image-to-base64": () => import("@/components/blog/tools/ImageToBase64Content"),
   "image-compressor": () => import("@/components/blog/tools/ImageCompressorContent"),
+  "background-remover": () => import("@/components/blog/tools/BackgroundRemoverContent"),
   "favicon-generator": () => import("@/components/blog/tools/FaviconGeneratorContent"),
   "og-image-generator": () => import("@/components/blog/tools/OgImageContent"),
   "qr-generator": () => import("@/components/blog/tools/QrGeneratorContent"),
