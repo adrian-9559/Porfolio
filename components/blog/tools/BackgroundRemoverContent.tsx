@@ -103,6 +103,7 @@ export default function BackgroundRemoverContent() {
   const [hasResult, setHasResult] = useState(false);
   const sourcePreviewUrlRef = useRef("");
   const resultUrlRef = useRef("");
+  const lastManualPointRef = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     return () => {
@@ -327,6 +328,7 @@ export default function BackgroundRemoverContent() {
     const x = Math.floor((e.clientX - rect.left) * scaleX);
     const y = Math.floor((e.clientY - rect.top) * scaleY);
 
+    lastManualPointRef.current = { x, y };
     setProcessing(true);
 
     const img = new Image();
@@ -353,6 +355,39 @@ export default function BackgroundRemoverContent() {
 
     img.src = URL.createObjectURL(sourceFile);
   };
+
+  const rerunManual = useCallback(() => {
+    if (!sourceFile || !lastManualPointRef.current) return;
+    const { x, y } = lastManualPointRef.current;
+
+    setProcessing(true);
+
+    const img = new Image();
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d")!;
+
+      ctx.drawImage(img, 0, 0);
+      floodFillRemove(ctx, canvas.width, canvas.height, x, y, manualTolerance);
+
+      canvas.toBlob((b) => {
+        if (!b) return;
+        if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
+        const url = URL.createObjectURL(b);
+
+        resultUrlRef.current = url;
+        setResultUrl(url);
+        setHasResult(true);
+        setProcessing(false);
+      }, "image/png");
+    };
+
+    img.src = URL.createObjectURL(sourceFile);
+  }, [sourceFile, manualTolerance]);
 
   const download = () => {
     if (!resultUrl || !sourceFile) return;
@@ -525,6 +560,8 @@ export default function BackgroundRemoverContent() {
                 type="range"
                 value={manualTolerance}
                 onChange={(e) => setManualTolerance(Number(e.target.value))}
+                onMouseUp={rerunManual}
+                onTouchEnd={rerunManual}
               />
               <span className="text-xs font-bold text-violet-600 dark:text-violet-400 tabular-nums w-8 text-right">
                 {manualTolerance}
