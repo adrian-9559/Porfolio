@@ -286,9 +286,7 @@ export default function BackgroundRemoverContent() {
     sourcePreviewUrlRef.current = url;
     setSourcePreview(url);
 
-    if (mode === "ai") {
-      removeBackground(file);
-    } else {
+    if (mode === "manual") {
       removeBackgroundManual(file, manualTolerance);
     }
   };
@@ -493,23 +491,22 @@ export default function BackgroundRemoverContent() {
                   min={0}
                   type="range"
                   value={sensitivity}
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
-
-                    setSensitivity(v);
-                  }}
-                  onMouseUp={() => {
-                    if (sourceFile && hasResult) processFile(sourceFile);
-                  }}
-                  onTouchEnd={() => {
-                    if (sourceFile && hasResult) processFile(sourceFile);
-                  }}
+                  onChange={(e) => setSensitivity(Number(e.target.value))}
                 />
                 <div className="flex justify-between text-[10px] text-[#aeaeb2] dark:text-[#636366]">
                   <span>Conservador</span>
                   <span>Agresivo</span>
                 </div>
               </div>
+            )}
+
+            {sourceFile && !processing && (
+              <button
+                className="w-full py-2.5 rounded-xl bg-violet-500 hover:bg-violet-600 text-white font-semibold text-sm transition-colors active:scale-[0.98]"
+                onClick={() => removeBackground(sourceFile)}
+              >
+                {hasResult ? "Re-procesar" : "Procesar"}
+              </button>
             )}
           </div>
         )}
