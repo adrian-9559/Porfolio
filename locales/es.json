@@ -2655,7 +2655,8 @@
 		"github": "GitHub (abre en nueva pestaña)",
 		"linkedin": "LinkedIn (abre en nueva pestaña)",
 		"dashboard": "Dashboard",
-		"settings": "Configuración"
+		"settings": "Configuración",
+		"admin": "Admin"
 	},
 	"notifications": {
 		"action": {

@@ -19,7 +19,7 @@ export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  const { isAuthenticated: isLoggedIn, loadingAuth: loading } = useAuth();
+  const { isAuthenticated: isLoggedIn, loadingAuth: loading, isAdmin } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -88,6 +88,18 @@ export const Navbar = () => {
                 </Link>
               );
             })}
+            {isAdmin && (
+              <Link
+                className={`relative px-3.5 py-1.5 rounded-[10px] text-[13px] font-medium transition-all duration-200 no-underline ${
+                  pathname === "/admin"
+                    ? "bg-[var(--bg-card)] text-[var(--accent)] shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
+                }`}
+                href="/admin"
+              >
+                {t("nav.admin") ?? "Admin"}
+              </Link>
+            )}
           </div>
 
           {/* Right actions */}
@@ -172,6 +184,23 @@ export const Navbar = () => {
                 </Link>
               );
             })}
+            {isAdmin && (
+              <Link
+                className={`px-4 py-2.5 rounded-xl text-sm font-medium no-underline transition-colors ${
+                  pathname === "/admin"
+                    ? "bg-[var(--accent-light)] text-[var(--accent)]"
+                    : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+                }`}
+                href="/admin"
+              >
+                <div className="flex items-center gap-2.5">
+                  {pathname === "/admin" && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] flex-shrink-0" />
+                  )}
+                  {t("nav.admin") ?? "Admin"}
+                </div>
+              </Link>
+            )}
           </div>
           {!loading && !isLoggedIn && (
             <div className="px-2 pb-2">
