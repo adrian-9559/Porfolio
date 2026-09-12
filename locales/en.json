@@ -2846,6 +2846,11 @@
 			"title": "Featured projects",
 			"viewAll": "View all my projects on GitHub"
 		},
+		"tools": {
+			"badge": "Tools",
+			"title": "Interactive tools",
+			"desc": "Free web utilities for colors, text, units and more."
+		},
 		"skills": {
 			"badge": "Skills",
 			"catBackend": "Backend",

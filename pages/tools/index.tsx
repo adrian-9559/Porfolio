@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import DefaultLayout from "@/layouts/default";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useT } from "@/hooks/useT";
 import { getContentByType } from "@/lib/blog/registry";
 import { TOOL_GROUPS } from "@/lib/blog/toolGroups";
@@ -148,14 +149,18 @@ export default function ToolsPage() {
 
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-3">
-            {t("tools.header")}
-          </h1>
-          <p className="text-lg text-[var(--text-secondary)] max-w-xl">
-            {t("tools.pageDesc")}
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="text-center space-y-2">
+            <p className="ds-section-label">{t("sections.tools.badge")}</p>
+            <h1 className="text-3xl md:text-4xl font-black text-[var(--text-primary)]"
+                style={{ letterSpacing: "-0.03em" }}>
+              {t("tools.header")}
+            </h1>
+            <p className="max-w-xl mx-auto text-sm text-[var(--text-secondary)]">
+              {t("tools.pageDesc")}
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Search */}
         <div className="mb-8">

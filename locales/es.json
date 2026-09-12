@@ -2850,6 +2850,11 @@
 			"title": "Proyectos destacados",
 			"viewAll": "Ver todos mis proyectos en GitHub"
 		},
+		"tools": {
+			"badge": "Herramientas",
+			"title": "Herramientas interactivas",
+			"desc": "Utilidades web gratuitas para colores, texto, unidades y más."
+		},
 		"skills": {
 			"badge": "Habilidades",
 			"catBackend": "Backend",
