@@ -1305,9 +1305,34 @@ export function UserTricountSection() {
   }
 
   async function handleDeleteGroup(groupId: string) {
-    await tricountService.deleteGroup(groupId);
-    setGroups((prev) => prev.filter((g) => g.id !== groupId));
-    if (selectedGroupId === groupId) setSelectedGroupId(null);
+    try {
+      await tricountService.deleteGroup(groupId);
+      setGroups((prev) => prev.filter((g) => g.id !== groupId));
+      if (selectedGroupId === groupId) setSelectedGroupId(null);
+    } catch (e: any) {
+      const msg: string = e?.message ?? e?.error ?? "";
+      // Backend hace soft-delete: primer intento archiva y devuelve 403 con mensaje "archivado"
+      if (/archivad/i.test(msg)) {
+        // Muestra explicación y recarga para reflejar estado archivado
+        alert(msg);
+        await fetchGroups();
+        // Ofrece borrado definitivo inmediato (segundo intento sí borra hard)
+        const doHardDelete = confirm(
+          "El grupo se ha archivado. ¿Borrar definitivamente ahora? Esta acción no se puede deshacer.",
+        );
+        if (doHardDelete) {
+          try {
+            await tricountService.deleteGroup(groupId);
+            setGroups((prev) => prev.filter((g) => g.id !== groupId));
+            if (selectedGroupId === groupId) setSelectedGroupId(null);
+          } catch (e2: any) {
+            alert(e2?.message ?? "Error al borrar definitivamente");
+          }
+        }
+        return;
+      }
+      alert(msg || "Error al eliminar el grupo");
+    }
   }
 
   const totalMyBalance = groups.reduce((sum, group) => {
