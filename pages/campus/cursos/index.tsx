@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Seo from "@/components/Seo";
 
 import CampusLayout from "@/layouts/campus";
 import { getGuides, getContentByType, contentHref } from "@/lib/blog/registry";

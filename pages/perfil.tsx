@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+import Seo from "@/components/Seo";
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
@@ -257,6 +258,7 @@ export default function PerfilPage() {
   if (loadingAuth || !isAuthenticated) {
     return (
       <DefaultLayout>
+      <Seo title="Mi Perfil" description="Gestiona tu perfil, preferencias y actividad en Porfolio." />
         <div className="flex justify-center py-20">
           <div className="w-5 h-5 rounded-full border-2 border-violet-500/30 border-t-violet-500 animate-spin" />
         </div>

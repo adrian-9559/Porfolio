@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
+import Seo from "@/components/Seo";
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 import ScrollReveal from "@/components/ui/ScrollReveal";
@@ -222,6 +223,7 @@ export default function AboutPage() {
 
   return (
     <DefaultLayout>
+      <Seo title="Sobre mí — Trayectoria Full Stack" description="Conoce la trayectoria de Adrián Escribano Pérez: 42 Madrid, 3+ años de experiencia, 15+ proyectos y especialización en React, Next.js, Node.js y Supabase." />
       <div className="relative">
         {/* Background decorativo */}
         <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">

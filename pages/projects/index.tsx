@@ -1,6 +1,5 @@
-import Head from "next/head";
-
 import Projects from "@/components/projects";
+import Seo from "@/components/Seo";
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 
@@ -9,11 +8,8 @@ export default function ProjectsPage() {
 
   return (
     <DefaultLayout>
-      <Head>
-        <title>{t("nav.projects")} | Adrián Escribano</title>
-        <meta content={t("sections.projects.desc")} name="description" />
-      </Head>
-      <div className="max-w-5xl mx-auto">
+      <Seo title="Proyectos" description="Explora los proyectos de Adrián Escribano: apps web Full Stack con React, Next.js, Supabase y más." />
+<div className="max-w-5xl mx-auto">
         <Projects />
       </div>
     </DefaultLayout>

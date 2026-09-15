@@ -3,6 +3,7 @@ import type { UserPreferences } from "@/types/auth";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import Seo from "@/components/Seo";
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
@@ -123,6 +124,7 @@ export default function ConfiguracionPage() {
   if (loadingAuth || !isAuthenticated) {
     return (
       <DefaultLayout>
+      <Seo title="Configuración" description="Ajusta tu perfil, seguridad, notificaciones, apariencia e idioma." />
         <div className="flex justify-center py-20">
           <div className="ds-spinner" />
         </div>

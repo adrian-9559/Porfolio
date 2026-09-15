@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+import Seo from "@/components/Seo";
 import Link from "next/link";
 
 import { useT } from "@/hooks/useT";

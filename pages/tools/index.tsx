@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import Seo from "@/components/Seo";
 import DefaultLayout from "@/layouts/default";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useT } from "@/hooks/useT";
@@ -140,6 +141,7 @@ export default function ToolsPage() {
 
   return (
     <DefaultLayout>
+      <Seo title="Herramientas" description="Herramientas y utilidades para desarrolladores creadas por Adrián Escribano." />
       <Head>
         <title>{t("tools.pageTitle")} | Adrián Escribano</title>
         <meta content={t("tools.pageDesc")} name="description" />

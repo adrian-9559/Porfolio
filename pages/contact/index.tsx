@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 import ContactForm from "@/components/contact/contactForm";
+import Seo from "@/components/Seo";
 import DefaultLayout from "@/layouts/default";
 import { useT } from "@/hooks/useT";
 import { siteConfig } from "@/config/site";
@@ -111,6 +112,7 @@ export default function ContactPage() {
 
   return (
     <DefaultLayout>
+      <Seo title="Contacto" description="Contacta con Adrián Escribano: email, LinkedIn, GitHub e Instagram. ¿Hablamos de tu próximo proyecto?" />
       <div className="max-w-5xl mx-auto">
         <div className="space-y-16">
           {/* Header */}
