@@ -164,11 +164,29 @@ export function GoogleDriveConnectCard({ onChange }: Props) {
     }
   }
 
+  function extractFolderId(input: string): string {
+    const t = input.trim();
+    // https://drive.google.com/drive/folders/1AbCxxx
+    const m1 = t.match(/\/folders\/([a-zA-Z0-9-_]+)/);
+    if (m1) return m1[1];
+    // https://drive.google.com/open?id=1AbCxxx
+    const m2 = t.match(/[?&]id=([a-zA-Z0-9-_]+)/);
+    if (m2) return m2[1];
+    // bare id
+    return t;
+  }
+
   async function handleSaveFolder() {
+    const id = extractFolderId(folderInput);
+    if (!id) {
+      setError("Pega la URL de la carpeta o el ID");
+      return;
+    }
     try {
-      await googleDriveService.setFolder(folderInput.trim());
+      await googleDriveService.setFolder(id);
       setEditingFolder(false);
       await refresh();
+      onChange?.();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Error guardando carpeta");
     }
@@ -208,7 +226,7 @@ export function GoogleDriveConnectCard({ onChange }: Props) {
           </p>
 
           {status.enabled && status.connected && (
-            <div className="mt-3 text-xs text-[#6e6e73] dark:text-[#86868b]">
+            <div className="mt-3 text-xs text-[#6e6e73] dark:text-[#86868b] space-y-2">
               <p>
                 Conectado el{" "}
                 {new Date(status.connectedAt!).toLocaleDateString("es-ES", {
@@ -217,32 +235,62 @@ export function GoogleDriveConnectCard({ onChange }: Props) {
                   year: "numeric",
                 })}
               </p>
-              <div className="mt-2 flex items-center gap-2 flex-wrap">
-                <span>Carpeta:</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-medium">Carpeta de subidas:</span>
+                {status.driveFolderId && status.driveFolderId !== "root" && (
+                  <a
+                    href={`https://drive.google.com/drive/folders/${status.driveFolderId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs underline text-blue-600 dark:text-blue-400"
+                  >
+                    Abrir en Drive ↗
+                  </a>
+                )}
+                {status.driveFolderId === "root" && (
+                  <span className="text-[11px] px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5">Raíz de Mi unidad</span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span>Destino:</span>
                 {editingFolder ? (
-                  <>
+                  <div className="flex-1 flex flex-col gap-2 min-w-[220px]">
                     <input
-                      className="flex-1 min-w-[180px] px-2 py-1 rounded-lg border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-xs font-mono"
-                      placeholder="ID de carpeta"
+                      className="w-full px-2 py-1.5 rounded-lg border border-black/12 dark:border-white/12 bg-black/3 dark:bg-white/5 text-xs font-mono"
+                      placeholder="Pega URL de la carpeta de Drive o el ID (ej. https://drive.google.com/drive/folders/1AbC...)"
                       value={folderInput}
                       onChange={(e) => setFolderInput(e.target.value)}
                     />
-                    <button
-                      className="px-2 py-1 rounded-lg text-xs font-medium bg-blue-600 text-white"
-                      onClick={handleSaveFolder}
-                    >
-                      Guardar
-                    </button>
-                    <button
-                      className="px-2 py-1 rounded-lg text-xs text-[#6e6e73]"
-                      onClick={() => setEditingFolder(false)}
-                    >
-                      Cancelar
-                    </button>
-                  </>
+                    <div className="flex gap-2">
+                      <button
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 text-white hover:bg-blue-700"
+                        onClick={handleSaveFolder}
+                      >
+                        Guardar
+                      </button>
+                      <button
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium border border-black/12 dark:border-white/12 hover:bg-black/5"
+                        onClick={() => {
+                          setFolderInput("root");
+                          handleSaveFolder();
+                        }}
+                      >
+                        Usar raíz
+                      </button>
+                      <button
+                        className="px-2 py-1.5 rounded-lg text-xs text-[#6e6e73]"
+                        onClick={() => setEditingFolder(false)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <p className="text-[11px] leading-tight opacity-70">
+                      Crea una carpeta en Drive llamada “Partimos APKs” y pega aquí su enlace. Los APK se subirán ahí.
+                    </p>
+                  </div>
                 ) : (
                   <>
-                    <code className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5">
+                    <code className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 max-w-[200px] truncate">
                       {status.driveFolderId}
                     </code>
                     <button
