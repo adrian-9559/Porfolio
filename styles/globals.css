@@ -717,6 +717,15 @@
     font-weight: 600;
   }
 
+  /* ── Scrollable nav without visible scrollbar (mobile tabs) ── */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* ── Dropdown ── */
   .ds-dropdown {
     position: relative;

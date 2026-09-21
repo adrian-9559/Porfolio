@@ -2,11 +2,12 @@
 import type { HeadProps } from "./head";
 import type { CampusUserXP } from "@/types/campus";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { Head } from "./head";
+
 import { Navbar } from "@/components/navbar";
 import { useT } from "@/hooks/useT";
 import { useAuth } from "@/hooks/useAuth";
@@ -25,7 +26,10 @@ function UserMenu() {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    campusService.getXP().then(setUserXp).catch(() => {});
+    campusService
+      .getXP()
+      .then(setUserXp)
+      .catch(() => {});
   }, [isAuthenticated]);
 
   if (!isAuthenticated) return null;
@@ -37,7 +41,7 @@ function UserMenu() {
         .join("")
         .slice(0, 2)
         .toUpperCase()
-    : user?.email?.[0]?.toUpperCase() ?? "?";
+    : (user?.email?.[0]?.toUpperCase() ?? "?");
 
   return (
     <div className="relative">
@@ -61,10 +65,7 @@ function UserMenu() {
 
       {open && (
         <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setOpen(false)}
-          />
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           <div
             aria-label={t("nav.userMenu")}
             className="absolute right-0 top-full mt-2 z-50 w-56 py-2 bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl shadow-xl"
@@ -113,11 +114,42 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
   const router = useRouter();
   const currentPath = router.asPath.split("?")[0] ?? router.asPath;
 
-  const navItems = [
-    { href: "/campus", label: t("nav.campusHome") },
-    { href: "/campus/cursos", label: t("nav.campusGuides") },
-    { href: "/campus/retos", label: t("nav.campusChallenges") },
+  const navItems: {
+    href: string;
+    label: string;
+    shortLabel: string;
+    icon?: boolean;
+  }[] = [
+    {
+      href: "/campus",
+      label: t("nav.campusHome"),
+      shortLabel: t("nav.campusHomeShort"),
+    },
+    {
+      href: "/campus/cursos",
+      label: t("nav.campusGuides"),
+      shortLabel: t("nav.campusGuides"),
+    },
+    {
+      href: "/campus/retos",
+      label: t("nav.campusChallenges"),
+      shortLabel: t("nav.campusChallenges"),
+    },
+    {
+      href: "/campus/certificados",
+      label: t("nav.campusCertificates"),
+      shortLabel: t("nav.campusCertificates"),
+      icon: true,
+    },
   ];
+  const activeTabRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    activeTabRef.current?.scrollIntoView({
+      block: "nearest",
+      inline: "center",
+    });
+  }, [currentPath]);
 
   return (
     <div className="relative flex flex-col min-h-screen bg-[var(--bg-primary)] overflow-x-clip">
@@ -133,12 +165,12 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
       </a>
 
       {/* Campus header nav */}
-      <header className="sticky top-0 z-[var(--z-sticky)] border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-5 sm:px-6 h-14 flex items-center justify-between gap-4">
+      <header className="sticky top-16 z-[var(--z-sticky)] border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-12 sm:h-14 flex items-center justify-between gap-2 sm:gap-4">
           {/* Left: Campus brand + nav */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-1 sm:gap-6 flex-1 min-w-0">
             <Link
-              className="flex items-center gap-2 no-underline group"
+              className="flex items-center gap-2 no-underline group flex-shrink-0"
               href="/campus"
             >
               <div className="w-7 h-7 rounded-lg bg-[var(--accent-light)] text-[var(--accent)] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
@@ -174,8 +206,11 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
               </span>
             </Link>
 
-            <nav aria-label={t("nav.campusNavigation")}>
-              <ul className="flex items-center gap-1" role="list">
+            <nav
+              aria-label={t("nav.campusNavigation")}
+              className="no-scrollbar flex-1 min-w-0 overflow-x-auto max-sm:[mask-image:linear-gradient(to_right,#000_calc(100%-20px),transparent)]"
+            >
+              <ul className="flex items-center gap-1 flex-nowrap">
                 {navItems.map((item) => {
                   const isActive =
                     item.href === "/campus"
@@ -183,17 +218,29 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
                       : currentPath.startsWith(item.href);
 
                   return (
-                    <li key={item.href}>
+                    <li
+                      key={item.href}
+                      ref={isActive ? activeTabRef : undefined}
+                      className="flex-shrink-0"
+                    >
                       <Link
                         aria-current={isActive ? "page" : undefined}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors no-underline ${
+                        aria-label={item.label}
+                        className={`inline-flex items-center gap-1.5 whitespace-nowrap px-3 py-1.5 min-h-[44px] rounded-lg text-sm font-medium transition-colors no-underline ${
                           isActive
                             ? "bg-[var(--accent-light)] text-[var(--accent)]"
                             : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
                         }`}
                         href={item.href}
                       >
-                        {item.label}
+                        {item.icon && (
+                          <IconGraduation
+                            aria-hidden="true"
+                            className="w-3.5 h-3.5"
+                          />
+                        )}
+                        <span className="sm:hidden">{item.shortLabel}</span>
+                        <span className="hidden sm:inline">{item.label}</span>
                       </Link>
                     </li>
                   );
@@ -202,15 +249,8 @@ export default function CampusLayout({ children, seo }: CampusLayoutProps) {
             </nav>
           </div>
 
-          {/* Right: Certificados link + User menu */}
-          <div className="flex items-center gap-3">
-            <Link
-              aria-label={t("nav.campusCertificates")}
-              className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors no-underline hidden sm:block"
-              href="/campus/certificados"
-            >
-              <IconGraduation className="w-3.5 h-3.5 inline mr-1" /> {t("nav.campusCertificates")}
-            </Link>
+          {/* Right: User menu */}
+          <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
             <UserMenu />
           </div>
         </div>

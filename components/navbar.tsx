@@ -17,9 +17,14 @@ export const Navbar = () => {
   const { t } = useT();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  const { isAuthenticated: isLoggedIn, loadingAuth: loading, isAdmin } = useAuth();
+  const {
+    isAuthenticated: isLoggedIn,
+    loadingAuth: loading,
+    isAdmin,
+  } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -31,6 +36,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     setMenuOpen(false);
+    setUserMenuOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -104,14 +110,24 @@ export const Navbar = () => {
 
           {/* Right actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
-            <LanguageSwitcher />
-            <ThemeSwitch />
+            {!loading && !isLoggedIn && (
+              <div className="hidden md:flex items-center gap-1.5">
+                <LanguageSwitcher />
+                <ThemeSwitch />
+              </div>
+            )}
 
             {!loading && isLoggedIn && <NotificationBell />}
 
             {!loading &&
               (isLoggedIn ? (
-                <UserButton />
+                <UserButton
+                  open={userMenuOpen}
+                  onOpenChange={(next) => {
+                    if (next) setMenuOpen(false);
+                    setUserMenuOpen(next);
+                  }}
+                />
               ) : (
                 <button
                   className="ds-btn-primary !py-1.5 !px-3.5 !text-[13px] !rounded-xl"
@@ -125,7 +141,10 @@ export const Navbar = () => {
             <button
               aria-label={menuOpen ? t("nav.menuClose") : t("nav.menuToggle")}
               className="ds-btn-icon !w-8 !h-8 md:hidden"
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => {
+                if (!menuOpen) setUserMenuOpen(false);
+                setMenuOpen(!menuOpen);
+              }}
             >
               {menuOpen ? (
                 <IconClose className="w-4 h-4" />
@@ -202,6 +221,17 @@ export const Navbar = () => {
               </Link>
             )}
           </div>
+          {!loading && !isLoggedIn && (
+            <div className="flex items-center justify-between gap-2 border-t border-[var(--border-default)] px-4 py-2.5">
+              <span className="text-xs font-medium text-[var(--text-muted)]">
+                {t("nav.preferences")}
+              </span>
+              <div className="flex items-center gap-1.5">
+                <LanguageSwitcher />
+                <ThemeSwitch />
+              </div>
+            </div>
+          )}
           {!loading && !isLoggedIn && (
             <div className="px-2 pb-2">
               <button

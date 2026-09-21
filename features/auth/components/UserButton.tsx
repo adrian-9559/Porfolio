@@ -7,12 +7,30 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { useT } from "@/hooks/useT";
 import { useAuth } from "@/hooks/useAuth";
 
-export function UserButton() {
+interface UserButtonProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export function UserButton({
+  open: controlledOpen,
+  onOpenChange,
+}: UserButtonProps = {}) {
   const { t } = useT();
   const { user, isAdmin, logout } = useAuth();
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = (v: boolean | ((prev: boolean) => boolean)) => {
+    const next = typeof v === "function" ? v(open) : v;
+
+    if (controlledOpen === undefined) {
+      setInternalOpen(next);
+    }
+    onOpenChange?.(next);
+  };
 
   const initials = user?.profile?.full_name
     ? user.profile.full_name
