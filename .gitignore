@@ -41,6 +41,13 @@ next-env.d.ts
 .claude/
 .agents/
 
+# git worktrees
+/.worktrees/
+
+# local tooling artifacts
+/.serena/
+/.playwright-mcp/
+
 pnpm-lock.yaml
 pnpm-workspace.yaml
 yarn.lock
